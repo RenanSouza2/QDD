@@ -930,18 +930,16 @@ int main()
     fm = fopen("MemReport.txt","w");
 
     QDD *Q1, *Q2, *Q3, *Q4;
-    Q1 = le_matriz("Had3.txt");
+    Q1 = le_matriz("Had8.txt");
     reduz_QDD(Q1);
 
     Q2 = copia_QDD(Q1);
 
     Q3 = produto_tensorial(Q1,Q2);
-    Q4 = produto_tensorial(Q1,Q2);
 
     libera_QDD(Q1);
     libera_QDD(Q2);
     libera_QDD(Q3);
-    libera_QDD(Q4);
 
     fprintf(fm,"\n\nMemMax: %d",memMax);
     free(fm);
