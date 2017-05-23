@@ -323,9 +323,17 @@ void fmostra_QDD(FILE *fp,QDD *Q)
     lista *l;
     l = enlista_QDD(Q);
     fmostra_lista_com_no(fp,l);
-    printf("\n");
+    fprintf(fp,"\n");
     fmostra_lista(fp,Q->l);
     libera_lista(l);
+}
+
+void fmostra_QDD_sozinho(QDD *Q, char *nome)
+{
+    FILE *fp;
+    fp = fopen(nome,"w");
+    fmostra_QDD(fp,Q);
+    fclose(fp);
 }
 
 
@@ -399,6 +407,32 @@ void transfere_conexao(no *n1, no *n2)
         lado = desconecta_UM(n,n2);
         conecta_UM(n,n1,lado);
     }
+}
+
+
+
+void libera_QDD(QDD *Q)
+{
+    lista *l, *lc;
+    l = enlista_QDD(Q);
+    no *n1, *n2;
+    for(lc = l; lc != NULL; lc = lc->l)
+    {
+        n1 = lc->n;
+        while(n1->l != NULL)
+        {
+            n2 = n1->l->n;
+            desconecta_UM(n2,n1);
+        }
+    }
+
+    for(lc = l; lc != NULL; lc = lc->l)
+        libera_no(lc->n);
+
+    libera_lista(l);
+    libera_lista(Q->l);
+
+    libera_no_QDD(Q);
 }
 
 
@@ -820,6 +854,7 @@ QDD* produto_tensorial(QDD *Q1, QDD *Q2)
     QDD *Q;
     Short nqbit;
     lista *l;
+
     Q = copia_QDD(Q1);
     reduz_QDD(Q);
     nqbit = Q->l->n->nivel;
@@ -833,43 +868,58 @@ QDD* produto_tensorial(QDD *Q1, QDD *Q2)
     l2 = enlista_QDD(Q2a);
     for(lc = l2; lc != NULL; lc = lc->l)
         (lc->n->nivel) += nqbit;
+    libera_lista(l2);
 
     QDD *Q2b;
-    no *n1, *n2, *naux;
+    no *n1, *n2, *naux, *n0;
+    n0 = cria_no_vazio();
     while(l != NULL)
     {
         n1 = l->n;
-        Q2b = copia_QDD(Q2a);
-        for(lc = Q2b->l; lc != NULL; lc = lc->l)
+        if(compara(n0,n1))
         {
-            n2 = lc->n;
-            naux = produto_complexo(n1,n2);
-            transfere_conexao(naux,n2);
-            lc->n = naux;
-            libera_no(n2);
+            l2 = l->l;
+            l->l = Q->l;
+            Q->l = l;
+            l = l2;
         }
+        else
+        {
+            Q2b = copia_QDD(Q2a);
+            for(lc = Q2b->l; lc != NULL; lc = lc->l)
+            {
+                n2 = lc->n;
+                naux = produto_complexo(n1,n2);
+                transfere_conexao(naux,n2);
+                lc->n = naux;
+                libera_no(n2);
+            }
 
-        n2 = Q2b->n;
-        naux = Q2b->n->l->n;
-        desconecta_UM(naux,n2);
-        libera_no(naux);
+            n2 = Q2b->n;
+            naux = Q2b->n->l->n;
+            desconecta_UM(naux,n2);
+            libera_no(naux);
 
-        transfere_conexao(n2,n1);
-        libera_no(n1);
+            transfere_conexao(n2,n1);
+            libera_no(n1);
 
-        lc = Q2b->l;
-        while(lc->l != NULL)
-            lc = lc->l;
-        lc->l = Q->l;
-        Q->l = Q2b->l;
-        libera_no_QDD(Q2b);
-
+            lc = Q2b->l;
+            while(lc->l != NULL)
+                lc = lc->l;
+            lc->l = Q->l;
+            Q->l = Q2b->l;
+            libera_no_QDD(Q2b);
+        }
         lc = l->l;
         libera_no_lista(l);
         l = lc;
     }
+
+    libera_QDD(Q2a);
+
     reduz_lista(Q->l);
     reduz_QDD(Q);
+
     return Q;
 }
 
@@ -879,9 +929,19 @@ int main()
 {
     fm = fopen("MemReport.txt","w");
 
-    QDD *Q1;
-    Q1 = le_matriz("Had8.txt");
-    //reduz_QDD(Q1);
+    QDD *Q1, *Q2, *Q3, *Q4;
+    Q1 = le_matriz("Had3.txt");
+    reduz_QDD(Q1);
+
+    Q2 = copia_QDD(Q1);
+
+    Q3 = produto_tensorial(Q1,Q2);
+    Q4 = produto_tensorial(Q1,Q2);
+
+    libera_QDD(Q1);
+    libera_QDD(Q2);
+    libera_QDD(Q3);
+    libera_QDD(Q4);
 
     fprintf(fm,"\n\nMemMax: %d",memMax);
     free(fm);

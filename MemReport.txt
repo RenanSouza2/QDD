@@ -1,0 +1,3765 @@
+
+MemUP: 8			 8		MemMax
+MemUP: 16			 8		MemMax
+MemUP: 40			 24		MemMax
+MemUP: 48			 8		MemMax
+MemUP: 72			 24		MemMax
+MemUP: 104			 32		MemMax
+MemUP: 120			 16		MemMax
+MemUP: 136			 16		MemMax
+MemUP: 152			 16		MemMax
+MemUP: 168			 16		MemMax
+MemUP: 184			 16		MemMax
+MemUP: 200			 16		MemMax
+MemUP: 216			 16		MemMax
+MemUP: 232			 16		MemMax
+MemUP: 484			 252		MemMax
+MemUP: 508			 24		MemMax
+MemUP: 532			 24		MemMax
+MemUP: 556			 24		MemMax
+MemUP: 580			 24		MemMax
+MemUP: 604			 24		MemMax
+MemUP: 628			 24		MemMax
+MemUP: 652			 24		MemMax
+MemUP: 676			 24		MemMax
+MemUP: 700			 24		MemMax
+MemUP: 724			 24		MemMax
+MemUP: 748			 24		MemMax
+MemUP: 772			 24		MemMax
+MemUP: 796			 24		MemMax
+MemUP: 820			 24		MemMax
+MemUP: 844			 24		MemMax
+MemUP: 868			 24		MemMax
+MemUP: 892			 24		MemMax
+MemUP: 916			 24		MemMax
+MemUP: 940			 24		MemMax
+MemUP: 964			 24		MemMax
+MemUP: 988			 24		MemMax
+MemUP: 1012			 24		MemMax
+MemUP: 1036			 24		MemMax
+MemUP: 1060			 24		MemMax
+MemUP: 1084			 24		MemMax
+MemUP: 1108			 24		MemMax
+MemUP: 1132			 24		MemMax
+MemUP: 1156			 24		MemMax
+MemUP: 1180			 24		MemMax
+MemUP: 1204			 24		MemMax
+MemUP: 1228			 24		MemMax
+MemUP: 1252			 24		MemMax
+MemUP: 1276			 24		MemMax
+MemUP: 1300			 24		MemMax
+MemUP: 1324			 24		MemMax
+MemUP: 1348			 24		MemMax
+MemUP: 1372			 24		MemMax
+MemUP: 1396			 24		MemMax
+MemUP: 1420			 24		MemMax
+MemUP: 1444			 24		MemMax
+MemUP: 1468			 24		MemMax
+MemUP: 1492			 24		MemMax
+MemUP: 1516			 24		MemMax
+MemUP: 1540			 24		MemMax
+MemUP: 1564			 24		MemMax
+MemUP: 1588			 24		MemMax
+MemUP: 1612			 24		MemMax
+MemUP: 1636			 24		MemMax
+MemUP: 1660			 24		MemMax
+MemUP: 1684			 24		MemMax
+MemUP: 1708			 24		MemMax
+MemUP: 1732			 24		MemMax
+MemUP: 1756			 24		MemMax
+MemUP: 1780			 24		MemMax
+MemUP: 1804			 24		MemMax
+MemUP: 1828			 24		MemMax
+MemUP: 1852			 24		MemMax
+MemUP: 1876			 24		MemMax
+MemUP: 1900			 24		MemMax
+MemUP: 1924			 24		MemMax
+MemUP: 1948			 24		MemMax
+MemUP: 1972			 24		MemMax
+MemUP: 1996			 24		MemMax
+MemUP: 2004			 8		MemMax
+MemUP: 2012			 8		MemMax
+MemUP: 2020			 8		MemMax
+MemUP: 2028			 8		MemMax
+MemUP: 2036			 8		MemMax
+MemUP: 2044			 8		MemMax
+MemUP: 2052			 8		MemMax
+MemUP: 2060			 8		MemMax
+MemUP: 2068			 8		MemMax
+MemUP: 2076			 8		MemMax
+MemUP: 2084			 8		MemMax
+MemUP: 2092			 8		MemMax
+MemUP: 2100			 8		MemMax
+MemUP: 2108			 8		MemMax
+MemUP: 2116			 8		MemMax
+MemUP: 2124			 8		MemMax
+MemUP: 2132			 8		MemMax
+MemUP: 2140			 8		MemMax
+MemUP: 2148			 8		MemMax
+MemUP: 2156			 8		MemMax
+MemUP: 2164			 8		MemMax
+MemUP: 2172			 8		MemMax
+MemUP: 2180			 8		MemMax
+MemUP: 2188			 8		MemMax
+MemUP: 2196			 8		MemMax
+MemUP: 2204			 8		MemMax
+MemUP: 2212			 8		MemMax
+MemUP: 2220			 8		MemMax
+MemUP: 2228			 8		MemMax
+MemUP: 2236			 8		MemMax
+MemUP: 2244			 8		MemMax
+MemUP: 2252			 8		MemMax
+MemUP: 2260			 8		MemMax
+MemUP: 2268			 8		MemMax
+MemUP: 2276			 8		MemMax
+MemUP: 2284			 8		MemMax
+MemUP: 2292			 8		MemMax
+MemUP: 2300			 8		MemMax
+MemUP: 2308			 8		MemMax
+MemUP: 2316			 8		MemMax
+MemUP: 2324			 8		MemMax
+MemUP: 2332			 8		MemMax
+MemUP: 2340			 8		MemMax
+MemUP: 2348			 8		MemMax
+MemUP: 2356			 8		MemMax
+MemUP: 2364			 8		MemMax
+MemUP: 2372			 8		MemMax
+MemUP: 2380			 8		MemMax
+MemUP: 2388			 8		MemMax
+MemUP: 2396			 8		MemMax
+MemUP: 2404			 8		MemMax
+MemUP: 2412			 8		MemMax
+MemUP: 2420			 8		MemMax
+MemUP: 2428			 8		MemMax
+MemUP: 2436			 8		MemMax
+MemUP: 2444			 8		MemMax
+MemUP: 2452			 8		MemMax
+MemUP: 2460			 8		MemMax
+MemUP: 2468			 8		MemMax
+MemUP: 2476			 8		MemMax
+MemUP: 2484			 8		MemMax
+MemUP: 2492			 8		MemMax
+MemUP: 2500			 8		MemMax
+MemUP: 2508			 8		MemMax
+MemUP: 2516			 8		MemMax
+MemUP: 2524			 8		MemMax
+MemUP: 2532			 8		MemMax
+MemUP: 2540			 8		MemMax
+MemUP: 2548			 8		MemMax
+MemUP: 2556			 8		MemMax
+MemUP: 2564			 8		MemMax
+MemUP: 2572			 8		MemMax
+MemUP: 2580			 8		MemMax
+MemUP: 2588			 8		MemMax
+MemUP: 2596			 8		MemMax
+MemUP: 2604			 8		MemMax
+MemUP: 2612			 8		MemMax
+MemUP: 2620			 8		MemMax
+MemUP: 2628			 8		MemMax
+MemUP: 2636			 8		MemMax
+MemUP: 2644			 8		MemMax
+MemUP: 2652			 8		MemMax
+MemUP: 2660			 8		MemMax
+MemUP: 2668			 8		MemMax
+MemUP: 2676			 8		MemMax
+MemUP: 2684			 8		MemMax
+MemUP: 2692			 8		MemMax
+MemUP: 2700			 8		MemMax
+MemUP: 2708			 8		MemMax
+MemUP: 2716			 8		MemMax
+MemUP: 2724			 8		MemMax
+MemUP: 2732			 8		MemMax
+MemUP: 2740			 8		MemMax
+MemUP: 2748			 8		MemMax
+MemUP: 2756			 8		MemMax
+MemUP: 2764			 8		MemMax
+MemUP: 2772			 8		MemMax
+MemUP: 2780			 8		MemMax
+MemUP: 2788			 8		MemMax
+MemUP: 2796			 8		MemMax
+MemUP: 2804			 8		MemMax
+MemUP: 2812			 8		MemMax
+MemUP: 2820			 8		MemMax
+MemUP: 2828			 8		MemMax
+MemUP: 2836			 8		MemMax
+MemUP: 2844			 8		MemMax
+MemUP: 2852			 8		MemMax
+MemUP: 2860			 8		MemMax
+MemUP: 2868			 8		MemMax
+MemUP: 2876			 8		MemMax
+MemUP: 2884			 8		MemMax
+MemUP: 2892			 8		MemMax
+MemUP: 2900			 8		MemMax
+MemUP: 2908			 8		MemMax
+MemUP: 2916			 8		MemMax
+MemUP: 2924			 8		MemMax
+MemUP: 2932			 8		MemMax
+MemUP: 2940			 8		MemMax
+MemUP: 2948			 8		MemMax
+MemUP: 2956			 8		MemMax
+MemUP: 2964			 8		MemMax
+MemUP: 2972			 8		MemMax
+MemUP: 2980			 8		MemMax
+MemUP: 2988			 8		MemMax
+MemUP: 2996			 8		MemMax
+MemUP: 3004			 8		MemMax
+MemUP: 3012			 8		MemMax
+MemUP: 3036			 24		MemMax
+MemUP: 3044			 8		MemMax
+	MemDOWN: 2792		-252
+	MemDOWN: 2784		-8
+	MemDOWN: 2768		-16
+	MemDOWN: 2752		-16
+	MemDOWN: 2736		-16
+	MemDOWN: 2720		-16
+	MemDOWN: 2704		-16
+	MemDOWN: 2688		-16
+	MemDOWN: 2672		-16
+	MemDOWN: 2656		-16
+	MemDOWN: 2624		-32
+MemUP: 2632			 8
+MemUP: 2640			 8
+MemUP: 2648			 8
+MemUP: 2656			 8
+MemUP: 2664			 8
+MemUP: 2672			 8
+MemUP: 2680			 8
+MemUP: 2688			 8
+MemUP: 2696			 8
+MemUP: 2704			 8
+MemUP: 2712			 8
+MemUP: 2720			 8
+MemUP: 2728			 8
+MemUP: 2736			 8
+	MemDOWN: 2728		-8
+	MemDOWN: 2720		-8
+MemUP: 2728			 8
+	MemDOWN: 2720		-8
+	MemDOWN: 2712		-8
+MemUP: 2720			 8
+	MemDOWN: 2712		-8
+	MemDOWN: 2704		-8
+MemUP: 2712			 8
+	MemDOWN: 2688		-24
+	MemDOWN: 2680		-8
+MemUP: 2688			 8
+	MemDOWN: 2680		-8
+	MemDOWN: 2672		-8
+MemUP: 2680			 8
+	MemDOWN: 2672		-8
+	MemDOWN: 2664		-8
+MemUP: 2672			 8
+	MemDOWN: 2664		-8
+	MemDOWN: 2656		-8
+MemUP: 2664			 8
+	MemDOWN: 2640		-24
+	MemDOWN: 2632		-8
+MemUP: 2640			 8
+	MemDOWN: 2632		-8
+	MemDOWN: 2624		-8
+MemUP: 2632			 8
+	MemDOWN: 2624		-8
+	MemDOWN: 2616		-8
+MemUP: 2624			 8
+	MemDOWN: 2616		-8
+	MemDOWN: 2608		-8
+MemUP: 2616			 8
+	MemDOWN: 2592		-24
+	MemDOWN: 2584		-8
+MemUP: 2592			 8
+	MemDOWN: 2584		-8
+	MemDOWN: 2576		-8
+MemUP: 2584			 8
+	MemDOWN: 2576		-8
+	MemDOWN: 2568		-8
+MemUP: 2576			 8
+	MemDOWN: 2568		-8
+	MemDOWN: 2560		-8
+MemUP: 2568			 8
+	MemDOWN: 2544		-24
+	MemDOWN: 2536		-8
+MemUP: 2544			 8
+	MemDOWN: 2536		-8
+	MemDOWN: 2528		-8
+MemUP: 2536			 8
+	MemDOWN: 2528		-8
+	MemDOWN: 2520		-8
+MemUP: 2528			 8
+	MemDOWN: 2520		-8
+	MemDOWN: 2512		-8
+MemUP: 2520			 8
+	MemDOWN: 2496		-24
+	MemDOWN: 2488		-8
+MemUP: 2496			 8
+	MemDOWN: 2488		-8
+	MemDOWN: 2480		-8
+MemUP: 2488			 8
+	MemDOWN: 2480		-8
+	MemDOWN: 2472		-8
+MemUP: 2480			 8
+	MemDOWN: 2472		-8
+	MemDOWN: 2464		-8
+MemUP: 2472			 8
+	MemDOWN: 2448		-24
+	MemDOWN: 2440		-8
+MemUP: 2448			 8
+	MemDOWN: 2440		-8
+	MemDOWN: 2432		-8
+MemUP: 2440			 8
+	MemDOWN: 2432		-8
+	MemDOWN: 2424		-8
+MemUP: 2432			 8
+	MemDOWN: 2424		-8
+	MemDOWN: 2416		-8
+MemUP: 2424			 8
+	MemDOWN: 2400		-24
+	MemDOWN: 2392		-8
+MemUP: 2400			 8
+	MemDOWN: 2392		-8
+	MemDOWN: 2384		-8
+MemUP: 2392			 8
+	MemDOWN: 2384		-8
+	MemDOWN: 2376		-8
+MemUP: 2384			 8
+	MemDOWN: 2376		-8
+	MemDOWN: 2368		-8
+MemUP: 2376			 8
+	MemDOWN: 2352		-24
+	MemDOWN: 2344		-8
+MemUP: 2352			 8
+	MemDOWN: 2344		-8
+	MemDOWN: 2336		-8
+MemUP: 2344			 8
+	MemDOWN: 2336		-8
+	MemDOWN: 2328		-8
+MemUP: 2336			 8
+	MemDOWN: 2328		-8
+	MemDOWN: 2320		-8
+MemUP: 2328			 8
+	MemDOWN: 2304		-24
+	MemDOWN: 2296		-8
+	MemDOWN: 2288		-8
+MemUP: 2296			 8
+MemUP: 2304			 8
+MemUP: 2312			 8
+MemUP: 2320			 8
+MemUP: 2328			 8
+MemUP: 2336			 8
+MemUP: 2344			 8
+MemUP: 2352			 8
+MemUP: 2360			 8
+MemUP: 2368			 8
+MemUP: 2376			 8
+MemUP: 2384			 8
+	MemDOWN: 2376		-8
+	MemDOWN: 2368		-8
+MemUP: 2376			 8
+	MemDOWN: 2368		-8
+	MemDOWN: 2360		-8
+MemUP: 2368			 8
+	MemDOWN: 2360		-8
+	MemDOWN: 2352		-8
+MemUP: 2360			 8
+	MemDOWN: 2336		-24
+	MemDOWN: 2328		-8
+MemUP: 2336			 8
+	MemDOWN: 2328		-8
+	MemDOWN: 2320		-8
+MemUP: 2328			 8
+	MemDOWN: 2320		-8
+	MemDOWN: 2312		-8
+MemUP: 2320			 8
+	MemDOWN: 2312		-8
+	MemDOWN: 2304		-8
+MemUP: 2312			 8
+	MemDOWN: 2288		-24
+	MemDOWN: 2280		-8
+MemUP: 2288			 8
+	MemDOWN: 2280		-8
+	MemDOWN: 2272		-8
+MemUP: 2280			 8
+	MemDOWN: 2272		-8
+	MemDOWN: 2264		-8
+MemUP: 2272			 8
+	MemDOWN: 2264		-8
+	MemDOWN: 2256		-8
+MemUP: 2264			 8
+	MemDOWN: 2240		-24
+	MemDOWN: 2232		-8
+MemUP: 2240			 8
+	MemDOWN: 2232		-8
+	MemDOWN: 2224		-8
+MemUP: 2232			 8
+	MemDOWN: 2224		-8
+	MemDOWN: 2216		-8
+MemUP: 2224			 8
+	MemDOWN: 2216		-8
+	MemDOWN: 2208		-8
+MemUP: 2216			 8
+	MemDOWN: 2192		-24
+	MemDOWN: 2184		-8
+MemUP: 2192			 8
+	MemDOWN: 2184		-8
+	MemDOWN: 2176		-8
+MemUP: 2184			 8
+	MemDOWN: 2176		-8
+	MemDOWN: 2168		-8
+MemUP: 2176			 8
+	MemDOWN: 2168		-8
+	MemDOWN: 2160		-8
+MemUP: 2168			 8
+	MemDOWN: 2144		-24
+	MemDOWN: 2136		-8
+MemUP: 2144			 8
+	MemDOWN: 2136		-8
+	MemDOWN: 2128		-8
+MemUP: 2136			 8
+	MemDOWN: 2128		-8
+	MemDOWN: 2120		-8
+MemUP: 2128			 8
+	MemDOWN: 2120		-8
+	MemDOWN: 2112		-8
+MemUP: 2120			 8
+	MemDOWN: 2096		-24
+	MemDOWN: 2088		-8
+MemUP: 2096			 8
+	MemDOWN: 2088		-8
+	MemDOWN: 2080		-8
+MemUP: 2088			 8
+	MemDOWN: 2080		-8
+	MemDOWN: 2072		-8
+MemUP: 2080			 8
+	MemDOWN: 2072		-8
+	MemDOWN: 2064		-8
+MemUP: 2072			 8
+	MemDOWN: 2048		-24
+	MemDOWN: 2040		-8
+MemUP: 2048			 8
+	MemDOWN: 2040		-8
+	MemDOWN: 2032		-8
+MemUP: 2040			 8
+	MemDOWN: 2032		-8
+	MemDOWN: 2024		-8
+MemUP: 2032			 8
+	MemDOWN: 2024		-8
+	MemDOWN: 2016		-8
+MemUP: 2024			 8
+	MemDOWN: 2000		-24
+	MemDOWN: 1992		-8
+MemUP: 2000			 8
+	MemDOWN: 1992		-8
+	MemDOWN: 1984		-8
+MemUP: 1992			 8
+	MemDOWN: 1984		-8
+	MemDOWN: 1976		-8
+MemUP: 1984			 8
+	MemDOWN: 1976		-8
+	MemDOWN: 1968		-8
+MemUP: 1976			 8
+	MemDOWN: 1952		-24
+	MemDOWN: 1944		-8
+	MemDOWN: 1936		-8
+MemUP: 1944			 8
+MemUP: 1952			 8
+MemUP: 1960			 8
+MemUP: 1968			 8
+MemUP: 1976			 8
+MemUP: 1984			 8
+MemUP: 1992			 8
+	MemDOWN: 1984		-8
+	MemDOWN: 1976		-8
+MemUP: 1984			 8
+	MemDOWN: 1976		-8
+	MemDOWN: 1968		-8
+MemUP: 1976			 8
+	MemDOWN: 1968		-8
+	MemDOWN: 1960		-8
+MemUP: 1968			 8
+	MemDOWN: 1944		-24
+	MemDOWN: 1936		-8
+MemUP: 1944			 8
+	MemDOWN: 1936		-8
+	MemDOWN: 1928		-8
+MemUP: 1936			 8
+	MemDOWN: 1928		-8
+	MemDOWN: 1920		-8
+MemUP: 1928			 8
+	MemDOWN: 1920		-8
+	MemDOWN: 1912		-8
+MemUP: 1920			 8
+	MemDOWN: 1896		-24
+	MemDOWN: 1888		-8
+MemUP: 1896			 8
+	MemDOWN: 1888		-8
+	MemDOWN: 1880		-8
+MemUP: 1888			 8
+	MemDOWN: 1880		-8
+	MemDOWN: 1872		-8
+MemUP: 1880			 8
+	MemDOWN: 1872		-8
+	MemDOWN: 1864		-8
+MemUP: 1872			 8
+	MemDOWN: 1848		-24
+	MemDOWN: 1840		-8
+MemUP: 1848			 8
+	MemDOWN: 1840		-8
+	MemDOWN: 1832		-8
+MemUP: 1840			 8
+	MemDOWN: 1832		-8
+	MemDOWN: 1824		-8
+MemUP: 1832			 8
+	MemDOWN: 1824		-8
+	MemDOWN: 1816		-8
+MemUP: 1824			 8
+	MemDOWN: 1800		-24
+	MemDOWN: 1792		-8
+MemUP: 1800			 8
+	MemDOWN: 1792		-8
+	MemDOWN: 1784		-8
+MemUP: 1792			 8
+	MemDOWN: 1784		-8
+	MemDOWN: 1776		-8
+MemUP: 1784			 8
+	MemDOWN: 1776		-8
+	MemDOWN: 1768		-8
+MemUP: 1776			 8
+	MemDOWN: 1752		-24
+	MemDOWN: 1744		-8
+	MemDOWN: 1736		-8
+MemUP: 1744			 8
+MemUP: 1752			 8
+	MemDOWN: 1744		-8
+	MemDOWN: 1736		-8
+MemUP: 1744			 8
+	MemDOWN: 1736		-8
+	MemDOWN: 1728		-8
+MemUP: 1736			 8
+	MemDOWN: 1728		-8
+	MemDOWN: 1720		-8
+MemUP: 1728			 8
+MemUP: 1736			 8
+	MemDOWN: 1728		-8
+	MemDOWN: 1720		-8
+MemUP: 1728			 8
+MemUP: 1736			 8
+	MemDOWN: 1728		-8
+	MemDOWN: 1720		-8
+MemUP: 1728			 8
+MemUP: 1736			 8
+	MemDOWN: 1728		-8
+	MemDOWN: 1720		-8
+MemUP: 1728			 8
+MemUP: 1736			 8
+	MemDOWN: 1728		-8
+	MemDOWN: 1720		-8
+MemUP: 1728			 8
+MemUP: 1736			 8
+	MemDOWN: 1728		-8
+	MemDOWN: 1720		-8
+MemUP: 1728			 8
+MemUP: 1736			 8
+	MemDOWN: 1728		-8
+	MemDOWN: 1720		-8
+MemUP: 1728			 8
+MemUP: 1736			 8
+	MemDOWN: 1728		-8
+	MemDOWN: 1720		-8
+MemUP: 1728			 8
+MemUP: 1736			 8
+	MemDOWN: 1728		-8
+	MemDOWN: 1720		-8
+MemUP: 1728			 8
+MemUP: 1736			 8
+	MemDOWN: 1728		-8
+	MemDOWN: 1720		-8
+MemUP: 1728			 8
+	MemDOWN: 1704		-24
+MemUP: 1712			 8
+MemUP: 1720			 8
+MemUP: 1728			 8
+MemUP: 1736			 8
+MemUP: 1744			 8
+MemUP: 1752			 8
+MemUP: 1760			 8
+MemUP: 1768			 8
+MemUP: 1776			 8
+MemUP: 1784			 8
+MemUP: 1792			 8
+	MemDOWN: 1784		-8
+	MemDOWN: 1776		-8
+MemUP: 1784			 8
+	MemDOWN: 1776		-8
+	MemDOWN: 1768		-8
+MemUP: 1776			 8
+	MemDOWN: 1768		-8
+	MemDOWN: 1760		-8
+MemUP: 1768			 8
+	MemDOWN: 1744		-24
+	MemDOWN: 1736		-8
+MemUP: 1744			 8
+	MemDOWN: 1736		-8
+	MemDOWN: 1728		-8
+MemUP: 1736			 8
+	MemDOWN: 1728		-8
+	MemDOWN: 1720		-8
+MemUP: 1728			 8
+	MemDOWN: 1720		-8
+	MemDOWN: 1712		-8
+MemUP: 1720			 8
+	MemDOWN: 1696		-24
+	MemDOWN: 1688		-8
+MemUP: 1696			 8
+	MemDOWN: 1688		-8
+	MemDOWN: 1680		-8
+MemUP: 1688			 8
+	MemDOWN: 1680		-8
+	MemDOWN: 1672		-8
+MemUP: 1680			 8
+	MemDOWN: 1672		-8
+	MemDOWN: 1664		-8
+MemUP: 1672			 8
+	MemDOWN: 1648		-24
+	MemDOWN: 1640		-8
+MemUP: 1648			 8
+	MemDOWN: 1640		-8
+	MemDOWN: 1632		-8
+MemUP: 1640			 8
+	MemDOWN: 1632		-8
+	MemDOWN: 1624		-8
+MemUP: 1632			 8
+	MemDOWN: 1624		-8
+	MemDOWN: 1616		-8
+MemUP: 1624			 8
+	MemDOWN: 1600		-24
+	MemDOWN: 1592		-8
+MemUP: 1600			 8
+	MemDOWN: 1592		-8
+	MemDOWN: 1584		-8
+MemUP: 1592			 8
+	MemDOWN: 1584		-8
+	MemDOWN: 1576		-8
+MemUP: 1584			 8
+	MemDOWN: 1576		-8
+	MemDOWN: 1568		-8
+MemUP: 1576			 8
+	MemDOWN: 1552		-24
+	MemDOWN: 1544		-8
+MemUP: 1552			 8
+	MemDOWN: 1544		-8
+	MemDOWN: 1536		-8
+MemUP: 1544			 8
+	MemDOWN: 1536		-8
+	MemDOWN: 1528		-8
+MemUP: 1536			 8
+	MemDOWN: 1528		-8
+	MemDOWN: 1520		-8
+MemUP: 1528			 8
+	MemDOWN: 1504		-24
+	MemDOWN: 1496		-8
+MemUP: 1504			 8
+	MemDOWN: 1496		-8
+	MemDOWN: 1488		-8
+MemUP: 1496			 8
+	MemDOWN: 1488		-8
+	MemDOWN: 1480		-8
+MemUP: 1488			 8
+	MemDOWN: 1480		-8
+	MemDOWN: 1472		-8
+MemUP: 1480			 8
+	MemDOWN: 1456		-24
+	MemDOWN: 1448		-8
+MemUP: 1456			 8
+	MemDOWN: 1448		-8
+	MemDOWN: 1440		-8
+MemUP: 1448			 8
+	MemDOWN: 1440		-8
+	MemDOWN: 1432		-8
+MemUP: 1440			 8
+	MemDOWN: 1432		-8
+	MemDOWN: 1424		-8
+MemUP: 1432			 8
+	MemDOWN: 1408		-24
+	MemDOWN: 1400		-8
+MemUP: 1408			 8
+	MemDOWN: 1400		-8
+	MemDOWN: 1392		-8
+MemUP: 1400			 8
+	MemDOWN: 1392		-8
+	MemDOWN: 1384		-8
+MemUP: 1392			 8
+	MemDOWN: 1384		-8
+	MemDOWN: 1376		-8
+MemUP: 1384			 8
+	MemDOWN: 1360		-24
+	MemDOWN: 1352		-8
+	MemDOWN: 1344		-8
+MemUP: 1352			 8
+MemUP: 1360			 8
+MemUP: 1368			 8
+MemUP: 1376			 8
+MemUP: 1384			 8
+MemUP: 1392			 8
+MemUP: 1400			 8
+MemUP: 1408			 8
+	MemDOWN: 1400		-8
+	MemDOWN: 1392		-8
+MemUP: 1400			 8
+	MemDOWN: 1392		-8
+	MemDOWN: 1384		-8
+MemUP: 1392			 8
+	MemDOWN: 1384		-8
+	MemDOWN: 1376		-8
+MemUP: 1384			 8
+	MemDOWN: 1360		-24
+	MemDOWN: 1352		-8
+MemUP: 1360			 8
+	MemDOWN: 1352		-8
+	MemDOWN: 1344		-8
+MemUP: 1352			 8
+	MemDOWN: 1344		-8
+	MemDOWN: 1336		-8
+MemUP: 1344			 8
+	MemDOWN: 1336		-8
+	MemDOWN: 1328		-8
+MemUP: 1336			 8
+	MemDOWN: 1312		-24
+	MemDOWN: 1304		-8
+MemUP: 1312			 8
+	MemDOWN: 1304		-8
+	MemDOWN: 1296		-8
+MemUP: 1304			 8
+	MemDOWN: 1296		-8
+	MemDOWN: 1288		-8
+MemUP: 1296			 8
+	MemDOWN: 1288		-8
+	MemDOWN: 1280		-8
+MemUP: 1288			 8
+	MemDOWN: 1264		-24
+	MemDOWN: 1256		-8
+MemUP: 1264			 8
+	MemDOWN: 1256		-8
+	MemDOWN: 1248		-8
+MemUP: 1256			 8
+	MemDOWN: 1248		-8
+	MemDOWN: 1240		-8
+MemUP: 1248			 8
+	MemDOWN: 1240		-8
+	MemDOWN: 1232		-8
+MemUP: 1240			 8
+	MemDOWN: 1216		-24
+	MemDOWN: 1208		-8
+MemUP: 1216			 8
+	MemDOWN: 1208		-8
+	MemDOWN: 1200		-8
+MemUP: 1208			 8
+	MemDOWN: 1200		-8
+	MemDOWN: 1192		-8
+MemUP: 1200			 8
+	MemDOWN: 1192		-8
+	MemDOWN: 1184		-8
+MemUP: 1192			 8
+	MemDOWN: 1168		-24
+	MemDOWN: 1160		-8
+	MemDOWN: 1152		-8
+MemUP: 1160			 8
+	MemDOWN: 1152		-8
+	MemDOWN: 1144		-8
+MemUP: 1152			 8
+	MemDOWN: 1144		-8
+	MemDOWN: 1136		-8
+MemUP: 1144			 8
+	MemDOWN: 1136		-8
+	MemDOWN: 1128		-8
+MemUP: 1136			 8
+MemUP: 1144			 8
+	MemDOWN: 1136		-8
+	MemDOWN: 1128		-8
+MemUP: 1136			 8
+MemUP: 1144			 8
+	MemDOWN: 1136		-8
+	MemDOWN: 1128		-8
+MemUP: 1136			 8
+MemUP: 1144			 8
+	MemDOWN: 1136		-8
+	MemDOWN: 1128		-8
+MemUP: 1136			 8
+MemUP: 1144			 8
+	MemDOWN: 1136		-8
+	MemDOWN: 1128		-8
+MemUP: 1136			 8
+MemUP: 1144			 8
+	MemDOWN: 1136		-8
+	MemDOWN: 1128		-8
+MemUP: 1136			 8
+	MemDOWN: 1112		-24
+MemUP: 1120			 8
+MemUP: 1128			 8
+MemUP: 1136			 8
+MemUP: 1144			 8
+MemUP: 1152			 8
+MemUP: 1160			 8
+MemUP: 1168			 8
+	MemDOWN: 1160		-8
+	MemDOWN: 1152		-8
+MemUP: 1160			 8
+	MemDOWN: 1152		-8
+	MemDOWN: 1144		-8
+MemUP: 1152			 8
+	MemDOWN: 1144		-8
+	MemDOWN: 1136		-8
+MemUP: 1144			 8
+	MemDOWN: 1120		-24
+	MemDOWN: 1112		-8
+MemUP: 1120			 8
+	MemDOWN: 1112		-8
+	MemDOWN: 1104		-8
+MemUP: 1112			 8
+	MemDOWN: 1104		-8
+	MemDOWN: 1096		-8
+MemUP: 1104			 8
+	MemDOWN: 1096		-8
+	MemDOWN: 1088		-8
+MemUP: 1096			 8
+	MemDOWN: 1072		-24
+	MemDOWN: 1064		-8
+MemUP: 1072			 8
+	MemDOWN: 1064		-8
+	MemDOWN: 1056		-8
+MemUP: 1064			 8
+	MemDOWN: 1056		-8
+	MemDOWN: 1048		-8
+MemUP: 1056			 8
+	MemDOWN: 1048		-8
+	MemDOWN: 1040		-8
+MemUP: 1048			 8
+	MemDOWN: 1024		-24
+	MemDOWN: 1016		-8
+MemUP: 1024			 8
+	MemDOWN: 1016		-8
+	MemDOWN: 1008		-8
+MemUP: 1016			 8
+	MemDOWN: 1008		-8
+	MemDOWN: 1000		-8
+MemUP: 1008			 8
+	MemDOWN: 1000		-8
+	MemDOWN: 992		-8
+MemUP: 1000			 8
+	MemDOWN: 976		-24
+	MemDOWN: 968		-8
+MemUP: 976			 8
+	MemDOWN: 968		-8
+	MemDOWN: 960		-8
+MemUP: 968			 8
+	MemDOWN: 960		-8
+	MemDOWN: 952		-8
+MemUP: 960			 8
+	MemDOWN: 952		-8
+	MemDOWN: 944		-8
+MemUP: 952			 8
+	MemDOWN: 928		-24
+	MemDOWN: 920		-8
+	MemDOWN: 912		-8
+MemUP: 920			 8
+	MemDOWN: 912		-8
+	MemDOWN: 904		-8
+MemUP: 912			 8
+MemUP: 920			 8
+MemUP: 928			 8
+MemUP: 936			 8
+	MemDOWN: 928		-8
+	MemDOWN: 920		-8
+MemUP: 928			 8
+	MemDOWN: 920		-8
+	MemDOWN: 912		-8
+MemUP: 920			 8
+	MemDOWN: 912		-8
+	MemDOWN: 904		-8
+MemUP: 912			 8
+	MemDOWN: 888		-24
+	MemDOWN: 880		-8
+MemUP: 888			 8
+	MemDOWN: 880		-8
+	MemDOWN: 872		-8
+MemUP: 880			 8
+	MemDOWN: 872		-8
+	MemDOWN: 864		-8
+MemUP: 872			 8
+	MemDOWN: 864		-8
+	MemDOWN: 856		-8
+MemUP: 864			 8
+	MemDOWN: 840		-24
+	MemDOWN: 832		-8
+	MemDOWN: 824		-8
+MemUP: 832			 8
+MemUP: 840			 8
+MemUP: 848			 8
+MemUP: 856			 8
+	MemDOWN: 848		-8
+	MemDOWN: 840		-8
+MemUP: 848			 8
+	MemDOWN: 840		-8
+	MemDOWN: 832		-8
+MemUP: 840			 8
+	MemDOWN: 832		-8
+	MemDOWN: 824		-8
+MemUP: 832			 8
+	MemDOWN: 808		-24
+	MemDOWN: 800		-8
+MemUP: 808			 8
+	MemDOWN: 800		-8
+	MemDOWN: 792		-8
+MemUP: 800			 8
+	MemDOWN: 792		-8
+	MemDOWN: 784		-8
+MemUP: 792			 8
+	MemDOWN: 784		-8
+	MemDOWN: 776		-8
+MemUP: 784			 8
+	MemDOWN: 760		-24
+	MemDOWN: 752		-8
+	MemDOWN: 744		-8
+MemUP: 752			 8
+MemUP: 760			 8
+	MemDOWN: 752		-8
+	MemDOWN: 744		-8
+MemUP: 752			 8
+	MemDOWN: 744		-8
+	MemDOWN: 736		-8
+MemUP: 744			 8
+	MemDOWN: 736		-8
+	MemDOWN: 728		-8
+MemUP: 736			 8
+MemUP: 744			 8
+	MemDOWN: 736		-8
+	MemDOWN: 728		-8
+MemUP: 736			 8
+MemUP: 744			 8
+	MemDOWN: 736		-8
+	MemDOWN: 728		-8
+MemUP: 736			 8
+	MemDOWN: 712		-24
+MemUP: 720			 8
+MemUP: 728			 8
+MemUP: 736			 8
+MemUP: 744			 8
+	MemDOWN: 736		-8
+	MemDOWN: 728		-8
+MemUP: 736			 8
+	MemDOWN: 728		-8
+	MemDOWN: 720		-8
+MemUP: 728			 8
+	MemDOWN: 720		-8
+	MemDOWN: 712		-8
+MemUP: 720			 8
+	MemDOWN: 696		-24
+	MemDOWN: 688		-8
+MemUP: 696			 8
+	MemDOWN: 688		-8
+	MemDOWN: 680		-8
+MemUP: 688			 8
+	MemDOWN: 680		-8
+	MemDOWN: 672		-8
+MemUP: 680			 8
+	MemDOWN: 672		-8
+	MemDOWN: 664		-8
+MemUP: 672			 8
+	MemDOWN: 648		-24
+	MemDOWN: 640		-8
+	MemDOWN: 632		-8
+MemUP: 640			 8
+	MemDOWN: 632		-8
+MemUP: 640			 8
+	MemDOWN: 632		-8
+	MemDOWN: 624		-8
+MemUP: 632			 8
+	MemDOWN: 624		-8
+	MemDOWN: 616		-8
+MemUP: 624			 8
+	MemDOWN: 616		-8
+	MemDOWN: 608		-8
+MemUP: 616			 8
+	MemDOWN: 592		-24
+	MemDOWN: 584		-8
+	MemDOWN: 576		-8
+MemUP: 584			 8
+	MemDOWN: 576		-8
+	MemDOWN: 568		-8
+MemUP: 576			 8
+	MemDOWN: 568		-8
+	MemDOWN: 560		-8
+MemUP: 568			 8
+	MemDOWN: 560		-8
+	MemDOWN: 552		-8
+MemUP: 560			 8
+	MemDOWN: 536		-24
+	MemDOWN: 528		-8
+	MemDOWN: 520		-8
+	MemDOWN: 512		-8
+	MemDOWN: 504		-8
+MemUP: 512			 8
+MemUP: 520			 8
+MemUP: 528			 8
+MemUP: 536			 8
+MemUP: 544			 8
+MemUP: 552			 8
+MemUP: 560			 8
+MemUP: 568			 8
+MemUP: 576			 8
+MemUP: 584			 8
+	MemDOWN: 576		-8
+	MemDOWN: 568		-8
+MemUP: 576			 8
+MemUP: 584			 8
+	MemDOWN: 576		-8
+MemUP: 584			 8
+MemUP: 592			 8
+	MemDOWN: 584		-8
+	MemDOWN: 576		-8
+MemUP: 584			 8
+MemUP: 592			 8
+	MemDOWN: 584		-8
+MemUP: 592			 8
+MemUP: 600			 8
+	MemDOWN: 592		-8
+MemUP: 600			 8
+MemUP: 608			 8
+	MemDOWN: 600		-8
+	MemDOWN: 592		-8
+MemUP: 600			 8
+MemUP: 608			 8
+	MemDOWN: 600		-8
+MemUP: 608			 8
+MemUP: 616			 8
+	MemDOWN: 608		-8
+MemUP: 616			 8
+MemUP: 624			 8
+	MemDOWN: 616		-8
+	MemDOWN: 608		-8
+MemUP: 616			 8
+MemUP: 624			 8
+MemUP: 632			 8
+MemUP: 640			 8
+MemUP: 648			 8
+MemUP: 656			 8
+MemUP: 664			 8
+MemUP: 672			 8
+MemUP: 680			 8
+MemUP: 688			 8
+MemUP: 696			 8
+MemUP: 704			 8
+MemUP: 712			 8
+MemUP: 720			 8
+	MemDOWN: 712		-8
+MemUP: 736			 24
+MemUP: 760			 24
+MemUP: 784			 24
+MemUP: 808			 24
+MemUP: 832			 24
+MemUP: 856			 24
+MemUP: 880			 24
+MemUP: 904			 24
+MemUP: 928			 24
+MemUP: 952			 24
+MemUP: 976			 24
+MemUP: 1000			 24
+MemUP: 1024			 24
+MemUP: 1032			 8
+MemUP: 1040			 8
+MemUP: 1048			 8
+MemUP: 1056			 8
+MemUP: 1064			 8
+MemUP: 1072			 8
+MemUP: 1080			 8
+MemUP: 1088			 8
+MemUP: 1096			 8
+MemUP: 1104			 8
+MemUP: 1112			 8
+MemUP: 1120			 8
+MemUP: 1128			 8
+MemUP: 1136			 8
+MemUP: 1144			 8
+MemUP: 1152			 8
+MemUP: 1160			 8
+MemUP: 1168			 8
+MemUP: 1176			 8
+MemUP: 1184			 8
+MemUP: 1192			 8
+MemUP: 1200			 8
+	MemDOWN: 1192		-8
+	MemDOWN: 1184		-8
+	MemDOWN: 1176		-8
+	MemDOWN: 1168		-8
+	MemDOWN: 1160		-8
+	MemDOWN: 1152		-8
+	MemDOWN: 1144		-8
+	MemDOWN: 1136		-8
+	MemDOWN: 1128		-8
+	MemDOWN: 1120		-8
+	MemDOWN: 1112		-8
+	MemDOWN: 1104		-8
+	MemDOWN: 1096		-8
+	MemDOWN: 1088		-8
+	MemDOWN: 1080		-8
+	MemDOWN: 1072		-8
+	MemDOWN: 1064		-8
+	MemDOWN: 1056		-8
+	MemDOWN: 1048		-8
+	MemDOWN: 1040		-8
+	MemDOWN: 1032		-8
+	MemDOWN: 1024		-8
+	MemDOWN: 1016		-8
+	MemDOWN: 1008		-8
+MemUP: 1016			 8
+MemUP: 1024			 8
+MemUP: 1032			 8
+MemUP: 1040			 8
+MemUP: 1048			 8
+MemUP: 1056			 8
+MemUP: 1064			 8
+MemUP: 1072			 8
+MemUP: 1080			 8
+MemUP: 1088			 8
+	MemDOWN: 1080		-8
+	MemDOWN: 1072		-8
+MemUP: 1080			 8
+MemUP: 1088			 8
+	MemDOWN: 1080		-8
+MemUP: 1088			 8
+MemUP: 1096			 8
+	MemDOWN: 1088		-8
+	MemDOWN: 1080		-8
+MemUP: 1088			 8
+MemUP: 1096			 8
+	MemDOWN: 1088		-8
+MemUP: 1096			 8
+MemUP: 1104			 8
+	MemDOWN: 1096		-8
+MemUP: 1104			 8
+MemUP: 1112			 8
+	MemDOWN: 1104		-8
+	MemDOWN: 1096		-8
+MemUP: 1104			 8
+MemUP: 1112			 8
+	MemDOWN: 1104		-8
+MemUP: 1112			 8
+MemUP: 1120			 8
+	MemDOWN: 1112		-8
+MemUP: 1120			 8
+MemUP: 1128			 8
+	MemDOWN: 1120		-8
+	MemDOWN: 1112		-8
+MemUP: 1120			 8
+MemUP: 1128			 8
+MemUP: 1136			 8
+MemUP: 1144			 8
+MemUP: 1152			 8
+MemUP: 1160			 8
+MemUP: 1168			 8
+MemUP: 1176			 8
+MemUP: 1184			 8
+MemUP: 1192			 8
+MemUP: 1200			 8
+MemUP: 1208			 8
+MemUP: 1216			 8
+MemUP: 1224			 8
+	MemDOWN: 1216		-8
+MemUP: 1240			 24
+MemUP: 1264			 24
+MemUP: 1288			 24
+MemUP: 1312			 24
+MemUP: 1336			 24
+MemUP: 1360			 24
+MemUP: 1384			 24
+MemUP: 1408			 24
+MemUP: 1432			 24
+MemUP: 1456			 24
+MemUP: 1480			 24
+MemUP: 1504			 24
+MemUP: 1528			 24
+MemUP: 1536			 8
+MemUP: 1544			 8
+MemUP: 1552			 8
+MemUP: 1560			 8
+MemUP: 1568			 8
+MemUP: 1576			 8
+MemUP: 1584			 8
+MemUP: 1592			 8
+MemUP: 1600			 8
+MemUP: 1608			 8
+MemUP: 1616			 8
+MemUP: 1624			 8
+MemUP: 1632			 8
+MemUP: 1640			 8
+MemUP: 1648			 8
+MemUP: 1656			 8
+MemUP: 1664			 8
+MemUP: 1672			 8
+MemUP: 1680			 8
+MemUP: 1688			 8
+MemUP: 1696			 8
+MemUP: 1704			 8
+	MemDOWN: 1696		-8
+	MemDOWN: 1688		-8
+	MemDOWN: 1680		-8
+	MemDOWN: 1672		-8
+	MemDOWN: 1664		-8
+	MemDOWN: 1656		-8
+	MemDOWN: 1648		-8
+	MemDOWN: 1640		-8
+	MemDOWN: 1632		-8
+	MemDOWN: 1624		-8
+	MemDOWN: 1616		-8
+	MemDOWN: 1608		-8
+	MemDOWN: 1600		-8
+	MemDOWN: 1592		-8
+	MemDOWN: 1584		-8
+	MemDOWN: 1576		-8
+	MemDOWN: 1568		-8
+	MemDOWN: 1560		-8
+	MemDOWN: 1552		-8
+	MemDOWN: 1544		-8
+	MemDOWN: 1536		-8
+	MemDOWN: 1528		-8
+	MemDOWN: 1520		-8
+	MemDOWN: 1512		-8
+MemUP: 1520			 8
+MemUP: 1528			 8
+MemUP: 1536			 8
+	MemDOWN: 1528		-8
+	MemDOWN: 1520		-8
+	MemDOWN: 1512		-8
+MemUP: 1520			 8
+MemUP: 1528			 8
+MemUP: 1536			 8
+MemUP: 1544			 8
+MemUP: 1552			 8
+MemUP: 1560			 8
+MemUP: 1568			 8
+MemUP: 1576			 8
+MemUP: 1584			 8
+MemUP: 1592			 8
+	MemDOWN: 1584		-8
+	MemDOWN: 1576		-8
+MemUP: 1584			 8
+MemUP: 1592			 8
+	MemDOWN: 1584		-8
+MemUP: 1592			 8
+MemUP: 1600			 8
+	MemDOWN: 1592		-8
+	MemDOWN: 1584		-8
+MemUP: 1592			 8
+MemUP: 1600			 8
+	MemDOWN: 1592		-8
+MemUP: 1600			 8
+MemUP: 1608			 8
+	MemDOWN: 1600		-8
+MemUP: 1608			 8
+MemUP: 1616			 8
+	MemDOWN: 1608		-8
+	MemDOWN: 1600		-8
+MemUP: 1608			 8
+MemUP: 1616			 8
+	MemDOWN: 1608		-8
+MemUP: 1616			 8
+MemUP: 1624			 8
+	MemDOWN: 1616		-8
+MemUP: 1624			 8
+MemUP: 1632			 8
+	MemDOWN: 1624		-8
+	MemDOWN: 1616		-8
+MemUP: 1624			 8
+MemUP: 1632			 8
+MemUP: 1640			 8
+MemUP: 1648			 8
+MemUP: 1656			 8
+MemUP: 1664			 8
+MemUP: 1672			 8
+MemUP: 1680			 8
+MemUP: 1688			 8
+MemUP: 1696			 8
+MemUP: 1704			 8
+MemUP: 1712			 8
+MemUP: 1720			 8
+MemUP: 1728			 8
+	MemDOWN: 1720		-8
+MemUP: 1744			 24
+MemUP: 1768			 24
+MemUP: 1792			 24
+MemUP: 1816			 24
+MemUP: 1840			 24
+MemUP: 1864			 24
+MemUP: 1888			 24
+MemUP: 1912			 24
+MemUP: 1936			 24
+MemUP: 1960			 24
+MemUP: 1984			 24
+MemUP: 2008			 24
+MemUP: 2032			 24
+MemUP: 2040			 8
+MemUP: 2048			 8
+MemUP: 2056			 8
+MemUP: 2064			 8
+MemUP: 2072			 8
+MemUP: 2080			 8
+MemUP: 2088			 8
+MemUP: 2096			 8
+MemUP: 2104			 8
+MemUP: 2112			 8
+MemUP: 2120			 8
+MemUP: 2128			 8
+MemUP: 2136			 8
+MemUP: 2144			 8
+MemUP: 2152			 8
+MemUP: 2160			 8
+MemUP: 2168			 8
+MemUP: 2176			 8
+MemUP: 2184			 8
+MemUP: 2192			 8
+MemUP: 2200			 8
+MemUP: 2208			 8
+	MemDOWN: 2200		-8
+	MemDOWN: 2192		-8
+	MemDOWN: 2184		-8
+	MemDOWN: 2176		-8
+	MemDOWN: 2168		-8
+	MemDOWN: 2160		-8
+	MemDOWN: 2152		-8
+	MemDOWN: 2144		-8
+	MemDOWN: 2136		-8
+	MemDOWN: 2128		-8
+	MemDOWN: 2120		-8
+	MemDOWN: 2112		-8
+	MemDOWN: 2104		-8
+	MemDOWN: 2096		-8
+	MemDOWN: 2088		-8
+	MemDOWN: 2080		-8
+	MemDOWN: 2072		-8
+	MemDOWN: 2064		-8
+	MemDOWN: 2056		-8
+	MemDOWN: 2048		-8
+	MemDOWN: 2040		-8
+	MemDOWN: 2032		-8
+	MemDOWN: 2024		-8
+	MemDOWN: 2016		-8
+MemUP: 2024			 8
+MemUP: 2032			 8
+MemUP: 2040			 8
+	MemDOWN: 2032		-8
+	MemDOWN: 2024		-8
+	MemDOWN: 2016		-8
+MemUP: 2024			 8
+MemUP: 2032			 8
+MemUP: 2040			 8
+MemUP: 2048			 8
+MemUP: 2056			 8
+MemUP: 2064			 8
+MemUP: 2072			 8
+MemUP: 2080			 8
+MemUP: 2088			 8
+MemUP: 2096			 8
+	MemDOWN: 2088		-8
+	MemDOWN: 2080		-8
+MemUP: 2088			 8
+MemUP: 2096			 8
+	MemDOWN: 2088		-8
+MemUP: 2096			 8
+MemUP: 2104			 8
+	MemDOWN: 2096		-8
+	MemDOWN: 2088		-8
+MemUP: 2096			 8
+MemUP: 2104			 8
+	MemDOWN: 2096		-8
+MemUP: 2104			 8
+MemUP: 2112			 8
+	MemDOWN: 2104		-8
+MemUP: 2112			 8
+MemUP: 2120			 8
+	MemDOWN: 2112		-8
+	MemDOWN: 2104		-8
+MemUP: 2112			 8
+MemUP: 2120			 8
+	MemDOWN: 2112		-8
+MemUP: 2120			 8
+MemUP: 2128			 8
+	MemDOWN: 2120		-8
+MemUP: 2128			 8
+MemUP: 2136			 8
+	MemDOWN: 2128		-8
+	MemDOWN: 2120		-8
+	MemDOWN: 2112		-8
+	MemDOWN: 2104		-8
+	MemDOWN: 2096		-8
+	MemDOWN: 2088		-8
+	MemDOWN: 2080		-8
+	MemDOWN: 2072		-8
+	MemDOWN: 2064		-8
+	MemDOWN: 2056		-8
+	MemDOWN: 2048		-8
+	MemDOWN: 2040		-8
+	MemDOWN: 2032		-8
+	MemDOWN: 2024		-8
+	MemDOWN: 2016		-8
+MemUP: 2040			 24
+MemUP: 2048			 8
+MemUP: 2056			 8
+MemUP: 2064			 8
+MemUP: 2072			 8
+MemUP: 2080			 8
+MemUP: 2088			 8
+MemUP: 2096			 8
+MemUP: 2104			 8
+MemUP: 2112			 8
+MemUP: 2120			 8
+	MemDOWN: 2112		-8
+	MemDOWN: 2104		-8
+MemUP: 2112			 8
+MemUP: 2120			 8
+	MemDOWN: 2112		-8
+MemUP: 2120			 8
+MemUP: 2128			 8
+	MemDOWN: 2120		-8
+	MemDOWN: 2112		-8
+MemUP: 2120			 8
+MemUP: 2128			 8
+	MemDOWN: 2120		-8
+MemUP: 2128			 8
+MemUP: 2136			 8
+	MemDOWN: 2128		-8
+MemUP: 2136			 8
+MemUP: 2144			 8
+	MemDOWN: 2136		-8
+	MemDOWN: 2128		-8
+MemUP: 2136			 8
+MemUP: 2144			 8
+	MemDOWN: 2136		-8
+MemUP: 2144			 8
+MemUP: 2152			 8
+	MemDOWN: 2144		-8
+MemUP: 2152			 8
+MemUP: 2160			 8
+	MemDOWN: 2152		-8
+	MemDOWN: 2144		-8
+MemUP: 2152			 8
+MemUP: 2160			 8
+MemUP: 2168			 8
+MemUP: 2176			 8
+MemUP: 2184			 8
+MemUP: 2192			 8
+MemUP: 2200			 8
+MemUP: 2208			 8
+MemUP: 2216			 8
+MemUP: 2224			 8
+MemUP: 2232			 8
+MemUP: 2240			 8
+MemUP: 2248			 8
+MemUP: 2256			 8
+	MemDOWN: 2248		-8
+MemUP: 2272			 24
+MemUP: 2296			 24
+MemUP: 2320			 24
+MemUP: 2344			 24
+MemUP: 2368			 24
+MemUP: 2392			 24
+MemUP: 2416			 24
+MemUP: 2440			 24
+MemUP: 2464			 24
+MemUP: 2488			 24
+MemUP: 2512			 24
+MemUP: 2536			 24
+MemUP: 2560			 24
+MemUP: 2568			 8
+MemUP: 2576			 8
+MemUP: 2584			 8
+MemUP: 2592			 8
+MemUP: 2600			 8
+MemUP: 2608			 8
+MemUP: 2616			 8
+MemUP: 2624			 8
+MemUP: 2632			 8
+MemUP: 2640			 8
+MemUP: 2648			 8
+MemUP: 2656			 8
+MemUP: 2664			 8
+MemUP: 2672			 8
+MemUP: 2680			 8
+MemUP: 2688			 8
+MemUP: 2696			 8
+MemUP: 2704			 8
+MemUP: 2712			 8
+MemUP: 2720			 8
+MemUP: 2728			 8
+MemUP: 2736			 8
+	MemDOWN: 2728		-8
+	MemDOWN: 2720		-8
+	MemDOWN: 2712		-8
+	MemDOWN: 2704		-8
+	MemDOWN: 2696		-8
+	MemDOWN: 2688		-8
+	MemDOWN: 2680		-8
+	MemDOWN: 2672		-8
+	MemDOWN: 2664		-8
+	MemDOWN: 2656		-8
+	MemDOWN: 2648		-8
+	MemDOWN: 2640		-8
+	MemDOWN: 2632		-8
+	MemDOWN: 2624		-8
+	MemDOWN: 2616		-8
+	MemDOWN: 2608		-8
+	MemDOWN: 2600		-8
+	MemDOWN: 2592		-8
+	MemDOWN: 2584		-8
+	MemDOWN: 2576		-8
+	MemDOWN: 2568		-8
+	MemDOWN: 2560		-8
+	MemDOWN: 2552		-8
+	MemDOWN: 2544		-8
+MemUP: 2568			 24
+MemUP: 2576			 8
+	MemDOWN: 2568		-8
+	MemDOWN: 2560		-8
+MemUP: 2568			 8
+MemUP: 2576			 8
+	MemDOWN: 2568		-8
+	MemDOWN: 2560		-8
+MemUP: 2568			 8
+MemUP: 2576			 8
+	MemDOWN: 2568		-8
+	MemDOWN: 2560		-8
+MemUP: 2568			 8
+	MemDOWN: 2544		-24
+MemUP: 2568			 24
+MemUP: 2576			 8
+	MemDOWN: 2568		-8
+	MemDOWN: 2560		-8
+MemUP: 2568			 8
+MemUP: 2576			 8
+	MemDOWN: 2568		-8
+	MemDOWN: 2560		-8
+MemUP: 2568			 8
+MemUP: 2576			 8
+	MemDOWN: 2568		-8
+	MemDOWN: 2560		-8
+MemUP: 2568			 8
+	MemDOWN: 2544		-24
+MemUP: 2552			 8
+	MemDOWN: 2544		-8
+	MemDOWN: 2536		-8
+	MemDOWN: 2512		-24
+MemUP: 2520			 8
+	MemDOWN: 2512		-8
+	MemDOWN: 2504		-8
+MemUP: 2512			 8
+MemUP: 2520			 8
+	MemDOWN: 2512		-8
+	MemDOWN: 2504		-8
+MemUP: 2512			 8
+MemUP: 2520			 8
+	MemDOWN: 2512		-8
+	MemDOWN: 2504		-8
+MemUP: 2512			 8
+	MemDOWN: 2488		-24
+	MemDOWN: 2480		-8
+	MemDOWN: 2472		-8
+MemUP: 2480			 8
+MemUP: 2488			 8
+MemUP: 2496			 8
+MemUP: 2504			 8
+MemUP: 2512			 8
+MemUP: 2520			 8
+MemUP: 2528			 8
+MemUP: 2536			 8
+MemUP: 2544			 8
+MemUP: 2552			 8
+	MemDOWN: 2544		-8
+	MemDOWN: 2536		-8
+MemUP: 2544			 8
+MemUP: 2552			 8
+	MemDOWN: 2544		-8
+MemUP: 2552			 8
+MemUP: 2560			 8
+	MemDOWN: 2552		-8
+	MemDOWN: 2544		-8
+MemUP: 2552			 8
+MemUP: 2560			 8
+	MemDOWN: 2552		-8
+MemUP: 2560			 8
+MemUP: 2568			 8
+	MemDOWN: 2560		-8
+MemUP: 2568			 8
+MemUP: 2576			 8
+	MemDOWN: 2568		-8
+	MemDOWN: 2560		-8
+MemUP: 2568			 8
+MemUP: 2576			 8
+	MemDOWN: 2568		-8
+MemUP: 2576			 8
+MemUP: 2584			 8
+	MemDOWN: 2576		-8
+MemUP: 2584			 8
+MemUP: 2592			 8
+	MemDOWN: 2584		-8
+	MemDOWN: 2576		-8
+MemUP: 2584			 8
+MemUP: 2592			 8
+MemUP: 2600			 8
+MemUP: 2608			 8
+MemUP: 2616			 8
+MemUP: 2624			 8
+MemUP: 2632			 8
+MemUP: 2640			 8
+MemUP: 2648			 8
+MemUP: 2656			 8
+MemUP: 2664			 8
+MemUP: 2672			 8
+MemUP: 2680			 8
+MemUP: 2688			 8
+	MemDOWN: 2680		-8
+MemUP: 2704			 24
+MemUP: 2728			 24
+MemUP: 2752			 24
+MemUP: 2776			 24
+MemUP: 2800			 24
+MemUP: 2824			 24
+MemUP: 2848			 24
+MemUP: 2872			 24
+MemUP: 2896			 24
+MemUP: 2920			 24
+MemUP: 2944			 24
+MemUP: 2968			 24
+MemUP: 2992			 24
+MemUP: 3000			 8
+MemUP: 3008			 8
+MemUP: 3016			 8
+MemUP: 3024			 8
+MemUP: 3032			 8
+MemUP: 3040			 8
+MemUP: 3048			 8		MemMax
+MemUP: 3056			 8		MemMax
+MemUP: 3064			 8		MemMax
+MemUP: 3072			 8		MemMax
+MemUP: 3080			 8		MemMax
+MemUP: 3088			 8		MemMax
+MemUP: 3096			 8		MemMax
+MemUP: 3104			 8		MemMax
+MemUP: 3112			 8		MemMax
+MemUP: 3120			 8		MemMax
+MemUP: 3128			 8		MemMax
+MemUP: 3136			 8		MemMax
+MemUP: 3144			 8		MemMax
+MemUP: 3152			 8		MemMax
+MemUP: 3160			 8		MemMax
+MemUP: 3168			 8		MemMax
+	MemDOWN: 3160		-8
+	MemDOWN: 3152		-8
+	MemDOWN: 3144		-8
+	MemDOWN: 3136		-8
+	MemDOWN: 3128		-8
+	MemDOWN: 3120		-8
+	MemDOWN: 3112		-8
+	MemDOWN: 3104		-8
+	MemDOWN: 3096		-8
+	MemDOWN: 3088		-8
+	MemDOWN: 3080		-8
+	MemDOWN: 3072		-8
+	MemDOWN: 3064		-8
+	MemDOWN: 3056		-8
+	MemDOWN: 3048		-8
+	MemDOWN: 3040		-8
+	MemDOWN: 3032		-8
+	MemDOWN: 3024		-8
+	MemDOWN: 3016		-8
+	MemDOWN: 3008		-8
+	MemDOWN: 3000		-8
+	MemDOWN: 2992		-8
+	MemDOWN: 2984		-8
+	MemDOWN: 2976		-8
+MemUP: 3000			 24
+MemUP: 3008			 8
+	MemDOWN: 3000		-8
+	MemDOWN: 2992		-8
+MemUP: 3000			 8
+MemUP: 3008			 8
+	MemDOWN: 3000		-8
+	MemDOWN: 2992		-8
+MemUP: 3000			 8
+MemUP: 3008			 8
+	MemDOWN: 3000		-8
+	MemDOWN: 2992		-8
+MemUP: 3000			 8
+	MemDOWN: 2976		-24
+MemUP: 3000			 24
+MemUP: 3008			 8
+	MemDOWN: 3000		-8
+	MemDOWN: 2992		-8
+MemUP: 3000			 8
+MemUP: 3008			 8
+	MemDOWN: 3000		-8
+	MemDOWN: 2992		-8
+MemUP: 3000			 8
+MemUP: 3008			 8
+	MemDOWN: 3000		-8
+	MemDOWN: 2992		-8
+MemUP: 3000			 8
+	MemDOWN: 2976		-24
+MemUP: 2984			 8
+	MemDOWN: 2976		-8
+	MemDOWN: 2968		-8
+	MemDOWN: 2944		-24
+MemUP: 2952			 8
+	MemDOWN: 2944		-8
+	MemDOWN: 2936		-8
+MemUP: 2944			 8
+MemUP: 2952			 8
+	MemDOWN: 2944		-8
+	MemDOWN: 2936		-8
+MemUP: 2944			 8
+MemUP: 2952			 8
+	MemDOWN: 2944		-8
+	MemDOWN: 2936		-8
+MemUP: 2944			 8
+	MemDOWN: 2920		-24
+	MemDOWN: 2912		-8
+	MemDOWN: 2904		-8
+MemUP: 2912			 8
+MemUP: 2920			 8
+MemUP: 2928			 8
+MemUP: 2936			 8
+MemUP: 2944			 8
+MemUP: 2952			 8
+MemUP: 2960			 8
+MemUP: 2968			 8
+MemUP: 2976			 8
+MemUP: 2984			 8
+	MemDOWN: 2976		-8
+	MemDOWN: 2968		-8
+MemUP: 2976			 8
+MemUP: 2984			 8
+	MemDOWN: 2976		-8
+MemUP: 2984			 8
+MemUP: 2992			 8
+	MemDOWN: 2984		-8
+	MemDOWN: 2976		-8
+MemUP: 2984			 8
+MemUP: 2992			 8
+	MemDOWN: 2984		-8
+MemUP: 2992			 8
+MemUP: 3000			 8
+	MemDOWN: 2992		-8
+MemUP: 3000			 8
+MemUP: 3008			 8
+	MemDOWN: 3000		-8
+	MemDOWN: 2992		-8
+MemUP: 3000			 8
+MemUP: 3008			 8
+	MemDOWN: 3000		-8
+MemUP: 3008			 8
+MemUP: 3016			 8
+	MemDOWN: 3008		-8
+MemUP: 3016			 8
+MemUP: 3024			 8
+	MemDOWN: 3016		-8
+	MemDOWN: 3008		-8
+MemUP: 3016			 8
+	MemDOWN: 3008		-8
+	MemDOWN: 3000		-8
+MemUP: 3008			 8
+	MemDOWN: 3000		-8
+	MemDOWN: 2992		-8
+MemUP: 3000			 8
+	MemDOWN: 2992		-8
+	MemDOWN: 2984		-8
+MemUP: 2992			 8
+	MemDOWN: 2984		-8
+	MemDOWN: 2976		-8
+MemUP: 2984			 8
+	MemDOWN: 2976		-8
+	MemDOWN: 2968		-8
+MemUP: 2976			 8
+	MemDOWN: 2968		-8
+	MemDOWN: 2960		-8
+MemUP: 2968			 8
+	MemDOWN: 2960		-8
+	MemDOWN: 2952		-8
+MemUP: 2960			 8
+	MemDOWN: 2952		-8
+	MemDOWN: 2944		-8
+MemUP: 2952			 8
+	MemDOWN: 2944		-8
+	MemDOWN: 2936		-8
+MemUP: 2944			 8
+	MemDOWN: 2936		-8
+	MemDOWN: 2928		-8
+MemUP: 2936			 8
+	MemDOWN: 2928		-8
+	MemDOWN: 2920		-8
+MemUP: 2928			 8
+	MemDOWN: 2920		-8
+	MemDOWN: 2912		-8
+MemUP: 2920			 8
+	MemDOWN: 2912		-8
+	MemDOWN: 2904		-8
+MemUP: 2912			 8
+	MemDOWN: 2904		-8
+	MemDOWN: 2896		-8
+MemUP: 2904			 8
+	MemDOWN: 2896		-8
+	MemDOWN: 2888		-8
+MemUP: 2896			 8
+	MemDOWN: 2888		-8
+	MemDOWN: 2880		-8
+MemUP: 2888			 8
+	MemDOWN: 2880		-8
+	MemDOWN: 2872		-8
+MemUP: 2880			 8
+	MemDOWN: 2872		-8
+	MemDOWN: 2864		-8
+MemUP: 2872			 8
+	MemDOWN: 2864		-8
+	MemDOWN: 2856		-8
+MemUP: 2864			 8
+	MemDOWN: 2856		-8
+	MemDOWN: 2848		-8
+MemUP: 2856			 8
+	MemDOWN: 2848		-8
+	MemDOWN: 2840		-8
+	MemDOWN: 2816		-24
+	MemDOWN: 2792		-24
+	MemDOWN: 2768		-24
+	MemDOWN: 2744		-24
+	MemDOWN: 2720		-24
+	MemDOWN: 2696		-24
+	MemDOWN: 2672		-24
+	MemDOWN: 2648		-24
+	MemDOWN: 2624		-24
+	MemDOWN: 2600		-24
+	MemDOWN: 2576		-24
+	MemDOWN: 2552		-24
+	MemDOWN: 2528		-24
+	MemDOWN: 2520		-8
+	MemDOWN: 2512		-8
+	MemDOWN: 2504		-8
+	MemDOWN: 2496		-8
+	MemDOWN: 2488		-8
+	MemDOWN: 2480		-8
+	MemDOWN: 2472		-8
+	MemDOWN: 2464		-8
+	MemDOWN: 2456		-8
+	MemDOWN: 2448		-8
+	MemDOWN: 2440		-8
+	MemDOWN: 2432		-8
+	MemDOWN: 2424		-8
+	MemDOWN: 2416		-8
+	MemDOWN: 2408		-8
+	MemDOWN: 2400		-8
+MemUP: 2408			 8
+	MemDOWN: 2400		-8
+	MemDOWN: 2392		-8
+MemUP: 2400			 8
+MemUP: 2408			 8
+	MemDOWN: 2400		-8
+	MemDOWN: 2392		-8
+MemUP: 2400			 8
+MemUP: 2408			 8
+	MemDOWN: 2400		-8
+	MemDOWN: 2392		-8
+MemUP: 2400			 8
+	MemDOWN: 2392		-8
+	MemDOWN: 2368		-24
+MemUP: 2376			 8
+	MemDOWN: 2368		-8
+	MemDOWN: 2360		-8
+MemUP: 2368			 8
+MemUP: 2376			 8
+	MemDOWN: 2368		-8
+	MemDOWN: 2360		-8
+MemUP: 2368			 8
+MemUP: 2376			 8
+	MemDOWN: 2368		-8
+	MemDOWN: 2360		-8
+MemUP: 2368			 8
+	MemDOWN: 2360		-8
+	MemDOWN: 2336		-24
+MemUP: 2344			 8
+MemUP: 2352			 8
+MemUP: 2360			 8
+MemUP: 2368			 8
+MemUP: 2376			 8
+MemUP: 2384			 8
+	MemDOWN: 2376		-8
+	MemDOWN: 2368		-8
+MemUP: 2376			 8
+	MemDOWN: 2368		-8
+	MemDOWN: 2360		-8
+MemUP: 2368			 8
+	MemDOWN: 2360		-8
+	MemDOWN: 2352		-8
+MemUP: 2360			 8
+	MemDOWN: 2336		-24
+	MemDOWN: 2328		-8
+	MemDOWN: 2320		-8
+MemUP: 2328			 8
+MemUP: 2336			 8
+MemUP: 2344			 8
+MemUP: 2352			 8
+	MemDOWN: 2344		-8
+	MemDOWN: 2336		-8
+MemUP: 2344			 8
+	MemDOWN: 2336		-8
+	MemDOWN: 2328		-8
+MemUP: 2336			 8
+	MemDOWN: 2328		-8
+	MemDOWN: 2320		-8
+MemUP: 2328			 8
+MemUP: 2336			 8
+	MemDOWN: 2328		-8
+	MemDOWN: 2320		-8
+MemUP: 2328			 8
+MemUP: 2336			 8
+	MemDOWN: 2328		-8
+	MemDOWN: 2320		-8
+MemUP: 2328			 8
+	MemDOWN: 2304		-24
+	MemDOWN: 2296		-8
+	MemDOWN: 2288		-8
+MemUP: 2296			 8
+MemUP: 2304			 8
+MemUP: 2312			 8
+MemUP: 2320			 8
+	MemDOWN: 2312		-8
+	MemDOWN: 2304		-8
+MemUP: 2312			 8
+	MemDOWN: 2304		-8
+	MemDOWN: 2296		-8
+MemUP: 2304			 8
+	MemDOWN: 2296		-8
+	MemDOWN: 2288		-8
+MemUP: 2296			 8
+	MemDOWN: 2272		-24
+	MemDOWN: 2264		-8
+	MemDOWN: 2256		-8
+MemUP: 2264			 8
+	MemDOWN: 2256		-8
+MemUP: 2264			 8
+MemUP: 2272			 8
+MemUP: 2280			 8
+	MemDOWN: 2272		-8
+	MemDOWN: 2264		-8
+MemUP: 2272			 8
+	MemDOWN: 2264		-8
+	MemDOWN: 2256		-8
+MemUP: 2264			 8
+	MemDOWN: 2256		-8
+	MemDOWN: 2248		-8
+MemUP: 2256			 8
+MemUP: 2264			 8
+	MemDOWN: 2256		-8
+	MemDOWN: 2248		-8
+MemUP: 2256			 8
+MemUP: 2264			 8
+	MemDOWN: 2256		-8
+	MemDOWN: 2248		-8
+MemUP: 2256			 8
+	MemDOWN: 2232		-24
+	MemDOWN: 2224		-8
+	MemDOWN: 2216		-8
+MemUP: 2224			 8
+	MemDOWN: 2216		-8
+	MemDOWN: 2208		-8
+MemUP: 2216			 8
+MemUP: 2224			 8
+MemUP: 2232			 8
+	MemDOWN: 2224		-8
+	MemDOWN: 2216		-8
+MemUP: 2224			 8
+	MemDOWN: 2216		-8
+	MemDOWN: 2208		-8
+MemUP: 2216			 8
+	MemDOWN: 2208		-8
+	MemDOWN: 2200		-8
+MemUP: 2208			 8
+	MemDOWN: 2184		-24
+	MemDOWN: 2176		-8
+	MemDOWN: 2168		-8
+MemUP: 2176			 8
+MemUP: 2184			 8
+MemUP: 2192			 8
+MemUP: 2200			 8
+	MemDOWN: 2192		-8
+	MemDOWN: 2184		-8
+MemUP: 2192			 8
+	MemDOWN: 2184		-8
+	MemDOWN: 2176		-8
+MemUP: 2184			 8
+	MemDOWN: 2176		-8
+	MemDOWN: 2168		-8
+MemUP: 2176			 8
+	MemDOWN: 2152		-24
+	MemDOWN: 2144		-8
+	MemDOWN: 2136		-8
+MemUP: 2144			 8
+MemUP: 2152			 8
+MemUP: 2160			 8
+MemUP: 2168			 8
+	MemDOWN: 2160		-8
+	MemDOWN: 2152		-8
+MemUP: 2160			 8
+	MemDOWN: 2152		-8
+	MemDOWN: 2144		-8
+MemUP: 2152			 8
+	MemDOWN: 2144		-8
+	MemDOWN: 2136		-8
+MemUP: 2144			 8
+	MemDOWN: 2120		-24
+	MemDOWN: 2112		-8
+	MemDOWN: 2104		-8
+MemUP: 2112			 8
+	MemDOWN: 2104		-8
+	MemDOWN: 2096		-8
+MemUP: 2104			 8
+MemUP: 2112			 8
+MemUP: 2120			 8
+	MemDOWN: 2112		-8
+	MemDOWN: 2104		-8
+MemUP: 2112			 8
+	MemDOWN: 2104		-8
+	MemDOWN: 2096		-8
+MemUP: 2104			 8
+	MemDOWN: 2096		-8
+	MemDOWN: 2088		-8
+MemUP: 2096			 8
+MemUP: 2104			 8
+	MemDOWN: 2096		-8
+	MemDOWN: 2088		-8
+MemUP: 2096			 8
+	MemDOWN: 2072		-24
+	MemDOWN: 2064		-8
+	MemDOWN: 2056		-8
+MemUP: 2064			 8
+	MemDOWN: 2056		-8
+	MemDOWN: 2048		-8
+	MemDOWN: 2040		-8
+	MemDOWN: 2032		-8
+	MemDOWN: 2024		-8
+	MemDOWN: 2016		-8
+MemUP: 2024			 8
+MemUP: 2032			 8
+MemUP: 2040			 8
+MemUP: 2048			 8
+MemUP: 2056			 8
+MemUP: 2064			 8
+MemUP: 2072			 8
+MemUP: 2080			 8
+MemUP: 2088			 8
+MemUP: 2096			 8
+	MemDOWN: 2088		-8
+	MemDOWN: 2080		-8
+MemUP: 2088			 8
+MemUP: 2096			 8
+	MemDOWN: 2088		-8
+MemUP: 2096			 8
+MemUP: 2104			 8
+	MemDOWN: 2096		-8
+	MemDOWN: 2088		-8
+MemUP: 2096			 8
+MemUP: 2104			 8
+	MemDOWN: 2096		-8
+MemUP: 2104			 8
+MemUP: 2112			 8
+	MemDOWN: 2104		-8
+MemUP: 2112			 8
+MemUP: 2120			 8
+	MemDOWN: 2112		-8
+	MemDOWN: 2104		-8
+MemUP: 2112			 8
+MemUP: 2120			 8
+	MemDOWN: 2112		-8
+MemUP: 2120			 8
+MemUP: 2128			 8
+	MemDOWN: 2120		-8
+MemUP: 2128			 8
+MemUP: 2136			 8
+	MemDOWN: 2128		-8
+	MemDOWN: 2120		-8
+MemUP: 2128			 8
+MemUP: 2136			 8
+MemUP: 2144			 8
+MemUP: 2152			 8
+MemUP: 2160			 8
+MemUP: 2168			 8
+MemUP: 2176			 8
+MemUP: 2184			 8
+MemUP: 2192			 8
+MemUP: 2200			 8
+MemUP: 2208			 8
+MemUP: 2216			 8
+MemUP: 2224			 8
+MemUP: 2232			 8
+	MemDOWN: 2224		-8
+MemUP: 2248			 24
+MemUP: 2272			 24
+MemUP: 2296			 24
+MemUP: 2320			 24
+MemUP: 2344			 24
+MemUP: 2368			 24
+MemUP: 2392			 24
+MemUP: 2416			 24
+MemUP: 2440			 24
+MemUP: 2464			 24
+MemUP: 2488			 24
+MemUP: 2512			 24
+MemUP: 2536			 24
+MemUP: 2544			 8
+MemUP: 2552			 8
+MemUP: 2560			 8
+MemUP: 2568			 8
+MemUP: 2576			 8
+MemUP: 2584			 8
+MemUP: 2592			 8
+MemUP: 2600			 8
+MemUP: 2608			 8
+MemUP: 2616			 8
+MemUP: 2624			 8
+MemUP: 2632			 8
+MemUP: 2640			 8
+MemUP: 2648			 8
+MemUP: 2656			 8
+MemUP: 2664			 8
+MemUP: 2672			 8
+MemUP: 2680			 8
+MemUP: 2688			 8
+MemUP: 2696			 8
+MemUP: 2704			 8
+MemUP: 2712			 8
+	MemDOWN: 2704		-8
+	MemDOWN: 2696		-8
+	MemDOWN: 2688		-8
+	MemDOWN: 2680		-8
+	MemDOWN: 2672		-8
+	MemDOWN: 2664		-8
+	MemDOWN: 2656		-8
+	MemDOWN: 2648		-8
+	MemDOWN: 2640		-8
+	MemDOWN: 2632		-8
+	MemDOWN: 2624		-8
+	MemDOWN: 2616		-8
+	MemDOWN: 2608		-8
+	MemDOWN: 2600		-8
+	MemDOWN: 2592		-8
+	MemDOWN: 2584		-8
+	MemDOWN: 2576		-8
+	MemDOWN: 2568		-8
+	MemDOWN: 2560		-8
+	MemDOWN: 2552		-8
+	MemDOWN: 2544		-8
+	MemDOWN: 2536		-8
+	MemDOWN: 2528		-8
+	MemDOWN: 2520		-8
+MemUP: 2528			 8
+MemUP: 2536			 8
+MemUP: 2544			 8
+	MemDOWN: 2536		-8
+	MemDOWN: 2528		-8
+	MemDOWN: 2520		-8
+MemUP: 2528			 8
+MemUP: 2536			 8
+MemUP: 2544			 8
+MemUP: 2552			 8
+MemUP: 2560			 8
+MemUP: 2568			 8
+MemUP: 2576			 8
+MemUP: 2584			 8
+MemUP: 2592			 8
+MemUP: 2600			 8
+	MemDOWN: 2592		-8
+	MemDOWN: 2584		-8
+MemUP: 2592			 8
+MemUP: 2600			 8
+	MemDOWN: 2592		-8
+MemUP: 2600			 8
+MemUP: 2608			 8
+	MemDOWN: 2600		-8
+	MemDOWN: 2592		-8
+MemUP: 2600			 8
+MemUP: 2608			 8
+	MemDOWN: 2600		-8
+MemUP: 2608			 8
+MemUP: 2616			 8
+	MemDOWN: 2608		-8
+MemUP: 2616			 8
+MemUP: 2624			 8
+	MemDOWN: 2616		-8
+	MemDOWN: 2608		-8
+MemUP: 2616			 8
+MemUP: 2624			 8
+	MemDOWN: 2616		-8
+MemUP: 2624			 8
+MemUP: 2632			 8
+	MemDOWN: 2624		-8
+MemUP: 2632			 8
+MemUP: 2640			 8
+	MemDOWN: 2632		-8
+	MemDOWN: 2624		-8
+MemUP: 2632			 8
+MemUP: 2640			 8
+MemUP: 2648			 8
+MemUP: 2656			 8
+MemUP: 2664			 8
+MemUP: 2672			 8
+MemUP: 2680			 8
+MemUP: 2688			 8
+MemUP: 2696			 8
+MemUP: 2704			 8
+MemUP: 2712			 8
+MemUP: 2720			 8
+MemUP: 2728			 8
+MemUP: 2736			 8
+	MemDOWN: 2728		-8
+MemUP: 2752			 24
+MemUP: 2776			 24
+MemUP: 2800			 24
+MemUP: 2824			 24
+MemUP: 2848			 24
+MemUP: 2872			 24
+MemUP: 2896			 24
+MemUP: 2920			 24
+MemUP: 2944			 24
+MemUP: 2968			 24
+MemUP: 2992			 24
+MemUP: 3016			 24
+MemUP: 3040			 24
+MemUP: 3048			 8
+MemUP: 3056			 8
+MemUP: 3064			 8
+MemUP: 3072			 8
+MemUP: 3080			 8
+MemUP: 3088			 8
+MemUP: 3096			 8
+MemUP: 3104			 8
+MemUP: 3112			 8
+MemUP: 3120			 8
+MemUP: 3128			 8
+MemUP: 3136			 8
+MemUP: 3144			 8
+MemUP: 3152			 8
+MemUP: 3160			 8
+MemUP: 3168			 8
+MemUP: 3176			 8		MemMax
+MemUP: 3184			 8		MemMax
+MemUP: 3192			 8		MemMax
+MemUP: 3200			 8		MemMax
+MemUP: 3208			 8		MemMax
+MemUP: 3216			 8		MemMax
+	MemDOWN: 3208		-8
+	MemDOWN: 3200		-8
+	MemDOWN: 3192		-8
+	MemDOWN: 3184		-8
+	MemDOWN: 3176		-8
+	MemDOWN: 3168		-8
+	MemDOWN: 3160		-8
+	MemDOWN: 3152		-8
+	MemDOWN: 3144		-8
+	MemDOWN: 3136		-8
+	MemDOWN: 3128		-8
+	MemDOWN: 3120		-8
+	MemDOWN: 3112		-8
+	MemDOWN: 3104		-8
+	MemDOWN: 3096		-8
+	MemDOWN: 3088		-8
+	MemDOWN: 3080		-8
+	MemDOWN: 3072		-8
+	MemDOWN: 3064		-8
+	MemDOWN: 3056		-8
+	MemDOWN: 3048		-8
+	MemDOWN: 3040		-8
+	MemDOWN: 3032		-8
+	MemDOWN: 3024		-8
+MemUP: 3032			 8
+MemUP: 3040			 8
+MemUP: 3048			 8
+	MemDOWN: 3040		-8
+	MemDOWN: 3032		-8
+	MemDOWN: 3024		-8
+MemUP: 3032			 8
+MemUP: 3040			 8
+MemUP: 3048			 8
+MemUP: 3056			 8
+MemUP: 3064			 8
+MemUP: 3072			 8
+MemUP: 3080			 8
+MemUP: 3088			 8
+MemUP: 3096			 8
+MemUP: 3104			 8
+	MemDOWN: 3096		-8
+	MemDOWN: 3088		-8
+MemUP: 3096			 8
+MemUP: 3104			 8
+	MemDOWN: 3096		-8
+MemUP: 3104			 8
+MemUP: 3112			 8
+	MemDOWN: 3104		-8
+	MemDOWN: 3096		-8
+MemUP: 3104			 8
+MemUP: 3112			 8
+	MemDOWN: 3104		-8
+MemUP: 3112			 8
+MemUP: 3120			 8
+	MemDOWN: 3112		-8
+MemUP: 3120			 8
+MemUP: 3128			 8
+	MemDOWN: 3120		-8
+	MemDOWN: 3112		-8
+MemUP: 3120			 8
+MemUP: 3128			 8
+	MemDOWN: 3120		-8
+MemUP: 3128			 8
+MemUP: 3136			 8
+	MemDOWN: 3128		-8
+MemUP: 3136			 8
+MemUP: 3144			 8
+	MemDOWN: 3136		-8
+	MemDOWN: 3128		-8
+	MemDOWN: 3120		-8
+	MemDOWN: 3112		-8
+	MemDOWN: 3104		-8
+	MemDOWN: 3096		-8
+	MemDOWN: 3088		-8
+	MemDOWN: 3080		-8
+	MemDOWN: 3072		-8
+	MemDOWN: 3064		-8
+	MemDOWN: 3056		-8
+	MemDOWN: 3048		-8
+	MemDOWN: 3040		-8
+	MemDOWN: 3032		-8
+	MemDOWN: 3024		-8
+MemUP: 3048			 24
+MemUP: 3056			 8
+MemUP: 3064			 8
+MemUP: 3072			 8
+MemUP: 3080			 8
+MemUP: 3088			 8
+MemUP: 3096			 8
+MemUP: 3104			 8
+MemUP: 3112			 8
+MemUP: 3120			 8
+MemUP: 3128			 8
+	MemDOWN: 3120		-8
+	MemDOWN: 3112		-8
+MemUP: 3120			 8
+MemUP: 3128			 8
+	MemDOWN: 3120		-8
+MemUP: 3128			 8
+MemUP: 3136			 8
+	MemDOWN: 3128		-8
+	MemDOWN: 3120		-8
+MemUP: 3128			 8
+MemUP: 3136			 8
+	MemDOWN: 3128		-8
+MemUP: 3136			 8
+MemUP: 3144			 8
+	MemDOWN: 3136		-8
+MemUP: 3144			 8
+MemUP: 3152			 8
+	MemDOWN: 3144		-8
+	MemDOWN: 3136		-8
+MemUP: 3144			 8
+MemUP: 3152			 8
+	MemDOWN: 3144		-8
+MemUP: 3152			 8
+MemUP: 3160			 8
+	MemDOWN: 3152		-8
+MemUP: 3160			 8
+MemUP: 3168			 8
+	MemDOWN: 3160		-8
+	MemDOWN: 3152		-8
+MemUP: 3160			 8
+MemUP: 3168			 8
+MemUP: 3176			 8
+MemUP: 3184			 8
+MemUP: 3192			 8
+MemUP: 3200			 8
+MemUP: 3208			 8
+MemUP: 3216			 8
+MemUP: 3224			 8		MemMax
+MemUP: 3232			 8		MemMax
+MemUP: 3240			 8		MemMax
+MemUP: 3248			 8		MemMax
+MemUP: 3256			 8		MemMax
+MemUP: 3264			 8		MemMax
+	MemDOWN: 3256		-8
+MemUP: 3280			 24		MemMax
+MemUP: 3304			 24		MemMax
+MemUP: 3328			 24		MemMax
+MemUP: 3352			 24		MemMax
+MemUP: 3376			 24		MemMax
+MemUP: 3400			 24		MemMax
+MemUP: 3424			 24		MemMax
+MemUP: 3448			 24		MemMax
+MemUP: 3472			 24		MemMax
+MemUP: 3496			 24		MemMax
+MemUP: 3520			 24		MemMax
+MemUP: 3544			 24		MemMax
+MemUP: 3568			 24		MemMax
+MemUP: 3576			 8		MemMax
+MemUP: 3584			 8		MemMax
+MemUP: 3592			 8		MemMax
+MemUP: 3600			 8		MemMax
+MemUP: 3608			 8		MemMax
+MemUP: 3616			 8		MemMax
+MemUP: 3624			 8		MemMax
+MemUP: 3632			 8		MemMax
+MemUP: 3640			 8		MemMax
+MemUP: 3648			 8		MemMax
+MemUP: 3656			 8		MemMax
+MemUP: 3664			 8		MemMax
+MemUP: 3672			 8		MemMax
+MemUP: 3680			 8		MemMax
+MemUP: 3688			 8		MemMax
+MemUP: 3696			 8		MemMax
+MemUP: 3704			 8		MemMax
+MemUP: 3712			 8		MemMax
+MemUP: 3720			 8		MemMax
+MemUP: 3728			 8		MemMax
+MemUP: 3736			 8		MemMax
+MemUP: 3744			 8		MemMax
+	MemDOWN: 3736		-8
+	MemDOWN: 3728		-8
+	MemDOWN: 3720		-8
+	MemDOWN: 3712		-8
+	MemDOWN: 3704		-8
+	MemDOWN: 3696		-8
+	MemDOWN: 3688		-8
+	MemDOWN: 3680		-8
+	MemDOWN: 3672		-8
+	MemDOWN: 3664		-8
+	MemDOWN: 3656		-8
+	MemDOWN: 3648		-8
+	MemDOWN: 3640		-8
+	MemDOWN: 3632		-8
+	MemDOWN: 3624		-8
+	MemDOWN: 3616		-8
+	MemDOWN: 3608		-8
+	MemDOWN: 3600		-8
+	MemDOWN: 3592		-8
+	MemDOWN: 3584		-8
+	MemDOWN: 3576		-8
+	MemDOWN: 3568		-8
+	MemDOWN: 3560		-8
+	MemDOWN: 3552		-8
+MemUP: 3576			 24
+MemUP: 3584			 8
+	MemDOWN: 3576		-8
+	MemDOWN: 3568		-8
+MemUP: 3576			 8
+MemUP: 3584			 8
+	MemDOWN: 3576		-8
+	MemDOWN: 3568		-8
+MemUP: 3576			 8
+MemUP: 3584			 8
+	MemDOWN: 3576		-8
+	MemDOWN: 3568		-8
+MemUP: 3576			 8
+	MemDOWN: 3552		-24
+MemUP: 3576			 24
+MemUP: 3584			 8
+	MemDOWN: 3576		-8
+	MemDOWN: 3568		-8
+MemUP: 3576			 8
+MemUP: 3584			 8
+	MemDOWN: 3576		-8
+	MemDOWN: 3568		-8
+MemUP: 3576			 8
+MemUP: 3584			 8
+	MemDOWN: 3576		-8
+	MemDOWN: 3568		-8
+MemUP: 3576			 8
+	MemDOWN: 3552		-24
+MemUP: 3560			 8
+	MemDOWN: 3552		-8
+	MemDOWN: 3544		-8
+	MemDOWN: 3520		-24
+MemUP: 3528			 8
+	MemDOWN: 3520		-8
+	MemDOWN: 3512		-8
+MemUP: 3520			 8
+MemUP: 3528			 8
+	MemDOWN: 3520		-8
+	MemDOWN: 3512		-8
+MemUP: 3520			 8
+MemUP: 3528			 8
+	MemDOWN: 3520		-8
+	MemDOWN: 3512		-8
+MemUP: 3520			 8
+	MemDOWN: 3496		-24
+	MemDOWN: 3488		-8
+	MemDOWN: 3480		-8
+MemUP: 3488			 8
+MemUP: 3496			 8
+MemUP: 3504			 8
+MemUP: 3512			 8
+MemUP: 3520			 8
+MemUP: 3528			 8
+MemUP: 3536			 8
+MemUP: 3544			 8
+MemUP: 3552			 8
+MemUP: 3560			 8
+	MemDOWN: 3552		-8
+	MemDOWN: 3544		-8
+MemUP: 3552			 8
+MemUP: 3560			 8
+	MemDOWN: 3552		-8
+MemUP: 3560			 8
+MemUP: 3568			 8
+	MemDOWN: 3560		-8
+	MemDOWN: 3552		-8
+MemUP: 3560			 8
+MemUP: 3568			 8
+	MemDOWN: 3560		-8
+MemUP: 3568			 8
+MemUP: 3576			 8
+	MemDOWN: 3568		-8
+MemUP: 3576			 8
+MemUP: 3584			 8
+	MemDOWN: 3576		-8
+	MemDOWN: 3568		-8
+MemUP: 3576			 8
+MemUP: 3584			 8
+	MemDOWN: 3576		-8
+MemUP: 3584			 8
+MemUP: 3592			 8
+	MemDOWN: 3584		-8
+MemUP: 3592			 8
+MemUP: 3600			 8
+	MemDOWN: 3592		-8
+	MemDOWN: 3584		-8
+MemUP: 3592			 8
+MemUP: 3600			 8
+MemUP: 3608			 8
+MemUP: 3616			 8
+MemUP: 3624			 8
+MemUP: 3632			 8
+MemUP: 3640			 8
+MemUP: 3648			 8
+MemUP: 3656			 8
+MemUP: 3664			 8
+MemUP: 3672			 8
+MemUP: 3680			 8
+MemUP: 3688			 8
+MemUP: 3696			 8
+	MemDOWN: 3688		-8
+MemUP: 3712			 24
+MemUP: 3736			 24
+MemUP: 3760			 24		MemMax
+MemUP: 3784			 24		MemMax
+MemUP: 3808			 24		MemMax
+MemUP: 3832			 24		MemMax
+MemUP: 3856			 24		MemMax
+MemUP: 3880			 24		MemMax
+MemUP: 3904			 24		MemMax
+MemUP: 3928			 24		MemMax
+MemUP: 3952			 24		MemMax
+MemUP: 3976			 24		MemMax
+MemUP: 4000			 24		MemMax
+MemUP: 4008			 8		MemMax
+MemUP: 4016			 8		MemMax
+MemUP: 4024			 8		MemMax
+MemUP: 4032			 8		MemMax
+MemUP: 4040			 8		MemMax
+MemUP: 4048			 8		MemMax
+MemUP: 4056			 8		MemMax
+MemUP: 4064			 8		MemMax
+MemUP: 4072			 8		MemMax
+MemUP: 4080			 8		MemMax
+MemUP: 4088			 8		MemMax
+MemUP: 4096			 8		MemMax
+MemUP: 4104			 8		MemMax
+MemUP: 4112			 8		MemMax
+MemUP: 4120			 8		MemMax
+MemUP: 4128			 8		MemMax
+MemUP: 4136			 8		MemMax
+MemUP: 4144			 8		MemMax
+MemUP: 4152			 8		MemMax
+MemUP: 4160			 8		MemMax
+MemUP: 4168			 8		MemMax
+MemUP: 4176			 8		MemMax
+	MemDOWN: 4168		-8
+	MemDOWN: 4160		-8
+	MemDOWN: 4152		-8
+	MemDOWN: 4144		-8
+	MemDOWN: 4136		-8
+	MemDOWN: 4128		-8
+	MemDOWN: 4120		-8
+	MemDOWN: 4112		-8
+	MemDOWN: 4104		-8
+	MemDOWN: 4096		-8
+	MemDOWN: 4088		-8
+	MemDOWN: 4080		-8
+	MemDOWN: 4072		-8
+	MemDOWN: 4064		-8
+	MemDOWN: 4056		-8
+	MemDOWN: 4048		-8
+	MemDOWN: 4040		-8
+	MemDOWN: 4032		-8
+	MemDOWN: 4024		-8
+	MemDOWN: 4016		-8
+	MemDOWN: 4008		-8
+	MemDOWN: 4000		-8
+	MemDOWN: 3992		-8
+	MemDOWN: 3984		-8
+MemUP: 4008			 24
+MemUP: 4016			 8
+	MemDOWN: 4008		-8
+	MemDOWN: 4000		-8
+MemUP: 4008			 8
+MemUP: 4016			 8
+	MemDOWN: 4008		-8
+	MemDOWN: 4000		-8
+MemUP: 4008			 8
+MemUP: 4016			 8
+	MemDOWN: 4008		-8
+	MemDOWN: 4000		-8
+MemUP: 4008			 8
+	MemDOWN: 3984		-24
+MemUP: 4008			 24
+MemUP: 4016			 8
+	MemDOWN: 4008		-8
+	MemDOWN: 4000		-8
+MemUP: 4008			 8
+MemUP: 4016			 8
+	MemDOWN: 4008		-8
+	MemDOWN: 4000		-8
+MemUP: 4008			 8
+MemUP: 4016			 8
+	MemDOWN: 4008		-8
+	MemDOWN: 4000		-8
+MemUP: 4008			 8
+	MemDOWN: 3984		-24
+MemUP: 3992			 8
+	MemDOWN: 3984		-8
+	MemDOWN: 3976		-8
+	MemDOWN: 3952		-24
+MemUP: 3960			 8
+	MemDOWN: 3952		-8
+	MemDOWN: 3944		-8
+MemUP: 3952			 8
+MemUP: 3960			 8
+	MemDOWN: 3952		-8
+	MemDOWN: 3944		-8
+MemUP: 3952			 8
+MemUP: 3960			 8
+	MemDOWN: 3952		-8
+	MemDOWN: 3944		-8
+MemUP: 3952			 8
+	MemDOWN: 3928		-24
+	MemDOWN: 3920		-8
+	MemDOWN: 3912		-8
+MemUP: 3920			 8
+MemUP: 3928			 8
+MemUP: 3936			 8
+MemUP: 3944			 8
+MemUP: 3952			 8
+MemUP: 3960			 8
+MemUP: 3968			 8
+MemUP: 3976			 8
+MemUP: 3984			 8
+MemUP: 3992			 8
+	MemDOWN: 3984		-8
+	MemDOWN: 3976		-8
+MemUP: 3984			 8
+MemUP: 3992			 8
+	MemDOWN: 3984		-8
+MemUP: 3992			 8
+MemUP: 4000			 8
+	MemDOWN: 3992		-8
+	MemDOWN: 3984		-8
+MemUP: 3992			 8
+MemUP: 4000			 8
+	MemDOWN: 3992		-8
+MemUP: 4000			 8
+MemUP: 4008			 8
+	MemDOWN: 4000		-8
+MemUP: 4008			 8
+MemUP: 4016			 8
+	MemDOWN: 4008		-8
+	MemDOWN: 4000		-8
+MemUP: 4008			 8
+MemUP: 4016			 8
+	MemDOWN: 4008		-8
+MemUP: 4016			 8
+MemUP: 4024			 8
+	MemDOWN: 4016		-8
+MemUP: 4024			 8
+MemUP: 4032			 8
+	MemDOWN: 4024		-8
+	MemDOWN: 4016		-8
+MemUP: 4024			 8
+	MemDOWN: 4016		-8
+	MemDOWN: 4008		-8
+MemUP: 4016			 8
+	MemDOWN: 4008		-8
+	MemDOWN: 4000		-8
+MemUP: 4008			 8
+	MemDOWN: 4000		-8
+	MemDOWN: 3992		-8
+MemUP: 4000			 8
+	MemDOWN: 3992		-8
+	MemDOWN: 3984		-8
+MemUP: 3992			 8
+	MemDOWN: 3984		-8
+	MemDOWN: 3976		-8
+MemUP: 3984			 8
+	MemDOWN: 3976		-8
+	MemDOWN: 3968		-8
+MemUP: 3976			 8
+	MemDOWN: 3968		-8
+	MemDOWN: 3960		-8
+MemUP: 3968			 8
+	MemDOWN: 3960		-8
+	MemDOWN: 3952		-8
+MemUP: 3960			 8
+	MemDOWN: 3952		-8
+	MemDOWN: 3944		-8
+MemUP: 3952			 8
+	MemDOWN: 3944		-8
+	MemDOWN: 3936		-8
+MemUP: 3944			 8
+	MemDOWN: 3936		-8
+	MemDOWN: 3928		-8
+MemUP: 3936			 8
+	MemDOWN: 3928		-8
+	MemDOWN: 3920		-8
+MemUP: 3928			 8
+	MemDOWN: 3920		-8
+	MemDOWN: 3912		-8
+MemUP: 3920			 8
+	MemDOWN: 3912		-8
+	MemDOWN: 3904		-8
+MemUP: 3912			 8
+	MemDOWN: 3904		-8
+	MemDOWN: 3896		-8
+MemUP: 3904			 8
+	MemDOWN: 3896		-8
+	MemDOWN: 3888		-8
+MemUP: 3896			 8
+	MemDOWN: 3888		-8
+	MemDOWN: 3880		-8
+MemUP: 3888			 8
+	MemDOWN: 3880		-8
+	MemDOWN: 3872		-8
+MemUP: 3880			 8
+	MemDOWN: 3872		-8
+	MemDOWN: 3864		-8
+MemUP: 3872			 8
+	MemDOWN: 3864		-8
+	MemDOWN: 3856		-8
+MemUP: 3864			 8
+	MemDOWN: 3856		-8
+	MemDOWN: 3848		-8
+	MemDOWN: 3824		-24
+	MemDOWN: 3800		-24
+	MemDOWN: 3776		-24
+	MemDOWN: 3752		-24
+	MemDOWN: 3728		-24
+	MemDOWN: 3704		-24
+	MemDOWN: 3680		-24
+	MemDOWN: 3656		-24
+	MemDOWN: 3632		-24
+	MemDOWN: 3608		-24
+	MemDOWN: 3584		-24
+	MemDOWN: 3560		-24
+	MemDOWN: 3536		-24
+	MemDOWN: 3528		-8
+	MemDOWN: 3520		-8
+	MemDOWN: 3512		-8
+	MemDOWN: 3504		-8
+	MemDOWN: 3496		-8
+	MemDOWN: 3488		-8
+	MemDOWN: 3480		-8
+	MemDOWN: 3472		-8
+	MemDOWN: 3464		-8
+	MemDOWN: 3456		-8
+	MemDOWN: 3448		-8
+	MemDOWN: 3440		-8
+	MemDOWN: 3432		-8
+	MemDOWN: 3424		-8
+	MemDOWN: 3416		-8
+	MemDOWN: 3408		-8
+MemUP: 3416			 8
+	MemDOWN: 3408		-8
+	MemDOWN: 3400		-8
+MemUP: 3408			 8
+MemUP: 3416			 8
+	MemDOWN: 3408		-8
+	MemDOWN: 3400		-8
+MemUP: 3408			 8
+MemUP: 3416			 8
+	MemDOWN: 3408		-8
+	MemDOWN: 3400		-8
+MemUP: 3408			 8
+	MemDOWN: 3400		-8
+	MemDOWN: 3376		-24
+MemUP: 3384			 8
+	MemDOWN: 3376		-8
+	MemDOWN: 3368		-8
+MemUP: 3376			 8
+MemUP: 3384			 8
+	MemDOWN: 3376		-8
+	MemDOWN: 3368		-8
+MemUP: 3376			 8
+MemUP: 3384			 8
+	MemDOWN: 3376		-8
+	MemDOWN: 3368		-8
+MemUP: 3376			 8
+	MemDOWN: 3368		-8
+	MemDOWN: 3344		-24
+MemUP: 3352			 8
+MemUP: 3360			 8
+MemUP: 3368			 8
+MemUP: 3376			 8
+MemUP: 3384			 8
+MemUP: 3392			 8
+	MemDOWN: 3384		-8
+	MemDOWN: 3376		-8
+MemUP: 3384			 8
+	MemDOWN: 3376		-8
+	MemDOWN: 3368		-8
+MemUP: 3376			 8
+	MemDOWN: 3368		-8
+	MemDOWN: 3360		-8
+MemUP: 3368			 8
+	MemDOWN: 3344		-24
+	MemDOWN: 3336		-8
+	MemDOWN: 3328		-8
+MemUP: 3336			 8
+MemUP: 3344			 8
+MemUP: 3352			 8
+MemUP: 3360			 8
+	MemDOWN: 3352		-8
+	MemDOWN: 3344		-8
+MemUP: 3352			 8
+	MemDOWN: 3344		-8
+	MemDOWN: 3336		-8
+MemUP: 3344			 8
+	MemDOWN: 3336		-8
+	MemDOWN: 3328		-8
+MemUP: 3336			 8
+MemUP: 3344			 8
+	MemDOWN: 3336		-8
+	MemDOWN: 3328		-8
+MemUP: 3336			 8
+MemUP: 3344			 8
+	MemDOWN: 3336		-8
+	MemDOWN: 3328		-8
+MemUP: 3336			 8
+	MemDOWN: 3312		-24
+	MemDOWN: 3304		-8
+	MemDOWN: 3296		-8
+MemUP: 3304			 8
+MemUP: 3312			 8
+MemUP: 3320			 8
+MemUP: 3328			 8
+	MemDOWN: 3320		-8
+	MemDOWN: 3312		-8
+MemUP: 3320			 8
+	MemDOWN: 3312		-8
+	MemDOWN: 3304		-8
+MemUP: 3312			 8
+	MemDOWN: 3304		-8
+	MemDOWN: 3296		-8
+MemUP: 3304			 8
+	MemDOWN: 3280		-24
+	MemDOWN: 3272		-8
+	MemDOWN: 3264		-8
+MemUP: 3272			 8
+	MemDOWN: 3264		-8
+MemUP: 3272			 8
+MemUP: 3280			 8
+MemUP: 3288			 8
+	MemDOWN: 3280		-8
+	MemDOWN: 3272		-8
+MemUP: 3280			 8
+	MemDOWN: 3272		-8
+	MemDOWN: 3264		-8
+MemUP: 3272			 8
+	MemDOWN: 3264		-8
+	MemDOWN: 3256		-8
+MemUP: 3264			 8
+MemUP: 3272			 8
+	MemDOWN: 3264		-8
+	MemDOWN: 3256		-8
+MemUP: 3264			 8
+MemUP: 3272			 8
+	MemDOWN: 3264		-8
+	MemDOWN: 3256		-8
+MemUP: 3264			 8
+	MemDOWN: 3240		-24
+	MemDOWN: 3232		-8
+	MemDOWN: 3224		-8
+MemUP: 3232			 8
+	MemDOWN: 3224		-8
+	MemDOWN: 3216		-8
+MemUP: 3224			 8
+MemUP: 3232			 8
+MemUP: 3240			 8
+	MemDOWN: 3232		-8
+	MemDOWN: 3224		-8
+MemUP: 3232			 8
+	MemDOWN: 3224		-8
+	MemDOWN: 3216		-8
+MemUP: 3224			 8
+	MemDOWN: 3216		-8
+	MemDOWN: 3208		-8
+MemUP: 3216			 8
+	MemDOWN: 3192		-24
+	MemDOWN: 3184		-8
+	MemDOWN: 3176		-8
+MemUP: 3184			 8
+MemUP: 3192			 8
+MemUP: 3200			 8
+MemUP: 3208			 8
+	MemDOWN: 3200		-8
+	MemDOWN: 3192		-8
+MemUP: 3200			 8
+	MemDOWN: 3192		-8
+	MemDOWN: 3184		-8
+MemUP: 3192			 8
+	MemDOWN: 3184		-8
+	MemDOWN: 3176		-8
+MemUP: 3184			 8
+	MemDOWN: 3160		-24
+	MemDOWN: 3152		-8
+	MemDOWN: 3144		-8
+MemUP: 3152			 8
+MemUP: 3160			 8
+MemUP: 3168			 8
+MemUP: 3176			 8
+	MemDOWN: 3168		-8
+	MemDOWN: 3160		-8
+MemUP: 3168			 8
+	MemDOWN: 3160		-8
+	MemDOWN: 3152		-8
+MemUP: 3160			 8
+	MemDOWN: 3152		-8
+	MemDOWN: 3144		-8
+MemUP: 3152			 8
+	MemDOWN: 3128		-24
+	MemDOWN: 3120		-8
+	MemDOWN: 3112		-8
+MemUP: 3120			 8
+	MemDOWN: 3112		-8
+	MemDOWN: 3104		-8
+MemUP: 3112			 8
+MemUP: 3120			 8
+MemUP: 3128			 8
+	MemDOWN: 3120		-8
+	MemDOWN: 3112		-8
+MemUP: 3120			 8
+	MemDOWN: 3112		-8
+	MemDOWN: 3104		-8
+MemUP: 3112			 8
+	MemDOWN: 3104		-8
+	MemDOWN: 3096		-8
+MemUP: 3104			 8
+MemUP: 3112			 8
+	MemDOWN: 3104		-8
+	MemDOWN: 3096		-8
+MemUP: 3104			 8
+	MemDOWN: 3080		-24
+	MemDOWN: 3072		-8
+	MemDOWN: 3064		-8
+MemUP: 3072			 8
+	MemDOWN: 3064		-8
+	MemDOWN: 3056		-8
+	MemDOWN: 3048		-8
+	MemDOWN: 3040		-8
+	MemDOWN: 3032		-8
+	MemDOWN: 3024		-8
+MemUP: 3032			 8
+MemUP: 3040			 8
+MemUP: 3048			 8
+MemUP: 3056			 8
+MemUP: 3064			 8
+MemUP: 3072			 8
+MemUP: 3080			 8
+MemUP: 3088			 8
+MemUP: 3096			 8
+MemUP: 3104			 8
+	MemDOWN: 3096		-8
+	MemDOWN: 3088		-8
+MemUP: 3096			 8
+MemUP: 3104			 8
+	MemDOWN: 3096		-8
+MemUP: 3104			 8
+MemUP: 3112			 8
+	MemDOWN: 3104		-8
+	MemDOWN: 3096		-8
+MemUP: 3104			 8
+MemUP: 3112			 8
+	MemDOWN: 3104		-8
+MemUP: 3112			 8
+MemUP: 3120			 8
+	MemDOWN: 3112		-8
+MemUP: 3120			 8
+MemUP: 3128			 8
+	MemDOWN: 3120		-8
+	MemDOWN: 3112		-8
+MemUP: 3120			 8
+MemUP: 3128			 8
+	MemDOWN: 3120		-8
+MemUP: 3128			 8
+MemUP: 3136			 8
+	MemDOWN: 3128		-8
+MemUP: 3136			 8
+MemUP: 3144			 8
+	MemDOWN: 3136		-8
+	MemDOWN: 3128		-8
+MemUP: 3136			 8
+	MemDOWN: 3128		-8
+	MemDOWN: 3120		-8
+MemUP: 3128			 8
+	MemDOWN: 3120		-8
+	MemDOWN: 3112		-8
+MemUP: 3120			 8
+	MemDOWN: 3112		-8
+	MemDOWN: 3104		-8
+MemUP: 3112			 8
+	MemDOWN: 3104		-8
+	MemDOWN: 3096		-8
+MemUP: 3104			 8
+	MemDOWN: 3096		-8
+	MemDOWN: 3088		-8
+MemUP: 3096			 8
+	MemDOWN: 3088		-8
+	MemDOWN: 3080		-8
+MemUP: 3088			 8
+	MemDOWN: 3080		-8
+	MemDOWN: 3072		-8
+MemUP: 3080			 8
+	MemDOWN: 3072		-8
+	MemDOWN: 3064		-8
+MemUP: 3072			 8
+	MemDOWN: 3064		-8
+	MemDOWN: 3056		-8
+MemUP: 3064			 8
+	MemDOWN: 3056		-8
+	MemDOWN: 3048		-8
+MemUP: 3056			 8
+	MemDOWN: 3048		-8
+	MemDOWN: 3040		-8
+MemUP: 3048			 8
+	MemDOWN: 3040		-8
+	MemDOWN: 3032		-8
+MemUP: 3040			 8
+	MemDOWN: 3032		-8
+	MemDOWN: 3024		-8
+MemUP: 3032			 8
+	MemDOWN: 3024		-8
+	MemDOWN: 3016		-8
+MemUP: 3024			 8
+	MemDOWN: 3016		-8
+	MemDOWN: 3008		-8
+MemUP: 3016			 8
+	MemDOWN: 3008		-8
+	MemDOWN: 3000		-8
+MemUP: 3008			 8
+	MemDOWN: 3000		-8
+	MemDOWN: 2992		-8
+MemUP: 3000			 8
+	MemDOWN: 2992		-8
+	MemDOWN: 2984		-8
+MemUP: 2992			 8
+	MemDOWN: 2984		-8
+	MemDOWN: 2976		-8
+MemUP: 2984			 8
+	MemDOWN: 2976		-8
+	MemDOWN: 2968		-8
+MemUP: 2976			 8
+	MemDOWN: 2968		-8
+	MemDOWN: 2960		-8
+	MemDOWN: 2936		-24
+	MemDOWN: 2912		-24
+	MemDOWN: 2888		-24
+	MemDOWN: 2864		-24
+	MemDOWN: 2840		-24
+	MemDOWN: 2816		-24
+	MemDOWN: 2792		-24
+	MemDOWN: 2768		-24
+	MemDOWN: 2744		-24
+	MemDOWN: 2720		-24
+	MemDOWN: 2696		-24
+	MemDOWN: 2672		-24
+	MemDOWN: 2648		-24
+	MemDOWN: 2640		-8
+	MemDOWN: 2632		-8
+	MemDOWN: 2624		-8
+	MemDOWN: 2616		-8
+	MemDOWN: 2608		-8
+	MemDOWN: 2600		-8
+	MemDOWN: 2592		-8
+	MemDOWN: 2584		-8
+	MemDOWN: 2576		-8
+	MemDOWN: 2568		-8
+	MemDOWN: 2560		-8
+	MemDOWN: 2552		-8
+	MemDOWN: 2544		-8
+	MemDOWN: 2536		-8
+	MemDOWN: 2528		-8
+	MemDOWN: 2520		-8
+MemUP: 2528			 8
+MemUP: 2536			 8
+MemUP: 2544			 8
+MemUP: 2552			 8
+MemUP: 2560			 8
+MemUP: 2568			 8
+MemUP: 2576			 8
+MemUP: 2584			 8
+MemUP: 2592			 8
+MemUP: 2600			 8
+	MemDOWN: 2592		-8
+	MemDOWN: 2584		-8
+MemUP: 2592			 8
+MemUP: 2600			 8
+	MemDOWN: 2592		-8
+MemUP: 2600			 8
+MemUP: 2608			 8
+	MemDOWN: 2600		-8
+	MemDOWN: 2592		-8
+MemUP: 2600			 8
+MemUP: 2608			 8
+	MemDOWN: 2600		-8
+MemUP: 2608			 8
+MemUP: 2616			 8
+	MemDOWN: 2608		-8
+MemUP: 2616			 8
+MemUP: 2624			 8
+	MemDOWN: 2616		-8
+	MemDOWN: 2608		-8
+MemUP: 2616			 8
+MemUP: 2624			 8
+	MemDOWN: 2616		-8
+MemUP: 2624			 8
+MemUP: 2632			 8
+	MemDOWN: 2624		-8
+MemUP: 2632			 8
+MemUP: 2640			 8
+	MemDOWN: 2632		-8
+	MemDOWN: 2624		-8
+MemUP: 2632			 8
+	MemDOWN: 2624		-8
+	MemDOWN: 2616		-8
+MemUP: 2624			 8
+	MemDOWN: 2616		-8
+	MemDOWN: 2608		-8
+MemUP: 2616			 8
+	MemDOWN: 2608		-8
+	MemDOWN: 2600		-8
+MemUP: 2608			 8
+	MemDOWN: 2600		-8
+	MemDOWN: 2592		-8
+MemUP: 2600			 8
+	MemDOWN: 2592		-8
+	MemDOWN: 2584		-8
+MemUP: 2592			 8
+	MemDOWN: 2584		-8
+	MemDOWN: 2576		-8
+MemUP: 2584			 8
+	MemDOWN: 2576		-8
+	MemDOWN: 2568		-8
+MemUP: 2576			 8
+	MemDOWN: 2568		-8
+	MemDOWN: 2560		-8
+MemUP: 2568			 8
+	MemDOWN: 2560		-8
+	MemDOWN: 2552		-8
+MemUP: 2560			 8
+	MemDOWN: 2552		-8
+	MemDOWN: 2544		-8
+MemUP: 2552			 8
+	MemDOWN: 2544		-8
+	MemDOWN: 2536		-8
+MemUP: 2544			 8
+	MemDOWN: 2536		-8
+	MemDOWN: 2528		-8
+MemUP: 2536			 8
+	MemDOWN: 2528		-8
+	MemDOWN: 2520		-8
+MemUP: 2528			 8
+	MemDOWN: 2520		-8
+	MemDOWN: 2512		-8
+MemUP: 2520			 8
+	MemDOWN: 2512		-8
+	MemDOWN: 2504		-8
+MemUP: 2512			 8
+	MemDOWN: 2504		-8
+	MemDOWN: 2496		-8
+MemUP: 2504			 8
+	MemDOWN: 2496		-8
+	MemDOWN: 2488		-8
+MemUP: 2496			 8
+	MemDOWN: 2488		-8
+	MemDOWN: 2480		-8
+MemUP: 2488			 8
+	MemDOWN: 2480		-8
+	MemDOWN: 2472		-8
+MemUP: 2480			 8
+	MemDOWN: 2472		-8
+	MemDOWN: 2464		-8
+MemUP: 2472			 8
+	MemDOWN: 2464		-8
+	MemDOWN: 2456		-8
+	MemDOWN: 2432		-24
+	MemDOWN: 2408		-24
+	MemDOWN: 2384		-24
+	MemDOWN: 2360		-24
+	MemDOWN: 2336		-24
+	MemDOWN: 2312		-24
+	MemDOWN: 2288		-24
+	MemDOWN: 2264		-24
+	MemDOWN: 2240		-24
+	MemDOWN: 2216		-24
+	MemDOWN: 2192		-24
+	MemDOWN: 2168		-24
+	MemDOWN: 2144		-24
+	MemDOWN: 2136		-8
+	MemDOWN: 2128		-8
+	MemDOWN: 2120		-8
+	MemDOWN: 2112		-8
+	MemDOWN: 2104		-8
+	MemDOWN: 2096		-8
+	MemDOWN: 2088		-8
+	MemDOWN: 2080		-8
+	MemDOWN: 2072		-8
+	MemDOWN: 2064		-8
+	MemDOWN: 2056		-8
+	MemDOWN: 2048		-8
+	MemDOWN: 2040		-8
+	MemDOWN: 2032		-8
+	MemDOWN: 2024		-8
+	MemDOWN: 2016		-8
+MemUP: 2024			 8
+MemUP: 2032			 8
+MemUP: 2040			 8
+MemUP: 2048			 8
+MemUP: 2056			 8
+MemUP: 2064			 8
+MemUP: 2072			 8
+MemUP: 2080			 8
+MemUP: 2088			 8
+MemUP: 2096			 8
+MemUP: 2104			 8
+MemUP: 2112			 8
+MemUP: 2120			 8
+MemUP: 2128			 8
+MemUP: 2136			 8
+MemUP: 2144			 8
+	MemDOWN: 2136		-8
+	MemDOWN: 2128		-8
+MemUP: 2136			 8
+MemUP: 2144			 8
+	MemDOWN: 2136		-8
+MemUP: 2144			 8
+MemUP: 2152			 8
+	MemDOWN: 2144		-8
+	MemDOWN: 2136		-8
+MemUP: 2144			 8
+MemUP: 2152			 8
+	MemDOWN: 2144		-8
+MemUP: 2152			 8
+MemUP: 2160			 8
+	MemDOWN: 2152		-8
+MemUP: 2160			 8
+MemUP: 2168			 8
+	MemDOWN: 2160		-8
+	MemDOWN: 2152		-8
+MemUP: 2160			 8
+MemUP: 2168			 8
+	MemDOWN: 2160		-8
+MemUP: 2168			 8
+MemUP: 2176			 8
+	MemDOWN: 2168		-8
+MemUP: 2176			 8
+MemUP: 2184			 8
+	MemDOWN: 2176		-8
+	MemDOWN: 2168		-8
+MemUP: 2176			 8
+MemUP: 2184			 8
+	MemDOWN: 2176		-8
+MemUP: 2184			 8
+MemUP: 2192			 8
+	MemDOWN: 2184		-8
+MemUP: 2192			 8
+MemUP: 2200			 8
+	MemDOWN: 2192		-8
+	MemDOWN: 2184		-8
+MemUP: 2192			 8
+MemUP: 2200			 8
+	MemDOWN: 2192		-8
+MemUP: 2200			 8
+MemUP: 2208			 8
+	MemDOWN: 2200		-8
+MemUP: 2208			 8
+MemUP: 2216			 8
+	MemDOWN: 2208		-8
+	MemDOWN: 2200		-8
+MemUP: 2208			 8
+MemUP: 2216			 8
+	MemDOWN: 2208		-8
+MemUP: 2216			 8
+MemUP: 2224			 8
+	MemDOWN: 2216		-8
+MemUP: 2224			 8
+MemUP: 2232			 8
+	MemDOWN: 2224		-8
+	MemDOWN: 2216		-8
+MemUP: 2224			 8
+	MemDOWN: 2216		-8
+	MemDOWN: 2208		-8
+MemUP: 2216			 8
+	MemDOWN: 2208		-8
+	MemDOWN: 2200		-8
+MemUP: 2208			 8
+	MemDOWN: 2200		-8
+	MemDOWN: 2192		-8
+MemUP: 2200			 8
+	MemDOWN: 2192		-8
+	MemDOWN: 2184		-8
+MemUP: 2192			 8
+	MemDOWN: 2184		-8
+	MemDOWN: 2176		-8
+MemUP: 2184			 8
+	MemDOWN: 2176		-8
+	MemDOWN: 2168		-8
+MemUP: 2176			 8
+	MemDOWN: 2168		-8
+	MemDOWN: 2160		-8
+MemUP: 2168			 8
+	MemDOWN: 2160		-8
+	MemDOWN: 2152		-8
+MemUP: 2160			 8
+	MemDOWN: 2152		-8
+	MemDOWN: 2144		-8
+MemUP: 2152			 8
+	MemDOWN: 2144		-8
+	MemDOWN: 2136		-8
+MemUP: 2144			 8
+	MemDOWN: 2136		-8
+	MemDOWN: 2128		-8
+MemUP: 2136			 8
+	MemDOWN: 2128		-8
+	MemDOWN: 2120		-8
+MemUP: 2128			 8
+	MemDOWN: 2120		-8
+	MemDOWN: 2112		-8
+MemUP: 2120			 8
+	MemDOWN: 2112		-8
+	MemDOWN: 2104		-8
+MemUP: 2112			 8
+	MemDOWN: 2104		-8
+	MemDOWN: 2096		-8
+MemUP: 2104			 8
+	MemDOWN: 2096		-8
+	MemDOWN: 2088		-8
+MemUP: 2096			 8
+	MemDOWN: 2088		-8
+	MemDOWN: 2080		-8
+MemUP: 2088			 8
+	MemDOWN: 2080		-8
+	MemDOWN: 2072		-8
+MemUP: 2080			 8
+	MemDOWN: 2072		-8
+	MemDOWN: 2064		-8
+MemUP: 2072			 8
+	MemDOWN: 2064		-8
+	MemDOWN: 2056		-8
+MemUP: 2064			 8
+	MemDOWN: 2056		-8
+	MemDOWN: 2048		-8
+MemUP: 2056			 8
+	MemDOWN: 2048		-8
+	MemDOWN: 2040		-8
+MemUP: 2048			 8
+	MemDOWN: 2040		-8
+	MemDOWN: 2032		-8
+MemUP: 2040			 8
+	MemDOWN: 2032		-8
+	MemDOWN: 2024		-8
+MemUP: 2032			 8
+	MemDOWN: 2024		-8
+	MemDOWN: 2016		-8
+MemUP: 2024			 8
+	MemDOWN: 2016		-8
+	MemDOWN: 2008		-8
+MemUP: 2016			 8
+	MemDOWN: 2008		-8
+	MemDOWN: 2000		-8
+MemUP: 2008			 8
+	MemDOWN: 2000		-8
+	MemDOWN: 1992		-8
+MemUP: 2000			 8
+	MemDOWN: 1992		-8
+	MemDOWN: 1984		-8
+MemUP: 1992			 8
+	MemDOWN: 1984		-8
+	MemDOWN: 1976		-8
+MemUP: 1984			 8
+	MemDOWN: 1976		-8
+	MemDOWN: 1968		-8
+MemUP: 1976			 8
+	MemDOWN: 1968		-8
+	MemDOWN: 1960		-8
+MemUP: 1968			 8
+	MemDOWN: 1960		-8
+	MemDOWN: 1952		-8
+MemUP: 1960			 8
+	MemDOWN: 1952		-8
+	MemDOWN: 1944		-8
+MemUP: 1952			 8
+	MemDOWN: 1944		-8
+	MemDOWN: 1936		-8
+MemUP: 1944			 8
+	MemDOWN: 1936		-8
+	MemDOWN: 1928		-8
+MemUP: 1936			 8
+	MemDOWN: 1928		-8
+	MemDOWN: 1920		-8
+MemUP: 1928			 8
+	MemDOWN: 1920		-8
+	MemDOWN: 1912		-8
+MemUP: 1920			 8
+	MemDOWN: 1912		-8
+	MemDOWN: 1904		-8
+MemUP: 1912			 8
+	MemDOWN: 1904		-8
+	MemDOWN: 1896		-8
+MemUP: 1904			 8
+	MemDOWN: 1896		-8
+	MemDOWN: 1888		-8
+MemUP: 1896			 8
+	MemDOWN: 1888		-8
+	MemDOWN: 1880		-8
+MemUP: 1888			 8
+	MemDOWN: 1880		-8
+	MemDOWN: 1872		-8
+MemUP: 1880			 8
+	MemDOWN: 1872		-8
+	MemDOWN: 1864		-8
+MemUP: 1872			 8
+	MemDOWN: 1864		-8
+	MemDOWN: 1856		-8
+	MemDOWN: 1832		-24
+	MemDOWN: 1808		-24
+	MemDOWN: 1784		-24
+	MemDOWN: 1760		-24
+	MemDOWN: 1736		-24
+	MemDOWN: 1712		-24
+	MemDOWN: 1688		-24
+	MemDOWN: 1664		-24
+	MemDOWN: 1640		-24
+	MemDOWN: 1616		-24
+	MemDOWN: 1592		-24
+	MemDOWN: 1568		-24
+	MemDOWN: 1544		-24
+	MemDOWN: 1520		-24
+	MemDOWN: 1496		-24
+	MemDOWN: 1472		-24
+	MemDOWN: 1448		-24
+	MemDOWN: 1424		-24
+	MemDOWN: 1400		-24
+	MemDOWN: 1376		-24
+	MemDOWN: 1352		-24
+	MemDOWN: 1328		-24
+	MemDOWN: 1304		-24
+	MemDOWN: 1280		-24
+	MemDOWN: 1256		-24
+	MemDOWN: 1248		-8
+	MemDOWN: 1240		-8
+	MemDOWN: 1232		-8
+	MemDOWN: 1224		-8
+	MemDOWN: 1216		-8
+	MemDOWN: 1208		-8
+	MemDOWN: 1200		-8
+	MemDOWN: 1192		-8
+	MemDOWN: 1184		-8
+	MemDOWN: 1176		-8
+	MemDOWN: 1168		-8
+	MemDOWN: 1160		-8
+	MemDOWN: 1152		-8
+	MemDOWN: 1144		-8
+	MemDOWN: 1136		-8
+	MemDOWN: 1128		-8
+	MemDOWN: 1120		-8
+	MemDOWN: 1112		-8
+	MemDOWN: 1104		-8
+	MemDOWN: 1096		-8
+	MemDOWN: 1088		-8
+	MemDOWN: 1080		-8
+	MemDOWN: 1072		-8
+	MemDOWN: 1064		-8
+	MemDOWN: 1056		-8
+	MemDOWN: 1048		-8
+	MemDOWN: 1040		-8
+	MemDOWN: 1032		-8
+MemUP: 1040			 8
+MemUP: 1048			 8
+MemUP: 1056			 8
+MemUP: 1064			 8
+MemUP: 1072			 8
+MemUP: 1080			 8
+MemUP: 1088			 8
+MemUP: 1096			 8
+MemUP: 1104			 8
+MemUP: 1112			 8
+MemUP: 1120			 8
+MemUP: 1128			 8
+MemUP: 1136			 8
+MemUP: 1144			 8
+MemUP: 1152			 8
+MemUP: 1160			 8
+	MemDOWN: 1152		-8
+	MemDOWN: 1144		-8
+MemUP: 1152			 8
+MemUP: 1160			 8
+	MemDOWN: 1152		-8
+MemUP: 1160			 8
+MemUP: 1168			 8
+	MemDOWN: 1160		-8
+	MemDOWN: 1152		-8
+MemUP: 1160			 8
+MemUP: 1168			 8
+	MemDOWN: 1160		-8
+MemUP: 1168			 8
+MemUP: 1176			 8
+	MemDOWN: 1168		-8
+MemUP: 1176			 8
+MemUP: 1184			 8
+	MemDOWN: 1176		-8
+	MemDOWN: 1168		-8
+MemUP: 1176			 8
+MemUP: 1184			 8
+	MemDOWN: 1176		-8
+MemUP: 1184			 8
+MemUP: 1192			 8
+	MemDOWN: 1184		-8
+MemUP: 1192			 8
+MemUP: 1200			 8
+	MemDOWN: 1192		-8
+	MemDOWN: 1184		-8
+MemUP: 1192			 8
+MemUP: 1200			 8
+	MemDOWN: 1192		-8
+MemUP: 1200			 8
+MemUP: 1208			 8
+	MemDOWN: 1200		-8
+MemUP: 1208			 8
+MemUP: 1216			 8
+	MemDOWN: 1208		-8
+	MemDOWN: 1200		-8
+MemUP: 1208			 8
+MemUP: 1216			 8
+	MemDOWN: 1208		-8
+MemUP: 1216			 8
+MemUP: 1224			 8
+	MemDOWN: 1216		-8
+MemUP: 1224			 8
+MemUP: 1232			 8
+	MemDOWN: 1224		-8
+	MemDOWN: 1216		-8
+MemUP: 1224			 8
+MemUP: 1232			 8
+	MemDOWN: 1224		-8
+MemUP: 1232			 8
+MemUP: 1240			 8
+	MemDOWN: 1232		-8
+MemUP: 1240			 8
+MemUP: 1248			 8
+	MemDOWN: 1240		-8
+	MemDOWN: 1232		-8
+MemUP: 1240			 8
+	MemDOWN: 1232		-8
+	MemDOWN: 1224		-8
+MemUP: 1232			 8
+	MemDOWN: 1224		-8
+	MemDOWN: 1216		-8
+MemUP: 1224			 8
+	MemDOWN: 1216		-8
+	MemDOWN: 1208		-8
+MemUP: 1216			 8
+	MemDOWN: 1208		-8
+	MemDOWN: 1200		-8
+MemUP: 1208			 8
+	MemDOWN: 1200		-8
+	MemDOWN: 1192		-8
+MemUP: 1200			 8
+	MemDOWN: 1192		-8
+	MemDOWN: 1184		-8
+MemUP: 1192			 8
+	MemDOWN: 1184		-8
+	MemDOWN: 1176		-8
+MemUP: 1184			 8
+	MemDOWN: 1176		-8
+	MemDOWN: 1168		-8
+MemUP: 1176			 8
+	MemDOWN: 1168		-8
+	MemDOWN: 1160		-8
+MemUP: 1168			 8
+	MemDOWN: 1160		-8
+	MemDOWN: 1152		-8
+MemUP: 1160			 8
+	MemDOWN: 1152		-8
+	MemDOWN: 1144		-8
+MemUP: 1152			 8
+	MemDOWN: 1144		-8
+	MemDOWN: 1136		-8
+MemUP: 1144			 8
+	MemDOWN: 1136		-8
+	MemDOWN: 1128		-8
+MemUP: 1136			 8
+	MemDOWN: 1128		-8
+	MemDOWN: 1120		-8
+MemUP: 1128			 8
+	MemDOWN: 1120		-8
+	MemDOWN: 1112		-8
+MemUP: 1120			 8
+	MemDOWN: 1112		-8
+	MemDOWN: 1104		-8
+MemUP: 1112			 8
+	MemDOWN: 1104		-8
+	MemDOWN: 1096		-8
+MemUP: 1104			 8
+	MemDOWN: 1096		-8
+	MemDOWN: 1088		-8
+MemUP: 1096			 8
+	MemDOWN: 1088		-8
+	MemDOWN: 1080		-8
+MemUP: 1088			 8
+	MemDOWN: 1080		-8
+	MemDOWN: 1072		-8
+MemUP: 1080			 8
+	MemDOWN: 1072		-8
+	MemDOWN: 1064		-8
+MemUP: 1072			 8
+	MemDOWN: 1064		-8
+	MemDOWN: 1056		-8
+MemUP: 1064			 8
+	MemDOWN: 1056		-8
+	MemDOWN: 1048		-8
+MemUP: 1056			 8
+	MemDOWN: 1048		-8
+	MemDOWN: 1040		-8
+MemUP: 1048			 8
+	MemDOWN: 1040		-8
+	MemDOWN: 1032		-8
+MemUP: 1040			 8
+	MemDOWN: 1032		-8
+	MemDOWN: 1024		-8
+MemUP: 1032			 8
+	MemDOWN: 1024		-8
+	MemDOWN: 1016		-8
+MemUP: 1024			 8
+	MemDOWN: 1016		-8
+	MemDOWN: 1008		-8
+MemUP: 1016			 8
+	MemDOWN: 1008		-8
+	MemDOWN: 1000		-8
+MemUP: 1008			 8
+	MemDOWN: 1000		-8
+	MemDOWN: 992		-8
+MemUP: 1000			 8
+	MemDOWN: 992		-8
+	MemDOWN: 984		-8
+MemUP: 992			 8
+	MemDOWN: 984		-8
+	MemDOWN: 976		-8
+MemUP: 984			 8
+	MemDOWN: 976		-8
+	MemDOWN: 968		-8
+MemUP: 976			 8
+	MemDOWN: 968		-8
+	MemDOWN: 960		-8
+MemUP: 968			 8
+	MemDOWN: 960		-8
+	MemDOWN: 952		-8
+MemUP: 960			 8
+	MemDOWN: 952		-8
+	MemDOWN: 944		-8
+MemUP: 952			 8
+	MemDOWN: 944		-8
+	MemDOWN: 936		-8
+MemUP: 944			 8
+	MemDOWN: 936		-8
+	MemDOWN: 928		-8
+MemUP: 936			 8
+	MemDOWN: 928		-8
+	MemDOWN: 920		-8
+MemUP: 928			 8
+	MemDOWN: 920		-8
+	MemDOWN: 912		-8
+MemUP: 920			 8
+	MemDOWN: 912		-8
+	MemDOWN: 904		-8
+MemUP: 912			 8
+	MemDOWN: 904		-8
+	MemDOWN: 896		-8
+MemUP: 904			 8
+	MemDOWN: 896		-8
+	MemDOWN: 888		-8
+MemUP: 896			 8
+	MemDOWN: 888		-8
+	MemDOWN: 880		-8
+MemUP: 888			 8
+	MemDOWN: 880		-8
+	MemDOWN: 872		-8
+	MemDOWN: 848		-24
+	MemDOWN: 824		-24
+	MemDOWN: 800		-24
+	MemDOWN: 776		-24
+	MemDOWN: 752		-24
+	MemDOWN: 728		-24
+	MemDOWN: 704		-24
+	MemDOWN: 680		-24
+	MemDOWN: 656		-24
+	MemDOWN: 632		-24
+	MemDOWN: 608		-24
+	MemDOWN: 584		-24
+	MemDOWN: 560		-24
+	MemDOWN: 536		-24
+	MemDOWN: 512		-24
+	MemDOWN: 488		-24
+	MemDOWN: 464		-24
+	MemDOWN: 440		-24
+	MemDOWN: 416		-24
+	MemDOWN: 392		-24
+	MemDOWN: 368		-24
+	MemDOWN: 344		-24
+	MemDOWN: 320		-24
+	MemDOWN: 296		-24
+	MemDOWN: 272		-24
+	MemDOWN: 264		-8
+	MemDOWN: 256		-8
+	MemDOWN: 248		-8
+	MemDOWN: 240		-8
+	MemDOWN: 232		-8
+	MemDOWN: 224		-8
+	MemDOWN: 216		-8
+	MemDOWN: 208		-8
+	MemDOWN: 200		-8
+	MemDOWN: 192		-8
+	MemDOWN: 184		-8
+	MemDOWN: 176		-8
+	MemDOWN: 168		-8
+	MemDOWN: 160		-8
+	MemDOWN: 152		-8
+	MemDOWN: 144		-8
+	MemDOWN: 136		-8
+	MemDOWN: 128		-8
+	MemDOWN: 120		-8
+	MemDOWN: 112		-8
+	MemDOWN: 104		-8
+	MemDOWN: 96		-8
+	MemDOWN: 88		-8
+	MemDOWN: 80		-8
+	MemDOWN: 72		-8
+	MemDOWN: 64		-8
+	MemDOWN: 56		-8
+	MemDOWN: 48		-8
+
+MemMax: 4176
