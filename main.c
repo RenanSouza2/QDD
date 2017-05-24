@@ -6,6 +6,8 @@
 int mem = 0, memMax = 0;
 FILE *fm;
 
+
+
 struct QDD
 {
     struct no *n;
@@ -15,7 +17,7 @@ struct QDD
 struct no
 {
     struct lista *l;
-    unsigned short tipo, nivel;  //Tipos 0 - número    1 - V    2 - R    3 - C
+    unsigned short nivel, tipo;
     float re, im;
     struct no *el, *th;
 };
@@ -26,6 +28,12 @@ struct lista
     struct no *n;
 };
 
+struct apply
+{
+    struct no *n1, *n2, *n;
+    struct apply *a;
+};
+
 
 
 typedef struct QDD QDD;
@@ -33,6 +41,8 @@ typedef struct QDD QDD;
 typedef struct no no;
 
 typedef struct lista lista;
+
+typedef struct apply apply;
 
 typedef unsigned short Short;
 
@@ -52,6 +62,11 @@ void aumenta_memoria(int m)
 void diminui_memoria(int m)
 {
     mem -= m;
+    if(mem<0)
+    {
+        printf("\n\nERRO");
+        exit(EXIT_FAILURE);
+    }
     fprintf(fm,"\n\tMemDOWN: %d\t\t%d",mem,-m);
 }
 
@@ -61,6 +76,11 @@ QDD* cria_QDD()
 {
     QDD *Q;
     Q = malloc(sizeof(QDD));
+    if(Q == NULL)
+    {
+        printf("\n\nERRO");
+        exit(EXIT_FAILURE);
+    }
     aumenta_memoria(sizeof(QDD));
     Q->n = NULL;
     Q->l = NULL;
@@ -71,6 +91,11 @@ no* cria_no(Short tipo, Short nivel, float re, float im)
 {
     no* n;
     n = malloc(sizeof(no));
+    if(n == NULL)
+    {
+        printf("\n\nERRO");
+        exit(EXIT_FAILURE);
+    }
     aumenta_memoria(sizeof(no));
     n->l = NULL;
     n->tipo = tipo;
@@ -93,6 +118,11 @@ lista* cria_no_lista()
 {
     lista *l;
     l = malloc(sizeof(lista));
+    if(l == NULL)
+    {
+        printf("\n\nERRO");
+        exit(EXIT_FAILURE);
+    }
     aumenta_memoria(sizeof(lista));
     if(l == NULL)
         exit(0);
@@ -114,7 +144,7 @@ void libera_no(no *n)
     diminui_memoria(sizeof(no));
     free(n);
 }
-
+typedef struct no no;
 void libera_no_lista(lista *l)
 {
     diminui_memoria(sizeof(lista));
@@ -930,18 +960,25 @@ int main()
 {
     fm = fopen("MemReport.txt","w");
 
-    QDD *Q1, *Q2, *Q3, *Q4;
-    Q1 = le_matriz("Had8.txt");
+    QDD *Q1, *Q2, *Q3;
+    Q1 = le_matriz("Had1.txt");
     reduz_QDD(Q1);
 
     Q2 = copia_QDD(Q1);
 
-    Q3 = produto_tensorial(Q1,Q2);
+    for(int i=2; i<100; i++)
+    {
+        Q3 = produto_tensorial(Q2,Q1);
+        libera_QDD(Q2);
+        Q2 = Q3;
+    }
+
+    fmostra_QDD_sozinho(Q2,"QDD.txt");
+
 
     libera_QDD(Q1);
     libera_QDD(Q2);
-    libera_QDD(Q3);
 
     fprintf(fm,"\n\nMemMax: %d",memMax);
-    free(fm);
+    fclose(fm);
 }

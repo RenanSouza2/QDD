@@ -1,5 +1,9 @@
 # depslib dependency file v1.0
-1495574434 source:c:\users\renan_000\documents\github\qdd\main.c
+1495645382 source:c:\users\renan\documents\github\qdd\main.c
 	<stdio.h>
 	<stdlib.h>
+
+1495643301 c:\users\renan\documents\github\qdd\structs.h
+
+1495643312 source:c:\users\renan\documents\github\qdd\structs.c
 
