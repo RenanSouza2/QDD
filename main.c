@@ -915,6 +915,7 @@ QDD* produto_tensorial(QDD *Q1, QDD *Q2)
         l = lc;
     }
 
+    libera_no(n0);
     libera_QDD(Q2a);
 
     reduz_lista(Q->l);
