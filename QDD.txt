@@ -1,665 +1,665 @@
 
 
-	Ligacao 0: 6790608
+	Ligacao 0: 9612248
 
-Endereco: 6790608
+Endereco: 9612248
 Tipo: Numero
 0.000000 0.000000 
 Ligacoes posteriores
 	else: 0
-	Then: 6790512
+	Then: 9611960
 
-	Ligacao 1: 6790512
+	Ligacao 1: 9611960
 
-Endereco: 6790512
+Endereco: 9611960
 Ligacoes anteriores:
-	Ligacao 0: 6790608
+	Ligacao 0: 9612248
 Tipo/nivel: R0
 Ligacoes posteriores
-	else: 6791056
-	Then: 6789552
+	else: 9612056
+	Then: 9613560
 
-	Ligacao 2: 6791056
+	Ligacao 2: 9612056
 
-Endereco: 6791056
+Endereco: 9612056
 Ligacoes anteriores:
-	Ligacao 0: 6789552
-	Ligacao 1: 6790512
+	Ligacao 0: 9613560
+	Ligacao 1: 9611960
 Tipo/nivel: R1
 Ligacoes posteriores
-	else: 6790768
-	Then: 6789968
+	else: 9612600
+	Then: 9613368
 
-	Ligacao 3: 6790768
+	Ligacao 3: 9612600
 
-Endereco: 6790768
+Endereco: 9612600
 Ligacoes anteriores:
-	Ligacao 0: 6789680
-	Ligacao 1: 6789968
-	Ligacao 2: 6791056
+	Ligacao 0: 9613528
+	Ligacao 1: 9613368
+	Ligacao 2: 9612056
 Tipo/nivel: R2
 Ligacoes posteriores
-	else: 6790928
-	Then: 6790384
+	else: 9612536
+	Then: 9613112
 
-	Ligacao 4: 6790928
+	Ligacao 4: 9612536
 
-Endereco: 6790928
+Endereco: 9612536
 Ligacoes anteriores:
-	Ligacao 0: 6789488
-	Ligacao 1: 6790384
-	Ligacao 2: 6790768
+	Ligacao 0: 9613432
+	Ligacao 1: 9613112
+	Ligacao 2: 9612600
 Tipo/nivel: R3
 Ligacoes posteriores
-	else: 6790832
-	Then: 6789936
+	else: 9611992
+	Then: 9612888
 
-	Ligacao 5: 6790832
+	Ligacao 5: 9611992
 
-Endereco: 6790832
+Endereco: 9611992
 Ligacoes anteriores:
-	Ligacao 0: 6790416
-	Ligacao 1: 6789936
-	Ligacao 2: 6790928
+	Ligacao 0: 9613336
+	Ligacao 1: 9612888
+	Ligacao 2: 9612536
 Tipo/nivel: R4
 Ligacoes posteriores
-	else: 6790736
-	Then: 6790256
+	else: 9611928
+	Then: 9613176
 
-	Ligacao 6: 6790736
+	Ligacao 6: 9611928
 
-Endereco: 6790736
+Endereco: 9611928
 Ligacoes anteriores:
-	Ligacao 0: 6790320
-	Ligacao 1: 6790256
-	Ligacao 2: 6790832
+	Ligacao 0: 9613080
+	Ligacao 1: 9613176
+	Ligacao 2: 9611992
 Tipo/nivel: R5
 Ligacoes posteriores
-	else: 6791024
-	Then: 6790096
+	else: 9611768
+	Then: 9613016
 
-	Ligacao 7: 6791024
+	Ligacao 7: 9611768
 
-Endereco: 6791024
+Endereco: 9611768
 Ligacoes anteriores:
-	Ligacao 0: 6789872
-	Ligacao 1: 6790096
-	Ligacao 2: 6790736
+	Ligacao 0: 9613304
+	Ligacao 1: 9613016
+	Ligacao 2: 9611928
 Tipo/nivel: R6
 Ligacoes posteriores
-	else: 6790544
-	Then: 6790000
+	else: 9612664
+	Then: 9613688
 
-	Ligacao 8: 6790544
+	Ligacao 8: 9612664
 
-Endereco: 6790544
+Endereco: 9612664
 Ligacoes anteriores:
-	Ligacao 0: 6790128
-	Ligacao 1: 6790000
-	Ligacao 2: 6791024
+	Ligacao 0: 9613208
+	Ligacao 1: 9613688
+	Ligacao 2: 9611768
 Tipo/nivel: R7
 Ligacoes posteriores
-	else: 6790864
-	Then: 6789584
+	else: 9611832
+	Then: 9612760
 
-	Ligacao 9: 6790864
+	Ligacao 9: 9611832
 
-Endereco: 6790864
+Endereco: 9611832
 Ligacoes anteriores:
-	Ligacao 0: 6789712
-	Ligacao 1: 6789584
-	Ligacao 2: 6790544
+	Ligacao 0: 9612824
+	Ligacao 1: 9612760
+	Ligacao 2: 9612664
 Tipo/nivel: R8
 Ligacoes posteriores
-	else: 6790640
-	Then: 6789520
+	else: 9612280
+	Then: 9613272
 
-	Ligacao 10: 6790640
+	Ligacao 10: 9612280
 
-Endereco: 6790640
+Endereco: 9612280
 Ligacoes anteriores:
-	Ligacao 0: 6790064
-	Ligacao 1: 6789520
-	Ligacao 2: 6790864
+	Ligacao 0: 9612792
+	Ligacao 1: 9613272
+	Ligacao 2: 9611832
 Tipo/nivel: R9
 Ligacoes posteriores
-	else: 6790576
-	Then: 6790032
+	else: 9612216
+	Then: 9613592
 
-	Ligacao 11: 6790576
+	Ligacao 11: 9612216
 
-Endereco: 6790576
+Endereco: 9612216
 Ligacoes anteriores:
-	Ligacao 0: 6789648
-	Ligacao 1: 6790032
-	Ligacao 2: 6790640
+	Ligacao 0: 9612984
+	Ligacao 1: 9613592
+	Ligacao 2: 9612280
 Tipo/nivel: R10
 Ligacoes posteriores
-	else: 6791376
-	Then: 6791312
+	else: 9612440
+	Then: 9612632
 
-	Ligacao 12: 6791376
+	Ligacao 12: 9612440
 
-Endereco: 6791376
+Endereco: 9612440
 Ligacoes anteriores:
-	Ligacao 0: 6789776
-	Ligacao 1: 6791312
-	Ligacao 2: 6790576
+	Ligacao 0: 9613656
+	Ligacao 1: 9612632
+	Ligacao 2: 9612216
 Tipo/nivel: R11
 Ligacoes posteriores
-	else: 6791088
-	Then: 6791280
+	else: 9611800
+	Then: 9612344
 
-	Ligacao 13: 6791088
+	Ligacao 13: 9611800
 
-Endereco: 6791088
+Endereco: 9611800
 Ligacoes anteriores:
-	Ligacao 0: 6789744
-	Ligacao 1: 6791280
-	Ligacao 2: 6791376
+	Ligacao 0: 9612728
+	Ligacao 1: 9612344
+	Ligacao 2: 9612440
 Tipo/nivel: R12
 Ligacoes posteriores
-	else: 6790960
-	Then: 6790896
+	else: 9611736
+	Then: 9612152
 
-	Ligacao 14: 6790960
+	Ligacao 14: 9611736
 
-Endereco: 6790960
+Endereco: 9611736
 Ligacoes anteriores:
-	Ligacao 0: 6791248
-	Ligacao 1: 6790896
-	Ligacao 2: 6791088
+	Ligacao 0: 9612568
+	Ligacao 1: 9612152
+	Ligacao 2: 9611800
 Tipo/nivel: R13
 Ligacoes posteriores
-	else: 6790800
-	Then: 6790672
+	else: 9612472
+	Then: 9611864
 
-	Ligacao 15: 6790800
+	Ligacao 15: 9612472
 
-Endereco: 6790800
+Endereco: 9612472
 Ligacoes anteriores:
-	Ligacao 0: 6791408
-	Ligacao 1: 6790672
-	Ligacao 2: 6790960
+	Ligacao 0: 9612088
+	Ligacao 1: 9611864
+	Ligacao 2: 9611736
 Tipo/nivel: R14
 Ligacoes posteriores
-	else: 6791120
-	Then: 6791152
+	else: 9611896
+	Then: 9612120
 
-	Ligacao 16: 6791120
+	Ligacao 16: 9611896
 
-Endereco: 6791120
+Endereco: 9611896
 Ligacoes anteriores:
-	Ligacao 0: 6791344
-	Ligacao 1: 6791152
-	Ligacao 2: 6790800
+	Ligacao 0: 9612312
+	Ligacao 1: 9612120
+	Ligacao 2: 9612472
 Tipo: Numero
 0.000031 -0.000000 
 
-	Ligacao 17: 6791152
+	Ligacao 17: 9612120
 
-Endereco: 6791152
+Endereco: 9612120
 Ligacoes anteriores:
-	Ligacao 0: 6790800
+	Ligacao 0: 9612472
 Tipo/nivel: C14
 Ligacoes posteriores
-	else: 6791120
-	Then: 6790704
+	else: 9611896
+	Then: 9612184
 
-	Ligacao 18: 6790704
+	Ligacao 18: 9612184
 
-Endereco: 6790704
+Endereco: 9612184
 Ligacoes anteriores:
-	Ligacao 0: 6791344
-	Ligacao 1: 6790992
-	Ligacao 2: 6791152
+	Ligacao 0: 9612312
+	Ligacao 1: 9612504
+	Ligacao 2: 9612120
 Tipo: Numero
 -0.000031 0.000000 
 
-	Ligacao 19: 6790672
+	Ligacao 19: 9611864
 
-Endereco: 6790672
+Endereco: 9611864
 Ligacoes anteriores:
-	Ligacao 0: 6790960
+	Ligacao 0: 9611736
 Tipo/nivel: C13
 Ligacoes posteriores
-	else: 6790800
-	Then: 6790992
+	else: 9612472
+	Then: 9612504
 
-	Ligacao 20: 6790992
+	Ligacao 20: 9612504
 
-Endereco: 6790992
+Endereco: 9612504
 Ligacoes anteriores:
-	Ligacao 0: 6791408
-	Ligacao 1: 6791184
-	Ligacao 2: 6790672
+	Ligacao 0: 9612088
+	Ligacao 1: 9612376
+	Ligacao 2: 9611864
 Tipo/nivel: R14
 Ligacoes posteriores
-	else: 6790704
-	Then: 6791344
+	else: 9612184
+	Then: 9612312
 
-	Ligacao 21: 6791344
+	Ligacao 21: 9612312
 
-Endereco: 6791344
+Endereco: 9612312
 Ligacoes anteriores:
-	Ligacao 0: 6790992
+	Ligacao 0: 9612504
 Tipo/nivel: C14
 Ligacoes posteriores
-	else: 6790704
-	Then: 6791120
+	else: 9612184
+	Then: 9611896
 
-	Ligacao 22: 6790896
+	Ligacao 22: 9612152
 
-Endereco: 6790896
+Endereco: 9612152
 Ligacoes anteriores:
-	Ligacao 0: 6791088
+	Ligacao 0: 9611800
 Tipo/nivel: C12
 Ligacoes posteriores
-	else: 6790960
-	Then: 6791184
+	else: 9611736
+	Then: 9612376
 
-	Ligacao 23: 6791184
+	Ligacao 23: 9612376
 
-Endereco: 6791184
+Endereco: 9612376
 Ligacoes anteriores:
-	Ligacao 0: 6791248
-	Ligacao 1: 6791216
-	Ligacao 2: 6790896
+	Ligacao 0: 9612568
+	Ligacao 1: 9612408
+	Ligacao 2: 9612152
 Tipo/nivel: R13
 Ligacoes posteriores
-	else: 6790992
-	Then: 6791408
+	else: 9612504
+	Then: 9612088
 
-	Ligacao 24: 6791408
+	Ligacao 24: 9612088
 
-Endereco: 6791408
+Endereco: 9612088
 Ligacoes anteriores:
-	Ligacao 0: 6791184
+	Ligacao 0: 9612376
 Tipo/nivel: C13
 Ligacoes posteriores
-	else: 6790992
-	Then: 6790800
+	else: 9612504
+	Then: 9612472
 
-	Ligacao 25: 6791280
+	Ligacao 25: 9612344
 
-Endereco: 6791280
+Endereco: 9612344
 Ligacoes anteriores:
-	Ligacao 0: 6791376
+	Ligacao 0: 9612440
 Tipo/nivel: C11
 Ligacoes posteriores
-	else: 6791088
-	Then: 6791216
+	else: 9611800
+	Then: 9612408
 
-	Ligacao 26: 6791216
+	Ligacao 26: 9612408
 
-Endereco: 6791216
+Endereco: 9612408
 Ligacoes anteriores:
-	Ligacao 0: 6789744
-	Ligacao 1: 6791440
-	Ligacao 2: 6791280
+	Ligacao 0: 9612728
+	Ligacao 1: 9612696
+	Ligacao 2: 9612344
 Tipo/nivel: R12
 Ligacoes posteriores
-	else: 6791184
-	Then: 6791248
+	else: 9612376
+	Then: 9612568
 
-	Ligacao 27: 6791248
+	Ligacao 27: 9612568
 
-Endereco: 6791248
+Endereco: 9612568
 Ligacoes anteriores:
-	Ligacao 0: 6791216
+	Ligacao 0: 9612408
 Tipo/nivel: C12
 Ligacoes posteriores
-	else: 6791184
-	Then: 6790960
+	else: 9612376
+	Then: 9611736
 
-	Ligacao 28: 6791312
+	Ligacao 28: 9612632
 
-Endereco: 6791312
+Endereco: 9612632
 Ligacoes anteriores:
-	Ligacao 0: 6790576
+	Ligacao 0: 9612216
 Tipo/nivel: C10
 Ligacoes posteriores
-	else: 6791376
-	Then: 6791440
+	else: 9612440
+	Then: 9612696
 
-	Ligacao 29: 6791440
+	Ligacao 29: 9612696
 
-Endereco: 6791440
+Endereco: 9612696
 Ligacoes anteriores:
-	Ligacao 0: 6789776
-	Ligacao 1: 6790192
-	Ligacao 2: 6791312
+	Ligacao 0: 9613656
+	Ligacao 1: 9613240
+	Ligacao 2: 9612632
 Tipo/nivel: R11
 Ligacoes posteriores
-	else: 6791216
-	Then: 6789744
+	else: 9612408
+	Then: 9612728
 
-	Ligacao 30: 6789744
+	Ligacao 30: 9612728
 
-Endereco: 6789744
+Endereco: 9612728
 Ligacoes anteriores:
-	Ligacao 0: 6791440
+	Ligacao 0: 9612696
 Tipo/nivel: C11
 Ligacoes posteriores
-	else: 6791216
-	Then: 6791088
+	else: 9612408
+	Then: 9611800
 
-	Ligacao 31: 6790032
+	Ligacao 31: 9613592
 
-Endereco: 6790032
+Endereco: 9613592
 Ligacoes anteriores:
-	Ligacao 0: 6790640
+	Ligacao 0: 9612280
 Tipo/nivel: C9
 Ligacoes posteriores
-	else: 6790576
-	Then: 6790192
+	else: 9612216
+	Then: 9613240
 
-	Ligacao 32: 6790192
+	Ligacao 32: 9613240
 
-Endereco: 6790192
+Endereco: 9613240
 Ligacoes anteriores:
-	Ligacao 0: 6789648
-	Ligacao 1: 6790160
-	Ligacao 2: 6790032
+	Ligacao 0: 9612984
+	Ligacao 1: 9613624
+	Ligacao 2: 9613592
 Tipo/nivel: R10
 Ligacoes posteriores
-	else: 6791440
-	Then: 6789776
+	else: 9612696
+	Then: 9613656
 
-	Ligacao 33: 6789776
+	Ligacao 33: 9613656
 
-Endereco: 6789776
+Endereco: 9613656
 Ligacoes anteriores:
-	Ligacao 0: 6790192
+	Ligacao 0: 9613240
 Tipo/nivel: C10
 Ligacoes posteriores
-	else: 6791440
-	Then: 6791376
+	else: 9612696
+	Then: 9612440
 
-	Ligacao 34: 6789520
+	Ligacao 34: 9613272
 
-Endereco: 6789520
+Endereco: 9613272
 Ligacoes anteriores:
-	Ligacao 0: 6790864
+	Ligacao 0: 9611832
 Tipo/nivel: C8
 Ligacoes posteriores
-	else: 6790640
-	Then: 6790160
+	else: 9612280
+	Then: 9613624
 
-	Ligacao 35: 6790160
+	Ligacao 35: 9613624
 
-Endereco: 6790160
+Endereco: 9613624
 Ligacoes anteriores:
-	Ligacao 0: 6790064
-	Ligacao 1: 6789840
-	Ligacao 2: 6789520
+	Ligacao 0: 9612792
+	Ligacao 1: 9612952
+	Ligacao 2: 9613272
 Tipo/nivel: R9
 Ligacoes posteriores
-	else: 6790192
-	Then: 6789648
+	else: 9613240
+	Then: 9612984
 
-	Ligacao 36: 6789648
+	Ligacao 36: 9612984
 
-Endereco: 6789648
+Endereco: 9612984
 Ligacoes anteriores:
-	Ligacao 0: 6790160
+	Ligacao 0: 9613624
 Tipo/nivel: C9
 Ligacoes posteriores
-	else: 6790192
-	Then: 6790576
+	else: 9613240
+	Then: 9612216
 
-	Ligacao 37: 6789584
+	Ligacao 37: 9612760
 
-Endereco: 6789584
+Endereco: 9612760
 Ligacoes anteriores:
-	Ligacao 0: 6790544
+	Ligacao 0: 9612664
 Tipo/nivel: C7
 Ligacoes posteriores
-	else: 6790864
-	Then: 6789840
+	else: 9611832
+	Then: 9612952
 
-	Ligacao 38: 6789840
+	Ligacao 38: 9612952
 
-Endereco: 6789840
+Endereco: 9612952
 Ligacoes anteriores:
-	Ligacao 0: 6789712
-	Ligacao 1: 6790224
-	Ligacao 2: 6789584
+	Ligacao 0: 9612824
+	Ligacao 1: 9612920
+	Ligacao 2: 9612760
 Tipo/nivel: R8
 Ligacoes posteriores
-	else: 6790160
-	Then: 6790064
+	else: 9613624
+	Then: 9612792
 
-	Ligacao 39: 6790064
+	Ligacao 39: 9612792
 
-Endereco: 6790064
+Endereco: 9612792
 Ligacoes anteriores:
-	Ligacao 0: 6789840
+	Ligacao 0: 9612952
 Tipo/nivel: C8
 Ligacoes posteriores
-	else: 6790160
-	Then: 6790640
+	else: 9613624
+	Then: 9612280
 
-	Ligacao 40: 6790000
+	Ligacao 40: 9613688
 
-Endereco: 6790000
+Endereco: 9613688
 Ligacoes anteriores:
-	Ligacao 0: 6791024
+	Ligacao 0: 9611768
 Tipo/nivel: C6
 Ligacoes posteriores
-	else: 6790544
-	Then: 6790224
+	else: 9612664
+	Then: 9612920
 
-	Ligacao 41: 6790224
+	Ligacao 41: 9612920
 
-Endereco: 6790224
+Endereco: 9612920
 Ligacoes anteriores:
-	Ligacao 0: 6790128
-	Ligacao 1: 6789808
-	Ligacao 2: 6790000
+	Ligacao 0: 9613208
+	Ligacao 1: 9612856
+	Ligacao 2: 9613688
 Tipo/nivel: R7
 Ligacoes posteriores
-	else: 6789840
-	Then: 6789712
+	else: 9612952
+	Then: 9612824
 
-	Ligacao 42: 6789712
+	Ligacao 42: 9612824
 
-Endereco: 6789712
+Endereco: 9612824
 Ligacoes anteriores:
-	Ligacao 0: 6790224
+	Ligacao 0: 9612920
 Tipo/nivel: C7
 Ligacoes posteriores
-	else: 6789840
-	Then: 6790864
+	else: 9612952
+	Then: 9611832
 
-	Ligacao 43: 6790096
+	Ligacao 43: 9613016
 
-Endereco: 6790096
+Endereco: 9613016
 Ligacoes anteriores:
-	Ligacao 0: 6790736
+	Ligacao 0: 9611928
 Tipo/nivel: C5
 Ligacoes posteriores
-	else: 6791024
-	Then: 6789808
+	else: 9611768
+	Then: 9612856
 
-	Ligacao 44: 6789808
+	Ligacao 44: 9612856
 
-Endereco: 6789808
+Endereco: 9612856
 Ligacoes anteriores:
-	Ligacao 0: 6789872
-	Ligacao 1: 6790288
-	Ligacao 2: 6790096
+	Ligacao 0: 9613304
+	Ligacao 1: 9613496
+	Ligacao 2: 9613016
 Tipo/nivel: R6
 Ligacoes posteriores
-	else: 6790224
-	Then: 6790128
+	else: 9612920
+	Then: 9613208
 
-	Ligacao 45: 6790128
+	Ligacao 45: 9613208
 
-Endereco: 6790128
+Endereco: 9613208
 Ligacoes anteriores:
-	Ligacao 0: 6789808
+	Ligacao 0: 9612856
 Tipo/nivel: C6
 Ligacoes posteriores
-	else: 6790224
-	Then: 6790544
+	else: 9612920
+	Then: 9612664
 
-	Ligacao 46: 6790256
+	Ligacao 46: 9613176
 
-Endereco: 6790256
+Endereco: 9613176
 Ligacoes anteriores:
-	Ligacao 0: 6790832
+	Ligacao 0: 9611992
 Tipo/nivel: C4
 Ligacoes posteriores
-	else: 6790736
-	Then: 6790288
+	else: 9611928
+	Then: 9613496
 
-	Ligacao 47: 6790288
+	Ligacao 47: 9613496
 
-Endereco: 6790288
+Endereco: 9613496
 Ligacoes anteriores:
-	Ligacao 0: 6790320
-	Ligacao 1: 6790352
-	Ligacao 2: 6790256
+	Ligacao 0: 9613080
+	Ligacao 1: 9613048
+	Ligacao 2: 9613176
 Tipo/nivel: R5
 Ligacoes posteriores
-	else: 6789808
-	Then: 6789872
+	else: 9612856
+	Then: 9613304
 
-	Ligacao 48: 6789872
+	Ligacao 48: 9613304
 
-Endereco: 6789872
+Endereco: 9613304
 Ligacoes anteriores:
-	Ligacao 0: 6790288
+	Ligacao 0: 9613496
 Tipo/nivel: C5
 Ligacoes posteriores
-	else: 6789808
-	Then: 6791024
+	else: 9612856
+	Then: 9611768
 
-	Ligacao 49: 6789936
+	Ligacao 49: 9612888
 
-Endereco: 6789936
+Endereco: 9612888
 Ligacoes anteriores:
-	Ligacao 0: 6790928
+	Ligacao 0: 9612536
 Tipo/nivel: C3
 Ligacoes posteriores
-	else: 6790832
-	Then: 6790352
+	else: 9611992
+	Then: 9613048
 
-	Ligacao 50: 6790352
+	Ligacao 50: 9613048
 
-Endereco: 6790352
+Endereco: 9613048
 Ligacoes anteriores:
-	Ligacao 0: 6790416
-	Ligacao 1: 6789904
-	Ligacao 2: 6789936
+	Ligacao 0: 9613336
+	Ligacao 1: 9613144
+	Ligacao 2: 9612888
 Tipo/nivel: R4
 Ligacoes posteriores
-	else: 6790288
-	Then: 6790320
+	else: 9613496
+	Then: 9613080
 
-	Ligacao 51: 6790320
+	Ligacao 51: 9613080
 
-Endereco: 6790320
+Endereco: 9613080
 Ligacoes anteriores:
-	Ligacao 0: 6790352
+	Ligacao 0: 9613048
 Tipo/nivel: C4
 Ligacoes posteriores
-	else: 6790288
-	Then: 6790736
+	else: 9613496
+	Then: 9611928
 
-	Ligacao 52: 6790384
+	Ligacao 52: 9613112
 
-Endereco: 6790384
+Endereco: 9613112
 Ligacoes anteriores:
-	Ligacao 0: 6790768
+	Ligacao 0: 9612600
 Tipo/nivel: C2
 Ligacoes posteriores
-	else: 6790928
-	Then: 6789904
+	else: 9612536
+	Then: 9613144
 
-	Ligacao 53: 6789904
+	Ligacao 53: 9613144
 
-Endereco: 6789904
+Endereco: 9613144
 Ligacoes anteriores:
-	Ligacao 0: 6789488
-	Ligacao 1: 6790480
-	Ligacao 2: 6790384
+	Ligacao 0: 9613432
+	Ligacao 1: 9613400
+	Ligacao 2: 9613112
 Tipo/nivel: R3
 Ligacoes posteriores
-	else: 6790352
-	Then: 6790416
+	else: 9613048
+	Then: 9613336
 
-	Ligacao 54: 6790416
+	Ligacao 54: 9613336
 
-Endereco: 6790416
+Endereco: 9613336
 Ligacoes anteriores:
-	Ligacao 0: 6789904
+	Ligacao 0: 9613144
 Tipo/nivel: C3
 Ligacoes posteriores
-	else: 6790352
-	Then: 6790832
+	else: 9613048
+	Then: 9611992
 
-	Ligacao 55: 6789968
+	Ligacao 55: 9613368
 
-Endereco: 6789968
+Endereco: 9613368
 Ligacoes anteriores:
-	Ligacao 0: 6791056
+	Ligacao 0: 9612056
 Tipo/nivel: C1
 Ligacoes posteriores
-	else: 6790768
-	Then: 6790480
+	else: 9612600
+	Then: 9613400
 
-	Ligacao 56: 6790480
+	Ligacao 56: 9613400
 
-Endereco: 6790480
+Endereco: 9613400
 Ligacoes anteriores:
-	Ligacao 0: 6789680
-	Ligacao 1: 6789616
-	Ligacao 2: 6789968
+	Ligacao 0: 9613528
+	Ligacao 1: 9613464
+	Ligacao 2: 9613368
 Tipo/nivel: R2
 Ligacoes posteriores
-	else: 6789904
-	Then: 6789488
+	else: 9613144
+	Then: 9613432
 
-	Ligacao 57: 6789488
+	Ligacao 57: 9613432
 
-Endereco: 6789488
+Endereco: 9613432
 Ligacoes anteriores:
-	Ligacao 0: 6790480
+	Ligacao 0: 9613400
 Tipo/nivel: C2
 Ligacoes posteriores
-	else: 6789904
-	Then: 6790928
+	else: 9613144
+	Then: 9612536
 
-	Ligacao 58: 6789552
+	Ligacao 58: 9613560
 
-Endereco: 6789552
+Endereco: 9613560
 Ligacoes anteriores:
-	Ligacao 0: 6790512
+	Ligacao 0: 9611960
 Tipo/nivel: C0
 Ligacoes posteriores
-	else: 6791056
-	Then: 6789616
+	else: 9612056
+	Then: 9613464
 
-	Ligacao 59: 6789616
+	Ligacao 59: 9613464
 
-Endereco: 6789616
+Endereco: 9613464
 Ligacoes anteriores:
-	Ligacao 0: 6789552
+	Ligacao 0: 9613560
 Tipo/nivel: R1
 Ligacoes posteriores
-	else: 6790480
-	Then: 6789680
+	else: 9613400
+	Then: 9613528
 
-	Ligacao 60: 6789680
+	Ligacao 60: 9613528
 
-Endereco: 6789680
+Endereco: 9613528
 Ligacoes anteriores:
-	Ligacao 0: 6789616
+	Ligacao 0: 9613464
 Tipo/nivel: C1
 Ligacoes posteriores
-	else: 6790480
-	Then: 6790768
+	else: 9613400
+	Then: 9612600
 
-	Ligacao 0: 6791120
+	Ligacao 0: 9611896

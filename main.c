@@ -1,7 +1,7 @@
 #include<stdio.h>
 #include<stdlib.h>
 
-#define eps 5e-5
+#define eps 1e-6
 
 int mem = 0, memMax = 0;
 FILE *fm;
@@ -131,6 +131,16 @@ lista* cria_no_lista()
     return l;
 }
 
+apply* cria_apply()
+{
+    apply *a;
+    a = malloc(sizeof(apply));
+    a->n1 = NULL;
+    a->n2 = NULL;
+    a->n = NULL;
+    a->a = NULL;
+    return a;
+}
 
 
 void libera_no_QDD(QDD *Q)
@@ -144,7 +154,7 @@ void libera_no(no *n)
     diminui_memoria(sizeof(no));
     free(n);
 }
-typedef struct no no;
+
 void libera_no_lista(lista *l)
 {
     diminui_memoria(sizeof(lista));
@@ -196,24 +206,24 @@ void mostra_no(no *n)
         printf("Ligacoes anteriores:\n");
         mostra_lista(n->l);
     }
-    printf("Tipo");
+    printf("Tipo/nivel");
     switch(n->tipo)
     {
         case 0:
-        printf(": Numero\n");
+        printf(": Numero  %d\n",n->nivel);
         printf("%f %f \n",n->re,n->im);
         break;
 
         case 1:
-        printf("/nivel: V%d\n",n->nivel);
+        printf(": V%d\n",n->nivel);
         break;
 
         case 2:
-        printf("/nivel: R%d\n",n->nivel);
+        printf(": R%d\n",n->nivel);
         break;
 
         case 3:
-        printf("/nivel: C%d\n",n->nivel);
+        printf(": C%d\n",n->nivel);
         break;
     }
     if((n->el != NULL)||(n->th != NULL))
@@ -900,6 +910,8 @@ QDD* produto_tensorial(QDD *Q1, QDD *Q2)
         (lc->n->nivel) += nqbit;
     libera_lista(l2);
 
+    nqbit+=Q2->l->n->nivel;
+
     QDD *Q2b;
     no *n1, *n2, *naux, *n0;
     n0 = cria_no_vazio();
@@ -908,6 +920,7 @@ QDD* produto_tensorial(QDD *Q1, QDD *Q2)
         n1 = l->n;
         if(compara(n0,n1))
         {
+            n1->nivel = nqbit;
             l2 = l->l;
             l->l = Q->l;
             Q->l = l;
@@ -920,6 +933,7 @@ QDD* produto_tensorial(QDD *Q1, QDD *Q2)
             {
                 n2 = lc->n;
                 naux = produto_complexo(n1,n2);
+                naux->nivel = nqbit;
                 transfere_conexao(naux,n2);
                 lc->n = naux;
                 libera_no(n2);
@@ -956,28 +970,114 @@ QDD* produto_tensorial(QDD *Q1, QDD *Q2)
 
 
 
-int main()
+QDD* had()
 {
-    fm = fopen("MemReport.txt","w");
+    Short i, j, k;
 
+    Short N1, N2, N3;
+    N1 = 1;
+    N2 = 2;
+    N3 = 2;
+
+    lista **L;
+    L = malloc(N3*sizeof(lista*));
+    aumenta_memoria(N3*sizeof(lista*));
+    for(i=0; i<N3; i++)
+    {
+        L[i] = cria_no_lista();
+        L[i]->n = cria_no(0,N1,(1-2*i)*0.707106781,0);
+    }
+    for(i=0; i<N3-1; i++)
+        L[i]->l = L[i+1];
+
+    Short **M;
+    M = malloc(N2*sizeof(Short*));
+    aumenta_memoria(N2*sizeof(Short*));
+    for(i=0; i<N2; i++)
+    {
+        M[i] = malloc(N2*sizeof(Short));
+        aumenta_memoria(N2*sizeof(Short));
+    }
+    M[0][0] = 0;
+    M[0][1] = 0;
+    M[1][0] = 0;
+    M[1][1] = 1;
+
+    no **N;
+    N = malloc((N2*N2-1)*sizeof(no*));
+    aumenta_memoria((N2*N2-1)*sizeof(no*));
+
+    Short exp, ind;
+    exp = 1;
+    ind = 0;
+    for(i=0; i<N1; i++)
+    {
+        for(j=2; j<=3; j++)
+        {
+            for(k=0; k<exp; k++)
+            {
+                N[ind] = cria_no(j,i,0,0);
+                ind++;
+            }
+            exp *= 2;
+        }
+    }
+
+    for(i=0; i<(N2*N2-1)/2; i++)
+        conecta_DOIS(N[i],N[2*i+1],N[2*i+2]);
+
+    completa_QDD(N[0],0,0,N2/2,M,L);
+
+    QDD *Q;
+    Q = cria_QDD();
+    Q->n = cria_no_vazio();
+    conecta_UM(Q->n,N[0],1);
+    Q->n = N[0];
+    Q->l = L[0];
+
+    free(N);
+    diminui_memoria((N2*N2-1)*sizeof(no*));
+    free(L);
+    diminui_memoria(N3*sizeof(lista*));
+    for(i=0; i<N2; i++)
+    {
+        free(M[i]);
+        diminui_memoria(N2*sizeof(Short));
+    }
+    free(M);
+    diminui_memoria(N2*sizeof(Short*));
+
+    reduz_QDD(Q);
+
+    return Q;
+}
+
+QDD* had_n(Short i)
+{
+    short j;
     QDD *Q1, *Q2, *Q3;
-    Q1 = le_matriz("Had1.txt");
-    reduz_QDD(Q1);
-
+    Q1 = had();
     Q2 = copia_QDD(Q1);
-
-    for(int i=2; i<100; i++)
+    for(j = 1; j< i ; j++)
     {
         Q3 = produto_tensorial(Q2,Q1);
         libera_QDD(Q2);
         Q2 = Q3;
     }
-
-    fmostra_QDD_sozinho(Q2,"QDD.txt");
-
-
     libera_QDD(Q1);
-    libera_QDD(Q2);
+    return Q2;
+}
+
+
+
+int main()
+{
+    fm = fopen("MemReport.txt","w");
+
+    QDD *Q;
+    Q = had_n(100);
+    mostra_QDD(Q);
+
 
     fprintf(fm,"\n\nMemMax: %d",memMax);
     fclose(fm);
