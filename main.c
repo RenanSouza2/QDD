@@ -30,8 +30,8 @@ struct lista
 
 struct apply
 {
-    struct no *n1, *n2, *n;
-    struct apply *a;
+    struct no    *n, *n1, *n2;
+    struct apply *a, *a1, *a2;
 };
 
 
@@ -64,7 +64,7 @@ void diminui_memoria(int m)
     mem -= m;
     if(mem<0)
     {
-        printf("\n\nERRO");
+        printf("\n\nERRO MEM");
         exit(EXIT_FAILURE);
     }
     fprintf(fm,"\n\tMemDOWN: %d\t\t%d",mem,-m);
@@ -78,7 +78,7 @@ QDD* cria_QDD()
     Q = malloc(sizeof(QDD));
     if(Q == NULL)
     {
-        printf("\n\nERRO");
+        printf("\n\nERRO QDD");
         exit(EXIT_FAILURE);
     }
     aumenta_memoria(sizeof(QDD));
@@ -93,7 +93,7 @@ no* cria_no(Short tipo, Short nivel, float re, float im)
     n = malloc(sizeof(no));
     if(n == NULL)
     {
-        printf("\n\nERRO");
+        printf("\n\nERRO NO");
         exit(EXIT_FAILURE);
     }
     aumenta_memoria(sizeof(no));
@@ -120,7 +120,7 @@ lista* cria_no_lista()
     l = malloc(sizeof(lista));
     if(l == NULL)
     {
-        printf("\n\nERRO");
+        printf("\n\nERRO LISTA");
         exit(EXIT_FAILURE);
     }
     aumenta_memoria(sizeof(lista));
@@ -135,12 +135,18 @@ apply* cria_apply()
 {
     apply *a;
     a = malloc(sizeof(apply));
+
+    a->n = NULL;
     a->n1 = NULL;
     a->n2 = NULL;
-    a->n = NULL;
+
     a->a = NULL;
+    a->a1 = NULL;
+    a->a2 = NULL;
+
     return a;
 }
+
 
 
 void libera_no_QDD(QDD *Q)
@@ -477,6 +483,105 @@ void libera_QDD(QDD *Q)
 
 
 
+no* copia_no(no *n1)
+{
+    no *n2;
+    n2 = cria_no(n1->tipo,n1->nivel,n1->re,n1->im);
+    return n2;
+}
+
+Short compara(no *n1, no *n2)
+{
+    float re, im;
+    re = (n1->re)-(n2->re);
+    im = (n1->im)-(n2->im);
+    if(re<-eps)
+        return 0;
+    if(re>eps)
+        return 0;
+    if(im<-eps)
+        return 0;
+    if(im>eps)
+        return 0;
+    return 1;
+}
+
+no* produto_complexo(no *n1, no *n2)
+{
+    no *n;
+    float re, im;
+    re = (n1->re)*(n2->re)-(n1->im)*(n2->im);
+    im = (n1->re)*(n2->im)+(n1->im)*(n2->re);
+    n = cria_no(0,0,re,im);
+    return n;
+}
+
+no* produto_complexo_conjugado(no *n1, no *n2)
+{
+    no *n;
+    float re, im;
+    re = (n1->re)*(n2->re)+(n1->im)*(n2->im);
+    im = (n1->re)*(n2->im)-(n1->im)*(n2->re);
+    n = cria_no(0,0,re,im);
+    return n;
+}
+
+
+
+lista* copia_lista(lista *l1)
+{
+    lista *l2, *lc, *lc2;
+    l2 = cria_no_lista();
+    lc2 = l2;
+    for(lc = l1; lc != NULL; lc = lc->l)
+    {
+        lc2->l = cria_no_lista();
+        lc2 = lc2->l;
+        lc2->n = lc->n;
+    }
+    return l2;
+}
+
+lista* copia_lista_sem_cabeca(lista *l1)
+{
+    lista *l2, *laux;
+    l2 = copia_lista(l1);
+    laux = l2;
+    l2 = laux->l;
+    libera_no_lista(laux);
+    return l2;
+}
+
+void reduz_lista(lista *l)
+{
+    no *n1, *n2;
+    lista *lc1, *lc2, *laux;
+    lc1 = l;
+    for(lc1 = l; lc1->l != NULL; lc1 = lc1->l)
+    {
+        n1 = lc1->n;
+        lc2 = lc1;
+        while(lc2->l != NULL)
+        {
+            n2 = lc2->l->n;
+            if(compara(n1,n2))
+            {
+                transfere_conexao(n1,n2);
+                laux = lc2->l;
+                lc2->l = laux->l;
+                libera_no_lista(laux);
+                libera_no(n2);
+            }
+            else
+                lc2 = lc2->l;
+        }
+        if(lc1->l == NULL)
+            break;
+    }
+}
+
+
+
 void completa_QDD(no *n, Short r, Short c, Short exp, Short **M, lista **L)
 {
     Short ind1, ind2;
@@ -583,20 +688,6 @@ QDD* le_matriz(char *nome)
     free(fp);
 
     return Q;
-}
-
-lista* copia_lista(lista *l1)
-{
-    lista *l2, *lc, *lc2;
-    l2 = cria_no_lista();
-    lc2 = l2;
-    for(lc = l1; lc != NULL; lc = lc->l)
-    {
-        lc2->l = cria_no_lista();
-        lc2 = lc2->l;
-        lc2->n = lc->n;
-    }
-    return l2;
 }
 
 void reduz_QDD(QDD *Q)
@@ -734,23 +825,6 @@ void reduz_QDD(QDD *Q)
     libera_no_lista(l);
 }
 
-no* copia_no(no *n1)
-{
-    no *n2;
-    n2 = cria_no(n1->tipo,n1->nivel,n1->re,n1->im);
-    return n2;
-}
-
-lista* copia_lista_sem_cabeca(lista *l1)
-{
-    lista *l2, *laux;
-    l2 = copia_lista(l1);
-    laux = l2;
-    l2 = laux->l;
-    libera_no_lista(laux);
-    return l2;
-}
-
 QDD* copia_QDD(QDD *Q1)
 {
     lista *l1, *l2, *lc1a, *lc2a, *lc1b, *lc2b;
@@ -835,60 +909,6 @@ QDD* copia_QDD(QDD *Q1)
     return Q2;
 }
 
-no* produto_complexo(no *n1, no *n2)
-{
-    no *n;
-    float re, im;
-    re = (n1->re)*(n2->re)-(n1->im)*(n2->im);
-    im = (n1->re)*(n2->im)+(n1->im)*(n2->re);
-    n = cria_no(0,0,re,im);
-    return n;
-}
-
-Short compara(no *n1, no *n2)
-{
-    float re, im;
-    re = (n1->re)-(n2->re);
-    im = (n1->im)-(n2->im);
-    if(re<-eps)
-        return 0;
-    if(re>eps)
-        return 0;
-    if(im<-eps)
-        return 0;
-    if(im>eps)
-        return 0;
-    return 1;
-}
-
-void reduz_lista(lista *l)
-{
-    no *n1, *n2;
-    lista *lc1, *lc2, *laux;
-    lc1 = l;
-    for(lc1 = l; lc1->l != NULL; lc1 = lc1->l)
-    {
-        n1 = lc1->n;
-        lc2 = lc1;
-        while(lc2->l != NULL)
-        {
-            n2 = lc2->l->n;
-            if(compara(n1,n2))
-            {
-                transfere_conexao(n1,n2);
-                laux = lc2->l;
-                lc2->l = laux->l;
-                libera_no_lista(laux);
-                libera_no(n2);
-            }
-            else
-                lc2 = lc2->l;
-        }
-        if(lc1->l == NULL)
-            break;
-    }
-}
-
 QDD* produto_tensorial(QDD *Q1, QDD *Q2)
 {
     QDD *Q;
@@ -970,209 +990,24 @@ QDD* produto_tensorial(QDD *Q1, QDD *Q2)
 
 QDD* potencia_tensorial(QDD *Q, Short i)
 {
-    QDD *Q2, *Q3;
+    QDD *Qs, *Qaux;
     Short j;
-    Q2 = copia_QDD(Q);
+
+    Qs = copia_QDD(Q);
     for(j=1; j<i; j++)
     {
-        Q3 = produto_tensorial(Q2,Q);
-        libera_QDD(Q2);
-        Q2 = Q3;
+        Qaux = produto_tensorial(Qs,Q);
+        libera_QDD(Qs);
+        Qs = Qaux;
     }
-    return Q2;
+    return Qs;
 }
 
-QDD* H()
-{
-    Short i, j, k;
-
-    Short N1, N2, N3;
-    N1 = 1;
-    N2 = 2;
-    N3 = 2;
-
-    lista **L;
-    L = malloc(N3*sizeof(lista*));
-    aumenta_memoria(N3*sizeof(lista*));
-    for(i=0; i<N3; i++)
-    {
-        L[i] = cria_no_lista();
-        L[i]->n = cria_no(0,N1,(1-2*i)*0.707106781,0);
-    }
-    for(i=0; i<N3-1; i++)
-        L[i]->l = L[i+1];
-
-    Short **M;
-    M = malloc(N2*sizeof(Short*));
-    aumenta_memoria(N2*sizeof(Short*));
-    for(i=0; i<N2; i++)
-    {
-        M[i] = malloc(N2*sizeof(Short));
-        aumenta_memoria(N2*sizeof(Short));
-    }
-    M[0][0] = 0;
-    M[0][1] = 0;
-    M[1][0] = 0;
-    M[1][1] = 1;
-
-    no **N;
-    N = malloc((N2*N2-1)*sizeof(no*));
-    aumenta_memoria((N2*N2-1)*sizeof(no*));
-
-    Short exp, ind;
-    exp = 1;
-    ind = 0;
-    for(i=0; i<N1; i++)
-    {
-        for(j=2; j<=3; j++)
-        {
-            for(k=0; k<exp; k++)
-            {
-                N[ind] = cria_no(j,i,0,0);
-                ind++;
-            }
-            exp *= 2;
-        }
-    }
-
-    for(i=0; i<(N2*N2-1)/2; i++)
-        conecta_DOIS(N[i],N[2*i+1],N[2*i+2]);
-
-    completa_QDD(N[0],0,0,N2/2,M,L);
-
-    QDD *Q;
-    Q = cria_QDD();
-    Q->n = cria_no_vazio();
-    conecta_UM(Q->n,N[0],1);
-    Q->n = N[0];
-    Q->l = L[0];
-
-    free(N);
-    diminui_memoria((N2*N2-1)*sizeof(no*));
-    free(L);
-    diminui_memoria(N3*sizeof(lista*));
-    for(i=0; i<N2; i++)
-    {
-        free(M[i]);
-        diminui_memoria(N2*sizeof(Short));
-    }
-    free(M);
-    diminui_memoria(N2*sizeof(Short*));
-
-    reduz_QDD(Q);
-
-    return Q;
-}
-
-QDD* H_n(Short i)
-{
-    QDD *Q1, *Q2;
-    Q1 = H();
-    Q2 = potencia_tensorial(Q1,i);
-    libera_QDD(Q1);
-    return Q2;
-}
-
-QDD* I()
-{
-    Short i, j, k;
-
-    Short N1, N2, N3;
-    N1 = 1;
-    N2 = 2;
-    N3 = 2;
-
-    lista **L;
-    L = malloc(N3*sizeof(lista*));
-    aumenta_memoria(N3*sizeof(lista*));
-    for(i=0; i<N3; i++)
-    {
-        L[i] = cria_no_lista();
-        L[i]->n = cria_no(0,N1,i,0);
-    }
-    for(i=0; i<N3-1; i++)
-        L[i]->l = L[i+1];
-
-    Short **M;
-    M = malloc(N2*sizeof(Short*));
-    aumenta_memoria(N2*sizeof(Short*));
-    for(i=0; i<N2; i++)
-    {
-        M[i] = malloc(N2*sizeof(Short));
-        aumenta_memoria(N2*sizeof(Short));
-    }
-    M[0][0] = 1;
-    M[0][1] = 0;
-    M[1][0] = 0;
-    M[1][1] = 1;
-
-    no **N;
-    N = malloc((N2*N2-1)*sizeof(no*));
-    aumenta_memoria((N2*N2-1)*sizeof(no*));
-
-    Short exp, ind;
-    exp = 1;
-    ind = 0;
-    for(i=0; i<N1; i++)
-    {
-        for(j=2; j<=3; j++)
-        {
-            for(k=0; k<exp; k++)
-            {
-                N[ind] = cria_no(j,i,0,0);
-                ind++;
-            }
-            exp *= 2;
-        }
-    }
-
-    for(i=0; i<(N2*N2-1)/2; i++)
-        conecta_DOIS(N[i],N[2*i+1],N[2*i+2]);
-
-    completa_QDD(N[0],0,0,N2/2,M,L);
-
-    QDD *Q;
-    Q = cria_QDD();
-    Q->n = cria_no_vazio();
-    conecta_UM(Q->n,N[0],1);
-    Q->n = N[0];
-    Q->l = L[0];
-
-    free(N);
-    diminui_memoria((N2*N2-1)*sizeof(no*));
-    free(L);
-    diminui_memoria(N3*sizeof(lista*));
-    for(i=0; i<N2; i++)
-    {
-        free(M[i]);
-        diminui_memoria(N2*sizeof(Short));
-    }
-    free(M);
-    diminui_memoria(N2*sizeof(Short*));
-
-    reduz_QDD(Q);
-
-    return Q;
-}
-
-QDD* I_n(Short i)
-{
-    QDD *Q1, *Q2;
-    Q1 = I();
-    Q2 = potencia_tensorial(Q1,i);
-    libera_QDD(Q1);
-    return Q2;
-}
 
 
 int main()
 {
     fm = fopen("MemReport.txt","w");
-    /** fazer teste de emaranhamento de dados **/
-    QDD *Q;
-    Q = I_n(2);
-    mostra_QDD(Q);
-
 
     fprintf(fm,"\n\nMemMax: %d",memMax);
     fclose(fm);

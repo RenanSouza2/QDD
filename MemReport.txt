@@ -5,205 +5,60 @@ MemUP: 40			 24		MemMax
 MemUP: 48			 8		MemMax
 MemUP: 72			 24		MemMax
 MemUP: 80			 8		MemMax
-MemUP: 84			 4		MemMax
-MemUP: 88			 4		MemMax
-MemUP: 100			 12		MemMax
-MemUP: 124			 24		MemMax
-MemUP: 148			 24		MemMax
-MemUP: 172			 24		MemMax
+MemUP: 92			 12		MemMax
+MemUP: 116			 24		MemMax
+MemUP: 140			 24		MemMax
+MemUP: 164			 24		MemMax
+MemUP: 172			 8		MemMax
 MemUP: 180			 8		MemMax
 MemUP: 188			 8		MemMax
 MemUP: 196			 8		MemMax
 MemUP: 204			 8		MemMax
 MemUP: 212			 8		MemMax
 MemUP: 220			 8		MemMax
-MemUP: 228			 8		MemMax
-MemUP: 252			 24		MemMax
-MemUP: 260			 8		MemMax
-	MemDOWN: 248		-12
-	MemDOWN: 240		-8
-	MemDOWN: 236		-4
-	MemDOWN: 232		-4
-	MemDOWN: 224		-8
-MemUP: 232			 8
-MemUP: 240			 8
+MemUP: 244			 24		MemMax
+MemUP: 252			 8		MemMax
+	MemDOWN: 240		-12
 MemUP: 248			 8
-	MemDOWN: 240		-8
-	MemDOWN: 232		-8
-	MemDOWN: 224		-8
-MemUP: 232			 8
-MemUP: 240			 8
-MemUP: 248			 8
-MemUP: 256			 8
+MemUP: 256			 8		MemMax
 MemUP: 264			 8		MemMax
 MemUP: 272			 8		MemMax
-MemUP: 280			 8		MemMax
-MemUP: 288			 8		MemMax
-	MemDOWN: 280		-8
-	MemDOWN: 272		-8
-MemUP: 280			 8
-MemUP: 288			 8
-	MemDOWN: 280		-8
-	MemDOWN: 272		-8
-MemUP: 280			 8
-MemUP: 288			 8
-	MemDOWN: 280		-8
-	MemDOWN: 272		-8
-MemUP: 280			 8
-MemUP: 288			 8
-MemUP: 296			 8		MemMax
-MemUP: 304			 8		MemMax
-MemUP: 312			 8		MemMax
-MemUP: 320			 8		MemMax
-MemUP: 328			 8		MemMax
-	MemDOWN: 320		-8
-MemUP: 344			 24		MemMax
-MemUP: 368			 24		MemMax
-MemUP: 392			 24		MemMax
-MemUP: 416			 24		MemMax
-MemUP: 440			 24		MemMax
-MemUP: 464			 24		MemMax
-MemUP: 472			 8		MemMax
-MemUP: 480			 8		MemMax
-MemUP: 488			 8		MemMax
-MemUP: 496			 8		MemMax
-MemUP: 504			 8		MemMax
-MemUP: 512			 8		MemMax
-MemUP: 520			 8		MemMax
-MemUP: 528			 8		MemMax
-	MemDOWN: 520		-8
-	MemDOWN: 512		-8
-	MemDOWN: 504		-8
-	MemDOWN: 496		-8
-	MemDOWN: 488		-8
-	MemDOWN: 480		-8
-	MemDOWN: 472		-8
-	MemDOWN: 464		-8
-	MemDOWN: 456		-8
-	MemDOWN: 448		-8
-MemUP: 456			 8
-MemUP: 464			 8
-MemUP: 472			 8
-MemUP: 480			 8
-MemUP: 488			 8
-MemUP: 496			 8
-MemUP: 504			 8
-MemUP: 512			 8
-	MemDOWN: 504		-8
-	MemDOWN: 496		-8
-MemUP: 504			 8
-MemUP: 512			 8
-	MemDOWN: 504		-8
-	MemDOWN: 496		-8
-MemUP: 504			 8
-MemUP: 512			 8
-	MemDOWN: 504		-8
-	MemDOWN: 496		-8
-MemUP: 504			 8
-MemUP: 512			 8
-MemUP: 520			 8
-MemUP: 528			 8
-MemUP: 536			 8		MemMax
-MemUP: 544			 8		MemMax
-MemUP: 552			 8		MemMax
-	MemDOWN: 544		-8
-MemUP: 568			 24		MemMax
-MemUP: 592			 24		MemMax
-MemUP: 616			 24		MemMax
-MemUP: 640			 24		MemMax
-MemUP: 664			 24		MemMax
-MemUP: 688			 24		MemMax
-MemUP: 696			 8		MemMax
-MemUP: 704			 8		MemMax
-MemUP: 712			 8		MemMax
-MemUP: 720			 8		MemMax
-MemUP: 728			 8		MemMax
-MemUP: 736			 8		MemMax
-MemUP: 744			 8		MemMax
-MemUP: 752			 8		MemMax
-	MemDOWN: 744		-8
-	MemDOWN: 736		-8
-	MemDOWN: 728		-8
-	MemDOWN: 720		-8
-	MemDOWN: 712		-8
-	MemDOWN: 704		-8
-	MemDOWN: 696		-8
-	MemDOWN: 688		-8
-	MemDOWN: 680		-8
-	MemDOWN: 672		-8
-MemUP: 680			 8
-MemUP: 688			 8
-MemUP: 696			 8
-	MemDOWN: 688		-8
-	MemDOWN: 680		-8
-	MemDOWN: 672		-8
-MemUP: 680			 8
-MemUP: 688			 8
-MemUP: 696			 8
-MemUP: 704			 8
-MemUP: 712			 8
-MemUP: 720			 8
-MemUP: 728			 8
-MemUP: 736			 8
-	MemDOWN: 728		-8
-	MemDOWN: 720		-8
-MemUP: 728			 8
-MemUP: 736			 8
-	MemDOWN: 728		-8
-	MemDOWN: 720		-8
-MemUP: 728			 8
-MemUP: 736			 8
-	MemDOWN: 728		-8
-	MemDOWN: 720		-8
-MemUP: 728			 8
-MemUP: 736			 8
-MemUP: 744			 8
-MemUP: 752			 8
-MemUP: 760			 8		MemMax
-MemUP: 768			 8		MemMax
-MemUP: 776			 8		MemMax
-	MemDOWN: 768		-8
-MemUP: 792			 24		MemMax
-MemUP: 816			 24		MemMax
-MemUP: 840			 24		MemMax
-MemUP: 864			 24		MemMax
-MemUP: 888			 24		MemMax
-MemUP: 912			 24		MemMax
-MemUP: 920			 8		MemMax
-MemUP: 928			 8		MemMax
-MemUP: 936			 8		MemMax
-MemUP: 944			 8		MemMax
-MemUP: 952			 8		MemMax
-MemUP: 960			 8		MemMax
-MemUP: 968			 8		MemMax
-MemUP: 976			 8		MemMax
-	MemDOWN: 968		-8
-	MemDOWN: 960		-8
-	MemDOWN: 952		-8
-	MemDOWN: 944		-8
-	MemDOWN: 936		-8
-	MemDOWN: 928		-8
-	MemDOWN: 920		-8
-	MemDOWN: 912		-8
-	MemDOWN: 904		-8
-	MemDOWN: 896		-8
-MemUP: 904			 8
-MemUP: 912			 8
-MemUP: 920			 8
-	MemDOWN: 912		-8
-	MemDOWN: 904		-8
-	MemDOWN: 896		-8
-MemUP: 904			 8
-MemUP: 912			 8
-MemUP: 920			 8
-MemUP: 928			 8
-MemUP: 936			 8
-MemUP: 944			 8
-MemUP: 952			 8
-MemUP: 960			 8
-	MemDOWN: 952		-8
-	MemDOWN: 944		-8
-MemUP: 952			 8
-MemUP: 960			 8
-	MemDOWN: 952		-8
-	MemDO
+	MemDOWN: 264		-8
+	MemDOWN: 256		-8
+MemUP: 264			 8
+	MemDOWN: 256		-8
+	MemDOWN: 248		-8
+MemUP: 256			 8
+	MemDOWN: 248		-8
+	MemDOWN: 240		-8
+MemUP: 248			 8
+	MemDOWN: 224		-24
+	MemDOWN: 216		-8
+	MemDOWN: 208		-8
+	MemDOWN: 200		-8
+	MemDOWN: 192		-8
+	MemDOWN: 188		-4
+	MemDOWN: 184		-4
+	MemDOWN: 176		-8
+MemUP: 184			 8
+MemUP: 192			 8
+MemUP: 200			 8
+MemUP: 208			 8
+MemUP: 216			 8
+MemUP: 224			 8
+	MemDOWN: 216		-8
+	MemDOWN: 208		-8
+MemUP: 216			 8
+MemUP: 224			 8
+	MemDOWN: 216		-8
+MemUP: 224			 8
+MemUP: 232			 8
+	MemDOWN: 224		-8
+	MemDOWN: 216		-8
+	MemDOWN: 208		-8
+	MemDOWN: 200		-8
+	MemDOWN: 192		-8
+	MemDOWN: 184		-8
+	MemDOWN: 176		-8
+
+MemMax: 272
