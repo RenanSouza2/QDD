@@ -206,7 +206,7 @@ void mostra_no(no *n)
         printf("Ligacoes anteriores:\n");
         mostra_lista(n->l);
     }
-    printf("Tipo/nivel");
+    printf("Tipo");
     switch(n->tipo)
     {
         case 0:
@@ -215,15 +215,15 @@ void mostra_no(no *n)
         break;
 
         case 1:
-        printf(": V%d\n",n->nivel);
+        printf("/nivel: V%d\n",n->nivel);
         break;
 
         case 2:
-        printf(": R%d\n",n->nivel);
+        printf("/nivel: R%d\n",n->nivel);
         break;
 
         case 3:
-        printf(": C%d\n",n->nivel);
+        printf("/nivel: C%d\n",n->nivel);
         break;
     }
     if((n->el != NULL)||(n->th != NULL))
@@ -841,7 +841,7 @@ no* produto_complexo(no *n1, no *n2)
     float re, im;
     re = (n1->re)*(n2->re)-(n1->im)*(n2->im);
     im = (n1->re)*(n2->im)+(n1->im)*(n2->re);
-    n = cria_no(0,n2->nivel,re,im);
+    n = cria_no(0,0,re,im);
     return n;
 }
 
@@ -968,9 +968,21 @@ QDD* produto_tensorial(QDD *Q1, QDD *Q2)
     return Q;
 }
 
+QDD* potencia_tensorial(QDD *Q, Short i)
+{
+    QDD *Q2, *Q3;
+    Short j;
+    Q2 = copia_QDD(Q);
+    for(j=1; j<i; j++)
+    {
+        Q3 = produto_tensorial(Q2,Q);
+        libera_QDD(Q2);
+        Q2 = Q3;
+    }
+    return Q2;
+}
 
-
-QDD* had()
+QDD* H()
 {
     Short i, j, k;
 
@@ -1052,30 +1064,113 @@ QDD* had()
     return Q;
 }
 
-QDD* had_n(Short i)
+QDD* H_n(Short i)
 {
-    short j;
-    QDD *Q1, *Q2, *Q3;
-    Q1 = had();
-    Q2 = copia_QDD(Q1);
-    for(j = 1; j< i ; j++)
+    QDD *Q1, *Q2;
+    Q1 = H();
+    Q2 = potencia_tensorial(Q1,i);
+    libera_QDD(Q1);
+    return Q2;
+}
+
+QDD* I()
+{
+    Short i, j, k;
+
+    Short N1, N2, N3;
+    N1 = 1;
+    N2 = 2;
+    N3 = 2;
+
+    lista **L;
+    L = malloc(N3*sizeof(lista*));
+    aumenta_memoria(N3*sizeof(lista*));
+    for(i=0; i<N3; i++)
     {
-        Q3 = produto_tensorial(Q2,Q1);
-        libera_QDD(Q2);
-        Q2 = Q3;
+        L[i] = cria_no_lista();
+        L[i]->n = cria_no(0,N1,i,0);
     }
+    for(i=0; i<N3-1; i++)
+        L[i]->l = L[i+1];
+
+    Short **M;
+    M = malloc(N2*sizeof(Short*));
+    aumenta_memoria(N2*sizeof(Short*));
+    for(i=0; i<N2; i++)
+    {
+        M[i] = malloc(N2*sizeof(Short));
+        aumenta_memoria(N2*sizeof(Short));
+    }
+    M[0][0] = 1;
+    M[0][1] = 0;
+    M[1][0] = 0;
+    M[1][1] = 1;
+
+    no **N;
+    N = malloc((N2*N2-1)*sizeof(no*));
+    aumenta_memoria((N2*N2-1)*sizeof(no*));
+
+    Short exp, ind;
+    exp = 1;
+    ind = 0;
+    for(i=0; i<N1; i++)
+    {
+        for(j=2; j<=3; j++)
+        {
+            for(k=0; k<exp; k++)
+            {
+                N[ind] = cria_no(j,i,0,0);
+                ind++;
+            }
+            exp *= 2;
+        }
+    }
+
+    for(i=0; i<(N2*N2-1)/2; i++)
+        conecta_DOIS(N[i],N[2*i+1],N[2*i+2]);
+
+    completa_QDD(N[0],0,0,N2/2,M,L);
+
+    QDD *Q;
+    Q = cria_QDD();
+    Q->n = cria_no_vazio();
+    conecta_UM(Q->n,N[0],1);
+    Q->n = N[0];
+    Q->l = L[0];
+
+    free(N);
+    diminui_memoria((N2*N2-1)*sizeof(no*));
+    free(L);
+    diminui_memoria(N3*sizeof(lista*));
+    for(i=0; i<N2; i++)
+    {
+        free(M[i]);
+        diminui_memoria(N2*sizeof(Short));
+    }
+    free(M);
+    diminui_memoria(N2*sizeof(Short*));
+
+    reduz_QDD(Q);
+
+    return Q;
+}
+
+QDD* I_n(Short i)
+{
+    QDD *Q1, *Q2;
+    Q1 = I();
+    Q2 = potencia_tensorial(Q1,i);
     libera_QDD(Q1);
     return Q2;
 }
 
 
-
 int main()
 {
     fm = fopen("MemReport.txt","w");
-
+    /** fazer teste de emaranhamento de dados **/
     QDD *Q;
-    Q = had_n(100);
+    Q = I_n(2);
     mostra_QDD(Q);
 
 
