@@ -1,182 +1,94 @@
 
 
-	Ligacao 0: 13399216
+	Ligacao 0: 12521336
 
-Endereco: 13399216
+Endereco: 12521336
 Tipo: Numero
 0.000000 0.000000 
 Ligacoes posteriores
 	else: 0
-	Then: 13399920
+	Then: 12548136
 
-	Ligacao 1: 13399920
+	Ligacao 1: 12548136
 
-Endereco: 13399920
+Endereco: 12548136
 Ligacoes anteriores:
-	Ligacao 0: 13399216
+	Ligacao 0: 12521336
 Tipo/nivel: R0
 Ligacoes posteriores
-	else: 13399984
-	Then: 13400080
+	else: 12548712
+	Then: 12548744
 
-	Ligacao 2: 13399984
+	Ligacao 2: 12548712
 
-Endereco: 13399984
+Endereco: 12548712
 Ligacoes anteriores:
-	Ligacao 0: 13400080
-	Ligacao 1: 13399920
-Tipo/nivel: R1
-Ligacoes posteriores
-	else: 13399952
-	Then: 13399696
-
-	Ligacao 3: 13399952
-
-Endereco: 13399952
-Ligacoes anteriores:
-	Ligacao 0: 13399472
-	Ligacao 1: 13399696
-	Ligacao 2: 13399984
-Tipo/nivel: R2
-Ligacoes posteriores
-	else: 13402856
-	Then: 13400016
-
-	Ligacao 4: 13402856
-
-Endereco: 13402856
-Ligacoes anteriores:
-	Ligacao 0: 13399952
-	Ligacao 1: 13400016
-	Ligacao 2: 13399376
-Tipo/nivel: R3
-Ligacoes posteriores
-	else: 13402600
-	Then: 13403112
-
-	Ligacao 5: 13402600
-
-Endereco: 13402600
-Ligacoes anteriores:
-	Ligacao 0: 13403112
-	Ligacao 1: 13402856
-	Ligacao 2: 13403144
-Tipo: Numero
-1.000000 -0.000000 
-
-	Ligacao 6: 13403112
-
-Endereco: 13403112
-Ligacoes anteriores:
-	Ligacao 0: 13402856
-Tipo/nivel: C3
-Ligacoes posteriores
-	else: 13402600
-	Then: 13403208
-
-	Ligacao 7: 13403208
-
-Endereco: 13403208
-Ligacoes anteriores:
-	Ligacao 0: 13403112
-	Ligacao 1: 13402984
-	Ligacao 2: 13403144
-Tipo: Numero
--1.000000 0.000000 
-
-	Ligacao 8: 13400016
-
-Endereco: 13400016
-Ligacoes anteriores:
-	Ligacao 0: 13399952
-Tipo/nivel: C2
-Ligacoes posteriores
-	else: 13402856
-	Then: 13402984
-
-	Ligacao 9: 13402984
-
-Endereco: 13402984
-Ligacoes anteriores:
-	Ligacao 0: 13400016
-	Ligacao 1: 13399280
-	Ligacao 2: 13399376
-Tipo/nivel: R3
-Ligacoes posteriores
-	else: 13403208
-	Then: 13403144
-
-	Ligacao 10: 13403144
-
-Endereco: 13403144
-Ligacoes anteriores:
-	Ligacao 0: 13402984
-Tipo/nivel: C3
-Ligacoes posteriores
-	else: 13403208
-	Then: 13402600
-
-	Ligacao 11: 13399696
-
-Endereco: 13399696
-Ligacoes anteriores:
-	Ligacao 0: 13399984
-Tipo/nivel: C1
-Ligacoes posteriores
-	else: 13399952
-	Then: 13399280
-
-	Ligacao 12: 13399280
-
-Endereco: 13399280
-Ligacoes anteriores:
-	Ligacao 0: 13399472
-	Ligacao 1: 13400112
-	Ligacao 2: 13399696
-Tipo/nivel: R2
-Ligacoes posteriores
-	else: 13402984
-	Then: 13399376
-
-	Ligacao 13: 13399376
-
-Endereco: 13399376
-Ligacoes anteriores:
-	Ligacao 0: 13399280
-Tipo/nivel: C2
-Ligacoes posteriores
-	else: 13402984
-	Then: 13402856
-
-	Ligacao 14: 13400080
-
-Endereco: 13400080
-Ligacoes anteriores:
-	Ligacao 0: 13399920
+	Ligacao 0: 12548136
 Tipo/nivel: C0
 Ligacoes posteriores
-	else: 13399984
-	Then: 13400112
+	else: 12548488
+	Then: 12548680
 
-	Ligacao 15: 13400112
+	Ligacao 3: 12548488
 
-Endereco: 13400112
+Endereco: 12548488
 Ligacoes anteriores:
-	Ligacao 0: 13400080
+	Ligacao 0: 12548712
+	Ligacao 1: 12548744
 Tipo/nivel: R1
 Ligacoes posteriores
-	else: 13399280
-	Then: 13399472
+	else: 12548360
+	Then: 12548552
 
-	Ligacao 16: 13399472
+	Ligacao 4: 12548360
 
-Endereco: 13399472
+Endereco: 12548360
 Ligacoes anteriores:
-	Ligacao 0: 13400112
+	Ligacao 0: 12548488
 Tipo/nivel: C1
 Ligacoes posteriores
-	else: 13399280
-	Then: 13399952
+	else: 12548776
+	Then: 12548680
 
-	Ligacao 0: 13403208
-	Ligacao 1: 13402600
+	Ligacao 5: 12548776
+
+Endereco: 12548776
+Ligacoes anteriores:
+	Ligacao 0: 12548360
+	Ligacao 1: 12548552
+Tipo: Numero
+1.000000 0.000000 
+
+	Ligacao 6: 12548680
+
+Endereco: 12548680
+Ligacoes anteriores:
+	Ligacao 0: 12548552
+	Ligacao 1: 12548360
+	Ligacao 2: 12548744
+	Ligacao 3: 12548712
+Tipo: Numero
+0.000000 0.000000 
+
+	Ligacao 7: 12548552
+
+Endereco: 12548552
+Ligacoes anteriores:
+	Ligacao 0: 12548488
+Tipo/nivel: C1
+Ligacoes posteriores
+	else: 12548680
+	Then: 12548776
+
+	Ligacao 8: 12548744
+
+Endereco: 12548744
+Ligacoes anteriores:
+	Ligacao 0: 12548136
+Tipo/nivel: C0
+Ligacoes posteriores
+	else: 12548680
+	Then: 12548488
+
+	Ligacao 0: 12548680
+	Ligacao 1: 12548776

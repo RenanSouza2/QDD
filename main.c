@@ -5,7 +5,7 @@
 
 int mem = 0, memMax = 0;
 FILE *fm;
-
+unsigned short print = 1;
 
 
 struct QDD
@@ -51,10 +51,12 @@ typedef unsigned short Short;
 void aumenta_memoria(int m)
 {
     mem += m;
+    if(print)
     fprintf(fm,"\nMemUP: %d\t\t\t %d",mem,m);
     if(memMax<mem)
     {
         memMax = mem;
+        if(print)
         fprintf(fm,"\t\tMemMax");
     }
 }
@@ -67,6 +69,7 @@ void diminui_memoria(int m)
         printf("\n\nERRO MEM");
         exit(EXIT_FAILURE);
     }
+    if(print)
     fprintf(fm,"\n\tMemDOWN: %d\t\t%d",mem,-m);
 }
 
@@ -973,10 +976,11 @@ QDD* produto_tensorial(QDD *Q1, QDD *Q2)
             lc->l = Q->l;
             Q->l = Q2b->l;
             libera_no_QDD(Q2b);
+
+            lc = l->l;
+            libera_no_lista(l);
+            l = lc;
         }
-        lc = l->l;
-        libera_no_lista(l);
-        l = lc;
     }
 
     libera_no(n0);
@@ -1005,10 +1009,61 @@ QDD* potencia_tensorial(QDD *Q, Short i)
 
 
 
+QDD* I()
+{
+    QDD *Q;
+    Q = le_matriz("I.txt");
+    reduz_QDD(Q);
+    return Q;
+}
+
+QDD* I_n(Short i)
+{
+    QDD *Q1, *Q2;
+
+    Q1 = I();
+    Q2 = potencia_tensorial(Q1,i);
+    libera_QDD(Q1);
+
+    return Q2;
+}
+
+QDD* H()
+{
+    QDD *Q;
+    Q = le_matriz("Had1.txt");
+    reduz_QDD(Q);
+    return Q;
+}
+
+QDD* H_n(Short i)
+{
+    QDD *Q1, *Q2;
+
+    Q1 = H();
+    Q2 = potencia_tensorial(Q1,i);
+    libera_QDD(Q1);
+
+    return Q2;
+}
+
+
+
 int main()
 {
+    print = 0;
+    if(print)
     fm = fopen("MemReport.txt","w");
 
-    fprintf(fm,"\n\nMemMax: %d",memMax);
-    fclose(fm);
+    QDD *Q;
+    Q = H_n(6);
+    libera_QDD(Q);
+
+    printf("\n\nMemMax  : %d",memMax);
+    printf("\nMemFinal: %d",mem);
+    if(print)
+    {
+        fprintf(fm,"\n\nMemMax: %d",memMax);
+        fclose(fm);
+    }
 }
