@@ -623,6 +623,11 @@ QDD* le_matriz(char *nome)
     lista **L;
     float re, im;
     L = malloc(N3*sizeof(lista*));
+    if(L == NULL)
+    {
+        printf("\n\nERRO L");
+        exit(EXIT_FAILURE);
+    }
     aumenta_memoria(N3*sizeof(lista*));
     for(i=0; i<N3; i++)
     {
@@ -636,10 +641,20 @@ QDD* le_matriz(char *nome)
 
     Short **M;
     M = malloc(N2*sizeof(Short*));
+    if(M == NULL)
+    {
+        printf("\n\nERRO M");
+        exit(EXIT_FAILURE);
+    }
     aumenta_memoria(N2*sizeof(Short*));
     for(i=0; i<N2; i++)
     {
         M[i] = malloc(N2*sizeof(Short));
+        if(M[i] == NULL)
+        {
+            printf("\n\nERRO M[%d]",i);
+            exit(EXIT_FAILURE);
+        }
         aumenta_memoria(N2*sizeof(Short));
         for(j=0; j<N2; j++)
             fscanf(fp,"%hu",&M[i][j]);
@@ -647,6 +662,11 @@ QDD* le_matriz(char *nome)
 
     no **N;
     N = malloc((N2*N2-1)*sizeof(no*));
+    if(N == NULL)
+    {
+        printf("\n\nERRO N");
+        exit(EXIT_FAILURE);
+    }
     aumenta_memoria((N2*N2-1)*sizeof(no*));
 
     Short exp, ind;
@@ -1001,6 +1021,7 @@ QDD* potencia_tensorial(QDD *Q, Short i)
     for(j=1; j<i; j++)
     {
         Qaux = produto_tensorial(Qs,Q);
+        reduz_QDD(Qaux);
         libera_QDD(Qs);
         Qs = Qaux;
     }
@@ -1012,7 +1033,7 @@ QDD* potencia_tensorial(QDD *Q, Short i)
 QDD* I()
 {
     QDD *Q;
-    Q = le_matriz("I.txt");
+    Q = le_matriz("I1.txt");
     reduz_QDD(Q);
     return Q;
 }
@@ -1049,16 +1070,15 @@ QDD* H_n(Short i)
 
 
 
-int main()
+void inicia_relatorio_memoria(Short i)
 {
     print = 0;
     if(print)
-    fm = fopen("MemReport.txt","w");
+    fm = fopen("relatorio_memoria.txt","w");
+}
 
-    QDD *Q;
-    Q = H_n(6);
-    libera_QDD(Q);
-
+void finaliza_relatorio_memoria()
+{
     printf("\n\nMemMax  : %d",memMax);
     printf("\nMemFinal: %d",mem);
     if(print)
@@ -1066,4 +1086,20 @@ int main()
         fprintf(fm,"\n\nMemMax: %d",memMax);
         fclose(fm);
     }
+}
+
+
+
+int main()
+{
+    inicia_relatorio_memoria(0);
+    /***********************************/
+
+    QDD *Q;
+    Q = le_matriz("I8.txt");
+    reduz_QDD(Q);
+    libera_QDD(Q);
+
+    /***********************************/
+    finaliza_relatorio_memoria();
 }
