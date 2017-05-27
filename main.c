@@ -1,7 +1,7 @@
 #include<stdio.h>
 #include<stdlib.h>
 
-#define eps 1e-6
+#define eps 5e-5
 
 int mem = 0, memMax = 0;
 FILE *fm;
@@ -493,7 +493,7 @@ no* copia_no(no *n1)
     return n2;
 }
 
-Short compara(no *n1, no *n2)
+Short compara_no(no *n1, no *n2)
 {
     float re, im;
     re = (n1->re)-(n2->re);
@@ -507,6 +507,14 @@ Short compara(no *n1, no *n2)
     if(im>eps)
         return 0;
     return 1;
+}
+
+Short compara_apply(apply *a1, apply *a2)
+{
+    if(a1->n1 == a2->n1)
+    if(a1->n2 == a2->n2)
+        return 1;
+    return 0;
 }
 
 no* produto_complexo(no *n1, no *n2)
@@ -567,7 +575,7 @@ void reduz_lista(lista *l)
         while(lc2->l != NULL)
         {
             n2 = lc2->l->n;
-            if(compara(n1,n2))
+            if(compara_no(n1,n2))
             {
                 transfere_conexao(n1,n2);
                 laux = lc2->l;
@@ -961,7 +969,7 @@ QDD* produto_tensorial(QDD *Q1, QDD *Q2)
     while(l != NULL)
     {
         n1 = l->n;
-        if(compara(n0,n1))
+        if(compara_no(n0,n1))
         {
             n1->nivel = nqbit;
             l2 = l->l;
@@ -1027,6 +1035,33 @@ QDD* potencia_tensorial(QDD *Q, Short i)
     }
     return Qs;
 }
+
+QDD* produto_por_escalar(QDD *Q, float re, float im)
+{
+    QDD *Q1;
+    Q1 = copia_QDD(Q);
+
+    no *n;
+    n = cria_no(0,0,re,im);
+    printf("NO ESCALAR");
+    mostra_no(n);
+
+    lista *l;
+    no *n1, *naux;
+    for(l = Q1->l; l != NULL; l = l->l)
+    {
+        n1 = l->n;
+        naux = produto_complexo(n1,n);
+        transfere_conexao(naux,n1);
+        l->n = naux;
+        libera_no(n1);
+    }
+
+    libera_no(n);
+
+    return Q1;
+}
+
 
 
 
@@ -1095,10 +1130,7 @@ int main()
     inicia_relatorio_memoria(0);
     /***********************************/
 
-    QDD *Q;
-    Q = le_matriz("I8.txt");
-    reduz_QDD(Q);
-    libera_QDD(Q);
+
 
     /***********************************/
     finaliza_relatorio_memoria();
