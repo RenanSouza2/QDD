@@ -1063,6 +1063,23 @@ QDD* produto_por_escalar(QDD *Q, float re, float im)
 }
 
 
+QDD* soma_matriz(QDD *Q1, QDD *Q2)
+{
+    apply *a, *ac, *a1, *a2;
+    a = cria_apply();
+    a->n1 = Q1->n;
+    a->n2 = Q2->n;
+    ac = a;
+
+    no *n, *n1, *n2;
+    Short caso;
+    while(ac != NULL)
+    {
+        n1 = ac->n1;
+        n2 = ac->n2;
+    }
+}
+
 
 
 QDD* I()
