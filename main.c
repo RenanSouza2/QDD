@@ -1,7 +1,9 @@
 #include<stdio.h>
 #include<stdlib.h>
+#include<math.h>
 
 #define eps 5e-5
+#define pi 3.1415926535
 
 int mem = 0, memMax = 0;
 FILE *fm;
@@ -1104,7 +1106,7 @@ QDD* I_n(Short i)
 QDD* H()
 {
     QDD *Q;
-    Q = le_matriz("Had1.txt");
+    Q = le_matriz("H1.txt");
     reduz_QDD(Q);
     return Q;
 }
@@ -1124,7 +1126,7 @@ QDD* H_n(Short i)
 
 void inicia_relatorio_memoria(Short i)
 {
-    print = 0;
+    print = i;
     if(print)
     fm = fopen("relatorio_memoria.txt","w");
 }
@@ -1147,8 +1149,12 @@ int main()
     inicia_relatorio_memoria(0);
     /***********************************/
 
-
+    QDD *Q;
+    Q = le_matriz("QFT8.txt");
+    reduz_QDD(Q);
+    libera_QDD(Q);
 
     /***********************************/
     finaliza_relatorio_memoria();
+    return 0;
 }
