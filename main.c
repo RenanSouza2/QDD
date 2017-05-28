@@ -1040,9 +1040,6 @@ QDD* potencia_tensorial(QDD *Q, Short i)
 
 QDD* produto_por_escalar(QDD *Q, float re, float im)
 {
-    QDD *Q1;
-    Q1 = copia_QDD(Q);
-
     no *n;
     n = cria_no(0,0,re,im);
     printf("NO ESCALAR");
@@ -1050,7 +1047,7 @@ QDD* produto_por_escalar(QDD *Q, float re, float im)
 
     lista *l;
     no *n1, *naux;
-    for(l = Q1->l; l != NULL; l = l->l)
+    for(l = Q->l; l != NULL; l = l->l)
     {
         n1 = l->n;
         naux = produto_complexo(n1,n);
@@ -1061,7 +1058,7 @@ QDD* produto_por_escalar(QDD *Q, float re, float im)
 
     libera_no(n);
 
-    return Q1;
+    return Q;
 }
 
 
