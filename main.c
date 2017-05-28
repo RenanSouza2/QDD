@@ -1038,7 +1038,7 @@ QDD* potencia_tensorial(QDD *Q, Short i)
     return Qs;
 }
 
-QDD* produto_por_escalar(QDD *Q, float re, float im)
+void produto_por_escalar(QDD *Q, float re, float im)
 {
     no *n;
     n = cria_no(0,0,re,im);
@@ -1057,8 +1057,6 @@ QDD* produto_por_escalar(QDD *Q, float re, float im)
     }
 
     libera_no(n);
-
-    return Q;
 }
 
 
