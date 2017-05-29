@@ -1,27 +1,51 @@
 #include<stdio.h>
 #include<stdlib.h>
-#include<math.h>
 
 #define eps 5e-5
-#define pi 3.1415926535
+
+
 
 int mem = 0, memMax = 0;
 FILE *fm;
-unsigned short print = 1;
+unsigned short print;
+
 
 
 struct QDD
 {
     struct no *n;
+    unsigned short nqbit;
     struct lista *l;
+};
+
+struct inicio
+{
+    struct no *n;
+};
+
+struct meio
+{
+    unsigned short nivel;
+    struct no *el, *th;
+};
+
+struct fim
+{
+    float re, im;
+};
+
+union atributos
+{
+    struct inicio;
+    struct meio;
+    struct fim;
 };
 
 struct no
 {
+    unsigned short tipo;
     struct lista *l;
-    unsigned short nivel, tipo;
-    float re, im;
-    struct no *el, *th;
+    union atributos at;
 };
 
 struct lista
@@ -43,6 +67,14 @@ typedef struct QDD QDD;
 typedef struct no no;
 
 typedef struct lista lista;
+
+typedef union atributos atributos;
+
+typedef struct inicio inicio;
+
+typedef struct meio meio;
+
+typedef struct fim fim;
 
 typedef struct apply apply;
 
@@ -92,30 +124,39 @@ QDD* cria_QDD()
     return Q;
 }
 
-no* cria_no(Short tipo, Short nivel, float re, float im)
+no* cria_inicio()
 {
-    no* n;
+    no *n;
     n = malloc(sizeof(no));
     if(n == NULL)
     {
-        printf("\n\nERRO NO");
+        printf("\n\nERRO INICIO");
         exit(EXIT_FAILURE);
     }
     aumenta_memoria(sizeof(no));
+    n->tipo = 0;
     n->l = NULL;
-    n->tipo = tipo;
-    n->nivel = nivel;
-    n->re = re;
-    n->im = im;
-    n->el = NULL;
-    n->th = NULL;
+
+    inicio i;
+    i.n = NULL;
+    n->at = i;
     return n;
 }
+
+no* cria_meio()
+{
+
+}
+
+no* cria_fim()
+{
+
+}
+
 
 no* cria_no_vazio()
 {
     no* n;
-    n = cria_no(0,0,0,0);
     return n;
 }
 
@@ -185,7 +226,7 @@ void libera_lista(lista *l)
 
 
 
-void mostra_lista(lista *l)
+/*void mostra_lista(lista *l)
 {
     lista *lc;
     Short ligacao = 0;
@@ -1042,8 +1083,6 @@ void produto_por_escalar(QDD *Q, float re, float im)
 {
     no *n;
     n = cria_no(0,0,re,im);
-    printf("NO ESCALAR");
-    mostra_no(n);
 
     lista *l;
     no *n1, *naux;
@@ -1142,14 +1181,21 @@ void finaliza_relatorio_memoria()
 int main()
 {
     inicia_relatorio_memoria(0);
-    /***********************************/
+    / *********************************** /
 
     QDD *Q;
     Q = le_matriz("QFT8.txt");
     reduz_QDD(Q);
     libera_QDD(Q);
 
-    /***********************************/
+    / *********************************** /
     finaliza_relatorio_memoria();
     return 0;
+}*/
+
+
+
+int main()
+{
+    printf("%d",sizeof(no));
 }
