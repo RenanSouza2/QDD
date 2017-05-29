@@ -25,7 +25,7 @@ struct inicio
 
 struct meio
 {
-    unsigned short nivel;
+    unsigned short classe, nivel;
     struct no *el, *th;
 };
 
@@ -140,7 +140,7 @@ no* cria_no_inicio()
     return n;
 }
 
-no* cria_no_meio(Short tipo, Short nivel)
+no* cria_no_meio(Short classe, Short nivel)
 {
     no *n;
     n = malloc(sizeof(no));
@@ -150,10 +150,11 @@ no* cria_no_meio(Short tipo, Short nivel)
         exit(EXIT_FAILURE);
     }
     aumenta_memoria(sizeof(no));
-    n->tipo = tipo;
+    n->tipo = 1;
     n->l = NULL;
 
     meio m;
+    m.classe = classe;
     m.nivel = nivel;
     m.el = NULL;
     m.th = NULL;
@@ -402,8 +403,10 @@ void mostra_arvore_ineficiente(no *n)
     mostra_arvore_ineficiente(n->at.m.th);
 }
 
-/*lista* enlista_QDD(QDD *Q)
+lista* enlista_QDD(QDD *Q)
 {
+    /**  l é a lista final                      ***
+    ***  la é a fila de nós para adicionar a l  **/
     lista *l, *la, *lc, *lf;
     no *n;
 
@@ -415,20 +418,25 @@ void mostra_arvore_ineficiente(no *n)
     while(la != NULL)
     {
         n = la->n;
+        /**  Verifica se o no n ká está na lista  **/
         for(lc = l; lc != NULL; lc = lc->l)
             if(lc->n == n)
                 break;
         if(lc == NULL)
         {
+            /**  caso não esteja  **/
             lf->l = cria_no_lista();
             lf = lf->l;
             lf->n = n;
 
-            la->n = n->th;
-            lc = cria_no_lista();
-            lc->n = n->el;
-            lc->l = la;
-            la = lc;
+            if(n->tipo == 1)
+            {
+                la->n = n->at.m.th;
+                lc = cria_no_lista();
+                lc->n = n->at.m.el;
+                lc->l = la;
+                la = lc;
+            }
         }
         else
         {
@@ -477,9 +485,9 @@ void conecta_UM(no *n1, no *n2, Short lado)
     lista *l;
 
     if(lado)
-        n1->th = n2;
+        n1->at.m.th = n2;
     else
-        n1->el = n2;
+        n1->at.m.el = n2;
 
     l = cria_no_lista();
     l->n = n1;
@@ -497,14 +505,14 @@ Short desconecta_UM(no *n1, no *n2)
 {
     lista *l, *lc, *laux;
     Short lado;
-    if(n1->el == n2)
+    if(n1->at.m.el == n2)
     {
-        n1->el = NULL;
+        n1->at.m.el = NULL;
         lado = 0;
     }
     else
     {
-        n1->th = NULL;
+        n1->at.m.th = NULL;
         lado = 1;
     }
 
@@ -527,8 +535,8 @@ Short desconecta_UM(no *n1, no *n2)
 
 void desconecta_DOIS(no *n)
 {
-    desconecta_UM(n,n->el);
-    desconecta_UM(n,n->th);
+    desconecta_UM(n,n->at.m.el);
+    desconecta_UM(n,n->at.m.th);
 }
 
 void transfere_conexao(no *n1, no *n2)
@@ -574,24 +582,36 @@ void libera_QDD(QDD *Q)
 no* copia_no(no *n1)
 {
     no *n2;
-    n2 = cria_no(n1->tipo,n1->nivel,n1->re,n1->im);
+    n2 = NULL;
+    switch(n1->tipo)
+    {
+        case 0:
+        n2 = cria_no_inicio();
+        break;
+
+        case 1:
+        n2 = cria_no_meio(n1->at.m.classe,n1->at.m.nivel);
+        break;
+
+        case 2:
+        n2 = cria_no_fim(n1->at.f.re,n1->at.f.im);
+        break;
+    }
     return n2;
 }
 
-Short compara_no(no *n1, no *n2)
+Short compara_no_fim(no *n1, no *n2)
 {
     float re, im;
-    re = (n1->re)-(n2->re);
-    im = (n1->im)-(n2->im);
-    if(re<-eps)
-        return 0;
-    if(re>eps)
-        return 0;
-    if(im<-eps)
-        return 0;
-    if(im>eps)
-        return 0;
-    return 1;
+    re = (n1->at.f.re)-(n2->at.f.re);
+    im = (n1->at.f.im)-(n2->at.f.im);
+
+    if(re>-eps)
+    if(re< eps)
+    if(im>-eps)
+    if(im< eps)
+        return 1;
+    return 0;
 }
 
 Short compara_apply(apply *a1, apply *a2)
@@ -606,9 +626,9 @@ no* produto_complexo(no *n1, no *n2)
 {
     no *n;
     float re, im;
-    re = (n1->re)*(n2->re)-(n1->im)*(n2->im);
-    im = (n1->re)*(n2->im)+(n1->im)*(n2->re);
-    n = cria_no(0,0,re,im);
+    re = (n1->at.f.re)*(n2->at.f.re)-(n1->at.f.im)*(n2->at.f.im);
+    im = (n1->at.f.re)*(n2->at.f.im)+(n1->at.f.im)*(n2->at.f.re);
+    n = cria_no_fim(re,im);
     return n;
 }
 
@@ -616,9 +636,9 @@ no* produto_complexo_conjugado(no *n1, no *n2)
 {
     no *n;
     float re, im;
-    re = (n1->re)*(n2->re)+(n1->im)*(n2->im);
-    im = (n1->re)*(n2->im)-(n1->im)*(n2->re);
-    n = cria_no(0,0,re,im);
+    re = (n1->at.f.re)*(n2->at.f.re)+(n1->at.f.im)*(n2->at.f.im);
+    im = (n1->at.f.re)*(n2->at.f.im)-(n1->at.f.im)*(n2->at.f.re);
+    n = cria_no_fim(re,im);
     return n;
 }
 
@@ -660,7 +680,7 @@ void reduz_lista(lista *l)
         while(lc2->l != NULL)
         {
             n2 = lc2->l->n;
-            if(compara_no(n1,n2))
+            if(compara_no_fim(n1,n2))
             {
                 transfere_conexao(n1,n2);
                 laux = lc2->l;
@@ -678,10 +698,10 @@ void reduz_lista(lista *l)
 
 
 
-void completa_QDD(no *n, Short r, Short c, Short exp, Short **M, lista **L)
+void completa_QDD_matriz(no *n, Short r, Short c, Short exp, Short **M, lista **L)
 {
     Short ind1, ind2;
-    if((n->tipo == 3)&&(exp == 1))
+    if((n->at.m.classe == 2)&&(exp == 1))
     {
         ind1 = M[r][c];
         ind2 = M[r][c+1];
@@ -689,20 +709,20 @@ void completa_QDD(no *n, Short r, Short c, Short exp, Short **M, lista **L)
     }
     else
     {
-        if(n->tipo == 2)
+        if(n->at.m.classe == 1)
         {
-            completa_QDD(n->el,r,c,exp,M,L);
-            completa_QDD(n->th,r+exp,c,exp,M,L);
+            completa_QDD_matriz(n->at.m.el,r,c,exp,M,L);
+            completa_QDD_matriz(n->at.m.th,r+exp,c,exp,M,L);
         }
-        if(n->tipo == 3)
+        if(n->at.m.classe == 2)
         {
-            completa_QDD(n->el,r,c,exp/2,M,L);
-            completa_QDD(n->th,r,c+exp,exp/2,M,L);
+            completa_QDD_matriz(n->at.m.el,r,c,exp/2,M,L);
+            completa_QDD_matriz(n->at.m.th,r,c+exp,exp/2,M,L);
         }
     }
 }
 
-QDD* le_matriz(char *nome)
+/*QDD* le_matriz(char *nome)
 {
     Short i, j, k;
 
