@@ -34,18 +34,16 @@ struct fim
     float re, im;
 };
 
-union atributos
-{
-    struct inicio;
-    struct meio;
-    struct fim;
-};
-
 struct no
 {
     unsigned short tipo;
     struct lista *l;
-    union atributos at;
+    union atributos
+    {
+        struct inicio i;
+        struct meio m;
+        struct fim f;
+    }at;
 };
 
 struct lista
@@ -67,8 +65,6 @@ typedef struct QDD QDD;
 typedef struct no no;
 
 typedef struct lista lista;
-
-typedef union atributos atributos;
 
 typedef struct inicio inicio;
 
@@ -124,7 +120,7 @@ QDD* cria_QDD()
     return Q;
 }
 
-no* cria_inicio()
+no* cria_no_inicio()
 {
     no *n;
     n = malloc(sizeof(no));
@@ -139,24 +135,51 @@ no* cria_inicio()
 
     inicio i;
     i.n = NULL;
-    n->at = i;
+    n->at.i = i;
+
     return n;
 }
 
-no* cria_meio()
+no* cria_no_meio(Short tipo, Short nivel)
 {
+    no *n;
+    n = malloc(sizeof(no));
+    if(n == NULL)
+    {
+        printf("\n\nERRO INICIO");
+        exit(EXIT_FAILURE);
+    }
+    aumenta_memoria(sizeof(no));
+    n->tipo = tipo;
+    n->l = NULL;
 
+    meio m;
+    m.nivel = nivel;
+    m.el = NULL;
+    m.th = NULL;
+    n->at.m = m;
+
+    return n;
 }
 
-no* cria_fim()
+no* cria_no_fim(float re,float im)
 {
+    no *n;
+    n = malloc(sizeof(no));
+    if(n == NULL)
+    {
+        printf("\n\nERRO INICIO");
+        exit(EXIT_FAILURE);
+    }
+    aumenta_memoria(sizeof(no));
+    n->tipo = 4;
+    n->l = NULL;
 
-}
+    fim f;
+    f.re = re;
+    f.im = im;
+    n->at.f = f;
 
-
-no* cria_no_vazio()
-{
-    no* n;
     return n;
 }
 
@@ -226,7 +249,7 @@ void libera_lista(lista *l)
 
 
 
-/*void mostra_lista(lista *l)
+void mostra_lista(lista *l)
 {
     lista *lc;
     Short ligacao = 0;
@@ -262,27 +285,36 @@ void mostra_no(no *n)
     switch(n->tipo)
     {
         case 0:
-        printf(": Numero  %d\n",n->nivel);
-        printf("%f %f \n",n->re,n->im);
+        printf(": Inicio\n");
+        printf("Ligacoes posteriores\n");
+        printf("\tn: %d",n->at.i.n);
         break;
 
         case 1:
-        printf("/nivel: V%d\n",n->nivel);
+        printf("/nivel: V%d\n",n->at.m.nivel);
+        printf("Ligacoes posteriores\n");
+        printf("\telse: %d\n",n->at.m.el);
+        printf("\tThen: %d\n",n->at.m.th);
         break;
 
         case 2:
-        printf("/nivel: R%d\n",n->nivel);
+        printf("/nivel: R%d\n",n->at.m.nivel);
+        printf("Ligacoes posteriores\n");
+        printf("\telse: %d\n",n->at.m.el);
+        printf("\tThen: %d\n",n->at.m.th);
         break;
 
         case 3:
-        printf("/nivel: C%d\n",n->nivel);
-        break;
-    }
-    if((n->el != NULL)||(n->th != NULL))
-    {
+        printf("/nivel: C%d\n",n->at.m.nivel);
         printf("Ligacoes posteriores\n");
-        printf("\telse: %d\n",n->el);
-        printf("\tThen: %d\n",n->th);
+        printf("\telse: %d\n",n->at.m.el);
+        printf("\tThen: %d\n",n->at.m.th);
+        break;
+
+        case 4:
+        printf(": Numero\n");
+        printf("%f %f",n->at.f.re,n->at.f.im);
+        break;
     }
     printf("\n");
 }
@@ -293,34 +325,44 @@ void fmostra_no(FILE *fp, no *n)
     if(n->l != NULL)
     {
         fprintf(fp,"Ligacoes anteriores:\n");
-        fmostra_lista(fp,n->l);
+        mostra_lista(n->l);
     }
     fprintf(fp,"Tipo");
     switch(n->tipo)
     {
         case 0:
-        fprintf(fp,": Numero\n");
-        fprintf(fp,"%f %f \n",n->re,n->im);
+        fprintf(fp,": Inicio\n");
+        fprintf(fp,"Ligacoes posteriores\n");
+        fprintf(fp,"\tn: %d",n->at.i.n);
         break;
 
         case 1:
-        fprintf(fp,"/nivel: V%d\n",n->nivel);
+        fprintf(fp,"/nivel: V%d\n",n->at.m.nivel);
+        fprintf(fp,"Ligacoes posteriores\n");
+        fprintf(fp,"\telse: %d\n",n->at.m.el);
+        fprintf(fp,"\tThen: %d\n",n->at.m.th);
         break;
 
         case 2:
-        fprintf(fp,"/nivel: R%d\n",n->nivel);
+        fprintf(fp,"/nivel: R%d\n",n->at.m.nivel);
+        fprintf(fp,"Ligacoes posteriores\n");
+        fprintf(fp,"\telse: %d\n",n->at.m.el);
+        fprintf(fp,"\tThen: %d\n",n->at.m.th);
         break;
 
         case 3:
-        fprintf(fp,"/nivel: C%d\n",n->nivel);
+        fprintf(fp,"/nivel: C%d\n",n->at.m.nivel);
+        fprintf(fp,"Ligacoes posteriores\n");
+        fprintf(fp,"\telse: %d\n",n->at.m.el);
+        fprintf(fp,"\tThen: %d\n",n->at.m.th);
+        break;
+
+        case 4:
+        fprintf(fp,": Numero\n");
+        fprintf(fp,"%f %f",n->at.f.re,n->at.f.im);
         break;
     }
-    if((n->el != NULL)||(n->th != NULL))
-    {
-        fprintf(fp,"Ligacoes posteriores\n");
-        fprintf(fp,"\telse: %d\n",n->el);
-        fprintf(fp,"\tThen: %d\n",n->th);
-    }
+    printf("\n");
 }
 
 void mostra_lista_com_no(lista *l)
@@ -356,11 +398,11 @@ void mostra_arvore_ineficiente(no *n)
     if(n == NULL)
         return;
     mostra_no(n);
-    mostra_arvore_ineficiente(n->el);
-    mostra_arvore_ineficiente(n->th);
+    mostra_arvore_ineficiente(n->at.m.el);
+    mostra_arvore_ineficiente(n->at.m.th);
 }
 
-lista* enlista_QDD(QDD *Q)
+/*lista* enlista_QDD(QDD *Q)
 {
     lista *l, *la, *lc, *lf;
     no *n;
@@ -1197,5 +1239,6 @@ int main()
 
 int main()
 {
-    printf("%d",sizeof(no));
+    for(int i=0; i<10; i++)
+        printf("%d",sizeof(no));
 }
