@@ -387,6 +387,7 @@ void mostra_QDD(QDD *Q)
 {
     lista *l;
     l = enlista_QDD(Q);
+    printf("NQBIT: %d\n",Q->nqbit);
     mostra_lista_com_no(l);
     printf("\n");
     mostra_lista(Q->l);
@@ -474,6 +475,7 @@ void fmostra_QDD(FILE *fp,QDD *Q)
 
     lista *l;
     l = enlista_QDD(Q);
+    fprintf(fp,"NQBIT: %d\n",Q->nqbit);
     fmostra_lista_com_no(fp,l);
     fprintf(fp,"\n");
     fmostra_lista(fp,Q->l);
@@ -861,6 +863,7 @@ QDD* le_matriz(char *nome)
     Q->n = cria_no_inicio();
     conecta_UM(Q->n,N[0],0);
     Q->n = N[0];
+    Q->nqbit = N1;
     Q->l = L[0];
 
     free(N);
@@ -992,8 +995,10 @@ void reduz_QDD(QDD *Q)
     libera_no_lista(l);
 }
 
-/*QDD* copia_QDD(QDD *Q1)
+QDD* copia_QDD(QDD *Q1)
 {
+    /**  l1 guarda Q1 elistado   ***
+    ***  l2 lista dos nos de l2  **/
     lista *l1, *l2, *lc1a, *lc2a, *lc1b, *lc2b;
     no *n1, *n2, *nf, *nt1, *nt2;
 
@@ -1006,17 +1011,22 @@ void reduz_QDD(QDD *Q)
     lc2a = l2;
     do
     {
+        /**  lc1a perocrre a lista 1 pela primeira vez  ***
+        ***  lc2a percorre a lista 2 pela primeira vez  **/
         n1 = lc1a->n;
         n2 = lc2a->n;
 
-        if(n1->el != NULL)
+        switch(n1->tipo)
         {
-            nf = n1->el;
+            case 0:
+            nf = n1->at.i.n;
 
             lc1b = l1;
             lc2b = l2;
             do
             {
+                /**  lc1a perocrre a lista 1 pela segunda vez para buscar filhos  ***
+                ***  lc2a percorre a lista 2 pela segunda vez para buscar filhos  **/
                 nt1 = lc1b->n;
                 nt2 = lc2b->n;
 
@@ -1026,11 +1036,10 @@ void reduz_QDD(QDD *Q)
             while(nt1 != nf);
 
             conecta_UM(n2,nt2,0);
-        }
+            break;
 
-        if(n1->th != NULL)
-        {
-            nf = n1->th;
+            case 1:
+            nf = n1->at.m.el;
 
             lc1b = l1;
             lc2b = l2;
@@ -1045,8 +1054,24 @@ void reduz_QDD(QDD *Q)
             while(nt1 != nf);
 
             conecta_UM(n2,nt2,1);
-        }
 
+            nf = n1->at.m.th;
+
+            lc1b = l1;
+            lc2b = l2;
+            do
+            {
+                nt1 = lc1b->n;
+                nt2 = lc2b->n;
+
+                lc1b = lc1b->l;
+                lc2b = lc2b->l;
+            }
+            while(nt1 != nf);
+
+            conecta_UM(n2,nt2,2);
+            break;
+        }
         lc1a = lc1a->l;
         lc2a = lc2a->l;
     }
@@ -1054,13 +1079,14 @@ void reduz_QDD(QDD *Q)
 
     QDD *Q2;
     Q2 = cria_QDD();
+    Q2->nqbit = Q1->nqbit;
     Q2->n = l2->l->n;
 
     lc2a = l2;
     while(lc2a->l != NULL)
     {
         lc2b = lc2a->l;
-        if(lc2b->n->tipo == 0)
+        if(lc2b->n->tipo == 2)
             lc2a = lc2b;
         else
         {
@@ -1079,12 +1105,11 @@ void reduz_QDD(QDD *Q)
 QDD* produto_tensorial(QDD *Q1, QDD *Q2)
 {
     QDD *Q;
-    Short nqbit;
     lista *l;
 
     Q = copia_QDD(Q1);
     reduz_QDD(Q);
-    nqbit = Q->l->n->nivel;
+    Q->nqbit = Q1->nqbit + Q2->nqbit;
     l = Q->l;
     Q->l = NULL;
 
@@ -1094,20 +1119,20 @@ QDD* produto_tensorial(QDD *Q1, QDD *Q2)
     reduz_QDD(Q2a);
     l2 = enlista_QDD(Q2a);
     for(lc = l2; lc != NULL; lc = lc->l)
-        (lc->n->nivel) += nqbit;
+        if(lc->n->tipo == 1)
+            (lc->n->at.m.nivel) += (Q1->nqbit);
     libera_lista(l2);
-
-    nqbit+=Q2->l->n->nivel;
 
     QDD *Q2b;
     no *n1, *n2, *naux, *n0;
-    n0 = cria_no_vazio();
+    n0 = cria_no_fim(0,0);
+
+
     while(l != NULL)
     {
         n1 = l->n;
-        if(compara_no(n0,n1))
+        if(compara_no_fim(n0,n1))
         {
-            n1->nivel = nqbit;
             l2 = l->l;
             l->l = Q->l;
             Q->l = l;
@@ -1120,7 +1145,6 @@ QDD* produto_tensorial(QDD *Q1, QDD *Q2)
             {
                 n2 = lc->n;
                 naux = produto_complexo(n1,n2);
-                naux->nivel = nqbit;
                 transfere_conexao(naux,n2);
                 lc->n = naux;
                 libera_no(n2);
@@ -1165,7 +1189,6 @@ QDD* potencia_tensorial(QDD *Q, Short i)
     for(j=1; j<i; j++)
     {
         Qaux = produto_tensorial(Qs,Q);
-        reduz_QDD(Qaux);
         libera_QDD(Qs);
         Qs = Qaux;
     }
@@ -1175,7 +1198,7 @@ QDD* potencia_tensorial(QDD *Q, Short i)
 void produto_por_escalar(QDD *Q, float re, float im)
 {
     no *n;
-    n = cria_no(0,0,re,im);
+    n = cria_no_fim(re,im);
 
     lista *l;
     no *n1, *naux;
@@ -1192,7 +1215,7 @@ void produto_por_escalar(QDD *Q, float re, float im)
 }
 
 
-QDD* soma_matriz(QDD *Q1, QDD *Q2)
+/*QDD* soma_matriz(QDD *Q1, QDD *Q2)
 {
     apply *a, *ac, *a1, *a2;
     a = cria_apply();
@@ -1207,7 +1230,7 @@ QDD* soma_matriz(QDD *Q1, QDD *Q2)
         n1 = ac->n1;
         n2 = ac->n2;
     }
-}
+}*/
 
 
 
@@ -1247,7 +1270,7 @@ QDD* H_n(Short i)
     libera_QDD(Q1);
 
     return Q2;
-}*/
+}
 
 
 
@@ -1276,26 +1299,11 @@ int main()
     inicia_relatorio_memoria(0);
     /***********************************/
 
-    QDD *Q;
-    Q = le_matriz("H2.txt");
-    reduz_QDD(Q);
-    mostra_QDD(Q);
-
-    /*no *n1, *n2, *n3;
-
-    n1 = cria_no_meio(1,0);
-    n2 = cria_no_meio(2,0);
-    n3 = cria_no_meio(2,0);
-
-    mostra_no(n1);
-    mostra_no(n2);
-    mostra_no(n3);
-
-    conecta_DOIS(n1,n2,n3);
-
-    mostra_no(n1);
-    mostra_no(n2);
-    mostra_no(n3);*/
+    QDD *Q1;
+    Q1 = le_matriz("I2.txt");
+    reduz_QDD(Q1);
+    produto_por_escalar(Q1,5,7);
+    mostra_QDD(Q1);
 
     /***********************************/
     finaliza_relatorio_memoria();
