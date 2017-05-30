@@ -447,7 +447,7 @@ void mostra_lista_apply_com_no(apply *a)
     Short i=0;
     for(ac = a; ac != NULL; ac = ac->a)
     {
-        printf("\nLigacao %d: %d",i++,ac);
+        printf("\n\n\n\n\nLigacao %d: %d\n",i++,ac);
         mostra_apply(ac);
     }
 }
@@ -924,10 +924,10 @@ no* apply_soma(no *N1, no *N2)
             }
             else
             {
-                printf("\n\nA\n\n");
                 ac->a1 = aaux;
                 libera_no_apply(a1);
             }
+
 
             for(aaux = a; aaux != NULL; aaux = aaux->a)
                 if(compara_apply(aaux,a2))
@@ -940,7 +940,6 @@ no* apply_soma(no *N1, no *N2)
             }
             else
             {
-                printf("\n\nB\n\n");
                 ac->a2 = aaux;
                 libera_no_apply(a2);
             }
@@ -955,12 +954,12 @@ no* apply_soma(no *N1, no *N2)
             a1 = ac->a1;
             a2 = ac->a2;
 
-            for(aaux = ac; aaux != NULL; aaux = aaux->a)
+            for(aaux = a; aaux != NULL; aaux = aaux->a)
                 if(aaux == a1)
                     break;
             n1 = aaux->n;
 
-            for(aaux = ac; aaux != NULL; aaux = aaux->a)
+            for(aaux = a; aaux != NULL; aaux = aaux->a)
                 if(aaux == a2)
                     break;
             n2 = aaux->n;
@@ -1710,41 +1709,15 @@ void finaliza_relatorio_memoria()
 
 int main()
 {
-    inicia_relatorio_memoria(0);
+    inicia_relatorio_memoria(1);
     /***********************************/
 
-    QDD *Q1;
-    Q1 = le_matriz("H1.txt");
-    reduz_QDD(Q1);
-    printf("QDD1\n");
-    //mostra_QDD(Q1);
-
-    QDD *Q2;
-    Q2 = le_matriz("I1.txt");
-    reduz_QDD(Q2);
-    printf("QDD2\n");
-    //mostra_QDD(Q2);
-
-    QDD *Q3;
-    Q3 = soma_QDD(Q1,Q2);
-    mostra_QDD(Q3);
-
-
-
-    /*no *n1, *n2;
-    n1 = cria_no_meio(1,0);
-    n2 = cria_no_meio(2,0);
-
-    apply *a1, *a2;
-    a1 = cria_apply();
-    a2 = cria_apply();
-
-    a1->n1 = n1;
-    a1->n2 = n2;
-    a2->n1 = n1;
-    a2->n2 = n2;
-
-    printf("%d",compara_apply(a1,a2));*/
+    QDD *Q;
+    Q = le_vetor("V.txt");
+    printf("\nMem: %d",mem);
+    reduz_QDD(Q);
+    printf("\nMem: %d",mem);
+    //mostra_QDD(Q);
 
     /***********************************/
     finaliza_relatorio_memoria();
