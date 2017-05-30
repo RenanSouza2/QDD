@@ -436,6 +436,7 @@ void mostra_lista_apply(apply *a)
 }
 
 
+
 void fmostra_lista(FILE *fp, lista *l)
 {
     lista *lc;
@@ -454,7 +455,7 @@ void fmostra_no(FILE *fp, no *n)
     if(n->l != NULL)
     {
         fprintf(fp,"Ligacoes anteriores:\n");
-        mostra_lista(n->l);
+        fmostra_lista(fp,n->l);
     }
     fprintf(fp,"Tipo");
     switch(n->tipo)
@@ -528,6 +529,30 @@ void fmostra_QDD_sozinho(QDD *Q, char *nome)
     fp = fopen(nome,"w");
     fmostra_QDD(fp,Q);
     fclose(fp);
+}
+
+void fmostra_apply(FILE *fp, apply *a)
+{
+    fprintf(fp,"\nEndereco %d\n",a);
+    fprintf(fp,"\nN1");
+    fmostra_no(fp,a->n1);
+    fprintf(fp,"\nN2");
+    fmostra_no(fp,a->n2);
+    if(a->n != NULL)
+    {
+        fprintf(fp,"\nN");
+        fmostra_no(fp,a->n);
+    }
+    else
+        fprintf(fp,"\nSem N");
+}
+
+void fmostra_lista_apply(FILE *fp, apply *a)
+{
+    apply *ac;
+    Short i=0;
+    for(ac = a; ac != NULL; ac = ac->a)
+        fprintf(fp,"\nLigacao %d: %d",i++,ac);
 }
 
 
@@ -1268,53 +1293,47 @@ void produto_por_escalar(QDD *Q, float re, float im)
 
 no* apply_soma(no *N1, no *N2)
 {
-    apply *a, *ac, *a1, *a2, *aaux;
+    apply *a;
     a = cria_apply();
     a->n1 = N1;
     a->n2 = N2;
-    ac = a;
 
+    apply *ac, *a1, *a2, *aaux;
     no *n, *n1, *n2;
-    Short regra, cont = 0;
-    while(ac != NULL)
+    for(ac = a; ac != NULL; ac = ac->a)
     {
-        cont++;
-        if(cont == 20)
-            break;
-        printf("\nEntrou aqui");
-
         n1 = ac->n1;
         n2 = ac->n2;
 
-        switch(n1->tipo)
+        switch(n1->at.m.nivel)
         {
             case 1:
-            /**  caso n1 não seja número  **/
-            switch(n2->tipo)
+            /**  n1 é intermediario  **/
+            switch(n1->at.m.nivel)
             {
                 case 1:
-                /**  caso n2 não seja número  **/
+                /**  n2 é intermediario  **/
                 regra = 0;
                 break;
 
                 case 2:
-                /**  caso n2 seja número  **/
+                /**  n2 é número  **/
                 regra = 1;
                 break;
             }
             break;
 
             case 2:
-            /**  caso n1 seja número  **/
-            switch(n2->tipo)
+            /**  n1 é numero  **/
+            switch(n1->at.m.nivel)
             {
                 case 1:
-                /**  caso n2 não seja número  **/
+                /**  n2 é intermediario  **/
                 regra = 2;
                 break;
 
                 case 2:
-                /**  caso n2 seja número  **/
+                /**  n2 é número  **/
                 regra = 4;
                 break;
             }
@@ -1323,146 +1342,10 @@ no* apply_soma(no *N1, no *N2)
 
         if(regra == 0)
         {
-            /**  nivel de n1 é menor que n2  **/
-            if(n1->at.m.nivel < n2->at.m.nivel)
-                regra = 1;
-            /**  nivel de n1 é maior que n2 **/
-            if(n1->at.m.nivel > n2->at.m.nivel)
-                regra = 2;
-            /**  nível de n1 é igual de n2  **/
-            if(n1->at.m.nivel == n2->at.m.nivel)
-            {
-                /**  tipo de n1 é anterior ao de n2  **/
-                if(n1->tipo < n2->tipo)
-                    regra = 1;
-                /**  tipo de n1 é pósterior ao de n2  **/
-                if(n1->tipo > n2->tipo)
-                    regra = 2;
-                /**  tipo de n1 é o mesmo de n2  **/
-                if(n1->tipo == n2->tipo)
-                    regra = 3;
-            }
+
         }
-
-        printf("\nRegra: %d",regra);
-        mostra_apply(ac);
-
-        switch(regra)
-        {
-            case 1:
-            n = copia_no(n1);
-            ac->n = n;
-
-            a1 = cria_apply();
-            a1->n1 = n1->at.m.el;
-            a1->n2 = n2;
-
-            a2 = cria_apply();
-            a2->n1 = n1->at.m.th;
-            a2->n2 = n2;
-            break;
-
-            case 2:
-            n = copia_no(n2);
-            ac->n = n;
-
-            a1 = cria_apply();
-            a1->n1 = n1;
-            a1->n2 = n2->at.m.el;
-
-            a2 = cria_apply();
-            a2->n1 = n1;
-            a2->n2 = n2->at.m.th;
-            break;
-
-            case 3:
-            n = copia_no(n1);
-            ac->n = n;
-
-            a1 = cria_apply();
-            a1->n1 = n1->at.m.el;
-            a1->n2 = n2->at.m.el;
-
-            a2 = cria_apply();
-            a2->n1 = n1->at.m.th;
-            a2->n2 = n2->at.m.th;
-            break;
-
-            case 4:
-            n = soma(n1,n2);
-            ac->n = n;
-            break;
-        }
-        printf("\nNo criado");
-        mostra_no(n);
-        if(regra != 4)
-        {
-            printf("\nAdicionando a1:   %d",a1);
-            /**  adiciona a1 se já não tiver  **/
-            for(aaux = a; aaux != NULL; aaux = aaux->a)
-            {
-                printf("\naaux:             %d",aaux);
-                if(aaux->a1 == a1)
-                    break;
-            }
-            if(aaux == NULL)
-            {
-                ac->a1 = a1;
-                a1->a = ac->a;
-                ac->a = a1;
-                mostra_lista_apply(a);
-            }
-            else
-            {
-                ac->a1 = aaux;
-                aaux->a = ac->a;
-                ac->a = aaux;
-                libera_no_apply(a1);
-            }
-
-            /**  adiciona a2 se já não tiver  **/
-            for(aaux = a; aaux != NULL; aaux = aaux->a)
-                if(aaux->a2 == a2)
-                    break;
-            if(aaux == NULL)
-            {
-                ac->a2 = a2;
-                a2->a = ac->a;
-                ac->a = a2;
-            }
-            else
-            {
-                ac->a2 = aaux;
-                aaux->a = ac->a;
-                ac->a = aaux;
-                libera_no_apply(a2);
-            }
-        }
-        ac = ac->a;
     }
-
-    for(ac = a; ac != NULL; ac = ac->a)
-    {
-        n = ac->n;
-
-        for(a1 = a; a1 != NULL; a1 = a1->a)
-            if(ac->a1 == a1)
-                break;
-        n1 = a1->n;
-
-        for(a2 = a; a2 != NULL; a2 = a2->a)
-            if(ac->a2 == a2)
-                break;
-        n2 = a2->n;
-
-        conecta_DOIS(n,n1,n2);
-    }
-
-    n = a->n;
-    libera_lista_apply(a);
-    return n;
 }
-
 
 
 QDD* I()
@@ -1527,7 +1410,7 @@ void finaliza_relatorio_memoria()
 
 int main()
 {
-    inicia_relatorio_memoria(1);
+    inicia_relatorio_memoria(0);
     /***********************************/
 
     QDD *Q1;
@@ -1539,6 +1422,8 @@ int main()
     no *n;
     n = apply_soma(Q1->n,Q2->n);
     libera_no(n);
+
+    FILE *fp;
 
     /***********************************/
     finaliza_relatorio_memoria();
