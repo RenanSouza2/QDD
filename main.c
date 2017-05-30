@@ -1215,22 +1215,88 @@ void produto_por_escalar(QDD *Q, float re, float im)
 }
 
 
-/*QDD* soma_matriz(QDD *Q1, QDD *Q2)
+no* apply_soma(no *N1, no *N2)
 {
     apply *a, *ac, *a1, *a2;
     a = cria_apply();
-    a->n1 = Q1->n;
-    a->n2 = Q2->n;
+    a->n1 = N1;
+    a->n2 = N2;
     ac = a;
 
     no *n, *n1, *n2;
-    Short caso;
+    Short regra;
     while(ac != NULL)
     {
         n1 = ac->n1;
         n2 = ac->n2;
+
+        switch(n1->tipo)
+        {
+            case 1:
+            /**  caso n1 não seja número  **/
+            switch(n2->tipo)
+            {
+                case 1:
+                /**  caso n2 não seja número  **/
+                regra = 0;
+                break;
+
+                case 2:
+                /**  caso n2 seja número  **/
+                regra = 1;
+                break;
+            }
+            break;
+
+            case 2:
+            /**  caso n1 seja número  **/
+            switch(n2->tipo)
+            {
+                case 1:
+                /**  caso n2 não seja número  **/
+                regra = 2;
+                break;
+
+                case 2:
+                /**  caso n2 seja número  **/
+                regra = 4;
+                break;
+            }
+            break;
+        }
+        if(regra == 0)
+        {
+            if(n1->at.m.nivel < n2->at.m.nivel)
+                regra = 1;
+            if(n1->at.m.nivel > n2->at.m.nivel)
+                regra = 2;
+            if(n1->at.m.nivel == n2->at.m.nivel)
+            {
+                if(n1->tipo < n2->tipo)
+                    regra = 1;
+                if(n1->tipo > n2->tipo)
+                    regra = 2;
+                if(n1->tipo == n2->tipo)
+                    regra = 3;
+            }
+        }
+
+        switch(regra)
+        {
+            case 1:
+            break;
+
+            case 2:
+            break;
+
+            case 3:
+            break;
+
+            case 4:
+            break;
+        }
     }
-}*/
+}
 
 
 
