@@ -1722,9 +1722,10 @@ int main()
     QDD *Q;
     Q = le_vetor("V.txt");
     printf("\nMem: %d",mem);
+    inicia_configuracao(Q->nqbit);
     reduz_QDD(Q);
     printf("\nMem: %d",mem);
-    mostra_QDD(Q);
+    //mostra_QDD(Q);
 
     /***********************************/
     finaliza_relatorio_memoria();
