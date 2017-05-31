@@ -4,7 +4,7 @@
 
 
 
-int mem = 0, memMax = 0;
+unsigned int mem = 0, memMax = 0, iQ = 0, ii = 0, im = 0, ifi = 0, il = 0, ia = 0;;
 FILE *fm;
 unsigned short print, nqbit;
 float eps;
@@ -76,13 +76,15 @@ typedef struct apply apply;
 
 typedef unsigned short Short;
 
+typedef unsigned int Int;
 
 
-void aumenta_memoria(int m)
+
+void aumenta_memoria(Int m)
 {
     mem += m;
     if(print)
-    fprintf(fm,"\nMemUP: %d\t\t\t %d",mem,m);
+    fprintf(fm,"\nMemUP: %d\t\t\t %u",mem,m);
     if(memMax<mem)
     {
         memMax = mem;
@@ -91,16 +93,16 @@ void aumenta_memoria(int m)
     }
 }
 
-void diminui_memoria(int m)
+void diminui_memoria(Int m)
 {
-    mem -= m;
-    if(mem<0)
+    if(m>mem)
     {
         printf("\n\nERRO MEM");
         exit(EXIT_FAILURE);
     }
+    mem -= m;
     if(print)
-    fprintf(fm,"\n\tMemDOWN: %d\t\t%d",mem,-m);
+    fprintf(fm,"\n\tMemDOWN: %d\t\t%u",mem,-m);
 }
 
 
@@ -293,6 +295,7 @@ lista* enlista_QDD(QDD *Q)
             lf = lf->l;
             lf->n = n;
 
+            printf("\n%d",n);
             if(n->tipo == 1)
             {
                 /**  caso tenha filhos  **/
@@ -320,7 +323,7 @@ lista* enlista_QDD(QDD *Q)
 void mostra_lista(lista *l)
 {
     lista *lc;
-    Short ligacao = 0;
+    Int ligacao = 0;
     lc = l;
     for(lc = l; lc != NULL; lc = lc->l)
     {
@@ -380,7 +383,7 @@ void mostra_no(no *n)
 void mostra_lista_com_no(lista *l)
 {
     lista *lc;
-    Short ligacao = 0;
+    Int ligacao = 0;
     lc = l;
     printf("\n");
     for(lc = l; lc != NULL; lc = lc->l)
@@ -436,7 +439,7 @@ void mostra_apply(apply *a)
 void mostra_lista_apply(apply *a)
 {
     apply *ac;
-    Short i=0;
+    Int i=0;
     for(ac = a; ac != NULL; ac = ac->a)
         printf("\nLigacao %d: %d",i++,ac);
 }
@@ -444,7 +447,7 @@ void mostra_lista_apply(apply *a)
 void mostra_lista_apply_com_no(apply *a)
 {
     apply *ac;
-    Short i=0;
+    Int i=0;
     for(ac = a; ac != NULL; ac = ac->a)
     {
         printf("\n\n\n\n\nLigacao %d: %d\n",i++,ac);
@@ -457,7 +460,7 @@ void mostra_lista_apply_com_no(apply *a)
 void fmostra_lista(FILE *fp, lista *l)
 {
     lista *lc;
-    Short ligacao = 0;
+    Int ligacao = 0;
     lc = l;
     for(lc = l; lc != NULL; lc = lc->l)
     {
@@ -517,7 +520,7 @@ void fmostra_no(FILE *fp, no *n)
 void fmostra_lista_com_no(FILE *fp, lista *l)
 {
     lista *lc;
-    Short ligacao = 0;
+    Int ligacao = 0;
     lc = l;
     fprintf(fp,"\n");
     for(lc = l; lc != NULL; lc = lc->l)
@@ -573,7 +576,7 @@ void fmostra_apply(FILE *fp, apply *a)
 void fmostra_lista_apply(FILE *fp, apply *a)
 {
     apply *ac;
-    Short i=0;
+    Int i=0;
     for(ac = a; ac != NULL; ac = ac->a)
         fprintf(fp,"\nLigacao %d: %d",i++,ac);
 }
@@ -581,7 +584,7 @@ void fmostra_lista_apply(FILE *fp, apply *a)
 void fmostra_lista_apply_com_no(FILE *fp, apply *a)
 {
     apply *ac;
-    Short i=0;
+    Int i=0;
     for(ac = a; ac != NULL; ac = ac->a)
     {
         fprintf(fp,"\nLigacao %d: %d",i++,ac);
@@ -591,7 +594,7 @@ void fmostra_lista_apply_com_no(FILE *fp, apply *a)
 
 
 
-void conecta_UM(no *n1, no *n2, Short lado)
+void conecta_UM(no *n1, no *n2, Int lado)
 {
     lista *l;
 
@@ -622,10 +625,10 @@ void conecta_DOIS(no *n, no *el, no *th)
     conecta_UM(n,th,2);
 }
 
-Short desconecta_UM(no *n1, no *n2)
+Int desconecta_UM(no *n1, no *n2)
 {
     lista *l, *lc, *laux;
-    Short lado;
+    Int lado;
     if(n1->tipo == 0)
     {
         n1->at.i.n = NULL;
@@ -680,7 +683,7 @@ void desconecta_DOIS(no *n)
 void transfere_conexao(no *n1, no *n2)
 {
     no *n;
-    Short lado;
+    Int lado;
     while(n2->l != NULL)
     {
         n = n2->l->n;
@@ -738,7 +741,7 @@ no* copia_no(no *n1)
     return n2;
 }
 
-Short compara_no_meio(no *n1, no *n2)
+Int compara_no_meio(no *n1, no *n2)
 {
     if(n1             != n2       )
     if(n1->tipo       == n2->tipo )
@@ -749,7 +752,7 @@ Short compara_no_meio(no *n1, no *n2)
     return 0;
 }
 
-Short compara_no_fim(no *n1, no *n2)
+Int compara_no_fim(no *n1, no *n2)
 {
     float re, im;
     re = (n1->at.f.re)-(n2->at.f.re);
@@ -763,7 +766,7 @@ Short compara_no_fim(no *n1, no *n2)
     return 0;
 }
 
-Short compara_zero(no *n)
+Int compara_zero(no *n)
 {
     float re, im;
     re = n->at.f.re;
@@ -777,7 +780,7 @@ Short compara_zero(no *n)
     return 0;
 }
 
-Short compara_apply(apply *a1, apply *a2)
+Int compara_apply(apply *a1, apply *a2)
 {
     if(a1->n1 == a2->n1)
     if(a1->n2 == a2->n2)
@@ -826,7 +829,7 @@ no* apply_soma(no *N1, no *N2)
 
     apply *ac, *a1 = NULL, *a2 = NULL, *aaux;
     no *n, *n1, *n2;
-    Short regra = 0;
+    Int regra = 0;
     for(ac = a; ac != NULL; ac = ac->a)
     {
         n1 = ac->n1;
@@ -995,7 +998,7 @@ no* apply_produto_interno(no *N1, no *N2)
 
     apply *ac, *a1 = NULL, *a2 = NULL, *aaux;
     no *n, *n1, *n2;
-    Short regra = 0;
+    Int regra = 0;
     for(ac = a; ac != NULL; ac = ac->a)
     {
         n1 = ac->n1;
@@ -1256,10 +1259,10 @@ lista* acha_lista_fim(QDD *Q)
 
 
 
-void completa_QDD_matriz(no *n, Short r, Short c, Short exp, Short **M, lista **L)
+void completa_QDD_matriz(no *n, Int r, Int c, Int exp, Short **M, lista **L)
 {
     no *el, *th;
-    Short ind1, ind2;
+    Int ind1, ind2;
     if((n->at.m.classe == 2)&&(exp == 1))
     {
         ind1 = M[r][c];
@@ -1287,14 +1290,13 @@ void completa_QDD_matriz(no *n, Short r, Short c, Short exp, Short **M, lista **
 
 QDD* le_matriz(char *nome)
 {
-    Short i, j, k;
+    Int i, j, k;
 
     FILE *fp;
     fp = fopen(nome,"r");
 
-    Short N1, N3;
-    int N2;
-    fscanf(fp,"%hu %d\n%hu\n",&N1, &N2, &N3);
+    Int N1, N2, N3;
+    fscanf(fp,"%d %d\n%d\n",&N1, &N2, &N3);
 
 
     lista **L;
@@ -1346,7 +1348,7 @@ QDD* le_matriz(char *nome)
     }
     aumenta_memoria((N2*N2-1)*sizeof(no*));
 
-    Short exp, ind;
+    Int exp, ind;
     exp = 1;
     ind = 0;
     for(i=0; i<N1; i++)
@@ -1391,10 +1393,10 @@ QDD* le_matriz(char *nome)
     return Q;
 }
 
-void completa_QDD_vetor(no *n, int v, int exp, Short *M, lista **L)
+void completa_QDD_vetor(no *n, Int v, Int exp, Short *M, lista **L)
 {
     no *el, *th;
-    int ind1, ind2;
+    Int ind1, ind2;
     if(exp == 1)
     {
         ind1 = M[v];
@@ -1414,14 +1416,13 @@ void completa_QDD_vetor(no *n, int v, int exp, Short *M, lista **L)
 
 QDD* le_vetor(char *nome)
 {
-    int i, j;
+    Int i, j;
 
     FILE *fp;
     fp = fopen(nome,"r");
 
-    Short N1, N3;
-    int N2;
-    fscanf(fp,"%hu %d\n%hu\n",&N1, &N2, &N3);
+    Int N1, N2, N3;
+    fscanf(fp,"%d %d\n%d\n",&N1, &N2, &N3);
 
 
     lista **L;
@@ -1465,7 +1466,7 @@ QDD* le_vetor(char *nome)
     }
     aumenta_memoria((N2-1)*sizeof(no*));
 
-    Short exp, ind;
+    Int exp, ind;
     exp = 1;
     ind = 0;
     for(i=0; i<N1; i++)
@@ -1478,7 +1479,7 @@ QDD* le_vetor(char *nome)
         exp *= 2;
     }
 
-    for(i=0; i<(N2-1)/2; i++)
+    for(i=0; i<(N2/2)-1; i++)
         conecta_DOIS(N[i],N[2*i+1],N[2*i+2]);
 
     completa_QDD_vetor(N[0],0,N2/2,M,L);
@@ -1506,7 +1507,7 @@ void reduz_QDD(QDD *Q)
 {
     no *n1, *n2, *nc;
     lista *l, *laux, *lnc1, *lnc2, *lr, *lrc, *lf;
-    Short mudou, saida, regra;
+    Int mudou, saida, regra;
     reduz_lista(Q->l);
     l = copia_lista(Q->l);
     while(l->l != NULL)
@@ -1798,10 +1799,10 @@ QDD* produto_tensorial(QDD *Q1, QDD *Q2)
     return Q;
 }
 
-QDD* potencia_tensorial(QDD *Q, Short i)
+QDD* potencia_tensorial(QDD *Q, Int i)
 {
     QDD *Qs, *Qaux;
-    Short j;
+    Int j;
 
     Qs = copia_QDD(Q);
     for(j=1; j<i; j++)
@@ -1860,7 +1861,7 @@ QDD* I()
     return Q;
 }
 
-QDD* I_n(Short i)
+QDD* I_n(Int i)
 {
     QDD *Q1, *Q2;
 
@@ -1879,7 +1880,7 @@ QDD* H()
     return Q;
 }
 
-QDD* H_n(Short i)
+QDD* H_n(Int i)
 {
     QDD *Q1, *Q2;
 
@@ -1892,7 +1893,7 @@ QDD* H_n(Short i)
 
 
 
-void inicia_relatorio_memoria(Short i)
+void inicia_relatorio_memoria(Int i)
 {
     print = i;
     if(print)
@@ -1910,11 +1911,13 @@ void finaliza_relatorio_memoria()
     }
 }
 
-void inicia_configuracao(Short i)
+void inicia_configuracao(Int i)
 {
     nqbit = i;
     eps = pow(2,-(i/2))/20;
 }
+
+
 
 int main()
 {
@@ -1929,7 +1932,7 @@ int main()
     inicia_configuracao(Q->nqbit);
     reduz_QDD(Q);
     printf("\nMem: %d",mem);
-    //mostra_QDD(Q);
+    mostra_QDD(Q);
 
     /***********************************/
     finaliza_relatorio_memoria();
