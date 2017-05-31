@@ -1,6 +1,7 @@
 # depslib dependency file v1.0
-1496246937 source:c:\users\renan\documents\github\qdd\main.c
+1496259721 source:c:\users\renan\documents\github\qdd\main.c
 	<stdio.h>
 	<stdlib.h>
 	<math.h>
+	<inttypes.h>
 
