@@ -1,13 +1,13 @@
 #include<stdio.h>
 #include<stdlib.h>
-
-#define eps 5e-5
+#include<math.h>
 
 
 
 int mem = 0, memMax = 0;
 FILE *fm;
-unsigned short print;
+unsigned short print, nqbit;
+float eps;
 
 
 
@@ -1302,6 +1302,7 @@ void reduz_QDD(QDD *Q)
     no *n1, *n2, *nc;
     lista *l, *laux, *lnc1, *lnc2, *lr, *lrc, *lf;
     Short mudou, saida, regra;
+    reduz_lista(Q->l);
     l = copia_lista(Q->l);
     while(l->l != NULL)
     {
@@ -1589,7 +1590,6 @@ QDD* produto_tensorial(QDD *Q1, QDD *Q2)
     libera_no(n0);
     libera_QDD(Q2a);
 
-    reduz_lista(Q->l);
     reduz_QDD(Q);
 
     return Q;
@@ -1641,6 +1641,8 @@ QDD* soma_QDD(QDD *Q1, QDD *Q2)
 
     Q->nqbit = Q1->nqbit;
     Q->l = acha_lista_QDD(Q);
+
+    reduz_QDD(Q);
 
     return Q;
 }
@@ -1705,11 +1707,16 @@ void finaliza_relatorio_memoria()
     }
 }
 
-
+void inicia_configuracao(Short i)
+{
+    nqbit = i;
+    eps = pow(2,-(i/2))/20;
+}
 
 int main()
 {
     inicia_relatorio_memoria(1);
+    inicia_configuracao(15);
     /***********************************/
 
     QDD *Q;
@@ -1717,7 +1724,7 @@ int main()
     printf("\nMem: %d",mem);
     reduz_QDD(Q);
     printf("\nMem: %d",mem);
-    //mostra_QDD(Q);
+    mostra_QDD(Q);
 
     /***********************************/
     finaliza_relatorio_memoria();
