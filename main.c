@@ -763,6 +763,20 @@ Short compara_no_fim(no *n1, no *n2)
     return 0;
 }
 
+Short compara_zero(no *n)
+{
+    float re, im;
+    re = n->at.f.re;
+    im = n->at.f.im;
+
+    if(re>-eps)
+    if(re< eps)
+    if(im>-eps)
+    if(im< eps)
+        return 1;
+    return 0;
+}
+
 Short compara_apply(apply *a1, apply *a2)
 {
     if(a1->n1 == a2->n1)
@@ -972,6 +986,193 @@ no* apply_soma(no *N1, no *N2)
     return n;
 }
 
+no* apply_produto_interno(no *N1, no *N2)
+{
+    apply *a;
+    a = cria_apply();
+    a->n1 = N1;
+    a->n2 = N2;
+
+    apply *ac, *a1 = NULL, *a2 = NULL, *aaux;
+    no *n, *n1, *n2;
+    Short regra = 0;
+    for(ac = a; ac != NULL; ac = ac->a)
+    {
+        n1 = ac->n1;
+        n2 = ac->n2;
+        switch(n1->tipo)
+        {
+            case 1:
+            /**  n1 é intermediario  **/
+            switch(n2->tipo)
+            {
+                case 1:
+                /**  n2 é intermediario  **/
+                if(n1->at.m.nivel < n2->at.m.nivel)
+                    regra = 1;
+                if(n1->at.m.nivel > n2->at.m.nivel)
+                    regra = 2;
+                if(n1->at.m.nivel == N2->at.m.nivel)
+                {
+                    if(n1->at.m.classe < n2->at.m.classe)
+                        regra = 1;
+                    if(n1->at.m.classe > n2->at.m.classe)
+                        regra = 2;
+                    if(n1->at.m.classe == n2->at.m.classe)
+                        regra = 3;
+                }
+                break;
+
+                case 2:
+                /**  n2 é número  **/
+                if(compara_zero(n2))
+                    regra = 5;
+                else
+                    regra = 1;
+                break;
+            }
+            break;
+
+            case 2:
+            /**  n1 é numero  **/
+            if(compara_zero(n1))
+            {
+                regra = 5;
+            }
+            else
+            {
+                switch(n2->tipo)
+                {
+                    case 1:
+                    /**  n2 é intermediario  **/
+                    regra = 2;
+                    break;
+
+                    case 2:
+                    /**  n2 é número  **/
+                    if(compara_zero(n2))
+                        regra = 5;
+                    else
+                        regra = 4;
+                    break;
+                }
+            }
+            break;
+        }
+
+        switch(regra)
+        {
+            case 1:
+            n = copia_no(n1);
+            ac->n = n;
+
+            a1 = cria_apply();
+            a1->n1 = n1->at.m.el;
+            a1->n2 = n2;
+
+            a2 = cria_apply();
+            a2->n1 = n1->at.m.th;
+            a2->n2 = n2;
+            break;
+
+            case 2:
+            n = copia_no(n2);
+            ac->n = n;
+
+            a1 = cria_apply();
+            a1->n1 = n1;
+            a1->n2 = n2->at.m.el;
+
+            a2 = cria_apply();
+            a2->n1 = n1;
+            a2->n2 = n2->at.m.th;
+            break;
+
+            case 3:
+            n = copia_no(n1);
+            ac->n = n;
+
+            a1 = cria_apply();
+            a1->n1 = n1->at.m.el;
+            a1->n2 = n2->at.m.el;
+
+            a2 = cria_apply();
+            a2->n1 = n1->at.m.th;
+            a2->n2 = n2->at.m.th;
+            break;
+
+            case 4:
+            n = produto_complexo_conjugado(n1,n2);
+            ac->n = n;
+            break;
+
+            case 5:
+            n = cria_no_fim(0,0);
+            ac->n = n;
+            break;
+        }
+
+        if(regra != 4)
+        {
+            for(aaux = a; aaux != NULL; aaux = aaux->a)
+                if(compara_apply(aaux,a1))
+                    break;
+            if(aaux == NULL)
+            {
+                ac->a1 = a1;
+                a1->a = ac->a;
+                ac->a = a1;
+            }
+            else
+            {
+                ac->a1 = aaux;
+                libera_no_apply(a1);
+            }
+
+
+            for(aaux = a; aaux != NULL; aaux = aaux->a)
+                if(compara_apply(aaux,a2))
+                    break;
+            if(aaux == NULL)
+            {
+                ac->a2 = a2;
+                a2->a = ac->a;
+                ac->a = a2;
+            }
+            else
+            {
+                ac->a2 = aaux;
+                libera_no_apply(a2);
+            }
+        }
+    }
+
+    for(ac = a; ac != NULL; ac = ac->a)
+    {
+        n = ac->n;
+        if(n->tipo == 1)
+        {
+            a1 = ac->a1;
+            a2 = ac->a2;
+
+            for(aaux = a; aaux != NULL; aaux = aaux->a)
+                if(aaux == a1)
+                    break;
+            n1 = aaux->n;
+
+            for(aaux = a; aaux != NULL; aaux = aaux->a)
+                if(aaux == a2)
+                    break;
+            n2 = aaux->n;
+
+            conecta_DOIS(n,n1,n2);
+        }
+    }
+    n = a->n;
+    libera_lista_apply(a);
+    return n;
+}
+
 
 
 lista* copia_lista(lista *l1)
@@ -1026,7 +1227,7 @@ void reduz_lista(lista *l)
     }
 }
 
-lista* acha_lista_QDD(QDD *Q)
+lista* acha_lista_fim(QDD *Q)
 {
     lista *l, *lc, *laux;
     l = enlista_QDD(Q);
@@ -1091,8 +1292,9 @@ QDD* le_matriz(char *nome)
     FILE *fp;
     fp = fopen(nome,"r");
 
-    Short N1, N2, N3;
-    fscanf(fp,"%hu %hu\n%hu\n",&N1, &N2, &N3);
+    Short N1, N3;
+    int N2;
+    fscanf(fp,"%hu %d\n%hu\n",&N1, &N2, &N3);
 
 
     lista **L;
@@ -1189,10 +1391,10 @@ QDD* le_matriz(char *nome)
     return Q;
 }
 
-void completa_QDD_vetor(no *n, Short v, Short exp, Short *M, lista **L)
+void completa_QDD_vetor(no *n, int v, int exp, Short *M, lista **L)
 {
     no *el, *th;
-    Short ind1, ind2;
+    int ind1, ind2;
     if(exp == 1)
     {
         ind1 = M[v];
@@ -1212,13 +1414,14 @@ void completa_QDD_vetor(no *n, Short v, Short exp, Short *M, lista **L)
 
 QDD* le_vetor(char *nome)
 {
-    Short i, j;
+    int i, j;
 
     FILE *fp;
     fp = fopen(nome,"r");
 
-    Short N1, N2, N3;
-    fscanf(fp,"%hu %hu\n%hu\n",&N1, &N2, &N3);
+    Short N1, N3;
+    int N2;
+    fscanf(fp,"%hu %d\n%hu\n",&N1, &N2, &N3);
 
 
     lista **L;
@@ -1249,7 +1452,9 @@ QDD* le_vetor(char *nome)
     }
     aumenta_memoria(N2*sizeof(Short*));
     for(i=0; i<N2; i++)
+    {
         fscanf(fp,"%hu",&M[i]);
+    }
 
     no **N;
     N = malloc((N2-1)*sizeof(no*));
@@ -1540,14 +1745,13 @@ QDD* produto_tensorial(QDD *Q1, QDD *Q2)
     libera_lista(l2);
 
     QDD *Q2b;
-    no *n1, *n2, *naux, *n0;
-    n0 = cria_no_fim(0,0);
+    no *n1, *n2, *naux;
 
 
     while(l != NULL)
     {
         n1 = l->n;
-        if(compara_no_fim(n0,n1))
+        if(compara_zero(n1))
         {
             l2 = l->l;
             l->l = Q->l;
@@ -1587,7 +1791,6 @@ QDD* produto_tensorial(QDD *Q1, QDD *Q2)
         }
     }
 
-    libera_no(n0);
     libera_QDD(Q2a);
 
     reduz_QDD(Q);
@@ -1640,7 +1843,7 @@ QDD* soma_QDD(QDD *Q1, QDD *Q2)
     conecta_UM(n,Q->n,0);
 
     Q->nqbit = Q1->nqbit;
-    Q->l = acha_lista_QDD(Q);
+    Q->l = acha_lista_fim(Q);
 
     reduz_QDD(Q);
 
@@ -1721,6 +1924,7 @@ int main()
 
     QDD *Q;
     Q = le_vetor("V.txt");
+    printf("N1: %d",Q->nqbit);
     printf("\nMem: %d",mem);
     inicia_configuracao(Q->nqbit);
     reduz_QDD(Q);
