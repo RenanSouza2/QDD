@@ -1454,23 +1454,23 @@ QDD* le_matriz(char *nome)
     for(i=0; i<N3-1; i++)
         L[i]->l = L[i+1];
 
-    Short **M;
-    M = malloc(N2*sizeof(Short*));
+    Long **M;
+    M = malloc(N2*sizeof(Long*));
     if(M == NULL)
     {
         printf("\n\nERRO M");
         exit(EXIT_FAILURE);
     }
-    aumenta_memoria(N2*sizeof(Short*));
+    aumenta_memoria(N2*sizeof(Long*));
     for(i=0; i<N2; i++)
     {
-        M[i] = malloc(N2*sizeof(Short));
+        M[i] = malloc(N2*sizeof(Long));
         if(M[i] == NULL)
         {
             printf("\n\nERRO M[%d]",i);
             exit(EXIT_FAILURE);
         }
-        aumenta_memoria(N2*sizeof(Short));
+        aumenta_memoria(N2*sizeof(Long));
         for(j=0; j<N2; j++)
             fscanf(fp,"%hu",&M[i][j]);
     }
@@ -1520,10 +1520,10 @@ QDD* le_matriz(char *nome)
     for(i=0; i<N2; i++)
     {
         free(M[i]);
-        diminui_memoria(N2*sizeof(Short));
+        diminui_memoria(N2*sizeof(Long));
     }
     free(M);
-    diminui_memoria(N2*sizeof(Short*));
+    diminui_memoria(N2*sizeof(Long*));
     free(fp);
 
     return Q;
