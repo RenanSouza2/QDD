@@ -1323,7 +1323,7 @@ lista* acha_lista_classe(QDD *Q, Short classe)
     return l;
 }
 
-void mergesort_nivel(lista *l, Short N)
+void mergesort_nivel(lista *l, Long N)
 {
     printf("\n\nN: %d",N);
     printf("\nLISTA\n");
@@ -1392,11 +1392,11 @@ void mergesort_nivel(lista *l, Short N)
 
 
 
-void completa_QDD_matriz(no *n, Long r, Long c, Long exp, Short **M, lista **L)
+void completa_QDD_matriz(no *n, Long r, Long c, Long ex, Short **M, lista **L)
 {
     no *el, *th;
     Long ind1, ind2;
-    if((n->at.m.classe == 2)&&(exp == 1))
+    if((n->at.m.classe == 2)&&(ex == 1))
     {
         ind1 = M[r][c];
         ind2 = M[r][c+1];
@@ -1410,13 +1410,13 @@ void completa_QDD_matriz(no *n, Long r, Long c, Long exp, Short **M, lista **L)
     {
         if(n->at.m.classe == 1)
         {
-            completa_QDD_matriz(n->at.m.el,r,c,exp,M,L);
-            completa_QDD_matriz(n->at.m.th,r+exp,c,exp,M,L);
+            completa_QDD_matriz(n->at.m.el,r,c,ex,M,L);
+            completa_QDD_matriz(n->at.m.th,r+ex,c,ex,M,L);
         }
         if(n->at.m.classe == 2)
         {
-            completa_QDD_matriz(n->at.m.el,r,c,exp/2,M,L);
-            completa_QDD_matriz(n->at.m.th,r,c+exp,exp/2,M,L);
+            completa_QDD_matriz(n->at.m.el,r,c,ex/2,M,L);
+            completa_QDD_matriz(n->at.m.th,r,c+ex,ex/2,M,L);
         }
     }
 }
@@ -1480,19 +1480,19 @@ QDD* le_matriz(char *nome)
     }
     aumenta_memoria((N2*N2-1)*sizeof(no*));
 
-    Long exp, ind;
-    exp = 1;
+    Long ex, ind;
+    ex = 1;
     ind = 0;
     for(i=0; i<N1; i++)
     {
         for(j=1; j<=2; j++)
         {
-            for(k=0; k<exp; k++)
+            for(k=0; k<ex; k++)
             {
                 N[ind] = cria_no_meio(j,i);
                 ind++;
             }
-            exp *= 2;
+            ex *= 2;
         }
     }
 
@@ -1525,11 +1525,11 @@ QDD* le_matriz(char *nome)
     return Q;
 }
 
-void completa_QDD_vetor(no *n, Long v, Long exp, Short *M, lista **L)
+void completa_QDD_vetor(no *n, Long v, Long ex, Short *M, lista **L)
 {
     no *el, *th;
     Long ind1, ind2;
-    if(exp == 1)
+    if(ex == 1)
     {
         ind1 = M[v];
         ind2 = M[v+1];
@@ -1541,8 +1541,8 @@ void completa_QDD_vetor(no *n, Long v, Long exp, Short *M, lista **L)
     }
     else
     {
-        completa_QDD_vetor(n->at.m.el,v,exp/2,M,L);
-        completa_QDD_vetor(n->at.m.th,v+exp,exp/2,M,L);
+        completa_QDD_vetor(n->at.m.el,v,ex/2,M,L);
+        completa_QDD_vetor(n->at.m.th,v+ex,ex/2,M,L);
     }
 }
 
@@ -1598,17 +1598,17 @@ QDD* le_vetor(char *nome)
     }
     aumenta_memoria((N2-1)*sizeof(no*));
 
-    Long exp, ind;
-    exp = 1;
+    Long ex, ind;
+    ex = 1;
     ind = 0;
     for(i=0; i<N1; i++)
     {
-        for(j=0; j<exp; j++)
+        for(j=0; j<ex; j++)
         {
             N[ind] = cria_no_meio(0,i);
             ind++;
         }
-        exp *= 2;
+        ex *= 2;
     }
 
     for(i=0; i<(N2/2)-1; i++)
