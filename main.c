@@ -1525,27 +1525,6 @@ QDD* le_matriz(char *nome)
     return Q;
 }
 
-void completa_QDD_vetor(no *n, Long v, Long ex, Short *M, lista **L)
-{
-    no *el, *th;
-    Long ind1, ind2;
-    if(ex == 1)
-    {
-        ind1 = M[v];
-        ind2 = M[v+1];
-
-        el = L[ind1]->n;
-        th = L[ind2]->n;
-
-        conecta_DOIS(n,el,th);
-    }
-    else
-    {
-        completa_QDD_vetor(n->at.m.el,v,ex/2,M,L);
-        completa_QDD_vetor(n->at.m.th,v+ex,ex/2,M,L);
-    }
-}
-
 QDD* le_vetor(char *nome)
 {
     Long i, j;
@@ -1554,9 +1533,8 @@ QDD* le_vetor(char *nome)
     fp = fopen(nome,"r");
 
     Long N1, N2, N3;
-    fscanf(fp,"%lu %lu\n%lu\n",&N1, &N2, &N3);
-
-
+    fscanf(fp,"%lu %lu\n%lu\n",&N1,&N2,&N3);
+    printf("%lu %lu\n%lu\n",N1,N2,N3);
     lista **L;
     float re, im;
     L = malloc(N3*sizeof(lista*));
@@ -1571,23 +1549,26 @@ QDD* le_vetor(char *nome)
         L[i] = cria_no_lista();
         fscanf(fp,"%f %f",&re, &im);
         L[i]->n = cria_no_fim(re,im);
+        mostra_no(L[i]->n);
     }
+    printf("\n");
+
     fscanf(fp,"\n");
     for(i=0; i<N3-1; i++)
         L[i]->l = L[i+1];
 
     Short *M;
-    M = malloc(N2*sizeof(Short*));
+    M = malloc(N2*sizeof(Short));
     if(M == NULL)
     {
-        printf("\n\nERRO M");
+        printf("\n\nERRO M  ");
         exit(EXIT_FAILURE);
     }
-    aumenta_memoria(N2*sizeof(Short*));
+    aumenta_memoria(N2*sizeof(Short));
     for(i=0; i<N2; i++)
-    {
         fscanf(fp,"%hu",&M[i]);
-    }
+    for(i=0; i<N2; i++)
+        printf("%d ",M[i]);
 
     no **N;
     N = malloc((N2-1)*sizeof(no*));
@@ -1599,40 +1580,21 @@ QDD* le_vetor(char *nome)
     aumenta_memoria((N2-1)*sizeof(no*));
 
     Long ex, ind;
+    no *n;
     ex = 1;
     ind = 0;
     for(i=0; i<N1; i++)
     {
         for(j=0; j<ex; j++)
         {
-            N[ind] = cria_no_meio(0,i);
+            n = cria_no_meio(0,i);
+            N[ind] = n;
+            printf("\nno %d",ind);
+            mostra_no(N[ind]);
             ind++;
         }
         ex *= 2;
     }
-
-    for(i=0; i<(N2/2)-1; i++)
-        conecta_DOIS(N[i],N[2*i+1],N[2*i+2]);
-
-    completa_QDD_vetor(N[0],0,N2/2,M,L);
-
-    QDD *Q;
-    Q = cria_QDD();
-    Q->n = cria_no_inicio();
-    conecta_UM(Q->n,N[0],0);
-    Q->n = N[0];
-    Q->nqbit = N1;
-    Q->l = L[0];
-
-    free(N);
-    diminui_memoria((N2-1)*sizeof(no*));
-    free(L);
-    diminui_memoria(N3*sizeof(lista*));
-    free(M);
-    diminui_memoria(N2*sizeof(Short*));
-    free(fp);
-
-    return Q;
 }
 
 
@@ -2046,7 +2008,7 @@ void finaliza_relatorio_memoria()
     }
 }
 
-void inicia_configuracao(Short i)
+void configuracao(Short i)
 {
     nqbit = i;
     eps = pow(2,-(i/2))/20;
@@ -2057,24 +2019,25 @@ void inicia_configuracao(Short i)
 int main()
 {
     inicia_relatorio_memoria(0);
-    inicia_configuracao(15);
+    configuracao(20);
     /***********************************/
 
-    QDD *Q1, *Q2;
-    Q1 = H(1);
-    Q2 = I(1);
-
-    no *n, *n1;
-    n = apply_produto_interno(Q1->n,Q2->n);
-    n1 = cria_no_inicio();
-
-    conecta_UM(n1,n,0);
-
-    QDD *Q3;
-    Q3 = cria_QDD();
-    Q3->n = n;
-
-    mostra_QDD(Q3);
+    QDD *Q;
+    Q = le_vetor("V.txt");
+    /*printf("\nLeu vetor");
+    lista *lc;
+    for(lc = Q->l; lc != NULL; lc = lc->l)
+    {
+        if(lc->n->l == NULL);
+        {
+            printf("\nERRO");
+            mostra_no(lc->n);
+            break;
+        }
+    }
+    if(lc == NULL)
+        printf("\nCERTO");*/
+    //reduz_QDD(Q);
 
     /***********************************/
     finaliza_relatorio_memoria();
