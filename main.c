@@ -390,7 +390,7 @@ void mostra_no(no *n)
 
         case 2:
         printf(": Numero\n");
-        printf("%f %f",n->at.f.re,n->at.f.im);
+        printf("%f %f\n",n->at.f.re,n->at.f.im);
         break;
     }
     printf("\n");
@@ -503,12 +503,12 @@ void fmostra_no(FILE *fp, no *n)
         case 0:
         fprintf(fp,": Inicio\n");
         fprintf(fp,"Ligacoes posteriores\n");
-        fprintf(fp,"\tn: %d",n->at.i.n);
+        fprintf(fp,"\tn: %d\n",n->at.i.n);
         break;
 
         case 1:
         fprintf(fp,"/nivel: ");
-        switch(n->at.m.nivel)
+        switch(n->at.m.classe)
         {
             case 0:
             fprintf(fp,"V");
@@ -519,7 +519,7 @@ void fmostra_no(FILE *fp, no *n)
             break;
 
             case 2:
-            fprintf(fp,"V");
+            fprintf(fp,"C");
             break;
         }
 
@@ -531,7 +531,7 @@ void fmostra_no(FILE *fp, no *n)
 
         case 2:
         fprintf(fp,": Numero\n");
-        fprintf(fp,"%f %f",n->at.f.re,n->at.f.im);
+        fprintf(fp,"%f %f\n",n->at.f.re,n->at.f.im);
         break;
     }
     fprintf(fp,"\n");
@@ -545,30 +545,34 @@ void fmostra_lista_com_no(FILE *fp, lista *l)
     fprintf(fp,"\n");
     for(lc = l; lc != NULL; lc = lc->l)
     {
-        fprintf(fp,"\n\tLigacao %u: %d\n",ligacao,lc->n);
-        fmostra_no(fp,lc->n);
+        fprintf(fp,"\tLigacao %u: %d\n",ligacao,lc->n);
+        if(lc->n != NULL)
+            fmostra_no(fp,lc->n);
         ligacao++;
     }
 }
 
-void fmostra_QDD(FILE *fp,QDD *Q)
+void fmostra_arvore_ineficiente(FILE *fp, no *n)
 {
+    if(n == NULL)
+        return;
+    fmostra_no(fp,n);
+    if(n->tipo == 1)
+    {
+        fmostra_arvore_ineficiente(fp,n->at.m.el);
+        fmostra_arvore_ineficiente(fp,n->at.m.th);
+    }
+}
 
+void fmostra_QDD(FILE *fp, QDD *Q)
+{
     lista *l;
     l = enlista_QDD(Q);
-    fprintf(fp,"NQBIT: %d\n",Q->nqbit);
+    fprintf(fp,"\nNQBIT: %d\n",Q->nqbit);
     fmostra_lista_com_no(fp,l);
     fprintf(fp,"\n");
     fmostra_lista(fp,Q->l);
     libera_lista(l);
-}
-
-void fmostra_QDD_sozinho(QDD *Q, char *nome)
-{
-    FILE *fp;
-    fp = fopen(nome,"w");
-    fmostra_QDD(fp,Q);
-    fclose(fp);
 }
 
 void fmostra_apply(FILE *fp, apply *a)
@@ -607,7 +611,7 @@ void fmostra_lista_apply_com_no(FILE *fp, apply *a)
     Long i=0;
     for(ac = a; ac != NULL; ac = ac->a)
     {
-        fprintf(fp,"\nLigacao %d: %d",i++,ac);
+        fprintf(fp,"\n\n\n\n\nLigacao %d: %d\n",i++,ac);
         fmostra_apply(fp,ac);
     }
 }
@@ -1228,27 +1232,27 @@ void reduz_lista(lista *l)
 {
     no *n1, *n2;
     lista *lc1, *lc2, *laux;
-    lc1 = l;
-    for(lc1 = l; lc1->l != NULL; lc1 = lc1->l)
+    for(lc1 = l; lc1 != NULL; lc1 = lc1->l)
     {
         n1 = lc1->n;
         lc2 = lc1;
         while(lc2->l != NULL)
         {
-            n2 = lc2->l->n;
+            laux = lc2->l;
+            n2 = laux->n;
             if(compara_no_fim(n1,n2))
             {
                 transfere_conexao(n1,n2);
-                laux = lc2->l;
+
                 lc2->l = laux->l;
                 libera_no_lista(laux);
                 libera_no(n2);
             }
             else
+            {
                 lc2 = lc2->l;
+            }
         }
-        if(lc1->l == NULL)
-            break;
     }
 }
 
@@ -1525,12 +1529,13 @@ QDD* le_matriz(char *nome)
     return Q;
 }
 
-void completa_QDD_vetor(no *n, Long v, Long ex, Short *M, lista **L)
+void completa_QDD_vetor(no *n, Long v, Long ex, Long *M, lista **L)
 {
     no *el, *th;
     Long ind1, ind2;
     if(ex == 1)
     {
+
         ind1 = M[v];
         ind2 = M[v+1];
 
@@ -1575,16 +1580,16 @@ QDD* le_vetor(char *nome)
     for(i=0; i<N3-1; i++)
         L[i]->l = L[i+1];
 
-    Short *M;
-    M = malloc(N2*sizeof(Short));
+    Long *M;
+    M = malloc(N2*sizeof(Long));
     if(M == NULL)
     {
         printf("\n\nERRO M  ");
         exit(EXIT_FAILURE);
     }
-    aumenta_memoria(N2*sizeof(Short));
+    aumenta_memoria(N2*sizeof(Long));
     for(i=0; i<N2; i++)
-        fscanf(fp,"%hu",&M[i]);
+        fscanf(fp,"%lu",&M[i]);
 
     no **N;
     N = malloc((N2-1)*sizeof(no*));
@@ -1629,7 +1634,7 @@ QDD* le_vetor(char *nome)
     free(L);
     diminui_memoria(N3*sizeof(lista*));
     free(M);
-    diminui_memoria(N2*sizeof(Short));
+    diminui_memoria(N2*sizeof(Long));
     free(fp);
 
     return Q;
@@ -2062,8 +2067,10 @@ int main()
 
     QDD *Q;
     Q = le_vetor("V.txt");
-    //printf("\nQDD");
-    //mostra_QDD(Q);
+    printf("mem: %d",mem);
+    configuracao(Q->nqbit);
+    reduz_QDD(Q);
+    printf("mem: %d",mem);
 
     /***********************************/
     finaliza_relatorio_memoria();
