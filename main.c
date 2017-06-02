@@ -1329,9 +1329,6 @@ lista* acha_lista_classe(QDD *Q, Short classe)
 
 void mergesort_nivel(lista *l, Long N)
 {
-    printf("\n\nN: %d",N);
-    printf("\nLISTA\n");
-    mostra_lista_com_no(l);
     lista *l1, *l2, *lc, *laux;
     Long N1, N2, i;
     if(N>2)
@@ -1347,16 +1344,25 @@ void mergesort_nivel(lista *l, Long N)
         l2->l = lc->l;
         lc->l = NULL;
 
+        printf("\nLISTA 1\t\t  N: %d\tN1: %d",N,N1);
+        mostra_lista_com_no(l1);
         mergesort_nivel(l1,N1);
+        printf("\nLISTA ORDENADA 1\t  N: %d\tN1: %d",N,N1);
+        mostra_lista_com_no(l1);
+
+        printf("\nLISTA 2\t\t  N: %d\tN2: %d",N,N2);
+        mostra_lista_com_no(l2);
         mergesort_nivel(l2,N2);
+        printf("\nLISTA ORDENADA 2\t  N: %d\tN2: %d",N,N2);
+        mostra_lista_com_no(l2);
 
         l = cria_no_lista();
         lc = l;
-        while(l1->l != NULL && l2->l != NULL)
+        while((l1->l != NULL) && (l2->l != NULL))
         {
             N1 = l1->l->n->at.m.nivel;
             N2 = l2->l->n->at.m.nivel;
-            if(N1 >= N2)
+            if(N1>N2)
             {
                 laux = l1->l;
                 l1->l = laux->l;
@@ -1368,12 +1374,14 @@ void mergesort_nivel(lista *l, Long N)
             }
             lc->l = laux;
             laux->l = NULL;
+
             lc = lc->l;
         }
         if(l1->l != NULL)
             lc->l = l1->l;
         if(l2->l != NULL)
             lc->l = l2->l;
+
         libera_no_lista(l1);
         libera_no_lista(l2);
     }
@@ -1383,17 +1391,15 @@ void mergesort_nivel(lista *l, Long N)
         N1 = lc->n->at.m.nivel;
         laux = lc->l;
         N2 = laux->n->at.m.nivel;
-        if(N2 > N1)
+
+        if(N2>N1)
         {
             l->l = laux;
             laux->l = lc;
             lc->l = NULL;
         }
     }
-    printf("\n\nLISTA ORDENADA\n");
-    mostra_lista_com_no(l);
 }
-
 
 
 void completa_QDD_matriz(no *n, Long r, Long c, Long ex, Long **M, lista **L)
@@ -2066,10 +2072,19 @@ int main()
     /***********************************/
 
     QDD *Q;
-    Q = le_matriz("QFT13.txt");
+    Q = le_matriz("H4.txt");
     printf("\nmem: %d",mem);
     reduz_QDD(Q);
     printf("\nmem: %d",mem);
+
+    lista *l;
+    l = acha_lista_classe(Q,2);
+    mostra_lista_com_no(l);
+    lista *lc;
+    Short N = 0;
+    for(lc = l->l; lc != NULL; lc = lc->l)
+        N++;
+    mergesort_nivel(l,N);
 
     /***********************************/
     finaliza_relatorio_memoria();
