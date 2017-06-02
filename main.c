@@ -1396,7 +1396,7 @@ void mergesort_nivel(lista *l, Long N)
 
 
 
-void completa_QDD_matriz(no *n, Long r, Long c, Long ex, Short **M, lista **L)
+void completa_QDD_matriz(no *n, Long r, Long c, Long ex, Long **M, lista **L)
 {
     no *el, *th;
     Long ind1, ind2;
@@ -1472,7 +1472,7 @@ QDD* le_matriz(char *nome)
         }
         aumenta_memoria(N2*sizeof(Long));
         for(j=0; j<N2; j++)
-            fscanf(fp,"%hu",&M[i][j]);
+            fscanf(fp,"%lu",&M[i][j]);
     }
 
     no **N;
@@ -2066,11 +2066,10 @@ int main()
     /***********************************/
 
     QDD *Q;
-    Q = le_vetor("V.txt");
-    printf("mem: %d",mem);
-    configuracao(Q->nqbit);
+    Q = le_matriz("QFT13.txt");
+    printf("\nmem: %d",mem);
     reduz_QDD(Q);
-    printf("mem: %d",mem);
+    printf("\nmem: %d",mem);
 
     /***********************************/
     finaliza_relatorio_memoria();
