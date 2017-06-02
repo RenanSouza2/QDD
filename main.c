@@ -1324,13 +1324,17 @@ lista* acha_lista_classe(QDD *Q, Short classe)
         }
     }
 
+    lc = l->l;
+    libera_no_lista(l);
+    l = lc;
+
     return l;
 }
 
 void mergesort_nivel(lista *l, Long N)
 {
-    lista *l1, *l2, *lc, *laux;
-    Long N1, N2, i;
+    lista *l1, *l2, *laux, *lc;
+    Short N1, N2, i;
     if(N>2)
     {
         N1 = N/2;
@@ -1338,69 +1342,78 @@ void mergesort_nivel(lista *l, Long N)
 
         l1 = l;
         lc = l;
-        for(i=0; i<N1; i++)
+        for(i=1; i<N1; i++)
             lc = lc->l;
-        l2 = cria_no_lista();
-        l2->l = lc->l;
+        l2 = lc->l;
         lc->l = NULL;
 
-        printf("\nLISTA 1\t\t  N: %d\tN1: %d",N,N1);
+        printf("\nN: %d\nLISTA 1",N);
         mostra_lista_com_no(l1);
-        mergesort_nivel(l1,N1);
-        printf("\nLISTA ORDENADA 1\t  N: %d\tN1: %d",N,N1);
-        mostra_lista_com_no(l1);
-
-        printf("\nLISTA 2\t\t  N: %d\tN2: %d",N,N2);
+        printf("\nLISTA2");
         mostra_lista_com_no(l2);
+
+        mergesort_nivel(l1,N1);
         mergesort_nivel(l2,N2);
-        printf("\nLISTA ORDENADA 2\t  N: %d\tN2: %d",N,N2);
+
+        printf("\nN: %d\nLISTA 1 ORDENADA",N);
+        mostra_lista_com_no(l1);
+        printf("\nLISTA2 ORDENADA");
         mostra_lista_com_no(l2);
 
         l = cria_no_lista();
         lc = l;
-        while((l1->l != NULL) && (l2->l != NULL))
+        while((l1 != NULL)&&(l2 != NULL))
         {
-            N1 = l1->l->n->at.m.nivel;
-            N2 = l2->l->n->at.m.nivel;
+            N1 = l1->n->at.m.nivel;
+            N2 = l2->n->at.m.nivel;
             if(N1>N2)
             {
-                laux = l1->l;
-                l1->l = laux->l;
+                laux = l1;
+                l1 = laux->l;
             }
             else
             {
-                laux = l2->l;
-                l2->l = laux->l;
+                laux = l2;
+                l2 = laux->l;
             }
             lc->l = laux;
             laux->l = NULL;
-
             lc = lc->l;
-        }
-        if(l1->l != NULL)
-            lc->l = l1->l;
-        if(l2->l != NULL)
-            lc->l = l2->l;
 
-        libera_no_lista(l1);
-        libera_no_lista(l2);
+            printf("\nN: %d\nLISTA 1",N);
+            mostra_lista_com_no(l1);
+            printf("\nLISTA2");
+            mostra_lista_com_no(l2);
+            printf("\nLISTA PROVISORIA");
+            mostra_lista_com_no(l);
+        }
+        if(l1 != NULL)
+            lc->l = l1;
+        if(l2 != NULL)
+            lc->l = l2;
+
+        lc = l->l;
+        libera_no_lista(l);
+        l = lc;
+
+        printf("\nN: %d\nLISTA ORDENADA",N);
+        mostra_lista_com_no(l);
     }
     if(N == 2)
     {
+        N1 = l->n->at.m.nivel;
         lc = l->l;
-        N1 = lc->n->at.m.nivel;
-        laux = lc->l;
-        N2 = laux->n->at.m.nivel;
-
+        N2 = lc->n->at.m.nivel;
         if(N2>N1)
         {
-            l->l = laux;
-            laux->l = lc;
-            lc->l = NULL;
+            lc->l = l;
+            l->l = NULL;
+            l = lc;
+            printf("\nALTEROU A ORDEM");
+            mostra_lista_com_no(l);
         }
     }
 }
-
 
 void completa_QDD_matriz(no *n, Long r, Long c, Long ex, Long **M, lista **L)
 {
@@ -2073,18 +2086,77 @@ int main()
 
     QDD *Q;
     Q = le_matriz("H4.txt");
-    printf("\nmem: %d",mem);
     reduz_QDD(Q);
-    printf("\nmem: %d",mem);
 
     lista *l;
     l = acha_lista_classe(Q,2);
-    mostra_lista_com_no(l);
     lista *lc;
     Short N = 0;
-    for(lc = l->l; lc != NULL; lc = lc->l)
+    for(lc = l; lc != NULL; lc = lc->l)
         N++;
     mergesort_nivel(l,N);
+    /*mostra_lista_com_no(l);*/
+
+    /*lista **L1, **L2;
+    int i;
+    L1 = malloc(4*sizeof(lista*));
+    L2 = malloc(4*sizeof(lista*));
+    for(i=0; i<4; i++)
+    {
+        L1[i] = cria_no_lista();
+        L2[i] = cria_no_lista();
+
+        L1[i]->n = cria_no_meio(2,6-(2*i));
+        L2[i]->n = cria_no_meio(2,7-(2*i));
+    }
+    for(i=0; i<3; i++)
+    {
+        L1[i]->l = L1[i+1];
+        L2[i]->l = L2[i+1];
+    }
+
+    lista *l1, *l2;
+    l1 = cria_no_lista();
+    l1->l = L1[0];
+    l2 = cria_no_lista();
+    l2->l = L2[0];
+
+    printf("\nLISTA 1");
+    mostra_lista_com_no(l1);
+    printf("\nLISTA 2");
+    mostra_lista_com_no(l2);
+
+    Short N1, N2;
+
+    lista *l, *lc, *laux;
+    l = cria_no_lista();
+    lc = l;
+    while((l1->l != NULL) && (l2->l != NULL))
+    {
+        N1 = l1->l->n->at.m.nivel;
+        N2 = l2->l->n->at.m.nivel;
+        if(N1>N2)
+        {
+            laux = l1->l;
+            l1->l = laux->l;
+        }
+        else
+        {
+            laux = l2->l;
+            l2->l = laux->l;
+        }
+        lc->l = laux;
+        laux->l = NULL;
+
+        lc = lc->l;
+    }
+    if(l1->l != NULL)
+        lc->l = l1->l;
+    if(l2->l != NULL)
+        lc->l = l2->l;
+
+    printf("\nLISTA");
+    mostra_lista_com_no(l);*/
 
     /***********************************/
     finaliza_relatorio_memoria();
