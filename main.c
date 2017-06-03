@@ -1331,7 +1331,7 @@ lista* acha_lista_classe(QDD *Q, Short classe)
     return l;
 }
 
-void mergesort_nivel(lista *l, Long N)
+lista* mergesort_nivel_recursivo(lista *l, Long N)
 {
     lista *l1, *l2, *laux, *lc;
     Short N1, N2, i;
@@ -1340,10 +1340,10 @@ void mergesort_nivel(lista *l, Long N)
         N1 = N/2;
         N2 = N-N1;
 
-        l1 = l;
         lc = l;
         for(i=1; i<N1; i++)
             lc = lc->l;
+        l1 = l;
         l2 = lc->l;
         lc->l = NULL;
 
@@ -1352,9 +1352,10 @@ void mergesort_nivel(lista *l, Long N)
         printf("\nLISTA2");
         mostra_lista_com_no(l2);
 
-        mergesort_nivel(l1,N1);
-        mergesort_nivel(l2,N2);
+        l1 = mergesort_nivel_recursivo(l1,N1);
+        l2 = mergesort_nivel_recursivo(l2,N2);
 
+        printf("\nFORA");
         printf("\nN: %d\nLISTA 1 ORDENADA",N);
         mostra_lista_com_no(l1);
         printf("\nLISTA2 ORDENADA");
@@ -1380,6 +1381,8 @@ void mergesort_nivel(lista *l, Long N)
             laux->l = NULL;
             lc = lc->l;
 
+
+            printf("\nDENTRO");
             printf("\nN: %d\nLISTA 1",N);
             mostra_lista_com_no(l1);
             printf("\nLISTA2");
@@ -1387,6 +1390,15 @@ void mergesort_nivel(lista *l, Long N)
             printf("\nLISTA PROVISORIA");
             mostra_lista_com_no(l);
         }
+        printf("\nSAIU");
+        printf("\nN: %d\nLISTA 1",N);
+        mostra_lista_com_no(l1);
+        printf("\nLISTA2");
+        mostra_lista_com_no(l2);
+        printf("\nLISTA PROVISORIA");
+        mostra_lista_com_no(l);
+        printf("\nL1: %d\tL2: %d",l1,l2);
+
         if(l1 != NULL)
             lc->l = l1;
         if(l2 != NULL)
@@ -1413,7 +1425,21 @@ void mergesort_nivel(lista *l, Long N)
             mostra_lista_com_no(l);
         }
     }
+    printf("\nL SAINDO\nN: %d",N);
+    mostra_lista_com_no(l);
+    return l;
 }
+
+void mergesort_nivel(lista *l)
+{
+    lista *lc;
+    Short N = 0;
+    for(lc = l; lc != NULL; lc = lc->l)
+        N++;
+    l = mergesort_nivel_recursivo(l,N);
+}
+
+
 
 void completa_QDD_matriz(no *n, Long r, Long c, Long ex, Long **M, lista **L)
 {
@@ -2090,12 +2116,9 @@ int main()
 
     lista *l;
     l = acha_lista_classe(Q,2);
-    lista *lc;
-    Short N = 0;
-    for(lc = l; lc != NULL; lc = lc->l)
-        N++;
-    mergesort_nivel(l,N);
-    /*mostra_lista_com_no(l);*/
+    mergesort_nivel(l);
+    printf("\n\n\nLISTA");
+    mostra_lista_com_no(l);
 
     /*lista **L1, **L2;
     int i;
