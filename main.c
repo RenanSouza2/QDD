@@ -2046,7 +2046,7 @@ QDD* soma_QDD(QDD *Q1, QDD *Q2)
 
 void contrai_QDD_classe(QDD *Q, Short classe)
 {
-    no *n0, *n1, *el, *th;
+    no *n0, *n1, *el, *th, *ni;
     lista *l, *ll, *laux;
 
     l = acha_lista_classe(Q,classe);
@@ -2055,6 +2055,8 @@ void contrai_QDD_classe(QDD *Q, Short classe)
     laux = l->l;
     libera_no_lista(l);
     l = laux;
+
+    ni = Q->n->l->n;
 
     while(l != NULL)
     {
@@ -2114,13 +2116,15 @@ void contrai_QDD_classe(QDD *Q, Short classe)
         l = laux;
     }
 
+    Q->n = ni->at.i.n;
+
     libera_lista(Q->l);
     l = acha_lista_fim(Q);
     Q->l = l;
     reduz_QDD(Q);
 }
 
-float produto_interno(QDD *Q1, QDD *Q2)
+no* produto_interno(QDD *Q1, QDD *Q2)
 {
     no *n0, *n1;
     n0 = cria_no_inicio();
@@ -2135,7 +2139,10 @@ float produto_interno(QDD *Q1, QDD *Q2)
 
     contrai_QDD_classe(Q,0);
 
-    mostra_QDD(Q);
+    no *n;
+    n = copia_no(Q->n);
+    libera_QDD(Q);
+    return n;
 }
 
 
@@ -2218,7 +2225,16 @@ int main()
     QDD *Q2;
     Q2 = copia_QDD(Q1);
 
-    produto_interno(Q1,Q2);
+    no *n;
+    n = produto_interno(Q1,Q2);
+    mostra_no(n);
+
+    mostra_quantidades();
+
+    libera_QDD(Q1);
+    libera_QDD(Q2);
+    libera_no(n);
+
 
     /***********************************/
     finaliza_relatorio_memoria();
