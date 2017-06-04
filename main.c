@@ -241,18 +241,34 @@ apply* cria_apply()
 void libera_no_QDD(QDD *Q)
 {
     diminui_memoria(sizeof(QDD));
+    iQ--;
     free(Q);
 }
 
 void libera_no(no *n)
 {
     diminui_memoria(sizeof(no));
+    switch(n->tipo)
+    {
+        case 0:
+        ii--;
+        break;
+
+        case 1:
+        im--;
+        break;
+
+        case 2:
+        ifi--;
+        break;
+    }
     free(n);
 }
 
 void libera_no_lista(lista *l)
 {
     diminui_memoria(sizeof(lista));
+    il--;
     free(l);
 }
 
@@ -270,6 +286,7 @@ void libera_lista(lista *l)
 void libera_no_apply(apply *a)
 {
     diminui_memoria(sizeof(apply));
+    ia--;
     free(a);
 }
 
@@ -475,6 +492,15 @@ void mostra_lista_apply_com_no(apply *a)
     }
 }
 
+void mostra_quantidades()
+{
+    printf("\nQDD: %d",iQ);
+    printf("\ni:   %d",ii);
+    printf("\nm:   %d",im);
+    printf("\nf:   %d",ifi);
+    printf("\nl:   %d",il);
+    printf("\na:   %d",ia);
+}
 
 
 void fmostra_lista(FILE *fp, lista *l)
@@ -872,7 +898,7 @@ no* apply_soma(no *N1, no *N2)
                     regra = 1;
                 if(n1->at.m.nivel > n2->at.m.nivel)
                     regra = 2;
-                if(n1->at.m.nivel == N2->at.m.nivel)
+                if(n1->at.m.nivel == n2->at.m.nivel)
                 {
                     if(n1->at.m.classe < n2->at.m.classe)
                         regra = 1;
@@ -1029,6 +1055,7 @@ no* apply_produto_interno(no *N1, no *N2)
     {
         n1 = ac->n1;
         n2 = ac->n2;
+
         switch(n1->tipo)
         {
             case 1:
@@ -1041,7 +1068,7 @@ no* apply_produto_interno(no *N1, no *N2)
                     regra = 1;
                 if(n1->at.m.nivel > n2->at.m.nivel)
                     regra = 2;
-                if(n1->at.m.nivel == N2->at.m.nivel)
+                if(n1->at.m.nivel == n2->at.m.nivel)
                 {
                     if(n1->at.m.classe < n2->at.m.classe)
                         regra = 1;
@@ -1092,6 +1119,7 @@ no* apply_produto_interno(no *N1, no *N2)
         switch(regra)
         {
             case 1:
+            /** n1 antes de n2 **/
             n = copia_no(n1);
             ac->n = n;
 
@@ -1105,6 +1133,7 @@ no* apply_produto_interno(no *N1, no *N2)
             break;
 
             case 2:
+            /** n1 depois de n2 **/
             n = copia_no(n2);
             ac->n = n;
 
@@ -1118,6 +1147,7 @@ no* apply_produto_interno(no *N1, no *N2)
             break;
 
             case 3:
+            /** n1 no mesmo nivel de n2 intermediario **/
             n = copia_no(n1);
             ac->n = n;
 
@@ -1131,17 +1161,19 @@ no* apply_produto_interno(no *N1, no *N2)
             break;
 
             case 4:
+            /** n1 no mesmo nivel de n2 fim **/
             n = produto_complexo_conjugado(n1,n2);
             ac->n = n;
             break;
 
             case 5:
+            /** n1 ou n2 0 **/
             n = cria_no_fim(0,0);
             ac->n = n;
             break;
         }
 
-        if(regra != 4)
+        if((regra != 4)&&(regra != 5))
         {
             for(aaux = a; aaux != NULL; aaux = aaux->a)
                 if(compara_apply(aaux,a1))
@@ -1442,6 +1474,11 @@ QDD* le_matriz(char *nome)
 
     FILE *fp;
     fp = fopen(nome,"r");
+    if(fp == NULL)
+    {
+        printf("ERRO LE MATRIZ");
+        exit(EXIT_FAILURE);
+    }
 
     Long N1, N2, N3;
     fscanf(fp,"%lu %lu\n%lu\n",&N1, &N2, &N3);
@@ -1568,6 +1605,11 @@ QDD* le_vetor(char *nome)
 
     FILE *fp;
     fp = fopen(nome,"r");
+    if(fp == NULL)
+    {
+        printf("ERRO LE VETOR");
+        exit(EXIT_FAILURE);
+    }
 
     Long N1, N2, N3;
     fscanf(fp,"%lu %lu\n%lu\n",&N1,&N2,&N3);
@@ -2072,9 +2114,28 @@ void contrai_QDD_classe(QDD *Q, Short classe)
         l = laux;
     }
 
+    libera_lista(Q->l);
     l = acha_lista_fim(Q);
     Q->l = l;
     reduz_QDD(Q);
+}
+
+float produto_interno(QDD *Q1, QDD *Q2)
+{
+    no *n0, *n1;
+    n0 = cria_no_inicio();
+    n1 = apply_produto_interno(Q1->n,Q2->n);
+    conecta_UM(n0,n1,0);
+
+    QDD *Q;
+    Q = cria_QDD();
+    Q->n = n1;
+    Q->nqbit = Q1->nqbit;
+    Q->l = acha_lista_fim(Q);
+
+    contrai_QDD_classe(Q,0);
+
+    mostra_QDD(Q);
 }
 
 
@@ -2150,16 +2211,14 @@ int main()
     configuracao(20);
     /***********************************/
 
-    QDD *Q;
-    Q = le_matriz("H2.txt");
-    reduz_QDD(Q);
+    QDD *Q1;
+    Q1 = le_vetor("V2.txt");
+    reduz_QDD(Q1);
 
-    lista *l;
-    l = acha_lista_classe(Q,2);
-    mergesort_nivel(l);
+    QDD *Q2;
+    Q2 = copia_QDD(Q1);
 
-    contrai_QDD_classe(Q,2);
-    //mostra_QDD(Q);
+    produto_interno(Q1,Q2);
 
     /***********************************/
     finaliza_relatorio_memoria();
