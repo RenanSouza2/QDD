@@ -2002,6 +2002,80 @@ QDD* soma_QDD(QDD *Q1, QDD *Q2)
     return Q;
 }
 
+void contrai_QDD_classe(QDD *Q, Short classe)
+{
+    no *n0, *n1, *el, *th;
+    lista *l, *ll, *laux;
+
+    l = acha_lista_classe(Q,classe);
+    mergesort_nivel(l);
+
+    laux = l->l;
+    libera_no_lista(l);
+    l = laux;
+
+    while(l != NULL)
+    {
+        n0 = l->n;
+        el = n0->at.m.el;
+        th = n0->at.m.th;
+
+        n1 = apply_soma(el,th);
+        transfere_conexao(n1,n0);
+
+        ll = cria_no_lista();
+        ll->n = n0;
+
+        while(ll != NULL)
+        {
+            n0 = ll->n;
+            switch(n0->tipo)
+            {
+                case 1:
+                if(n0->l == NULL)
+                {
+                    el = n0->at.m.el;
+                    th = n0->at.m.th;
+
+                    desconecta_DOIS(n0);
+                    libera_no(n0);
+
+                    laux = cria_no_lista();
+                    laux->l = ll;
+
+                    laux->n = el;
+                    ll->n = th;
+
+                    ll = laux;
+                }
+                else
+                {
+                    laux = ll->l;
+                    libera_no_lista(ll);
+                    ll = laux;
+                }
+                break;
+
+                case 2:
+                if(n0->l == NULL)
+                    libera_no(n0);
+
+                laux = ll->l;
+                libera_no_lista(ll);
+                ll = laux;
+                break;
+            }
+        }
+
+        laux = l->l;
+        libera_no_lista(l);
+        l = laux;
+    }
+
+    l = acha_lista_fim(Q);
+    Q->l = l;
+    reduz_QDD(Q);
+}
 
 
 QDD* I_1()
@@ -2077,15 +2151,15 @@ int main()
     /***********************************/
 
     QDD *Q;
-    Q = le_matriz("H4.txt");
+    Q = le_matriz("H2.txt");
     reduz_QDD(Q);
 
     lista *l;
     l = acha_lista_classe(Q,2);
     mergesort_nivel(l);
 
-    //printf("\n\n\nLISTA");
-    //mostra_lista_com_no(l);
+    contrai_QDD_classe(Q,2);
+    //mostra_QDD(Q);
 
     /***********************************/
     finaliza_relatorio_memoria();
