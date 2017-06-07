@@ -1,11 +1,12 @@
 #include<stdio.h>
 #include<stdlib.h>
 #include<math.h>
+#include<time.h>
 
 
 
 FILE *fm;
-unsigned long mem = 0, memMax = 0, iQ = 0, ii = 0, im = 0, ifi = 0, il = 0, ia = 0;
+unsigned long mem = 0, memMax = 0, iQ = 0, ii = 0, im = 0, ifi = 0, il = 0, ia = 0, icn = 0, icl = 0;
 unsigned short print, nqbit;
 float eps;
 
@@ -58,6 +59,16 @@ struct apply
     struct apply *a, *a1, *a2;
 };
 
+struct conta
+{
+    unsigned short tipo, nivel;
+    union ponteiro
+    {
+        struct no *n;
+        struct lista *l;
+    }p;
+    struct conta *c;
+};
 
 
 typedef struct QDD QDD;
@@ -74,9 +85,12 @@ typedef struct fim fim;
 
 typedef struct apply apply;
 
+typedef struct conta conta;
+
 typedef unsigned short Short;
 
 typedef unsigned long Long;
+
 
 
 
@@ -236,6 +250,46 @@ apply* cria_apply()
     return a;
 }
 
+conta* cria_conta_no(Short nivel)
+{
+    conta *c;
+    c = malloc(sizeof(conta));
+    if(c == NULL)
+    {
+        printf("\n\nERRO CONTA NO");
+        exit(EXIT_FAILURE);
+    }
+    aumenta_memoria(sizeof(conta));
+    icn++;
+
+    c->tipo = 0;
+    c->nivel = nivel;
+    c->p.n = NULL;
+    c->c = NULL;
+
+    return c;
+}
+
+conta* cria_conta_lista(Short nivel)
+{
+    conta *c;
+    c = malloc(sizeof(conta));
+    if(c == NULL)
+    {
+        printf("\n\nERRO CONTA LISTA");
+        exit(EXIT_FAILURE);
+    }
+    aumenta_memoria(sizeof(conta));
+    icl++;
+
+    c->tipo = 1;
+    c->nivel = nivel;
+    c->p.l = NULL;
+    c->c = NULL;
+
+    return c;
+}
+
 
 
 void libera_no_QDD(QDD *Q)
@@ -299,6 +353,22 @@ void libera_lista_apply(apply *a)
         libera_no_apply(a);
         a = ac;
     }
+}
+
+void libera_no_conta(conta *c)
+{
+    diminui_memoria(sizeof(conta));
+    switch(c->tipo)
+    {
+        case 0:
+        icn--;
+        break;
+
+        case 1:
+        icl--;
+        break;
+    }
+    free(c);
 }
 
 
@@ -367,6 +437,11 @@ void mostra_lista(lista *l)
 
 void mostra_no(no *n)
 {
+    if(n == NULL)
+    {
+        printf("\nEndereco: NULL");
+        return;
+    }
     printf("\nEndereco: %d\n",n);
     if(n->l != NULL)
     {
@@ -422,8 +497,7 @@ void mostra_lista_com_no(lista *l)
     for(lc = l; lc != NULL; lc = lc->l)
     {
         printf("\tLigacao %u: %d\n",ligacao,lc->n);
-        if(lc->n != NULL)
-            mostra_no(lc->n);
+        mostra_no(lc->n);
         ligacao++;
     }
 }
@@ -492,8 +566,9 @@ void mostra_lista_apply_com_no(apply *a)
     }
 }
 
-void mostra_quantidades()
+void mostra_quantidade()
 {
+    printf("\nMem: %d",mem);
     printf("\nQDD: %d",iQ);
     printf("\ni:   %d",ii);
     printf("\nm:   %d",im);
@@ -502,144 +577,30 @@ void mostra_quantidades()
     printf("\na:   %d",ia);
 }
 
-
-void fmostra_lista(FILE *fp, lista *l)
+void mostra_no_conta(conta *c)
 {
-    lista *lc;
-    Long ligacao = 0;
-    lc = l;
-    for(lc = l; lc != NULL; lc = lc->l)
-    {
-        fprintf(fp,"\tLigacao %u: %d\n",ligacao,lc->n);
-        ligacao++;
-    }
-}
-
-void fmostra_no(FILE *fp, no *n)
-{
-    fprintf(fp,"\nEndereco: %d\n",n);
-    if(n->l != NULL)
-    {
-        fprintf(fp,"Ligacoes anteriores:\n");
-        fmostra_lista(fp,n->l);
-    }
-    fprintf(fp,"Tipo");
-    switch(n->tipo)
+    printf("\nEndereco (conta): %d",c);
+    printf("\nTipo: ");
+    switch(c->tipo)
     {
         case 0:
-        fprintf(fp,": Inicio\n");
-        fprintf(fp,"Ligacoes posteriores\n");
-        fprintf(fp,"\tn: %d\n",n->at.i.n);
+        printf("no");
+        mostra_no(c->p.n);
         break;
 
         case 1:
-        fprintf(fp,"/nivel: ");
-        switch(n->at.m.classe)
-        {
-            case 0:
-            fprintf(fp,"V");
-            break;
-
-            case 1:
-            fprintf(fp,"R");
-            break;
-
-            case 2:
-            fprintf(fp,"C");
-            break;
-        }
-
-        fprintf(fp,"%d\n",n->at.m.nivel);
-        fprintf(fp,"Ligacoes posteriores\n");
-        fprintf(fp,"\telse: %d\n",n->at.m.el);
-        fprintf(fp,"\tThen: %d\n",n->at.m.th);
-        break;
-
-        case 2:
-        fprintf(fp,": Numero\n");
-        fprintf(fp,"%f %f\n",n->at.f.re,n->at.f.im);
+        printf("lista");
+        mostra_lista(c->p.l);
         break;
     }
-    fprintf(fp,"\n");
+    printf("\nProximo: %d",c->c);
 }
 
-void fmostra_lista_com_no(FILE *fp, lista *l)
+void mostra_lista_conta(conta *c)
 {
-    lista *lc;
-    Long ligacao = 0;
-    lc = l;
-    fprintf(fp,"\n");
-    for(lc = l; lc != NULL; lc = lc->l)
-    {
-        fprintf(fp,"\tLigacao %u: %d\n",ligacao,lc->n);
-        if(lc->n != NULL)
-            fmostra_no(fp,lc->n);
-        ligacao++;
-    }
-}
-
-void fmostra_arvore_ineficiente(FILE *fp, no *n)
-{
-    if(n == NULL)
-        return;
-    fmostra_no(fp,n);
-    if(n->tipo == 1)
-    {
-        fmostra_arvore_ineficiente(fp,n->at.m.el);
-        fmostra_arvore_ineficiente(fp,n->at.m.th);
-    }
-}
-
-void fmostra_QDD(FILE *fp, QDD *Q)
-{
-    lista *l;
-    l = enlista_QDD(Q);
-    fprintf(fp,"\nNQBIT: %d\n",Q->nqbit);
-    fmostra_lista_com_no(fp,l);
-    fprintf(fp,"\n");
-    fmostra_lista(fp,Q->l);
-    libera_lista(l);
-}
-
-void fmostra_apply(FILE *fp, apply *a)
-{
-    fprintf(fp,"\nEndereco (apply): %d\n",a);
-    fprintf(fp,"\nN1");
-    fmostra_no(fp,a->n1);
-    fprintf(fp,"N2");
-    fmostra_no(fp,a->n2);
-    if(a->n != NULL)
-    {
-        fprintf(fp,"N");
-        fmostra_no(fp,a->n);
-    }
-    else
-        fprintf(fp,"\nSem N");
-    if(a->a1 != NULL)
-    {
-        fprintf(fp,"\nLigacoes posteriores (apply):");
-        fprintf(fp,"\n\t%d",a->a1);
-        fprintf(fp,"\n\t%d",a->a2);
-    }
-}
-
-void fmostra_lista_apply(FILE *fp, apply *a)
-{
-    apply *ac;
-    Long i=0;
-    for(ac = a; ac != NULL; ac = ac->a)
-        fprintf(fp,"\nLigacao %d: %d",i++,ac);
-}
-
-void fmostra_lista_apply_com_no(FILE *fp, apply *a)
-{
-    apply *ac;
-    Long i=0;
-    for(ac = a; ac != NULL; ac = ac->a)
-    {
-        fprintf(fp,"\n\n\n\n\nLigacao %d: %d\n",i++,ac);
-        fmostra_apply(fp,ac);
-    }
+    conta *cc;
+    for(cc = c; cc != NULL; cc = cc->c)
+        mostra_no_conta(cc);
 }
 
 
@@ -2207,7 +2168,7 @@ void finaliza_relatorio_memoria()
 void configuracao(Short i)
 {
     nqbit = i;
-    eps = pow(2,-(i/2))/20;
+    eps = pow(2,-(i/2.0))/20;
 }
 
 
@@ -2218,22 +2179,7 @@ int main()
     configuracao(20);
     /***********************************/
 
-    QDD *Q1;
-    Q1 = le_vetor("V2.txt");
-    reduz_QDD(Q1);
 
-    QDD *Q2;
-    Q2 = copia_QDD(Q1);
-
-    no *n;
-    n = produto_interno(Q1,Q2);
-    mostra_no(n);
-
-    mostra_quantidades();
-
-    libera_QDD(Q1);
-    libera_QDD(Q2);
-    libera_no(n);
 
 
     /***********************************/
