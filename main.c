@@ -1807,6 +1807,100 @@ void reduz_QDD(QDD *Q)
     libera_no_lista(l);
 }
 
+no* copia_arvore(no *N1)
+{
+    /**  l1 guarda Q1 elistado   ***
+    ***  l2 lista dos nos de l2  **/
+    lista *l1, *l2, *lc1a, *lc2a, *lc1b, *lc2b;
+    no *n1, *n2, *nf, *nt1, *nt2;
+
+    l1 = enlista_arvore(N1);
+    l2 = l1->l;
+    libera_no_lista(l1);
+    l1 = l2;
+
+    l2 = copia_lista_sem_cabeca(l1);
+    for(lc2a = l2; lc2a != NULL; lc2a = lc2a->l)
+        lc2a->n = copia_no(lc2a->n);
+
+    lc1a = l1;
+    lc2a = l2;
+    do
+    {
+        /**  lc1a perocrre a lista 1 pela primeira vez  ***
+        ***  lc2a percorre a lista 2 pela primeira vez  **/
+        n1 = lc1a->n;
+        n2 = lc2a->n;
+
+        switch(n1->tipo)
+        {
+            case 0:
+            nf = n1->at.i.n;
+
+            lc1b = l1;
+            lc2b = l2;
+            do
+            {
+                /**  lc1a perocrre a lista 1 pela segunda vez para buscar filhos  ***
+                ***  lc2a percorre a lista 2 pela segunda vez para buscar filhos  **/
+                nt1 = lc1b->n;
+                nt2 = lc2b->n;
+
+                lc1b = lc1b->l;
+                lc2b = lc2b->l;
+            }
+            while(nt1 != nf);
+
+            conecta_UM(n2,nt2,0);
+            break;
+
+            case 1:
+            nf = n1->at.m.el;
+
+            lc1b = l1;
+            lc2b = l2;
+            do
+            {
+                nt1 = lc1b->n;
+                nt2 = lc2b->n;
+
+                lc1b = lc1b->l;
+                lc2b = lc2b->l;
+            }
+            while(nt1 != nf);
+
+            conecta_UM(n2,nt2,1);
+
+            nf = n1->at.m.th;
+
+            lc1b = l1;
+            lc2b = l2;
+            do
+            {
+                nt1 = lc1b->n;
+                nt2 = lc2b->n;
+
+                lc1b = lc1b->l;
+                lc2b = lc2b->l;
+            }
+            while(nt1 != nf);
+
+            conecta_UM(n2,nt2,2);
+            break;
+        }
+        lc1a = lc1a->l;
+        lc2a = lc2a->l;
+    }
+    while(lc1a != NULL);
+
+    no *N2;
+    N2 = l2->n;
+
+    libera_lista(l1);
+
+    return N2;
+}
+
 QDD* copia_QDD(QDD *Q1)
 {
     /**  l1 guarda Q1 elistado   ***
@@ -2121,41 +2215,28 @@ void contrai_QDD_classe(QDD *Q, Short classe)
 
                         case 1:
                         /**  caso no anterior seja meio  **/
-                        la = copia_lista_sem_cabeca(n->l);
-                        cl = cria_conta_lista(0);
+                        la = copia_lista_com_cabeca(n->l);
+
+                        mergesort_nivel(la);
+                        lc = la->l;
+                        libera_no_lista(la);
+                        la = lc;
 
                         /**  separando l por nivel  **/
-                        while(l != NULL)
+                        cl = cria_conta_lista(0);
+                        while(la != NULL)
                         {
-                            laux = l->l;
-                            nivel_max = l->n->at.m.nivel;
-                            caso = 1;
-                            for(clc = cc; clc->c != NULL; clc = clc->c)
-                            {
-                                if(clc->c->nivel == nivel_max)
-                                {
-                                    caso = 0;
+                            nivel_max = la->n->at.m.nivel;
+                            clc->c = cria_conta_lista(nivel_max);
+                            clc = clc->c;
+                            clc->p.l = la;
+
+                            for(lc = la; lc != NULL; lc = lc->l)
+                                if(lc->l->n->at.m.nivel != nivel_max)
                                     break;
-                                }
-                            }
-                            switch(caso)
-                            {
-                                case 0:
-                                l->l = clc->c->p.l;
-                                clc->c->p.l = l;
-                                break;
-
-                                case 1:
-                                caux = cria_conta_lista(nivel_max);
-                                caux->p.l = l;
-
-                                caux->c = clc->c;
-                                clc->c = caux;
-                                break;
-                            }
+                            la = lc->l;
+                            lc->l = NULL;
                         }
-
-
                         break;
                     }
                     break;
@@ -2272,10 +2353,9 @@ int main()
     Q = le_matriz("H1.txt");
     reduz_QDD(Q);
 
-    lista *l;
-    l = enlista_QDD(Q);
-    mostra_lista_com_no(l);
-
+    no *n;
+    n = copia_arvore(Q->n);
+    mostra_arvore_ineficiente(n);
     /***********************************/
     finaliza_relatorio_memoria();
     return 0;
