@@ -1696,12 +1696,14 @@ void reduz_QDD(QDD *Q)
 {
     no *n1, *n2, *nc;
     lista *l, *laux, *lnc1, *lnc2, *lr, *lrc, *lf;
-    Short mudou, saida, regra;
+    Short mudou, saida, regra, del;
     reduz_lista(Q->l);
     l = copia_lista_com_cabeca(Q->l);
     while(l->l != NULL)
     {
         nc = l->l->n;
+        del = 1;
+
         do
         {
             mudou = 0;
@@ -1726,6 +1728,7 @@ void reduz_QDD(QDD *Q)
                                     libera_no(n2);
 
                                     mudou = 1;
+                                    del = 0;
                                     saida = 1;
                                 }
                                 break;
@@ -1800,9 +1803,20 @@ void reduz_QDD(QDD *Q)
         }
         while(mudou);
 
-        laux = l->l;
-        libera_no_lista(l);
-        l = laux;
+        if(del)
+        {
+            laux = l->l;
+            libera_no_lista(l);
+            l = laux;
+        }
+        else
+        {
+            laux = l->l;
+            l->l = laux->l;
+            laux->l = NULL;
+            for(lf = l; lf->l != NULL; lf = lf->l);
+            lf->l = laux;
+        }
     }
     libera_no_lista(l);
 }

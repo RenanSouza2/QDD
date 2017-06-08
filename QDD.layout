@@ -4,7 +4,7 @@
 	<ActiveTarget name="Debug" />
 	<File name="main.c" open="1" top="1" tabpos="1" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
 		<Cursor>
-			<Cursor1 position="49018" topLine="383" />
+			<Cursor1 position="32904" topLine="1360" />
 		</Cursor>
 		<Folding>
 			<Collapse line="15" />
@@ -34,61 +34,8 @@
 			<Collapse line="358" />
 			<Collapse line="376" />
 			<Collapse line="422" />
-			<Collapse line="434" />
-			<Collapse line="446" />
-			<Collapse line="499" />
-			<Collapse line="513" />
-			<Collapse line="525" />
-			<Collapse line="536" />
-			<Collapse line="558" />
-			<Collapse line="566" />
-			<Collapse line="577" />
-			<Collapse line="588" />
-			<Collapse line="608" />
-			<Collapse line="620" />
-			<Collapse line="645" />
-			<Collapse line="651" />
-			<Collapse line="691" />
-			<Collapse line="706" />
-			<Collapse line="720" />
-			<Collapse line="746" />
-			<Collapse line="767" />
-			<Collapse line="778" />
-			<Collapse line="792" />
-			<Collapse line="806" />
-			<Collapse line="816" />
-			<Collapse line="822" />
-			<Collapse line="834" />
-			<Collapse line="844" />
-			<Collapse line="854" />
-			<Collapse line="1023" />
-			<Collapse line="1218" />
-			<Collapse line="1232" />
-			<Collapse line="1242" />
-			<Collapse line="1270" />
-			<Collapse line="1297" />
-			<Collapse line="1304" />
-			<Collapse line="1348" />
-			<Collapse line="1416" />
-			<Collapse line="1428" />
-			<Collapse line="1439" />
-			<Collapse line="1468" />
-			<Collapse line="1577" />
-			<Collapse line="1599" />
 			<Collapse line="1695" />
-			<Collapse line="2011" />
-			<Collapse line="2086" />
-			<Collapse line="2101" />
-			<Collapse line="2120" />
-			<Collapse line="2138" />
-			<Collapse line="2257" />
-			<Collapse line="2280" />
-			<Collapse line="2288" />
-			<Collapse line="2299" />
-			<Collapse line="2307" />
-			<Collapse line="2320" />
-			<Collapse line="2327" />
-			<Collapse line="2338" />
+			<Collapse line="1824" />
 		</Folding>
 	</File>
 </CodeBlocks_layout_file>
