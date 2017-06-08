@@ -111,7 +111,7 @@ void diminui_memoria(Long m)
 {
     if(m>mem)
     {
-        printf("\n\nERRO MEM");
+        printf("\n\nERRO MEMORIA NEGATIVA");
         exit(EXIT_FAILURE);
     }
     mem -= m;
@@ -582,7 +582,7 @@ void mostra_quantidade()
     printf("\nm:   %d",im);
     printf("\nf:   %d",ifi);
     printf("\nl:   %d",il);
-    printf("\na:   %d",ia);
+    printf("\na:   %d\n",ia);
 }
 
 void mostra_no_conta(conta *c)
@@ -619,6 +619,12 @@ void mostra_lista_conta(conta *c)
 
 void conecta_UM(no *n1, no *n2, Short lado)
 {
+    if(n1->tipo == 2)
+    {
+        printf("\nERRO FINAL NAO CONECTA");
+        exit(EXIT_FAILURE);
+    }
+
     lista *l;
 
     switch(lado)
@@ -650,6 +656,12 @@ void conecta_DOIS(no *n, no *el, no *th)
 
 Short desconecta_UM(no *n1, no *n2)
 {
+    if(n1->tipo == 2)
+    {
+        printf("\nERRO FINAL NAO DESCONECTA");
+        exit(EXIT_FAILURE);
+    }
+
     lista *l, *lc, *laux;
     Short lado;
     if(n1->tipo == 0)
@@ -716,6 +728,50 @@ void transfere_conexao(no *n1, no *n2)
 }
 
 
+
+void libera_arvore(no *N)
+{
+    no *n, *el, *th;
+    lista *l, *laux;
+    l = cria_no_lista();
+    l->n = N;
+
+    while(l != NULL)
+    {
+        n = l->n;
+        if(n->l == NULL)
+        {
+            if(n->tipo == 2)
+            {
+                libera_no(n);
+
+                laux = l->l;
+                libera_no_lista(laux);
+                l = laux;
+            }
+            else
+            {
+                el = n->at.m.el;
+                th = n->at.m.th;
+
+                desconecta_DOIS(n);
+                libera_no(n);
+
+                l->n = th;
+                laux = cria_no_lista();
+                laux->n = el;
+                laux->l = l;
+                l = laux;
+            }
+        }
+        else
+        {
+            laux = l->l;
+            libera_no_lista(l);
+            l = laux;
+        }
+    }
+}
 
 void libera_QDD(QDD *Q)
 {
@@ -1212,7 +1268,6 @@ no* apply_produto_interno(no *N1, no *N2)
     libera_lista_apply(a);
     return n;
 }
-
 
 
 lista* copia_lista_com_cabeca(lista *l1)
@@ -2151,7 +2206,7 @@ QDD* soma_QDD(QDD *Q1, QDD *Q2)
 
 void contrai_QDD_classe(QDD *Q, Short classe)
 {
-    no *n, *ni;
+    no *n, *ni, *na;
     lista *l, *lc, *ld, *laux, *la;
     conta *c, *cc, *cl, *clc, *caux;
     Short nivel, nivel_max, mudou, confere, caso;
@@ -2184,6 +2239,7 @@ void contrai_QDD_classe(QDD *Q, Short classe)
         {
             mudou = 0;
             cc = c;
+            /**  Ajusta  **/
             while(cc->c != NULL)
             {
                 n = cc->p.n;
@@ -2238,6 +2294,7 @@ void contrai_QDD_classe(QDD *Q, Short classe)
 
                         /**  separando l por nivel  **/
                         cl = cria_conta_lista(0);
+                        clc = cl;
                         while(la != NULL)
                         {
                             nivel_max = la->n->at.m.nivel;
@@ -2250,6 +2307,24 @@ void contrai_QDD_classe(QDD *Q, Short classe)
                                     break;
                             la = lc->l;
                             lc->l = NULL;
+                        }
+
+                        na = copia_arvore(n);
+                        caux = cc->c;
+                        nivel_max = caux->nivel;
+                        libera_no_conta(caux);
+
+                        caux = cl->c;
+                        libera_no_conta(cl);
+                        cl = caux;
+
+                        while(lc != NULL)
+                        {
+                            while(nivel_max>cl->nivel)
+                            {
+                                produto_por_real_arvore(na,2);
+                                nivel_max--;
+                            }
                         }
                         break;
                     }
@@ -2363,13 +2438,36 @@ int main()
     configuracao(20);
     /***********************************/
 
+    /*clock_t begin, end;
+    float tempo;
+
+    QDD *Q;
+    printf("H9\n\n");
+    Q = le_matriz("H9.txt");
+    mostra_quantidade();
+    reduz_QDD(Q);
+    mostra_quantidade();
+    libera_QDD(Q);
+
+    for(int i=0; i<10; i++)
+    {
+        printf("\nAmostra %d: ",i+1);
+        Q = le_matriz("H9.txt");
+        begin = clock();
+        reduz_QDD(Q);
+        end = clock();
+        libera_QDD(Q);
+        tempo = (float)(end-begin)/(CLOCKS_PER_SEC);
+        printf("%.3f",tempo);
+    }*/
+
     QDD *Q;
     Q = le_matriz("H1.txt");
-    reduz_QDD(Q);
+    mostra_quantidade();
+    desconecta_DOIS(Q->n->l->n);
+    libera_arvore(Q->n);
+    mostra_quantidade();
 
-    no *n;
-    n = copia_arvore(Q->n);
-    mostra_arvore_ineficiente(n);
     /***********************************/
     finaliza_relatorio_memoria();
     return 0;
