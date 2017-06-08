@@ -421,8 +421,6 @@ lista* enlista_arvore(no *n)
 
 lista* enlista_QDD(QDD *Q)
 {
-    /**  l é a lista final                      ***
-    ***  la é a pilha de nós para adicionar a l  **/
     lista *l;
 
     l = enlista_arvore(Q->n);
@@ -815,7 +813,7 @@ Short compara_apply(apply *a1, apply *a2)
 
 
 
-void produto_por_real(no *n, float re)
+void produto_por_real_no(no *n, float re)
 {
     (n->at.f.re) *= re;
     (n->at.f.im) *= re;
@@ -1217,7 +1215,7 @@ no* apply_produto_interno(no *N1, no *N2)
 
 
 
-lista* copia_lista(lista *l1)
+lista* copia_lista_com_cabeca(lista *l1)
 {
     lista *l2, *lc, *lc2;
     l2 = cria_no_lista();
@@ -1234,7 +1232,7 @@ lista* copia_lista(lista *l1)
 lista* copia_lista_sem_cabeca(lista *l1)
 {
     lista *l2, *laux;
-    l2 = copia_lista(l1);
+    l2 = copia_lista_com_cabeca(l1);
     laux = l2;
     l2 = laux->l;
     libera_no_lista(laux);
@@ -1269,10 +1267,10 @@ void reduz_lista(lista *l)
     }
 }
 
-lista* acha_lista_fim(QDD *Q)
+lista* acha_lista_fim_arvore(no *n)
 {
     lista *l, *lc, *laux;
-    l = enlista_QDD(Q);
+    l = enlista_arvore(n);
     lc = l;
 
     while(lc->l != NULL)
@@ -1293,6 +1291,13 @@ lista* acha_lista_fim(QDD *Q)
     libera_no_lista(l);
     l = lc;
 
+    return l;
+}
+
+lista* acha_lista_fim_QDD(QDD *Q)
+{
+    lista *l;
+    l = acha_lista_fim_arvore(Q->n);
     return l;
 }
 
@@ -1416,6 +1421,17 @@ void mergesort_nivel(lista *l)
     for(lc = l; lc->l != NULL; lc = lc->l)
         N++;
     mergesort_nivel_recursivo(l,N);
+}
+
+
+
+void produto_por_real_arvore(no *n, float re)
+{
+    lista *l, *lc;
+    l = acha_lista_fim_arvore(n);
+    for(lc = l; lc != NULL; lc = lc->l)
+        produto_por_real_no(lc->n,re);
+    libera_lista(l);
 }
 
 
@@ -1682,7 +1698,7 @@ void reduz_QDD(QDD *Q)
     lista *l, *laux, *lnc1, *lnc2, *lr, *lrc, *lf;
     Short mudou, saida, regra;
     reduz_lista(Q->l);
-    l = copia_lista(Q->l);
+    l = copia_lista_com_cabeca(Q->l);
     while(l->l != NULL)
     {
         nc = l->l->n;
@@ -2018,7 +2034,7 @@ QDD* soma_QDD(QDD *Q1, QDD *Q2)
     conecta_UM(n,Q->n,0);
 
     Q->nqbit = Q1->nqbit;
-    Q->l = acha_lista_fim(Q);
+    Q->l = acha_lista_fim_QDD(Q);
 
     reduz_QDD(Q);
 
@@ -2028,9 +2044,9 @@ QDD* soma_QDD(QDD *Q1, QDD *Q2)
 void contrai_QDD_classe(QDD *Q, Short classe)
 {
     no *n, *ni;
-    lista *l, *lc, *ld, *laux;
-    conta *c, *cc, *cl, *clc;
-    Short nivel, nivel_max, mudou, confere;
+    lista *l, *lc, *ld, *laux, *la;
+    conta *c, *cc, *cl, *clc, *caux;
+    Short nivel, nivel_max, mudou, confere, caso;
 
     l = acha_lista_classe(Q,classe);
     mergesort_nivel(l);
@@ -2064,6 +2080,7 @@ void contrai_QDD_classe(QDD *Q, Short classe)
             {
                 n = cc->p.n;
 
+                /**  verificando ligações anteriores  **/
                 confere = 1;
                 nivel_max = 0;
                 for(lc = n->l; lc != NULL; lc = lc->l)
@@ -2077,18 +2094,71 @@ void contrai_QDD_classe(QDD *Q, Short classe)
                     }
                 }
 
-                if(confere)
+                switch(confere)
                 {
-
-                }
-                else
-                {
+                    case 0:
                     while(cc->nivel > nivel_max+1)
                     {
                         (cc->nivel)--;
                         mudou = 1;
                     }
                     cc = cc->c;
+                    break;
+
+                    case 1:
+                    /**  caso não tenha no classe  **/
+                    switch(n->l->n->tipo)
+                    {
+                        case 0:
+                        /**  caso no anterior seja inicio  **/
+                        while(cc->nivel >0)
+                        {
+                            produto_por_real_no(cc->p.n,2);
+                            (cc->nivel)--;
+                        }
+                        mudou = 1;
+                        break;
+
+                        case 1:
+                        /**  caso no anterior seja meio  **/
+                        la = copia_lista_sem_cabeca(n->l);
+                        cl = cria_conta_lista(0);
+
+                        /**  separando l por nivel  **/
+                        while(l != NULL)
+                        {
+                            laux = l->l;
+                            nivel_max = l->n->at.m.nivel;
+                            caso = 1;
+                            for(clc = cc; clc->c != NULL; clc = clc->c)
+                            {
+                                if(clc->c->nivel == nivel_max)
+                                {
+                                    caso = 0;
+                                    break;
+                                }
+                            }
+                            switch(caso)
+                            {
+                                case 0:
+                                l->l = clc->c->p.l;
+                                clc->c->p.l = l;
+                                break;
+
+                                case 1:
+                                caux = cria_conta_lista(nivel_max);
+                                caux->p.l = l;
+
+                                caux->c = clc->c;
+                                clc->c = caux;
+                                break;
+                            }
+                        }
+
+
+                        break;
+                    }
+                    break;
                 }
             }
         }
@@ -2098,7 +2168,7 @@ void contrai_QDD_classe(QDD *Q, Short classe)
     Q->n = ni->at.i.n;
 
     libera_lista(Q->l);
-    l = acha_lista_fim(Q);
+    l = acha_lista_fim_QDD(Q);
     Q->l = l;
     reduz_QDD(Q);
 }
@@ -2114,7 +2184,7 @@ no* produto_interno(QDD *Q1, QDD *Q2)
     Q = cria_QDD();
     Q->n = n1;
     Q->nqbit = Q1->nqbit;
-    Q->l = acha_lista_fim(Q);
+    Q->l = acha_lista_fim_QDD(Q);
 
     contrai_QDD_classe(Q,0);
 
@@ -2123,6 +2193,7 @@ no* produto_interno(QDD *Q1, QDD *Q2)
     libera_QDD(Q);
     return n;
 }
+
 
 
 QDD* I_1()
