@@ -6,7 +6,7 @@
 
 
 FILE *fm;
-unsigned long mem = 0, memMax = 0, iQ = 0, ii = 0, im = 0, ifi = 0, il = 0, ia = 0, icn = 0, icl = 0;
+unsigned long mem = 0, memMax = 0, iQ = 0, ii = 0, im = 0, ifi = 0, il = 0, ia = 0, ic = 0;
 unsigned short print, nqbit;
 float eps;
 
@@ -61,12 +61,8 @@ struct apply
 
 struct conta
 {
-    unsigned short tipo, nivel;
-    union ponteiro
-    {
-        struct no *n;
-        struct lista *l;
-    }p;
+    unsigned short nivel;
+    struct no *n;
     struct conta *c;
 };
 
@@ -250,7 +246,7 @@ apply* cria_apply()
     return a;
 }
 
-conta* cria_conta_no(Short nivel)
+conta* cria_conta(Short nivel)
 {
     conta *c;
     c = malloc(sizeof(conta));
@@ -260,31 +256,10 @@ conta* cria_conta_no(Short nivel)
         exit(EXIT_FAILURE);
     }
     aumenta_memoria(sizeof(conta));
-    icn++;
+    ic++;
 
-    c->tipo = 0;
     c->nivel = nivel;
-    c->p.n = NULL;
-    c->c = NULL;
-
-    return c;
-}
-
-conta* cria_conta_lista(Short nivel)
-{
-    conta *c;
-    c = malloc(sizeof(conta));
-    if(c == NULL)
-    {
-        printf("\n\nERRO CONTA LISTA");
-        exit(EXIT_FAILURE);
-    }
-    aumenta_memoria(sizeof(conta));
-    icl++;
-
-    c->tipo = 1;
-    c->nivel = nivel;
-    c->p.l = NULL;
+    c->n = NULL;
     c->c = NULL;
 
     return c;
@@ -385,29 +360,15 @@ void libera_lista_apply(apply *a)
     }
 }
 
-void libera_no_conta(conta *c)
+void libera_conta(conta *c)
 {
     diminui_memoria(sizeof(conta));
-    switch(c->tipo)
+    if(ic == 0)
     {
-        case 0:
-        if(icn == 0)
-        {
-            printf("\nERRO LIBERA CONTA NO");
-            exit(EXIT_FAILURE);
-        }
-        icn--;
-        break;
-
-        case 1:
-        if(icl == 0)
-        {
-            printf("\nERRO LIBERA CONTA LISTA");
-            exit(EXIT_FAILURE);
-        }
-        icl--;
-        break;
+        printf("\nERRO LIBERA CONTA");
+        exit(EXIT_FAILURE);
     }
+    ic--;
     free(c);
 }
 
@@ -629,19 +590,8 @@ void mostra_no_conta(conta *c)
 {
     printf("\nEndereco (conta): %d",c);
     printf("\nnivel: %d",c->nivel);
-    printf("\nTipo: ");
-    switch(c->tipo)
-    {
-        case 0:
-        printf("no\n");
-        mostra_no(c->p.n);
-        break;
-
-        case 1:
-        printf("lista\n");
-        mostra_lista(c->p.l);
-        break;
-    }
+    printf("no\n");
+    mostra_no(c->n);
     printf("Proximo: %d",c->c);
 }
 
@@ -897,7 +847,7 @@ Short compara_apply(apply *a1, apply *a2)
 
 
 
-void produto_por_real_no(no *n, float re)
+void produto_no_por_real(no *n, float re)
 {
     (n->at.f.re) *= re;
     (n->at.f.im) *= re;
@@ -1509,12 +1459,12 @@ void mergesort_nivel(lista *l)
 
 
 
-void produto_por_real_arvore(no *n, float re)
+void produto_arvore_por_real(no *n, float re)
 {
     lista *l, *lc;
     l = acha_lista_fim_arvore(n);
     for(lc = l; lc != NULL; lc = lc->l)
-        produto_por_real_no(lc->n,re);
+        produto_no_por_real(lc->n,re);
     libera_lista(l);
 }
 
@@ -2222,160 +2172,89 @@ QDD* soma_QDD(QDD *Q1, QDD *Q2)
 
 void contrai_QDD_classe(QDD *Q, Short classe)
 {
-    no *n, *ni, *na;
-    lista *l, *lc, *ld, *laux, *la;
-    conta *c, *cc, *cl, *clc, *caux;
-    Short nivel, nivel_max, mudou, confere, caso, lado;
+    no *n0, *n1, *ni, *el, *th;
+    lista *l, *lc, *laux;
+    conta *c, *cc, *caux;
+    short nivel, mudou;
 
     l = acha_lista_classe(Q,classe);
     mergesort_nivel(l);
 
     nivel = Q->nqbit;
-    c = cria_conta_no(0);
+    c = cria_conta(0);
     cc = c;
     for(lc = Q->l; lc != NULL; lc = lc->l)
     {
-        cc->c = cria_conta_no(nivel);
+        cc->c = cria_conta(nivel);
         cc = cc->c;
-        cc->p.n = lc->n;
+        cc->n = lc->n;
     }
-
-    laux = l->l;
-    libera_no_lista(l);
-    l = laux;
 
     ni = Q->n->l->n;
 
-    while(l != NULL)
+    for(nivel = (Q->nqbit)-1; nivel >= 0; nivel--)
     {
-        printf("a");
-        nivel = l->n->at.m.nivel;
-
         do
         {
-            mudou = 0;
-            cc = c;
-            /**  Ajusta  **/
-            while(cc->c != NULL)
+            n0 = lc->l->n;
+            el = n0->at.m.el;
+            th = n0->at.m.th;
+
+            n1 = apply_soma(el,th);
+            transfere_conexao(n1,n0);
+
+            desconecta_DOIS(n0);
+            libera_no(n0);
+
+            if(el->l == NULL)
             {
-                n = cc->p.n;
-
-                /**  verificando ligações anteriores  **/
-                confere = 1;
-                nivel_max = 0;
-                for(lc = n->l; lc != NULL; lc = lc->l)
-                {
-                    if(lc->n->at.m.classe == classe)
-                    {
-                        confere = 0;
-
-                        if(lc->n->at.m.nivel > nivel_max)
-                            nivel_max = lc->n->at.m.nivel;
-                    }
-                }
-
-                switch(confere)
-                {
-                    case 0:
-                    /**  caso tenha classe  **/
-                    while(cc->nivel > nivel_max+1)
-                    {
-                        (cc->nivel)--;
-                        produto_por_real_arvore(cc->p.n,2);
-                        mudou = 1;
-                    }
-                    cc = cc->c;
-                    break;
-
-                    case 1:
-                    /**  caso não tenha no classe  **/
-                    switch(n->l->n->tipo)
-                    {
-                        case 0:
-                        /**  caso no anterior seja inicio  **/
-                        while(cc->nivel >0)
-                        {
-                            produto_por_real_arvore(cc->p.n,2);
-                            (cc->nivel)--;
-                        }
-                        mudou = 1;
+                for(cc = c; cc->c != NULL; cc = cc->c)
+                    if(cc->c->n == el)
                         break;
+                caux = cc->c;
+                cc->c = caux->c;
+                libera_conta(caux);
+            }
 
-                        case 1:
-                        /**  caso no anterior seja meio  **/
-                        la = copia_lista_com_cabeca(n->l);
-
-                        mergesort_nivel(la);
-                        lc = la->l;
-                        libera_no_lista(la);
-                        la = lc;
-
-                        /**  separando l por nivel  **/
-                        cl = cria_conta_lista(0);
-                        clc = cl;
-                        while(la != NULL)
-                        {
-                            nivel_max = la->n->at.m.nivel;
-                            clc->c = cria_conta_lista(nivel_max);
-                            clc = clc->c;
-                            clc->p.l = la;
-
-                            for(lc = la; lc != NULL; lc = lc->l)
-                                if(lc->l->n->at.m.nivel != nivel_max)
-                                    break;
-                            la = lc->l;
-                            lc->l = NULL;
-                        }
-
-                        na = copia_arvore(n);
-                        caux = cc->c;
-                        nivel_max = caux->nivel;
-                        libera_no_conta(caux);
-
-                        caux = cl->c;
-                        libera_no_conta(cl);
-                        cl = caux;
-
-                        while(cl != NULL)
-                        {
-                            while(nivel_max>cl->nivel)
-                            {
-                                produto_por_real_arvore(na,2);
-                                nivel_max--;
-                            }
-                            for(lc = cl->p.l; lc != NULL; lc = lc->l)
-                            {
-                                lado = desconecta_UM(lc->n,n);
-                                conecta_UM(lc->n,na,lado);
-
-                                /**  ve se o no ja esta na conta  **/
-                                for(caux = c; caux->c != NULL; caux = caux->c)
-                                    if(caux->p.n == lc->n)
-                                        break;
-
-                                if(caux == NULL)
-                                {
-                                    caux = cria_conta_no(nivel_max);
-                                    caux->p.n = lc->n;
-                                    caux->c = c->c;
-                                    c->c = caux;
-                                }
-                            }
-
-                            na = copia_arvore(na);
-
-                            libera_lista(cl->p.l);
-                            caux = cl->c;
-                            libera_no_conta(cl);
-                            cl = caux;
-                        }
+            if(th->l == NULL)
+            {
+                for(cc = c; cc->c != NULL; cc = cc->c)
+                    if(cc->c->n == th)
                         break;
-                    }
-                    break;
+                caux = cc->c;
+                cc->c = caux->c;
+                libera_conta(caux);
+            }
+
+            libera_arvore(el);
+            libera_arvore(th);
+
+            laux = l->l;
+            l->l = laux->l;
+            libera_no_lista(laux);
+            if(l->l == NULL)
+                break;
+        }
+        while(l->l->n->at.m.nivel == nivel);
+
+        cc = c;
+        do
+        {
+            if(cc->nivel > nivel)
+            {
+                produto_arvore_por_real(cc->n,2);
+                do
+                {
+                    mudou = 0;
                 }
+                while(mudou);
+            }
+            else
+            {
+                cc = cc->c;
             }
         }
-        while(mudou);
+        while(cc->c != NULL);
     }
 
     Q->n = ni->at.i.n;
@@ -2481,12 +2360,12 @@ int main()
     configuracao(20);
     /***********************************/
 
-    /*clock_t begin, end;
+    clock_t begin, end;
     float tempo;
 
     QDD *Q;
-    printf("H10\n\n");
-    Q = le_matriz("H10.txt");
+    printf("H11\n\n");
+    Q = le_matriz("H11.txt");
     mostra_quantidade();
     reduz_QDD(Q);
     mostra_quantidade();
@@ -2495,19 +2374,14 @@ int main()
     for(int i=0; i<10; i++)
     {
         printf("\nAmostra %d: ",i+1);
-        Q = le_matriz("H10.txt");
+        Q = le_matriz("H11.txt");
         begin = clock();
         reduz_QDD(Q);
         end = clock();
         libera_QDD(Q);
         tempo = (float)(end-begin)/(CLOCKS_PER_SEC);
         printf("%.3f",tempo);
-    }*/
-
-    QDD *Q;
-    Q = le_matriz("H1.txt");
-    reduz_QDD(Q);
-    libera_QDD(Q);
+    }
 
     /***********************************/
     finaliza_relatorio_memoria();
