@@ -1247,6 +1247,273 @@ no* apply_produto_interno(no *N1, no *N2)
     return n;
 }
 
+no* apply_produto_matriz(no *N1, no *N2)
+{
+    apply *a;
+    a = cria_apply();
+    a->n1 = N1;
+    a->n2 = N2;
+
+    apply *ac, *a1 = NULL, *a2 = NULL, *aaux;
+    no *n, *n1, *n2;
+    Short regra = 0;
+    for(ac = a; ac != NULL; ac = ac->a)
+    {
+        n1 = ac->n1;
+        n2 = ac->n2;
+
+        switch(n1->tipo)
+        {
+            case 1:
+            switch(n2->tipo)
+            {
+                case 1:
+                if(n1->at.m.nivel < n2->at.m.nivel)
+                {
+                    switch(n1->at.m.classe)
+                    {
+                        case 1:
+                        regra = 1;
+                        break;
+
+                        case 2:
+                        regra = 3;
+                        break;
+                    }
+                }
+
+                if(n1->at.m.nivel > n2->at.m.nivel)
+                {
+                    switch(n2->at.m.classe)
+                    {
+                        case 1:
+                        regra = 4;
+                        break;
+
+                        case 2:
+                        regra = 2;
+                        break;
+                    }
+                }
+
+                if(n1->at.m.nivel == n2->at.m.nivel)
+                {
+                    switch(n1->at.m.classe)
+                    {
+                        case 1:
+                        regra = 1;
+                        break;
+
+                        case 2:
+                        switch(n2->at.m.classe)
+                        {
+                            case 1:
+                            regra = 5;
+                            break;
+
+                            case 2:
+                            regra = 2;
+                            break;
+                        }
+                        break;
+                    }
+                }
+                break;
+
+                case 2:
+                if(compara_zero(n2))
+                {
+                    regra = 7;
+                }
+                else
+                {
+                    switch(n1->at.m.classe)
+                    {
+                        case 1:
+                        regra = 1;
+                        break;
+
+                        case 2:
+                        regra = 3;
+                        break;
+                    }
+                }
+                break;
+            }
+            break;
+
+            case 2:
+            if(compara_zero(n1))
+            {
+                regra = 7;
+            }
+            else
+            {
+                switch(n2->tipo)
+                {
+                    case 1:
+                    switch(n2->at.m.classe)
+                    {
+                        case 1:
+                        regra = 4;
+                        break;
+
+                        case 2:
+                        regra = 2;
+                        break;
+                    }
+                    break;
+
+                    case 2:
+                    if(compara_zero(n2))
+                        regra = 7;
+                    else
+                        regra = 6;
+                    break;
+                }
+            }
+            break;
+        }
+
+        switch(regra)
+        {
+            case 1:
+            n = copia_no(n1);
+            ac->n = n;
+
+            a1 = cria_apply();
+            a1->n1 = n1->at.m.el;
+            a1->n2 = n2;
+
+            a2 = cria_apply();
+            a2->n1 = n1->at.m.th;
+            a2->n2 = n2;
+            break;
+
+            case 2:
+            n = copia_no(n2);
+            ac->n = n;
+
+            a1 = cria_apply();
+            a1->n1 = n1;
+            a1->n2 = n2->at.m.el;
+
+            a2 = cria_apply();
+            a2->n1 = n1;
+            a2->n2 = n2->at.m.th;
+            break;
+
+            case 3:
+            n = cria_no_meio(0,n1->at.m.nivel);
+            ac->n = n;
+
+            a1 = cria_apply();
+            a1->n1 = n1->at.m.el;
+            a1->n2 = n2;
+
+            a2 = cria_apply();
+            a2->n1 = n1->at.m.th;
+            a2->n2 = n2;
+            break;
+
+            case 4:
+            n = cria_no_meio(0,n2->at.m.nivel);
+            ac->n = n;
+
+            a1 = cria_apply();
+            a1->n1 = n1;
+            a1->n2 = n2->at.m.el;
+
+            a2 = cria_apply();
+            a2->n1 = n1;
+            a2->n2 = n2->at.m.th;
+            break;
+
+            case 5:
+            n = cria_no_meio(0,n1->at.m.nivel);
+            ac->n = n;
+
+            a1 = cria_apply();
+            a1->n1 = n1->at.m.el;
+            a1->n2 = n2->at.m.el;
+
+            a2 = cria_apply();
+            a2->n1 = n1->at.m.th;
+            a2->n2 = n2->at.m.th;
+            break;
+
+            case 6:
+            n = produto_complexo(n1,n2);
+            ac->n = n;
+            break;
+
+            case 7:
+            n = cria_no_fim(0,0);
+            ac->n = n;
+            break;
+        }
+
+        if((regra != 6)&&(regra != 7))
+        {
+            for(aaux = a; aaux != NULL; aaux = aaux->a)
+                if(compara_apply(aaux,a1))
+                    break;
+            if(aaux == NULL)
+            {
+                ac->a1 = a1;
+                a1->a = ac->a;
+                ac->a = a1;
+            }
+            else
+            {
+                ac->a1 = aaux;
+                libera_no_apply(a1);
+            }
+
+
+            for(aaux = a; aaux != NULL; aaux = aaux->a)
+                if(compara_apply(aaux,a2))
+                    break;
+            if(aaux == NULL)
+            {
+                ac->a2 = a2;
+                a2->a = ac->a;
+                ac->a = a2;
+            }
+            else
+            {
+                ac->a2 = aaux;
+                libera_no_apply(a2);
+            }
+        }
+    }
+
+    for(ac = a; ac != NULL; ac = ac->a)
+    {
+        n = ac->n;
+        if(n->tipo == 1)
+        {
+            a1 = ac->a1;
+            a2 = ac->a2;
+
+            for(aaux = a; aaux != NULL; aaux = aaux->a)
+                if(aaux == a1)
+                    break;
+            n1 = aaux->n;
+
+            for(aaux = a; aaux != NULL; aaux = aaux->a)
+                if(aaux == a2)
+                    break;
+            n2 = aaux->n;
+
+            conecta_DOIS(n,n1,n2);
+        }
+    }
+    n = a->n;
+    libera_lista_apply(a);
+    return n;
+}
+
 
 
 lista* copia_lista_com_cabeca(lista *l1)
@@ -2175,7 +2442,7 @@ void contrai_QDD_classe(QDD *Q, Short classe)
     no *n0, *n1, *ni, *el, *th;
     lista *l, *lc, *laux;
     conta *c, *cc, *caux;
-    short nivel, mudou;
+    short nivel, mudou, harmonico;
 
     l = acha_lista_classe(Q,classe);
     mergesort_nivel(l);
@@ -2243,9 +2510,22 @@ void contrai_QDD_classe(QDD *Q, Short classe)
             if(cc->nivel > nivel)
             {
                 produto_arvore_por_real(cc->n,2);
+                (cc->nivel)--;
                 do
                 {
                     mudou = 0;
+                    for(laux = cc->n->l; laux != NULL; laux = laux->l)
+                    {
+                        harmonico = 0;
+                        if(laux->n->tipo == 0)
+                        if(nivel == 0)
+                            harmonico = 1;
+                        if(laux->n->tipo == 1)
+                        if(laux->n->at.m.classe != classe)
+                        {
+
+                        }
+                    }
                 }
                 while(mudou);
             }
@@ -2364,8 +2644,8 @@ int main()
     float tempo;
 
     QDD *Q;
-    printf("H11\n\n");
-    Q = le_matriz("H11.txt");
+    printf("H12\n\n");
+    Q = le_matriz("H12.txt");
     mostra_quantidade();
     reduz_QDD(Q);
     mostra_quantidade();
