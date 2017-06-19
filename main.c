@@ -69,7 +69,7 @@ struct conta
 struct suporte
 {
     unsigned short nivel;
-    struct conta *cc, *cv, *cr;
+    struct conta *cC, *cV, *cR;
     struct suporte *s;
 };
 
@@ -288,9 +288,9 @@ suporte* cria_suporte(Short nivel)
     is++;
 
     s->nivel = nivel;
-    s->cc = NULL;
-    s->cv = NULL;
-    s->cr = NULL;
+    s->cC = NULL;
+    s->cV = NULL;
+    s->cR = NULL;
     s->s = NULL;
 
     return s;
@@ -441,6 +441,10 @@ lista* enlista_arvore(no *n)
             lf = lf->l;
             lf->n = n;
 
+            if(n->tipo == 0)
+            {
+                la->n = n->at.i.n;
+            }
             if(n->tipo == 1)
             {
                 /**  caso tenha filhos  **/
@@ -465,10 +469,12 @@ lista* enlista_arvore(no *n)
 
 lista* enlista_QDD(QDD *Q)
 {
-    lista *l;
+    lista *l, *laux;
 
     l = enlista_arvore(Q->n);
-    l->n = Q->n->l->n;
+    laux = l->l;
+    libera_no_lista(l);
+    l = laux;
 
     return l;
 }
@@ -652,11 +658,11 @@ void mostra_suporte(suporte *s)
     printf("\nEndereco (suporte): %d",s);
     printf("\nNivel: %d",s->nivel);
     printf("\n\nLISTA CONTA C");
-    mostra_lista_conta(s->cc);
+    mostra_lista_conta(s->cC);
     printf("\n\nLISTA CONTA V");
-    mostra_lista_conta(s->cv);
+    mostra_lista_conta(s->cV);
     printf("\n\nLISTA CONTA R");
-    mostra_lista_conta(s->cr);
+    mostra_lista_conta(s->cR);
 }
 
 void mostra_lista_suporte(suporte *s)
@@ -792,16 +798,18 @@ void libera_arvore(no *N)
         n = l->n;
         if(n->l == NULL)
         {
-            if(n->tipo == 2)
+            switch(n->tipo)
             {
+                case 0:
+                el = n->at.i.n;
+
+                desconecta_DOIS(n);
                 libera_no(n);
 
-                laux = l->l;
-                libera_no_lista(l);
-                l = laux;
-            }
-            else
-            {
+                l->n = el;
+                break;
+
+                case 1:
                 el = n->at.m.el;
                 th = n->at.m.th;
 
@@ -813,6 +821,15 @@ void libera_arvore(no *N)
                 laux->n = el;
                 laux->l = l;
                 l = laux;
+                break;
+
+                case 2:
+                libera_no(n);
+
+                laux = l->l;
+                libera_no_lista(l);
+                l = laux;
+                break;
             }
         }
         else
@@ -826,11 +843,6 @@ void libera_arvore(no *N)
 
 void libera_QDD(QDD *Q)
 {
-    no *ni;
-    ni = Q->n->l->n;
-    desconecta_DOIS(ni);
-
-    libera_no(ni);
     libera_arvore(Q->n);
     libera_lista(Q->l);
     libera_no_QDD(Q);
@@ -914,7 +926,7 @@ void produto_no_por_real(no *n, float re)
     (n->at.f.im) *= re;
 }
 
-no* soma(no *n1, no *n2)
+no* soma_no(no *n1, no *n2)
 {
     no *n;
     float re, im;
@@ -962,6 +974,10 @@ no* apply_soma(no *N1, no *N2)
         n2 = ac->n2;
         switch(n1->tipo)
         {
+            case 0:
+            regra = 0;
+            break;
+
             case 1:
             /**  n1 é intermediario  **/
             switch(n2->tipo)
@@ -1009,6 +1025,18 @@ no* apply_soma(no *N1, no *N2)
 
         switch(regra)
         {
+            case 0:
+            n = cria_no_inicio();
+            ac->n = n;
+
+            a1 = cria_apply();
+            a1->n1 = n1->at.i.n;
+            a1->n2 = n2->at.i.n;
+
+            ac->a1 = a1;
+            ac->a = a1;
+            break;
+
             case 1:
             n = copia_no(n1);
             ac->n = n;
@@ -1049,12 +1077,12 @@ no* apply_soma(no *N1, no *N2)
             break;
 
             case 4:
-            n = soma(n1,n2);
+            n = soma_no(n1,n2);
             ac->n = n;
             break;
         }
 
-        if(regra != 4)
+        if((regra != 0)&&(regra != 4))
         {
             for(aaux = a; aaux != NULL; aaux = aaux->a)
                 if(compara_apply(aaux,a1))
@@ -1092,20 +1120,21 @@ no* apply_soma(no *N1, no *N2)
     for(ac = a; ac != NULL; ac = ac->a)
     {
         n = ac->n;
+        if(n->tipo == 0)
+        {
+            a1 = ac->a1;
+
+            n1 = a1->n;
+
+            conecta_UM(n,n1,0);
+        }
         if(n->tipo == 1)
         {
             a1 = ac->a1;
             a2 = ac->a2;
 
-            for(aaux = a; aaux != NULL; aaux = aaux->a)
-                if(aaux == a1)
-                    break;
-            n1 = aaux->n;
-
-            for(aaux = a; aaux != NULL; aaux = aaux->a)
-                if(aaux == a2)
-                    break;
-            n2 = aaux->n;
+            n1 = a1->n;
+            n2 = a2->n;
 
             conecta_DOIS(n,n1,n2);
         }
@@ -1132,6 +1161,10 @@ no* apply_produto_interno(no *N1, no *N2)
 
         switch(n1->tipo)
         {
+            case 0:
+            regra = 0;
+            break;
+
             case 1:
             /**  n1 é intermediario  **/
             switch(n2->tipo)
@@ -1192,6 +1225,18 @@ no* apply_produto_interno(no *N1, no *N2)
 
         switch(regra)
         {
+            case 0:
+            n = cria_no_inicio();
+            ac->n = n;
+
+            a1 = cria_apply();
+            a1->n1 = n1->at.i.n;
+            a1->n2 = n2->at.i.n;
+
+            ac->a1 = a1;
+            ac->a = a1;
+            break;
+
             case 1:
             /** n1 antes de n2 **/
             n = copia_no(n1);
@@ -1247,7 +1292,7 @@ no* apply_produto_interno(no *N1, no *N2)
             break;
         }
 
-        if((regra != 4)&&(regra != 5))
+        if((regra != 0)&&(regra != 4)&&(regra != 5))
         {
             for(aaux = a; aaux != NULL; aaux = aaux->a)
                 if(compara_apply(aaux,a1))
@@ -1285,20 +1330,21 @@ no* apply_produto_interno(no *N1, no *N2)
     for(ac = a; ac != NULL; ac = ac->a)
     {
         n = ac->n;
+        if(n->tipo == 0)
+        {
+            a1 = ac->a1;
+
+            n1 = a1->n;
+
+            conecta_UM(n,n1,0);
+        }
         if(n->tipo == 1)
         {
             a1 = ac->a1;
             a2 = ac->a2;
 
-            for(aaux = a; aaux != NULL; aaux = aaux->a)
-                if(aaux == a1)
-                    break;
-            n1 = aaux->n;
-
-            for(aaux = a; aaux != NULL; aaux = aaux->a)
-                if(aaux == a2)
-                    break;
-            n2 = aaux->n;
+            n1 = a1->n;
+            n2 = a2->n;
 
             conecta_DOIS(n,n1,n2);
         }
@@ -1325,6 +1371,10 @@ no* apply_produto_matriz(no *N1, no *N2)
 
         switch(n1->tipo)
         {
+            case 0:
+            regra = 0;
+            break;
+
             case 1:
             switch(n2->tipo)
             {
@@ -1438,6 +1488,18 @@ no* apply_produto_matriz(no *N1, no *N2)
 
         switch(regra)
         {
+            case 0:
+            n = cria_no_inicio();
+            ac->n = n;
+
+            a1 = cria_apply();
+            a1->n1 = n1->at.i.n;
+            a1->n2 = n2->at.i.n;
+
+            ac->a1 = a1;
+            ac->a = a1;
+            break;
+
             case 1:
             n = copia_no(n1);
             ac->n = n;
@@ -1514,7 +1576,7 @@ no* apply_produto_matriz(no *N1, no *N2)
             break;
         }
 
-        if((regra != 6)&&(regra != 7))
+        if((regra != 0)&&(regra != 6)&&(regra != 7))
         {
             for(aaux = a; aaux != NULL; aaux = aaux->a)
                 if(compara_apply(aaux,a1))
@@ -1552,20 +1614,21 @@ no* apply_produto_matriz(no *N1, no *N2)
     for(ac = a; ac != NULL; ac = ac->a)
     {
         n = ac->n;
+        if(n->tipo == 0)
+        {
+            a1 = ac->a1;
+
+            n1 = a1->n;
+
+            conecta_UM(n,n1,0);
+        }
         if(n->tipo == 1)
         {
             a1 = ac->a1;
             a2 = ac->a2;
 
-            for(aaux = a; aaux != NULL; aaux = aaux->a)
-                if(aaux == a1)
-                    break;
-            n1 = aaux->n;
-
-            for(aaux = a; aaux != NULL; aaux = aaux->a)
-                if(aaux == a2)
-                    break;
-            n2 = aaux->n;
+            n1 = a1->n;
+            n2 = a2->n;
 
             conecta_DOIS(n,n1,n2);
         }
@@ -1761,17 +1824,18 @@ QDD* le_matriz(char *nome)
     }
 
     no **N;
-    N = malloc((N2*N2-1)*sizeof(no*));
+    N = malloc(N2*N2*sizeof(no*));
     if(N == NULL)
     {
         printf("\n\nERRO N");
         exit(EXIT_FAILURE);
     }
-    aumenta_memoria((N2*N2-1)*sizeof(no*));
+    aumenta_memoria(N2*N2*sizeof(no*));
+    N[0] = cria_no_inicio();
 
     Long ex, ind;
     ex = 1;
-    ind = 0;
+    ind = 1;
     for(i=0; i<N1; i++)
     {
         for(j=1; j<=2; j++)
@@ -1785,21 +1849,20 @@ QDD* le_matriz(char *nome)
         }
     }
 
+    conecta_UM(N[0],N[1],0);
     for(i=0; i<(N2*N2-1)/2; i++)
-        conecta_DOIS(N[i],N[2*i+1],N[2*i+2]);
+        conecta_DOIS(N[i+1],N[2*i+2],N[2*i+3]);
 
-    completa_QDD_matriz(N[0],0,0,N2/2,M,L);
+    completa_QDD_matriz(N[1],0,0,N2/2,M,L);
 
     QDD *Q;
     Q = cria_QDD();
-    Q->n = cria_no_inicio();
-    conecta_UM(Q->n,N[0],0);
     Q->n = N[0];
     Q->nqbit = N1;
     Q->l = L[0];
 
     free(N);
-    diminui_memoria((N2*N2-1)*sizeof(no*));
+    diminui_memoria(N2*N2*sizeof(no*));
     free(L);
     diminui_memoria(N3*sizeof(lista*));
     for(i=0; i<N2; i++)
@@ -1882,18 +1945,19 @@ QDD* le_vetor(char *nome)
         fscanf(fp,"%lu",&M[i]);
 
     no **N;
-    N = malloc((N2-1)*sizeof(no*));
+    N = malloc(N2*sizeof(no*));
     if(N == NULL)
     {
         printf("\n\nERRO N");
         exit(EXIT_FAILURE);
     }
-    aumenta_memoria((N2-1)*sizeof(no*));
+    aumenta_memoria(N2*sizeof(no*));
+    N[0] = cria_no_inicio();
 
     Long ex, ind;
     no *n;
     ex = 1;
-    ind = 0;
+    ind = 1;
     for(i=0; i<N1; i++)
     {
         for(j=0; j<ex; j++)
@@ -1905,13 +1969,11 @@ QDD* le_vetor(char *nome)
         ex *= 2;
     }
 
+    conecta_UM(N[0],N[1],0);
     for(i=0; i<(N2/2)-1; i++)
-        conecta_DOIS(N[i],N[2*i+1],N[2*i+2]);
+        conecta_DOIS(N[i+1],N[2*i+2],N[2*i+3]);
 
-    completa_QDD_vetor(N[0],0,N2/2,M,L);
-
-    n = cria_no_inicio();
-    conecta_UM(n,N[0],0);
+    completa_QDD_vetor(N[1],0,N2/2,M,L);
 
     QDD *Q;
     Q = cria_QDD();
@@ -1920,7 +1982,7 @@ QDD* le_vetor(char *nome)
     Q->l = L[0];
 
     free(N);
-    diminui_memoria((N2-1)*sizeof(no*));
+    diminui_memoria(N2*sizeof(no*));
     free(L);
     diminui_memoria(N3*sizeof(lista*));
     free(M);
@@ -2296,8 +2358,8 @@ QDD* produto_tensorial(QDD *Q1, QDD *Q2)
                 libera_no(n2);
             }
 
-            n2 = Q2b->n;
-            naux = Q2b->n->l->n;
+            n2 = Q2b->n->at.i.n;
+            naux = Q2b->n;
             desconecta_UM(naux,n2);
             libera_no(naux);
 
@@ -2363,10 +2425,6 @@ QDD* soma_QDD(QDD *Q1, QDD *Q2)
     QDD *Q;
     Q = cria_QDD();
     Q->n = apply_soma(Q1->n,Q2->n);
-
-    no *n;
-    n = cria_no_inicio();
-    conecta_UM(n,Q->n,0);
 
     Q->nqbit = Q1->nqbit;
     Q->l = acha_lista_fim_QDD(Q);
@@ -2482,8 +2540,7 @@ int main()
     configuracao(20);
     /***********************************/
 
-    /*
-    clock_t begin, end;
+    /*clock_t begin, end;
     float tempo;
 
     QDD *Q;
@@ -2505,30 +2562,19 @@ int main()
         libera_QDD(Q);
         tempo = (float)(end-begin)/(CLOCKS_PER_SEC);
         printf("%.3f",tempo);
-    }
-    */
+    }*/
 
-    QDD *Q1, *Q2;
-
-    /*Q1 = le_matriz("H1.txt");
+    QDD *Q1;
+    Q1 = le_matriz("H1.txt");
     reduz_QDD(Q1);
-    Q2 = copia_QDD(Q1);*/
 
-    no *n;
-    Q1 = cria_QDD();
-    Q1->n = cria_no_fim(1,0);
-    n = cria_no_inicio();
-    conecta_UM(n,Q1->n,0);
-    Q1->l = cria_no_lista();
-    Q1->l->n = Q1->n;
+    QDD *Q2;
+    Q2 = le_matriz("I1.txt");
+    reduz_QDD(Q2);
 
-    mostra_QDD(Q1);
-
-    Q2 = copia_QDD(Q1);
-    produto_por_escalar(Q2,2,0);
-    mostra_QDD(Q2);
-
-    //produto_matrizes(Q1,Q2);
+    QDD *Q;
+    Q = produto_tensorial(Q1,Q2);
+    mostra_QDD(Q);
 
     /***********************************/
     finaliza_relatorio_memoria();
