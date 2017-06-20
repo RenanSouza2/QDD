@@ -351,6 +351,7 @@ void libera_no_lista(lista *l)
     if(il == 0)
     {
         printf("\nERRO LIBERA LISTA");
+        mostra_quantidade();
         exit(EXIT_FAILURE);
     }
     il--;
@@ -2540,12 +2541,12 @@ int main()
     configuracao(20);
     /***********************************/
 
-    /*clock_t begin, end;
+    clock_t begin, end;
     float tempo;
 
     QDD *Q;
-    printf("H12\n\n");
-    Q = le_matriz("H12.txt");
+    printf("V8\n\n");
+    Q = le_vetor("V8.txt");
     configuracao(Q->nqbit);
     mostra_quantidade();
     reduz_QDD(Q);
@@ -2555,26 +2556,14 @@ int main()
     for(int i=0; i<10; i++)
     {
         printf("\nAmostra %d: ",i+1);
-        Q = le_matriz("H11.txt");
+        Q = le_vetor("V8.txt");
         begin = clock();
         reduz_QDD(Q);
         end = clock();
         libera_QDD(Q);
         tempo = (float)(end-begin)/(CLOCKS_PER_SEC);
         printf("%.3f",tempo);
-    }*/
-
-    QDD *Q1;
-    Q1 = le_matriz("H1.txt");
-    reduz_QDD(Q1);
-
-    QDD *Q2;
-    Q2 = le_matriz("I1.txt");
-    reduz_QDD(Q2);
-
-    QDD *Q;
-    Q = produto_tensorial(Q1,Q2);
-    mostra_QDD(Q);
+    }
 
     /***********************************/
     finaliza_relatorio_memoria();
