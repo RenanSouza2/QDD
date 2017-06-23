@@ -112,7 +112,7 @@ void aumenta_memoria(Long m)
 
 void diminui_memoria(Long m)
 {
-    if(m<mem)
+    if(m<=mem)
         mem -= m;
     if(print)
         fprintf(fm,"\n\tMemDOWN: %d\t\t%u",mem,-m);
@@ -627,25 +627,62 @@ void mostra_conta_lista(conta *c)
 
 void mostra_quantidades()
 {
+    Short vazio = 1;
     if(mem != 0)
+    {
+        vazio = 0;
         printf("\nMem: %d",mem);
+    }
     if(iQ != 0)
+    {
+        vazio = 0;
         printf("\nQDD: %d",iQ);
+    }
     if(ii != 0)
+    {
+        vazio = 0;
         printf("\ni:   %d",ii);
+    }
     if(im != 0)
+    {
+        vazio = 0;
         printf("\nm:   %d",im);
+    }
     if(ifi != 0)
+    {
+        vazio = 0;
         printf("\nf:   %d",ifi);
+    }
     if(il != 0)
+    {
+        vazio = 0;
         printf("\nl:   %d",il);
+    }
     if(ia != 0)
+    {
+        vazio = 0;
         printf("\na:   %d",ia);
+    }
     if(ic != 0)
+    {
+        vazio = 0;
         printf("\nc:   %d",ic);
-        printf("\n");
+    }
+    if(vazio)
+        printf("\nTUDO ZERADO");
+    printf("\n");
 }
 
+void mostra_tamanhos()
+{
+    printf("\nTAMANHOS");
+    printf("\nQDD: %d",sizeof(QDD));
+    printf("\nn:   %d",sizeof(no));
+    printf("\nl:   %d",sizeof(lista));
+    printf("\na:   %d",sizeof(apply));
+    printf("\nc:   %d",sizeof(conta));
+    printf("\n");
+}
 
 
 
@@ -764,64 +801,66 @@ void libera_arvore(no *n)
 {
     no *el, *th;
     lista *l, *laux;
-    int i1 = 0, i2 = 0;
-    //quantidades antes, depois;
+    if(n->l != NULL)
+    {
+        printf("\n\nERRO ARVORE CONECTADA");
+        exit(EXIT_FAILURE);
+    }
     l = cria_lista();
     l->n = n;
     while(l != NULL)
     {
         n = l->n;
-        mostra_no(n);
-        if(n->l == NULL)
+
+        switch(n->tipo)
         {
-            switch(n->tipo)
+            case 0:
+            el = n->at.i.n;
+            desconecta_DOIS(n);
+            libera_no(n);
+
+            l->n = el;
+            break;
+
+            case 1:
+            el = n->at.m.el;
+            th = n->at.m.th;
+            desconecta_DOIS(n);
+            libera_no(n);
+
+            if(th->l == NULL)
             {
-                case 0:
-                //printf("\nLiberou Inicio");
-                //mostra_no(n);
-                el = n->at.i.n;
-                desconecta_DOIS(n);
-                libera_no(n);
-
-                l->n = el;
-                break;
-
-                case 1:
-                //printf("\nLiberou Meio");
-                //mostra_no(n);
-                el = n->at.m.el;
-                th = n->at.m.th;
-                desconecta_DOIS(n);
-                libera_no(n);
-
                 l->n = th;
-                laux = cria_lista();
-                laux->n = el;
-                laux->l = l;
-                l = laux;
-                break;
-
-                case 2:
-                printf("\nLiberou Fim");
-                printf("\nA%d\n\n\n",++i1);
-                //mostra_no(n);
-                libera_no(n);
-
-                laux = l->l;
-                libera_lista_no(l);
-                l = laux;
-                break;
+                if(el->l == NULL)
+                {
+                    laux = cria_lista();
+                    laux->n = el;
+                    laux->l = l;
+                    l = laux;
+                }
             }
-            //mostra_quantidades();
-        }
-        else
-        {
-            printf("\nNao liberando");
-            printf("\nB%d\n\n\n",++i2);
-            //mostra_no(n);
+            else
+            {
+                if(el->l == NULL)
+                {
+                    l->n = el;
+                }
+                else
+                {
+                    laux = l->l;
+                    libera_lista_no(l);
+                    l = laux;
+                }
+            }
+            break;
+
+            case 2:
+            libera_no(n);
+
             laux = l->l;
             libera_lista_no(l);
             l = laux;
+            break;
         }
     }
 }
@@ -2205,8 +2244,8 @@ int main()
     float tempo;
 
     QDD *Q;
-    printf("V14\n\n");
-    Q = le_vetor("V14.txt");
+    printf("V16\n\n");
+    Q = le_vetor("V17.txt");
     configuracao(Q->nqbit);
     mostra_quantidades();
     reduz_QDD(Q);
@@ -2214,7 +2253,7 @@ int main()
     libera_QDD(Q);
     for(int i=0; i<10; i++)
     {
-        Q = le_vetor("V14.txt");
+        Q = le_vetor("V22.txt");
         configuracao(Q->nqbit);
         begin = clock();
         reduz_QDD(Q);
