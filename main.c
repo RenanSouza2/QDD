@@ -686,6 +686,56 @@ void mostra_tamanhos()
 
 
 
+void fmostra_quantidades(FILE *fp)
+{
+    Short vazio = 1;
+    if(mem != 0)
+    {
+        vazio = 0;
+        fprintf(fp,"\nMem: %d",mem);
+    }
+    if(iQ != 0)
+    {
+        vazio = 0;
+        fprintf(fp,"\nQDD: %d",iQ);
+    }
+    if(ii != 0)
+    {
+        vazio = 0;
+        fprintf(fp,"\ni:   %d",ii);
+    }
+    if(im != 0)
+    {
+        vazio = 0;
+        fprintf(fp,"\nm:   %d",im);
+    }
+    if(ifi != 0)
+    {
+        vazio = 0;
+        fprintf(fp,"\nf:   %d",ifi);
+    }
+    if(il != 0)
+    {
+        vazio = 0;
+        fprintf(fp,"\nl:   %d",il);
+    }
+    if(ia != 0)
+    {
+        vazio = 0;
+        fprintf(fp,"\na:   %d",ia);
+    }
+    if(ic != 0)
+    {
+        vazio = 0;
+        fprintf(fp,"\nc:   %d",ic);
+    }
+    if(vazio)
+        fprintf(fp,"\nTUDO ZERADO");
+    fprintf(fp,"\n");
+}
+
+
+
 void conecta_UM(no *n1, no *n2, Short lado)
 {
     lista *l;
@@ -1676,7 +1726,7 @@ QDD* le_matriz(char *nome)
     }
     free(M);
     diminui_memoria(N2*sizeof(Long*));
-    free(fp);
+    fclose(fp);
 
     return Q;
 }
@@ -1792,7 +1842,7 @@ QDD* le_vetor(char *nome)
     diminui_memoria(N3*sizeof(lista*));
     free(M);
     diminui_memoria(N2*sizeof(Long));
-    free(fp);
+    fclose(fp);
 
     return Q;
 }
@@ -2240,29 +2290,51 @@ int main()
     configuracao(20);
     /***********************************/
 
-    clock_t begin, end;
-    float tempo;
+    clock_t begin, end, delta;
+    int tempo;
 
+    char c[30][10]={{"V1.txt"},{"V2.txt"},{"V3.txt"},{"V4.txt"},{"V5.txt"},{"V6.txt"},{"V7.txt"},{"V8.txt"},{"V9.txt"},{"V10.txt"},{"V11.txt"},{"V12.txt"},{"V13.txt"},{"V14.txt"},{"V15.txt"},{"V16.txt"},{"V17.txt"},{"V18.txt"},{"V19.txt"},{"V20.txt"},{"V21.txt"}};
+    FILE *ft;
+    ft = fopen("Relatorio.csv","w");
+    fprintf(ft,"sep=-\n");
     QDD *Q;
-    printf("V16\n\n");
-    Q = le_vetor("V17.txt");
-    configuracao(Q->nqbit);
-    mostra_quantidades();
-    reduz_QDD(Q);
-    mostra_quantidades();
-    libera_QDD(Q);
-    for(int i=0; i<10; i++)
+    for(int i=0; i<21; i++)
     {
-        Q = le_vetor("V22.txt");
+        printf("\n\n%s",c[i]);
+        Q = le_vetor(c[i]);
         configuracao(Q->nqbit);
-        begin = clock();
+        mostra_quantidades();
+        fprintf(ft,"%d-%d-%d-%d-",mem,im,ifi,il);
         reduz_QDD(Q);
-        end = clock();
-        tempo = (float)(end-begin)/(CLOCKS_PER_SEC);
-        printf("\nAmostra %d: %.3f",i+1,tempo);
+        mostra_quantidades();
+        fprintf(ft,"%d-%d-%d-d",mem,im,ifi,il);
         libera_QDD(Q);
+        for(int j=0; j<10; j++)
+        {
+            Q = le_vetor(c[i]);
+            configuracao(Q->nqbit);
+            begin = clock();
+            reduz_QDD(Q);
+            end = clock();
+            delta = (end-begin)%(CLOCKS_PER_SEC);
+            tempo = (end-begin)/(CLOCKS_PER_SEC);
+            printf("\nAmostra %d: %d,",j+1,tempo);
+            if(delta < 100)
+                printf("0");
+            if(delta < 10)
+                printf("0");
+            printf("%d",delta);
+            fprintf(ft,"-%d,",tempo);
+            if(delta < 100)
+                fprintf(ft,"0");
+            if(delta < 10)
+                fprintf(ft,"0");
+            fprintf(ft,"%d",delta);
+            libera_QDD(Q);
+        }
+        fprintf(ft,"\n");
+        mostra_quantidades();
     }
-    mostra_quantidades();
 
     /***********************************/
     finaliza_relatorio_memoria();
