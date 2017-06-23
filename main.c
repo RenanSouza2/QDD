@@ -2293,13 +2293,14 @@ int main()
     clock_t begin, end, delta;
     int tempo;
 
-    char c[30][10]={{"V1.txt"},{"V2.txt"},{"V3.txt"},{"V4.txt"},{"V5.txt"},{"V6.txt"},{"V7.txt"},{"V8.txt"},{"V9.txt"},{"V10.txt"},{"V11.txt"},{"V12.txt"},{"V13.txt"},{"V14.txt"},{"V15.txt"},{"V16.txt"},{"V17.txt"},{"V18.txt"},{"V19.txt"},{"V20.txt"},{"V21.txt"}};
+    char c[30][10]={{"V1.txt"},{"V2.txt"},{"V3.txt"},{"V4.txt"},{"V5.txt"},{"V6.txt"},{"V7.txt"},{"V8.txt"},{"V9.txt"},{"V10.txt"},{"V11.txt"},{"V12.txt"},{"V13.txt"},{"V14.txt"},{"V15.txt"},{"V16.txt"},{"V17.txt"},{"V18.txt"},{"V19.txt"},{"V20.txt"},{"V21.txt"},{"V22.txt"},{"V23.txt"}};
     FILE *ft;
     ft = fopen("Relatorio.csv","w");
     fprintf(ft,"sep=-\n");
     QDD *Q;
-    for(int i=0; i<21; i++)
-    {
+    //for(int i=0; i<23; i++)
+    //{
+    int i=22;
         printf("\n\n%s",c[i]);
         Q = le_vetor(c[i]);
         configuracao(Q->nqbit);
@@ -2307,7 +2308,7 @@ int main()
         fprintf(ft,"%d-%d-%d-%d-",mem,im,ifi,il);
         reduz_QDD(Q);
         mostra_quantidades();
-        fprintf(ft,"%d-%d-%d-d",mem,im,ifi,il);
+        fprintf(ft,"%d-%d-%d-%d",mem,im,ifi,il);
         libera_QDD(Q);
         for(int j=0; j<10; j++)
         {
@@ -2334,7 +2335,7 @@ int main()
         }
         fprintf(ft,"\n");
         mostra_quantidades();
-    }
+    //}
 
     /***********************************/
     finaliza_relatorio_memoria();

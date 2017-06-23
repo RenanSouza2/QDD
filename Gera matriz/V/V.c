@@ -12,12 +12,12 @@ int main()
     printf("N1: ");
     scanf("%d",&N1);
     N2 = 1;
-    for(long i=0; i<N1; i++)
+    for(i=0; i<N1; i++)
         N2 *= 2;
     fprintf(fp,"%d %d\n%d\n",N1,N2,N2);
     float re, im, amp;
     amp = pow(2,-(N1/(2.0)));
-    for(long i=0; i<N2; i++)
+    for(i=0; i<N2; i++)
     {
         im = 2*pi*i/N2;
 
@@ -26,6 +26,6 @@ int main()
         fprintf(fp,"%f %f ",re,im);
     }
     fprintf(fp,"\n");
-    for(long i=0; i<N2; i++)
+    for(i=0; i<N2; i++)
         fprintf(fp,"%d ",i);
 }
