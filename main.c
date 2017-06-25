@@ -3,6 +3,14 @@
 #include<math.h>
 #include<time.h>
 
+#define Inicio 0
+#define Meio 1
+#define Fim 2
+
+#define V 0
+#define R 1
+#define C 2
+
 
 
 FILE *fm;
@@ -149,7 +157,7 @@ no* cria_no_inicio()
     aumenta_memoria(sizeof(no));
     ii++;
 
-    n->tipo = 0;
+    n->tipo = Inicio;
     n->l = NULL;
 
     inicio i;
@@ -171,7 +179,7 @@ no* cria_no_meio(Short classe, Short nivel)
     aumenta_memoria(sizeof(no));
     im++;
 
-    n->tipo = 1;
+    n->tipo = Meio;
     n->l = NULL;
 
     meio m;
@@ -196,7 +204,7 @@ no* cria_no_fim(float re,float im)
     aumenta_memoria(sizeof(no));
     ifi++;
 
-    n->tipo = 2;
+    n->tipo = Fim;
     n->l = NULL;
 
     fim f;
@@ -300,7 +308,7 @@ void libera_no(no *n)
     diminui_memoria(sizeof(no));
     switch(n->tipo)
     {
-        case 0:
+        case Inicio:
         if(ii == 0)
         {
             printf("\n\nERRO LIBERA INICIO");
@@ -309,7 +317,7 @@ void libera_no(no *n)
         ii--;
         break;
 
-        case 1:
+        case Meio:
         if(im == 0)
         {
             printf("\n\nERRO LIBERA MEIO");
@@ -318,7 +326,7 @@ void libera_no(no *n)
         im--;
         break;
 
-        case 2:
+        case Fim:
         if(ifi == 0)
         {
             printf("\n\nERRO LIBERA FIM");
@@ -427,7 +435,7 @@ lista* enlista_arvore(no *N)
             lf = lf->l;
             lf->n = n;
 
-            if(n->tipo == 1)
+            if(n->tipo == Meio)
             {
                 /**  caso tenha filhos  **/
                 la->n = n->at.m.th;
@@ -489,25 +497,25 @@ void mostra_no(no *n)
     printf("Tipo");
     switch(n->tipo)
     {
-        case 0:
+        case Inicio:
         printf(": Inicio\n");
         printf("Ligacoes posteriores\n");
         printf("\tn: %d\n",n->at.i.n);
         break;
 
-        case 1:
+        case Meio:
         printf("/nivel: ");
         switch(n->at.m.classe)
         {
-            case 0:
+            case V:
             printf("V");
             break;
 
-            case 1:
+            case R:
             printf("R");
             break;
 
-            case 2:
+            case C:
             printf("C");
             break;
         }
@@ -518,7 +526,7 @@ void mostra_no(no *n)
         printf("\tThen: %d\n",n->at.m.th);
         break;
 
-        case 2:
+        case Fim:
         printf(": Numero\n");
         printf("%f %f\n",n->at.f.re,n->at.f.im);
         break;
@@ -537,18 +545,6 @@ void mostra_lista_com_no(lista *l)
         printf("\tLigacao %u: %d\n",ligacao,lc->n);
         mostra_no(lc->n);
         ligacao++;
-    }
-}
-
-void mostra_arvore_ineficiente(no *n)
-{
-    if(n == NULL)
-        return;
-    mostra_no(n);
-    if(n->tipo == 1)
-    {
-        mostra_arvore_ineficiente(n->at.m.el);
-        mostra_arvore_ineficiente(n->at.m.th);
     }
 }
 
@@ -740,7 +736,7 @@ void conecta_UM(no *n1, no *n2, Short lado)
 {
     lista *l;
 
-    if(n1->tipo == 2)
+    if(n1->tipo == Fim)
     {
         printf("\n\nERRO FINAL NAO CONECTA");
         exit(EXIT_FAILURE);
@@ -777,12 +773,12 @@ Short desconecta_UM(no *n1, no *n2)
 {
     lista *l, *lc, *laux;
     Short lado;
-    if(n1->tipo == 2)
+    if(n1->tipo == Fim)
     {
         printf("\n\nERRO FINAO NAO DESCONECTA");
         exit(EXIT_FAILURE);
     }
-    if(n1->tipo == 0)
+    if(n1->tipo == Inicio)
     {
         n1->at.i.n = NULL;
         lado = 0;
@@ -822,11 +818,11 @@ void desconecta_DOIS(no *n)
 {
     switch(n->tipo)
     {
-        case 0:
+        case Inicio:
         desconecta_UM(n,n->at.i.n);
         break;
 
-        case 1:
+        case Meio:
         desconecta_UM(n,n->at.m.el);
         desconecta_UM(n,n->at.m.th);
         break;
@@ -864,7 +860,7 @@ void libera_arvore(no *n)
 
         switch(n->tipo)
         {
-            case 0:
+            case Inicio:
             el = n->at.i.n;
             desconecta_DOIS(n);
             libera_no(n);
@@ -872,7 +868,7 @@ void libera_arvore(no *n)
             l->n = el;
             break;
 
-            case 1:
+            case Meio:
             el = n->at.m.el;
             th = n->at.m.th;
             desconecta_DOIS(n);
@@ -904,7 +900,7 @@ void libera_arvore(no *n)
             }
             break;
 
-            case 2:
+            case Fim:
             libera_no(n);
 
             laux = l->l;
@@ -947,15 +943,15 @@ no* copia_no(no *n1)
     n2 = NULL;
     switch(n1->tipo)
     {
-        case 0:
+        case Inicio:
         n2 = cria_no_inicio();
         break;
 
-        case 1:
+        case Meio:
         n2 = cria_no_meio(n1->at.m.classe,n1->at.m.nivel);
         break;
 
-        case 2:
+        case Fim:
         n2 = cria_no_fim(n1->at.f.re,n1->at.f.im);
         break;
     }
@@ -1091,12 +1087,10 @@ no* apply_soma(no *N1, no *N2)
         n2 = ac->n2;
         switch(n1->tipo)
         {
-            case 1:
-            /**  n1 é intermediario  **/
+            case Meio:
             switch(n2->tipo)
             {
-                case 1:
-                /**  n2 é intermediario  **/
+                case Meio:
                 if(n1->at.m.nivel < n2->at.m.nivel)
                     regra = 1;
                 if(n1->at.m.nivel > n2->at.m.nivel)
@@ -1112,24 +1106,20 @@ no* apply_soma(no *N1, no *N2)
                 }
                 break;
 
-                case 2:
-                /**  n2 é número  **/
+                case Fim:
                 regra = 1;
                 break;
             }
             break;
 
-            case 2:
-            /**  n1 é numero  **/
+            case Fim:
             switch(n2->tipo)
             {
-                case 1:
-                /**  n2 é intermediario  **/
+                case Meio:
                 regra = 2;
                 break;
 
-                case 2:
-                /**  n2 é número  **/
+                case Fim:
                 regra = 4;
                 break;
             }
@@ -1221,7 +1211,7 @@ no* apply_soma(no *N1, no *N2)
     for(ac = a; ac != NULL; ac = ac->a)
     {
         n = ac->n;
-        if(n->tipo == 1)
+        if(n->tipo == Meio)
         {
             a1 = ac->a1;
             a2 = ac->a2;
@@ -1302,12 +1292,12 @@ no* apply_produto_interno(no *N1, no *N2)
             {
                 switch(n2->tipo)
                 {
-                    case 1:
+                    case Meio:
                     /**  n2 é intermediario  **/
                     regra = 2;
                     break;
 
-                    case 2:
+                    case Fim:
                     /**  n2 é número  **/
                     if(compara_zero(n2))
                         regra = 5;
@@ -1414,7 +1404,7 @@ no* apply_produto_interno(no *N1, no *N2)
     for(ac = a; ac != NULL; ac = ac->a)
     {
         n = ac->n;
-        if(n->tipo == 1)
+        if(n->tipo == Meio)
         {
             a1 = ac->a1;
             a2 = ac->a2;
@@ -1461,7 +1451,7 @@ no* copia_arvore(no *n)
 
         switch(n1->tipo)
         {
-            case 0:
+            case Inicio:
             nf = n1->at.i.n;
 
             lc1b = l1;
@@ -1481,7 +1471,7 @@ no* copia_arvore(no *n)
             conecta_UM(n2,nt2,0);
             break;
 
-            case 1:
+            case Meio:
             nf = n1->at.m.el;
 
             lc1b = l1;
@@ -1565,7 +1555,7 @@ lista* acha_lista_fim_arvore(no *n)
 
     while(lc->l != NULL)
     {
-        if(lc->l->n->tipo == 2)
+        if(lc->l->n->tipo == Fim)
         {
             lc = lc->l;
         }
@@ -1597,7 +1587,7 @@ void completa_QDD_matriz(no *n, Long r, Long c, Long ex, Long **M, lista **L)
 {
     no *el, *th;
     Long ind1, ind2;
-    if((n->at.m.classe == 2)&&(ex == 1))
+    if((n->at.m.classe == C)&&(ex == 1))
     {
         ind1 = M[r][c];
         ind2 = M[r][c+1];
@@ -1609,12 +1599,12 @@ void completa_QDD_matriz(no *n, Long r, Long c, Long ex, Long **M, lista **L)
     }
     else
     {
-        if(n->at.m.classe == 1)
+        if(n->at.m.classe == R)
         {
             completa_QDD_matriz(n->at.m.el,r,c,ex,M,L);
             completa_QDD_matriz(n->at.m.th,r+ex,c,ex,M,L);
         }
-        if(n->at.m.classe == 2)
+        if(n->at.m.classe == C)
         {
             completa_QDD_matriz(n->at.m.el,r,c,ex/2,M,L);
             completa_QDD_matriz(n->at.m.th,r,c+ex,ex/2,M,L);
@@ -1987,7 +1977,7 @@ QDD* copia_QDD(QDD *Q1)
 
         switch(n1->tipo)
         {
-            case 0:
+            case Inicio:
             nf = n1->at.i.n;
 
             lc1b = l1;
@@ -2007,7 +1997,7 @@ QDD* copia_QDD(QDD *Q1)
             conecta_UM(n2,nt2,0);
             break;
 
-            case 1:
+            case Meio:
             nf = n1->at.m.el;
 
             lc1b = l1;
@@ -2055,7 +2045,7 @@ QDD* copia_QDD(QDD *Q1)
     while(lc2a->l != NULL)
     {
         lc2b = lc2a->l;
-        if(lc2b->n->tipo == 2)
+        if(lc2b->n->tipo == Fim)
             lc2a = lc2b;
         else
         {
@@ -2088,7 +2078,7 @@ QDD* produto_tensorial(QDD *Q1, QDD *Q2)
     reduz_QDD(Q2a);
     l2 = enlista_QDD(Q2a);
     for(lc = l2; lc != NULL; lc = lc->l)
-        if(lc->n->tipo == 1)
+        if(lc->n->tipo == Meio)
             (lc->n->at.m.nivel) += (Q1->nqbit);
     libera_lista_lista(l2);
 
