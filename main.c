@@ -401,14 +401,19 @@ lista* enlista_arvore(no *N)
             lf = lf->l;
             lf->n = n;
 
-            if(n->tipo == Meio)
+            switch(n->tipo)
             {
-                /**  caso tenha filhos  **/
+                case Inicio:
+                la->n = n->at.i.n;
+                break;
+
+                case Meio:
                 la->n = n->at.m.th;
                 lc = cria_lista();
                 lc->n = n->at.m.el;
                 lc->l = la;
                 la = lc;
+                break;
             }
         }
         else
@@ -514,10 +519,20 @@ void mostra_lista_com_no(lista *l)
     }
 }
 
+void mostra_arvore(no *n)
+{
+    lista *l;
+    l = enlista_arvore(n);
+    mostra_lista_com_no(l);
+    libera_lista_lista(l);
+}
+
 void mostra_QDD(QDD *Q)
 {
     lista *l;
     l = enlista_QDD(Q);
+
+    printf("\nEndereco (QDD): %d",Q);
     printf("\nNQBIT: %d\n",Q->nqbit);
     mostra_lista_com_no(l);
     printf("\n");
@@ -870,25 +885,8 @@ void libera_arvore(no *n)
 
 void libera_QDD(QDD *Q)
 {
-    lista *l, *lc;
-    l = enlista_QDD(Q);
-    no *n1, *n2;
-    for(lc = l; lc != NULL; lc = lc->l)
-    {
-        n1 = lc->n;
-        while(n1->l != NULL)
-        {
-            n2 = n1->l->n;
-            desconecta_UM(n2,n1);
-        }
-    }
-
-    for(lc = l; lc != NULL; lc = lc->l)
-        libera_no(lc->n);
-
-    libera_lista_lista(l);
+    libera_arvore(Q->n->l->n);
     libera_lista_lista(Q->l);
-
     libera_no_QDD(Q);
 }
 
@@ -2210,7 +2208,7 @@ int main()
     configuracao(20);
     /***********************************/
 
-    clock_t begin, end, delta;
+    /*clock_t begin, end, delta;
     int tempo;
 
     char c[30][10]={{"V1.txt"},{"V2.txt"},{"V3.txt"},{"V4.txt"},{"V5.txt"},{"V6.txt"},{"V7.txt"},{"V8.txt"},{"V9.txt"},{"V10.txt"},{"V11.txt"},{"V12.txt"},{"V13.txt"},{"V14.txt"},{"V15.txt"},{"V16.txt"},{"V17.txt"},{"V18.txt"},{"V19.txt"},{"V20.txt"},{"V21.txt"},{"V22.txt"},{"V23.txt"}};
@@ -2218,8 +2216,8 @@ int main()
     ft = fopen("Relatorio.csv","w");
     fprintf(ft,"sep=-\n");
     QDD *Q;
-    //for(int i=0; i<23; i++)
-    //{
+    for(int i=0; i<23; i++)
+    {
     int i=22;
         printf("\n\n%s",c[i]);
         Q = le_vetor(c[i]);
@@ -2255,7 +2253,15 @@ int main()
         }
         fprintf(ft,"\n");
         mostra_quantidades();
-    //}
+    }*/
+
+    QDD *Q;
+    Q = le_vetor("V13.txt");
+    mostra_quantidades();
+    reduz_QDD(Q);
+    mostra_quantidades();
+    libera_QDD(Q);
+    mostra_quantidades();
 
     /***********************************/
     finaliza_relatorio_memoria();
