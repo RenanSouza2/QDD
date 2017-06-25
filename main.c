@@ -105,6 +105,14 @@ typedef unsigned long Long;
 
 
 
+void ERRO(char *s)
+{
+    printf("\n\nERRO %s",s);
+    exit(EXIT_FAILURE);
+}
+
+
+
 void aumenta_memoria(Long m)
 {
     mem += m;
@@ -133,10 +141,7 @@ QDD* cria_QDD()
     QDD *Q;
     Q = malloc(sizeof(QDD));
     if(Q == NULL)
-    {
-        printf("\n\nERRO QDD");
-        exit(EXIT_FAILURE);
-    }
+        ERRO("QDD");
     aumenta_memoria(sizeof(QDD));
     iQ++;
 
@@ -150,10 +155,7 @@ no* cria_no_inicio()
     no *n;
     n = malloc(sizeof(no));
     if(n == NULL)
-    {
-        printf("\n\nERRO INICIO");
-        exit(EXIT_FAILURE);
-    }
+        ERRO("INICIO");
     aumenta_memoria(sizeof(no));
     ii++;
 
@@ -172,10 +174,7 @@ no* cria_no_meio(Short classe, Short nivel)
     no *n;
     n = malloc(sizeof(no));
     if(n == NULL)
-    {
-        printf("\n\nERRO MEIO");
-        exit(EXIT_FAILURE);
-    }
+        ERRO("MEIO");
     aumenta_memoria(sizeof(no));
     im++;
 
@@ -197,10 +196,7 @@ no* cria_no_fim(float re,float im)
     no *n;
     n = malloc(sizeof(no));
     if(n == NULL)
-    {
-        printf("\n\nERRO FIM");
-        exit(EXIT_FAILURE);
-    }
+        ERRO("FIM");
     aumenta_memoria(sizeof(no));
     ifi++;
 
@@ -220,10 +216,7 @@ lista* cria_lista()
     lista *l;
     l = malloc(sizeof(lista));
     if(l == NULL)
-    {
-        printf("\n\nERRO LISTA");
-        exit(EXIT_FAILURE);
-    }
+        ERRO("LISTA");
     aumenta_memoria(sizeof(lista));
     il++;
 
@@ -239,10 +232,7 @@ apply* cria_apply()
     apply *a;
     a = malloc(sizeof(apply));
     if(a == NULL)
-    {
-        printf("\n\nERRO APPLY");
-        exit(EXIT_FAILURE);
-    }
+        ERRO("APPLY");
     aumenta_memoria(sizeof(apply));
     ia++;
 
@@ -262,10 +252,7 @@ conta* cria_conta(Short nivel)
     conta *c;
     c = malloc(sizeof(conta));
     if(c == NULL)
-    {
-        printf("\n\nERRO CONTA");
-        exit(EXIT_FAILURE);
-    }
+        ERRO("CONTA");
     ic++;
 
     c->n = NULL;
@@ -295,10 +282,7 @@ void libera_no_QDD(QDD *Q)
 {
     diminui_memoria(sizeof(QDD));
     if(iQ == 0)
-    {
-        printf("\n\nERRO LIBERA QDD");
-        exit(EXIT_FAILURE);
-    }
+        ERRO("LIBERA QDD");
     iQ--;
     free(Q);
 }
@@ -310,28 +294,19 @@ void libera_no(no *n)
     {
         case Inicio:
         if(ii == 0)
-        {
-            printf("\n\nERRO LIBERA INICIO");
-            exit(EXIT_FAILURE);
-        }
+            ERRO("LIBERA INICIO");
         ii--;
         break;
 
         case Meio:
         if(im == 0)
-        {
-            printf("\n\nERRO LIBERA MEIO");
-            exit(EXIT_FAILURE);
-        }
+            ERRO("LIBERA MEIO");
         im--;
         break;
 
         case Fim:
         if(ifi == 0)
-        {
-            printf("\n\nERRO LIBERA FIM");
-            exit(EXIT_FAILURE);
-        }
+            ERRO("LIBERA FIM");
         ifi--;
         break;
     }
@@ -342,10 +317,7 @@ void libera_lista_no(lista *l)
 {
     diminui_memoria(sizeof(lista));
     if(il == 0)
-    {
-        printf("\n\nERRO LIBERA LISTA");
-        exit(EXIT_FAILURE);
-    }
+        ERRO("LIBERA LISTA");
     il--;
     free(l);
 }
@@ -365,10 +337,7 @@ void libera_apply_no(apply *a)
 {
     diminui_memoria(sizeof(apply));
     if(ia == 0)
-    {
-        printf("\n\nERRO LIBERA APPLY");
-        exit(EXIT_FAILURE);
-    }
+        ERRO("LIBERA APPLY");
     ia--;
     free(a);
 }
@@ -388,10 +357,7 @@ void libera_conta_no(conta *c)
 {
     diminui_memoria(sizeof(conta));
     if(ic == 0)
-    {
-        printf("\n\nERRO LIBERA CONTA");
-        exit(EXIT_FAILURE);
-    }
+        ERRO("LIBERA CONTA");
     ic--;
     free(c);
 }
@@ -737,10 +703,7 @@ void conecta_UM(no *n1, no *n2, Short lado)
     lista *l;
 
     if(n1->tipo == Fim)
-    {
-        printf("\n\nERRO FINAL NAO CONECTA");
-        exit(EXIT_FAILURE);
-    }
+        ERRO("FINAL NAO CONECTA");
 
     switch(lado)
     {
@@ -774,10 +737,7 @@ Short desconecta_UM(no *n1, no *n2)
     lista *l, *lc, *laux;
     Short lado;
     if(n1->tipo == Fim)
-    {
-        printf("\n\nERRO FINAO NAO DESCONECTA");
-        exit(EXIT_FAILURE);
-    }
+        ERRO("FINAO NAO DESCONECTA");
     if(n1->tipo == Inicio)
     {
         n1->at.i.n = NULL;
@@ -848,10 +808,7 @@ void libera_arvore(no *n)
     no *el, *th;
     lista *l, *laux;
     if(n->l != NULL)
-    {
-        printf("\n\nERRO ARVORE CONECTADA");
-        exit(EXIT_FAILURE);
-    }
+        ERRO("ARVORE CONECTADA");
     l = cria_lista();
     l->n = n;
     while(l != NULL)
@@ -1619,10 +1576,7 @@ QDD* le_matriz(char *nome)
     FILE *fp;
     fp = fopen(nome,"r");
     if(fp == NULL)
-    {
-        printf("ERRO LE MATRIZ");
-        exit(EXIT_FAILURE);
-    }
+        ERRO("LE MATRIZ");
 
     Long N1, N2, N3;
     fscanf(fp,"%lu %lu\n%lu\n",&N1, &N2, &N3);
@@ -1631,10 +1585,7 @@ QDD* le_matriz(char *nome)
     float re, im;
     L = malloc(N3*sizeof(lista*));
     if(L == NULL)
-    {
-        printf("\n\nERRO L");
-        exit(EXIT_FAILURE);
-    }
+        ERRO("L");
     aumenta_memoria(N3*sizeof(lista*));
     for(i=0; i<N3; i++)
     {
@@ -1649,19 +1600,13 @@ QDD* le_matriz(char *nome)
     Long **M;
     M = malloc(N2*sizeof(Long*));
     if(M == NULL)
-    {
-        printf("\n\nERRO M");
-        exit(EXIT_FAILURE);
-    }
+        ERRO("M");
     aumenta_memoria(N2*sizeof(Long*));
     for(i=0; i<N2; i++)
     {
         M[i] = malloc(N2*sizeof(Long));
         if(M[i] == NULL)
-        {
-            printf("\n\nERRO M[%d]",i);
-            exit(EXIT_FAILURE);
-        }
+            ERRO("M[]");
         aumenta_memoria(N2*sizeof(Long));
         for(j=0; j<N2; j++)
             fscanf(fp,"%lu",&M[i][j]);
@@ -1670,10 +1615,7 @@ QDD* le_matriz(char *nome)
     no **N;
     N = malloc((N2*N2-1)*sizeof(no*));
     if(N == NULL)
-    {
-        printf("\n\nERRO N");
-        exit(EXIT_FAILURE);
-    }
+        ERRO("N");
     aumenta_memoria((N2*N2-1)*sizeof(no*));
 
     Long ex, ind;
@@ -1750,10 +1692,7 @@ QDD* le_vetor(char *nome)
     FILE *fp;
     fp = fopen(nome,"r");
     if(fp == NULL)
-    {
-        printf("ERRO LE VETOR");
-        exit(EXIT_FAILURE);
-    }
+        ERRO("LE VETOR");
 
     Long N1, N2, N3;
     fscanf(fp,"%lu %lu\n%lu\n",&N1,&N2,&N3);
@@ -1761,10 +1700,7 @@ QDD* le_vetor(char *nome)
     float re, im;
     L = malloc(N3*sizeof(lista*));
     if(L == NULL)
-    {
-        printf("\n\nERRO L");
-        exit(EXIT_FAILURE);
-    }
+        ERRO("L");
     aumenta_memoria(N3*sizeof(lista*));
     for(i=0; i<N3; i++)
     {
@@ -1780,10 +1716,7 @@ QDD* le_vetor(char *nome)
     Long *M;
     M = malloc(N2*sizeof(Long));
     if(M == NULL)
-    {
-        printf("\n\nERRO M  ");
-        exit(EXIT_FAILURE);
-    }
+        ERRO("M");
     aumenta_memoria(N2*sizeof(Long));
     for(i=0; i<N2; i++)
         fscanf(fp,"%lu",&M[i]);
@@ -1791,10 +1724,7 @@ QDD* le_vetor(char *nome)
     no **N;
     N = malloc((N2-1)*sizeof(no*));
     if(N == NULL)
-    {
-        printf("\n\nERRO N");
-        exit(EXIT_FAILURE);
-    }
+        ERRO("N");
     aumenta_memoria((N2-1)*sizeof(no*));
 
     Long ex, ind;
