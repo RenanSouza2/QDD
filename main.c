@@ -642,8 +642,8 @@ void mostra_QDD(QDD *Q)
     printf("\nEndereco (QDD): %d",Q);
     printf("\nNQBIT: %d\n",Q->nqbit);
     mostra_lista_com_no(l);
-    printf("\n");
-    mostra_lista(Q->l);
+    printf("\n\nAMPLITUDES");
+    mostra_lista_com_no(Q->l);
     libera_lista_lista(l);
 }
 
@@ -882,8 +882,8 @@ void fmostra_QDD(FILE *fp, QDD *Q)
     fprintf(fp,"\nEndereco (QDD): %d",Q);
     fprintf(fp,"\nNQBIT: %d\n",Q->nqbit);
     fmostra_lista_com_no(fp,l);
-    fprintf(fp,"\n");
-    fmostra_lista(fp,Q->l);
+    fprintf(fp,"\n\nAMPLITUDES");
+    fmostra_lista_com_no(fp,Q->l);
     libera_lista_lista(l);
 }
 
@@ -1261,6 +1261,96 @@ void produto_por_real(no *n, float re)
     (n->at.f.im) *= im;
 }
 
+no* copia_arvore(no *n)
+{
+
+    /**  l1 guarda Q1 elistado   ***
+    ***  l2 lista dos nos de l2  **/
+    lista *l1, *l2, *lc1a, *lc2a, *lc1b, *lc2b;
+    no *n1, *n2, *nf, *nt1, *nt2;
+
+    l1 = enlista_arvore(n);
+    l2 = copia_lista_sem_cabeca(l1);
+    for(lc2a = l2; lc2a != NULL; lc2a = lc2a->l)
+        lc2a->n = copia_no(lc2a->n);
+
+    lc1a = l1;
+    lc2a = l2;
+    do
+    {
+        /**  lc1a perocrre a lista 1 pela primeira vez  ***
+        ***  lc2a percorre a lista 2 pela primeira vez  **/
+        n1 = lc1a->n;
+        n2 = lc2a->n;
+
+        switch(n1->tipo)
+        {
+            case Inicio:
+            nf = n1->at.i.n;
+
+            lc1b = l1;
+            lc2b = l2;
+            do
+            {
+                /**  lc1a perocrre a lista 1 pela segunda vez para buscar filhos  ***
+                ***  lc2a percorre a lista 2 pela segunda vez para buscar filhos  **/
+                nt1 = lc1b->n;
+                nt2 = lc2b->n;
+
+                lc1b = lc1b->l;
+                lc2b = lc2b->l;
+            }
+            while(nt1 != nf);
+
+            conecta_UM(n2,nt2,0);
+            break;
+
+            case Meio:
+            nf = n1->at.m.el;
+
+            lc1b = l1;
+            lc2b = l2;
+            do
+            {
+                nt1 = lc1b->n;
+                nt2 = lc2b->n;
+
+                lc1b = lc1b->l;
+                lc2b = lc2b->l;
+            }
+            while(nt1 != nf);
+
+            conecta_UM(n2,nt2,1);
+
+            nf = n1->at.m.th;
+
+            lc1b = l1;
+            lc2b = l2;
+            do
+            {
+                nt1 = lc1b->n;
+                nt2 = lc2b->n;
+
+                lc1b = lc1b->l;
+                lc2b = lc2b->l;
+            }
+            while(nt1 != nf);
+
+            conecta_UM(n2,nt2,2);
+            break;
+        }
+        lc1a = lc1a->l;
+        lc2a = lc2a->l;
+    }
+    while(lc1a != NULL);
+
+    n2 = l2->n;
+    libera_lista_lista(l1);
+    libera_lista_lista(l2);
+
+    return n2;
+}
+
 no* apply_soma(no *N1, no *N2)
 {
     apply *a;
@@ -1441,12 +1531,10 @@ no* apply_produto_interno(no *N1, no *N2)
 
         switch(n1->tipo)
         {
-            case 1:
-            /**  n1 é intermediario  **/
+            case Meio:
             switch(n2->tipo)
             {
-                case 1:
-                /**  n2 é intermediario  **/
+                case Meio:
                 if(n1->at.m.nivel < n2->at.m.nivel)
                     regra = 1;
                 if(n1->at.m.nivel > n2->at.m.nivel)
@@ -1462,8 +1550,7 @@ no* apply_produto_interno(no *N1, no *N2)
                 }
                 break;
 
-                case 2:
-                /**  n2 é número  **/
+                case Fim:
                 if(compara_zero(n2))
                     regra = 5;
                 else
@@ -1472,8 +1559,7 @@ no* apply_produto_interno(no *N1, no *N2)
             }
             break;
 
-            case 2:
-            /**  n1 é numero  **/
+            case Fim:
             if(compara_zero(n1))
             {
                 regra = 5;
@@ -1483,12 +1569,10 @@ no* apply_produto_interno(no *N1, no *N2)
                 switch(n2->tipo)
                 {
                     case Meio:
-                    /**  n2 é intermediario  **/
                     regra = 2;
                     break;
 
                     case Fim:
-                    /**  n2 é número  **/
                     if(compara_zero(n2))
                         regra = 5;
                     else
@@ -1617,94 +1701,276 @@ no* apply_produto_interno(no *N1, no *N2)
     return n;
 }
 
-no* copia_arvore(no *n)
+no* apply_produto_matriz_matriz(no *N1, no *N2)
 {
+    apply *a;
+    a = cria_apply();
+    a->n1 = N1;
+    a->n2 = N2;
 
-    /**  l1 guarda Q1 elistado   ***
-    ***  l2 lista dos nos de l2  **/
-    lista *l1, *l2, *lc1a, *lc2a, *lc1b, *lc2b;
-    no *n1, *n2, *nf, *nt1, *nt2;
-
-    l1 = enlista_arvore(n);
-    l2 = copia_lista_sem_cabeca(l1);
-    for(lc2a = l2; lc2a != NULL; lc2a = lc2a->l)
-        lc2a->n = copia_no(lc2a->n);
-
-    lc1a = l1;
-    lc2a = l2;
-    do
+    apply *ac, *a1 = NULL, *a2 = NULL, *aaux;
+    no *n, *n1, *n2;
+    Short regra = 0;
+    for(ac = a; ac != NULL; ac = ac->a)
     {
-        /**  lc1a perocrre a lista 1 pela primeira vez  ***
-        ***  lc2a percorre a lista 2 pela primeira vez  **/
-        n1 = lc1a->n;
-        n2 = lc2a->n;
+        n1 = ac->n1;
+        n2 = ac->n2;
 
         switch(n1->tipo)
         {
-            case Inicio:
-            nf = n1->at.i.n;
-
-            lc1b = l1;
-            lc2b = l2;
-            do
+            case Meio:
+            switch(n2->tipo)
             {
-                /**  lc1a perocrre a lista 1 pela segunda vez para buscar filhos  ***
-                ***  lc2a percorre a lista 2 pela segunda vez para buscar filhos  **/
-                nt1 = lc1b->n;
-                nt2 = lc2b->n;
+                case Meio:
+                if(n1->at.m.nivel < n2->at.m.nivel)
+                {
+                    switch(n1->at.m.classe)
+                    {
+                        case R:
+                        regra = 1;
+                        break;
 
-                lc1b = lc1b->l;
-                lc2b = lc2b->l;
+                        case C:
+                        regra = 3;
+                        break;
+                    }
+                }
+
+                if(n1->at.m.nivel > n2->at.m.nivel)
+                {
+                    switch(n2->at.m.classe)
+                    {
+                        case R:
+                        regra = 4;
+                        break;
+
+                        case C:
+                        regra = 2;
+                        break;
+                    }
+                }
+
+                if(n1->at.m.nivel == n2->at.m.nivel)
+                {
+                    switch(n1->at.m.classe)
+                    {
+                        case R:
+                        regra = 1;
+                        break;
+
+                        case C:
+                        switch(n2->at.m.classe)
+                        {
+                            case R:
+                            regra = 5;
+                            break;
+
+                            case C:
+                            regra = 3;
+                            break;
+                        }
+                        break;
+                    }
+                }
+                break;
+
+                case Fim:
+                if(compara_zero(n2))
+                {
+                    regra = 7;
+                }
+                else
+                {
+                    switch(n1->at.m.classe)
+                    {
+                        case R:
+                        regra = 1;
+                        break;
+
+                        case C:
+                        regra = 3;
+                        break;
+                    }
+                }
+                break;
             }
-            while(nt1 != nf);
-
-            conecta_UM(n2,nt2,0);
             break;
 
-            case Meio:
-            nf = n1->at.m.el;
-
-            lc1b = l1;
-            lc2b = l2;
-            do
+            case Fim:
+            if(compara_zero(n1))
             {
-                nt1 = lc1b->n;
-                nt2 = lc2b->n;
-
-                lc1b = lc1b->l;
-                lc2b = lc2b->l;
+                regra = 7;
             }
-            while(nt1 != nf);
-
-            conecta_UM(n2,nt2,1);
-
-            nf = n1->at.m.th;
-
-            lc1b = l1;
-            lc2b = l2;
-            do
+            else
             {
-                nt1 = lc1b->n;
-                nt2 = lc2b->n;
+                switch(n2->tipo)
+                {
+                    case Meio:
+                    switch(n2->at.m.classe)
+                    {
+                        case R:
+                        regra = 4;
+                        break;
 
-                lc1b = lc1b->l;
-                lc2b = lc2b->l;
+                        case C:
+                        regra = 2;
+                        break;
+                    }
+                    break;
+
+                    case Fim:
+                    if(compara_zero(n2))
+                        regra = 7;
+                    else
+                        regra = 6;
+                    break;
+                }
             }
-            while(nt1 != nf);
-
-            conecta_UM(n2,nt2,2);
             break;
         }
-        lc1a = lc1a->l;
-        lc2a = lc2a->l;
+
+        switch(regra)
+        {
+            case 0:
+            n = cria_no_inicio();
+            ac->n = n;
+
+            a1 = cria_apply();
+            a1->n1 = n1->at.i.n;
+            a1->n2 = n2->at.i.n;
+
+            ac->a1 = a1;
+            ac->a = a1;
+            break;
+
+            case 1:
+            n = copia_no(n1);
+            ac->n = n;
+
+            a1 = cria_apply();
+            a1->n1 = n1->at.m.el;
+            a1->n2 = n2;
+
+            a2 = cria_apply();
+            a2->n1 = n1->at.m.th;
+            a2->n2 = n2;
+            break;
+
+            case 2:
+            n = copia_no(n2);
+            ac->n = n;
+
+            a1 = cria_apply();
+            a1->n1 = n1;
+            a1->n2 = n2->at.m.el;
+
+            a2 = cria_apply();
+            a2->n1 = n1;
+            a2->n2 = n2->at.m.th;
+            break;
+
+            case 3:
+            n = cria_no_meio(0,n1->at.m.nivel);
+            ac->n = n;
+
+            a1 = cria_apply();
+            a1->n1 = n1->at.m.el;
+            a1->n2 = n2;
+
+            a2 = cria_apply();
+            a2->n1 = n1->at.m.th;
+            a2->n2 = n2;
+            break;
+
+            case 4:
+            n = cria_no_meio(0,n2->at.m.nivel);
+            ac->n = n;
+
+            a1 = cria_apply();
+            a1->n1 = n1;
+            a1->n2 = n2->at.m.el;
+
+            a2 = cria_apply();
+            a2->n1 = n1;
+            a2->n2 = n2->at.m.th;
+            break;
+
+            case 5:
+            n = cria_no_meio(0,n1->at.m.nivel);
+            ac->n = n;
+
+            a1 = cria_apply();
+            a1->n1 = n1->at.m.el;
+            a1->n2 = n2->at.m.el;
+
+            a2 = cria_apply();
+            a2->n1 = n1->at.m.th;
+            a2->n2 = n2->at.m.th;
+            break;
+
+            case 6:
+            n = produto_complexo(n1,n2);
+            ac->n = n;
+            break;
+
+            case 7:
+            n = cria_no_fim(0,0);
+            ac->n = n;
+            break;
+        }
+
+        if((regra != 0)&&(regra != 6)&&(regra != 7))
+        {
+            for(aaux = a; aaux != NULL; aaux = aaux->a)
+                if(compara_apply(aaux,a1))
+                    break;
+            if(aaux == NULL)
+            {
+                ac->a1 = a1;
+                a1->a = ac->a;
+                ac->a = a1;
+            }
+            else
+            {
+                ac->a1 = aaux;
+                libera_apply_no(a1);
+            }
+
+
+            for(aaux = a; aaux != NULL; aaux = aaux->a)
+                if(compara_apply(aaux,a2))
+                    break;
+            if(aaux == NULL)
+            {
+                ac->a2 = a2;
+                a2->a = ac->a;
+                ac->a = a2;
+            }
+            else
+            {
+                ac->a2 = aaux;
+                libera_apply_no(a2);
+            }
+        }
     }
-    while(lc1a != NULL);
 
-    n2 = l2->n;
-    libera_lista_lista(l1);
-    libera_lista_lista(l2);
+    for(ac = a; ac != NULL; ac = ac->a)
+    {
+        n = ac->n;
+        if(n->tipo == Meio)
+        {
+            a1 = ac->a1;
+            a2 = ac->a2;
 
-    return n2;
+            n1 = a1->n;
+            n2 = a2->n;
+
+            conecta_DOIS(n,n1,n2);
+        }
+    }
+    n = a->n;
+    libera_apply_lista(a);
+    return n;
 }
 
 
@@ -2230,7 +2496,6 @@ QDD* produto_tensorial(QDD *Q1, QDD *Q2)
     lista *l;
 
     Q = copia_QDD(Q1);
-    reduz_QDD(Q);
     Q->nqbit = Q1->nqbit + Q2->nqbit;
     l = Q->l;
     Q->l = NULL;
@@ -2238,7 +2503,6 @@ QDD* produto_tensorial(QDD *Q1, QDD *Q2)
     QDD *Q2a;
     lista *l2, *lc;
     Q2a = copia_QDD(Q2);
-    reduz_QDD(Q2a);
     l2 = enlista_QDD(Q2a);
     for(lc = l2; lc != NULL; lc = lc->l)
         if(lc->n->tipo == Meio)
@@ -2490,13 +2754,20 @@ int main()
         mostra_quantidades();
     }*/
 
-    QDD *Q;
-    Q = le_vetor("V13.txt");
-    mostra_quantidades();
-    reduz_QDD(Q);
-    mostra_quantidades();
-    libera_QDD(Q);
-    mostra_quantidades();
+    QDD *Q1;
+    Q1 = H(1);
+
+    QDD *Q2;
+    Q2 = H(1);
+
+    no *n;
+    n = apply_produto_matriz_matriz(Q1->n,Q2->n);
+    mostra_arvore(n);
+
+    libera_QDD(Q1);
+    libera_QDD(Q2);
+    libera_arvore(n);
+
 
     /***********************************/
     finaliza_relatorio_memoria();
