@@ -147,7 +147,7 @@ void diminui_memoria(Long m)
 
 
 
-QDD* cria_QDD()
+QDD* cria_QDD(Short nqbit)
 {
     QDD *Q;
     Q = malloc(sizeof(QDD));
@@ -157,6 +157,7 @@ QDD* cria_QDD()
     iQ++;
 
     Q->n = NULL;
+    Q->nqbit = nqbit;
     Q->l = NULL;
     return Q;
 }
@@ -600,7 +601,7 @@ void mostra_conta_no(conta *c)
     printf("\nNivel: %d",c->nivel);
     printf("\nNo: ");
     mostra_no(c->n);
-    printf("\nProximo: %d",c->c);
+    printf("\nProximo (conta): %d",c->c);
 }
 
 void mostra_conta_lista(conta *c)
@@ -618,13 +619,13 @@ void mostra_suporte_no(suporte *s)
 {
     printf("\nEndereco (suporte): %d",s);
     printf("\nNivel: %d",s->nivel);
-    printf("\nLista conta V");
+    printf("\n\nLista conta V");
     mostra_conta_lista(s->cV);
-    printf("\nLista conta R");
+    printf("\n\nLista conta R");
     mostra_conta_lista(s->cR);
-    printf("\nLista conta C");
+    printf("\n\nLista conta C");
     mostra_conta_lista(s->cC);
-    printf("\nProximo (suporte): %d",s->s);
+    printf("\n\nProximo (suporte): %d\n\n",s->s);
 }
 
 void mostra_suporte_lista(suporte *s)
@@ -704,246 +705,6 @@ void mostra_tamanhos()
     printf("\na:   %d",sizeof(apply));
     printf("\nc:   %d",sizeof(conta));
     printf("\n");
-}
-
-
-
-void fmostra_lista(FILE *fp, lista *l)
-{
-    lista *lc;
-    Long ligacao = 0;
-    lc = l;
-    for(lc = l; lc != NULL; lc = lc->l)
-    {
-        fprintf(fp,"\tLigacao %u: %d\n",ligacao,lc->n);
-        ligacao++;
-    }
-}
-
-void fmostra_no(FILE *fp, no *n)
-{
-    fprintf(fp,"\nEndereco: %d\n",n);
-    if(n == NULL)
-        return;
-    if(n->l != NULL)
-    {
-        fprintf(fp,"Ligacoes anteriores:\n");
-        fmostra_lista(fp,n->l);
-    }
-    fprintf(fp,"Tipo");
-    switch(n->tipo)
-    {
-        case Inicio:
-        fprintf(fp,": Inicio\n");
-        fprintf(fp,"Ligacoes posteriores\n");
-        fprintf(fp,"\tn: %d\n",n->at.i.n);
-        break;
-
-        case Meio:
-        fprintf(fp,"/nivel: ");
-        switch(n->at.m.classe)
-        {
-            case V:
-            fprintf(fp,"V");
-            break;
-
-            case R:
-            fprintf(fp,"R");
-            break;
-
-            case C:
-            fprintf(fp,"C");
-            break;
-        }
-
-        fprintf(fp,"%d\n",n->at.m.nivel);
-        fprintf(fp,"Ligacoes posteriores\n");
-        fprintf(fp,"\telse: %d\n",n->at.m.el);
-        fprintf(fp,"\tThen: %d\n",n->at.m.th);
-        break;
-
-        case Fim:
-        fprintf(fp,": Numero\n");
-        fprintf(fp,"%f %f\n",n->at.f.re,n->at.f.im);
-        break;
-    }
-    fprintf(fp,"\n");
-}
-
-void fmostra_lista_com_no(FILE *fp, lista *l)
-{
-    lista *lc;
-    Long ligacao = 0;
-    lc = l;
-    fprintf(fp,"\n");
-    for(lc = l; lc != NULL; lc = lc->l)
-    {
-        fprintf(fp,"\tLigacao %u: %d\n",ligacao,lc->n);
-        fmostra_no(fp,lc->n);
-        ligacao++;
-    }
-}
-
-void fmostra_arvore(FILE *fp, no *n)
-{
-    lista *l;
-    l = enlista_arvore(n);
-    fmostra_lista_com_no(fp,l);
-    libera_lista_lista(l);
-}
-
-void fmostra_apply(FILE *fp, apply *a)
-{
-    fprintf(fp,"\nEndereco (apply): %d\n",a);
-    fprintf(fp,"\nN1");
-    fmostra_no(fp,a->n1);
-    fprintf(fp,"N2");
-    fmostra_no(fp,a->n2);
-    if(a->n != NULL)
-    {
-        fprintf(fp,"N");
-        fmostra_no(fp,a->n);
-    }
-    else
-        fprintf(fp,"\nSem N");
-    if(a->a1 != NULL)
-    {
-        fprintf(fp,"\nLigacoes posteriores (apply):");
-        fprintf(fp,"\n\t%d",a->a1);
-        fprintf(fp,"\n\t%d",a->a2);
-    }
-    fprintf(fp,"\nProximo: %d",a->a);
-}
-
-void fmostra_apply_lista(FILE *fp, apply *a)
-{
-    apply *ac;
-    Long i=0;
-    for(ac = a; ac != NULL; ac = ac->a)
-        fprintf(fp,"\nLigacao %d: %d",i++,ac);
-}
-
-void fmostra_apply_lista_com_no(FILE *fp, apply *a)
-{
-    apply *ac;
-    Long i=0;
-    for(ac = a; ac != NULL; ac = ac->a)
-    {
-        fprintf(fp,"\n\n\n\n\nLigacao %d: %d\n",i++,ac);
-        fmostra_apply(fp,ac);
-    }
-}
-
-void fmostra_conta_no(FILE *fp, conta *c)
-{
-    fprintf(fp,"\nEndereco (conta): %d",c);
-    fprintf(fp,"\nNivel: %d",c->nivel);
-    fprintf(fp,"\nNo: ");
-    fmostra_no(fp,c->n);
-    fprintf(fp,"\nProximo: %d",c->c);
-}
-
-void fmostra_conta_lista(FILE *fp, conta *c)
-{
-    conta *cc;
-    cc = c;
-    while(cc != NULL)
-    {
-        fmostra_conta_no(fp,cc);
-        cc = cc->c;
-    }
-}
-
-void fmostra_suporte_no(FILE *fp, suporte *s)
-{
-    fprintf(fp,"\nEndereco (suporte): %d",s);
-    fprintf(fp,"\nNivel: %d",s->nivel);
-    fprintf(fp,"\nLista conta V");
-    fmostra_conta_lista(fp,s->cV);
-    fprintf(fp,"\nLista conta R");
-    fmostra_conta_lista(fp,s->cR);
-    fprintf(fp,"\nLista conta C");
-    fmostra_conta_lista(fp,s->cC);
-    fprintf(fp,"\nProximo (suporte): %d",s->s);
-}
-
-void fmostra_suporte_lista(FILE *fp, suporte *s)
-{
-    suporte *sc;
-    for(sc = s; sc != NULL; sc = sc->s)
-        fmostra_suporte_no(fp,sc);
-}
-
-void fmostra_QDD(FILE *fp, QDD *Q)
-{
-    lista *l;
-    l = enlista_QDD(Q);
-
-    fprintf(fp,"\nEndereco (QDD): %d",Q);
-    fprintf(fp,"\nNQBIT: %d\n",Q->nqbit);
-    fmostra_lista_com_no(fp,l);
-    fprintf(fp,"\n\nAMPLITUDES");
-    fmostra_lista_com_no(fp,Q->l);
-    libera_lista_lista(l);
-}
-
-void fmostra_quantidades(FILE *fp)
-{
-    Short vazio = 1;
-    if(mem != 0)
-    {
-        vazio = 0;
-        fprintf(fp,"\nMem: %d",mem);
-    }
-    if(iQ != 0)
-    {
-        vazio = 0;
-        fprintf(fp,"\nQDD: %d",iQ);
-    }
-    if(ii != 0)
-    {
-        vazio = 0;
-        fprintf(fp,"\ni:   %d",ii);
-    }
-    if(im != 0)
-    {
-        vazio = 0;
-        fprintf(fp,"\nm:   %d",im);
-    }
-    if(ifi != 0)
-    {
-        vazio = 0;
-        fprintf(fp,"\nf:   %d",ifi);
-    }
-    if(il != 0)
-    {
-        vazio = 0;
-        fprintf(fp,"\nl:   %d",il);
-    }
-    if(ia != 0)
-    {
-        vazio = 0;
-        fprintf(fp,"\na:   %d",ia);
-    }
-    if(ic != 0)
-    {
-        vazio = 0;
-        fprintf(fp,"\nc:   %d",ic);
-    }
-    if(vazio)
-        fprintf(fp,"\nTUDO ZERADO");
-    fprintf(fp,"\n");
-}
-
-void fmostra_tamanhos(FILE *fp)
-{
-    fprintf(fp,"\nTAMANHOS");
-    fprintf(fp,"\nQDD: %d",sizeof(QDD));
-    fprintf(fp,"\nn:   %d",sizeof(no));
-    fprintf(fp,"\nl:   %d",sizeof(lista));
-    fprintf(fp,"\na:   %d",sizeof(apply));
-    fprintf(fp,"\nc:   %d",sizeof(conta));
-    fprintf(fp,"\n");
 }
 
 
@@ -2139,11 +1900,10 @@ QDD* le_matriz(char *nome)
     completa_QDD_matriz(N[0],0,0,N2/2,M,L);
 
     QDD *Q;
-    Q = cria_QDD();
+    Q = cria_QDD(N1);
     Q->n = cria_no_inicio();
     conecta_UM(Q->n,N[0],0);
     Q->n = N[0];
-    Q->nqbit = N1;
     Q->l = L[0];
 
     free(N);
@@ -2250,9 +2010,8 @@ QDD* le_vetor(char *nome)
     conecta_UM(n,N[0],0);
 
     QDD *Q;
-    Q = cria_QDD();
+    Q = cria_QDD(N1);
     Q->n = N[0];
-    Q->nqbit = N1;
     Q->l = L[0];
 
     free(N);
@@ -2466,8 +2225,7 @@ QDD* copia_QDD(QDD *Q1)
     while(lc1a != NULL);
 
     QDD *Q2;
-    Q2 = cria_QDD();
-    Q2->nqbit = Q1->nqbit;
+    Q2 = cria_QDD(Q1->nqbit);
     Q2->n = l2->l->n;
 
     lc2a = l2;
@@ -2600,14 +2358,13 @@ void produto_por_escalar(QDD *Q, float re, float im)
 QDD* soma_QDD(QDD *Q1, QDD *Q2)
 {
     QDD *Q;
-    Q = cria_QDD();
+    Q = cria_QDD(Q1->nqbit);
     Q->n = apply_soma(Q1->n,Q2->n);
 
     no *n;
     n = cria_no_inicio();
     conecta_UM(n,Q->n,0);
 
-    Q->nqbit = Q1->nqbit;
     Q->l = acha_lista_fim_QDD(Q);
 
     reduz_QDD(Q);
@@ -2623,9 +2380,8 @@ no* produto_interno(QDD *Q1, QDD *Q2)
     conecta_UM(n0,n1,0);
 
     QDD *Q;
-    Q = cria_QDD();
+    Q = cria_QDD(Q1->nqbit);
     Q->n = n1;
-    Q->nqbit = Q1->nqbit;
     Q->l = acha_lista_fim_QDD(Q);
 
     no *n;
@@ -2633,6 +2389,136 @@ no* produto_interno(QDD *Q1, QDD *Q2)
     libera_QDD(Q);
     return n;
 }
+
+QDD* produto_matriz_matriz(QDD *Q1, QDD *Q2)
+{
+    Short nqbit;
+    nqbit = Q1->nqbit;
+
+    QDD *Q;
+    no *n;
+    Q = cria_QDD(nqbit);
+    Q->n = cria_no_inicio();
+    n = apply_produto_matriz_matriz(Q1->n,Q2->n);
+    conecta_UM(Q->n,n,0);
+    Q->n = n;
+    Q->l=  acha_lista_fim_arvore(n);
+
+    suporte *s, *sc, *saux;
+    s = cria_suporte(0);
+
+    lista *l, *lc;
+    conta *cc;
+    Short nivel, classe, ini = 0, caso;
+    /**  Inicio  **/
+    for(l = Q->l; l != NULL; l = l->l)
+    {
+        n = l->n;
+        for(lc = n->l; lc != NULL; lc = lc->l)
+        {
+            n = lc->n;
+            if(n->tipo == Inicio)
+            {
+                ini = 1;
+                break;
+            }
+            nivel  = n->at.m.nivel;
+            classe = n->at.m.classe;
+
+            for(sc = s; sc->s != NULL; sc = sc->s)
+                if(sc->s->nivel <= nivel)
+                    break;
+
+            if(sc->s == NULL)
+            {
+                caso = 0;
+            }
+            else
+            {
+                if(sc->s->nivel == nivel)
+                    caso = 1;
+                else
+                    caso = 0;
+            }
+
+            /** Caso 0 - nao tem suporte  **/
+            /** Case 1 - tem suporte      **/
+            switch(caso)
+            {
+                case 0:
+                saux = cria_suporte(nivel);
+                switch(classe)
+                {
+                    case V:
+                    saux->cV = cria_conta(nqbit);
+                    saux->cV->n = n;
+                    break;
+
+                    case R:
+                    saux->cR = cria_conta(nqbit);
+                    saux->cR->n = n;
+                    break;
+
+                    case C:
+                    saux->cC = cria_conta(nqbit);
+                    saux->cC->n = n;
+                    break;
+                }
+                saux->s = sc->s;
+                sc->s = saux;
+                break;
+
+                case 1:
+                switch(classe)
+                {
+                    case V:
+                    for(cc = sc->s->cV; cc != NULL; cc = cc->c)
+                        if(cc->n == n)
+                            break;
+                    if(cc == NULL)
+                    {
+                        cc = cria_conta(nqbit);
+                        cc->n = n;
+                        cc->c = sc->s->cV;
+                        sc->s->cV = cc;
+                    }
+                    break;
+
+                    case R:
+                    for(cc = sc->s->cR; cc != NULL; cc = cc->c)
+                        if(cc->n == n)
+                            break;
+                    if(cc == NULL)
+                    {
+                        cc = cria_conta(nqbit);
+                        cc->n = n;
+                        cc->c = sc->s->cR;
+                        sc->s->cR = cc;
+                    }
+                    break;
+
+                    case C:
+                    for(cc = sc->s->cC; cc != NULL; cc = cc->c)
+                        if(cc->n == n)
+                            break;
+                    if(cc == NULL)
+                    {
+                        cc = cria_conta(nqbit);
+                        cc->n = n;
+                        cc->c = sc->s->cC;
+                        sc->s->cC = cc;
+                    }
+                    break;
+                }
+                break;
+            }
+        }
+        if(ini)
+            break;
+    }
+    mostra_suporte_lista(s->s);
+}
+
 
 
 QDD* I_1()
@@ -2760,13 +2646,7 @@ int main()
     QDD *Q2;
     Q2 = H(1);
 
-    no *n;
-    n = apply_produto_matriz_matriz(Q1->n,Q2->n);
-    mostra_arvore(n);
-
-    libera_QDD(Q1);
-    libera_QDD(Q2);
-    libera_arvore(n);
+    produto_matriz_matriz(Q1,Q2);
 
 
     /***********************************/
