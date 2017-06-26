@@ -2410,7 +2410,8 @@ QDD* produto_matriz_matriz(QDD *Q1, QDD *Q2)
     lista *l, *lc;
     conta *cc;
     Short nivel, classe, ini = 0, caso;
-    /**  Inicio  **/
+
+    /**  Tratamento inicio  **/
     for(l = Q->l; l != NULL; l = l->l)
     {
         n = l->n;
