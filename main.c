@@ -7,9 +7,10 @@
 #define Meio 1
 #define Fim 2
 
-#define V 0
-#define R 1
-#define C 2
+
+#define C 0
+#define V 1
+#define R 2
 
 
 
@@ -2396,128 +2397,30 @@ QDD* produto_matriz_matriz(QDD *Q1, QDD *Q2)
     nqbit = Q1->nqbit;
 
     QDD *Q;
-    no *n;
+    no *n0, *n1;
     Q = cria_QDD(nqbit);
     Q->n = cria_no_inicio();
-    n = apply_produto_matriz_matriz(Q1->n,Q2->n);
-    conecta_UM(Q->n,n,0);
-    Q->n = n;
-    Q->l=  acha_lista_fim_arvore(n);
+    n1 = apply_produto_matriz_matriz(Q1->n,Q2->n);
+    conecta_UM(Q->n,n1,0);
+    Q->n = n1;
+    Q->l =  acha_lista_fim_arvore(n1);
 
     suporte *s, *sc, *saux;
-    s = cria_suporte(0);
-
-    lista *l, *lc;
-    conta *cc;
-    Short nivel, classe, ini = 0, caso;
-
-    /**  Tratamento inicio  **/
-    for(l = Q->l; l != NULL; l = l->l)
+    conta *c, *cc;
+    lista *lc;
+    s = cria_suporte(nqbit);
+    c = cria_conta(nqbit);
+    cc = c;
+    for(lc = Q->l; lc != NULL; lc = lc->l)
     {
-        n = l->n;
-        for(lc = n->l; lc != NULL; lc = lc->l)
-        {
-            n = lc->n;
-            if(n->tipo == Inicio)
-            {
-                ini = 1;
-                break;
-            }
-            nivel  = n->at.m.nivel;
-            classe = n->at.m.classe;
-
-            for(sc = s; sc->s != NULL; sc = sc->s)
-                if(sc->s->nivel <= nivel)
-                    break;
-
-            if(sc->s == NULL)
-            {
-                caso = 0;
-            }
-            else
-            {
-                if(sc->s->nivel == nivel)
-                    caso = 1;
-                else
-                    caso = 0;
-            }
-
-            /** Caso 0 - nao tem suporte  **/
-            /** Case 1 - tem suporte      **/
-            switch(caso)
-            {
-                case 0:
-                saux = cria_suporte(nivel);
-                switch(classe)
-                {
-                    case V:
-                    saux->cV = cria_conta(nqbit);
-                    saux->cV->n = n;
-                    break;
-
-                    case R:
-                    saux->cR = cria_conta(nqbit);
-                    saux->cR->n = n;
-                    break;
-
-                    case C:
-                    saux->cC = cria_conta(nqbit);
-                    saux->cC->n = n;
-                    break;
-                }
-                saux->s = sc->s;
-                sc->s = saux;
-                break;
-
-                case 1:
-                switch(classe)
-                {
-                    case V:
-                    for(cc = sc->s->cV; cc != NULL; cc = cc->c)
-                        if(cc->n == n)
-                            break;
-                    if(cc == NULL)
-                    {
-                        cc = cria_conta(nqbit);
-                        cc->n = n;
-                        cc->c = sc->s->cV;
-                        sc->s->cV = cc;
-                    }
-                    break;
-
-                    case R:
-                    for(cc = sc->s->cR; cc != NULL; cc = cc->c)
-                        if(cc->n == n)
-                            break;
-                    if(cc == NULL)
-                    {
-                        cc = cria_conta(nqbit);
-                        cc->n = n;
-                        cc->c = sc->s->cR;
-                        sc->s->cR = cc;
-                    }
-                    break;
-
-                    case C:
-                    for(cc = sc->s->cC; cc != NULL; cc = cc->c)
-                        if(cc->n == n)
-                            break;
-                    if(cc == NULL)
-                    {
-                        cc = cria_conta(nqbit);
-                        cc->n = n;
-                        cc->c = sc->s->cC;
-                        sc->s->cC = cc;
-                    }
-                    break;
-                }
-                break;
-            }
-        }
-        if(ini)
-            break;
+        cc->c = cria_conta(nqbit);
+        cc = cc->c;
+        cc->n = lc->n;
     }
-    mostra_suporte_lista(s->s);
+    s->cC = c->c;
+    libera_conta(c);
+
+    mostra_suporte_no(s);
 }
 
 
@@ -2647,7 +2550,7 @@ int main()
     QDD *Q2;
     Q2 = H(1);
 
-    produto_matriz_matriz(Q1,Q2);
+   //produto_matriz_matriz(Q1,Q2);
 
 
     /***********************************/
