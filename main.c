@@ -8,9 +8,9 @@
 #define Fim 2
 
 
-#define C 0
-#define V 1
-#define R 2
+#define V 0
+#define R 1
+#define C 2
 
 
 
@@ -78,7 +78,7 @@ struct conta
 struct suporte
 {
     unsigned short nivel;
-    struct conta *cV, *cC, *cR;
+    struct conta *c;
     struct suporte *s;
 };
 
@@ -285,9 +285,7 @@ suporte* cria_suporte(Short nivel)
     is++;
 
     s->nivel = nivel;
-    s->cV = NULL;
-    s->cC = NULL;
-    s->cR = NULL;
+    s->c = NULL;
     s->s = NULL;
     return s;
 }
@@ -484,7 +482,7 @@ void mostra_lista(lista *l)
 
 void mostra_no(no *n)
 {
-    printf("\nEndereco: %d\n",n);
+    printf("\nEndereco (no): %d\n",n);
     if(n == NULL)
         return;
     if(n->l != NULL)
@@ -521,12 +519,12 @@ void mostra_no(no *n)
         printf("%d\n",n->at.m.nivel);
         printf("Ligacoes posteriores\n");
         printf("\telse: %d\n",n->at.m.el);
-        printf("\tThen: %d\n",n->at.m.th);
+        printf("\tThen: %d",n->at.m.th);
         break;
 
         case Fim:
         printf(": Numero\n");
-        printf("%f %f\n",n->at.f.re,n->at.f.im);
+        printf("%f %f",n->at.f.re,n->at.f.im);
         break;
     }
     printf("\n");
@@ -537,13 +535,13 @@ void mostra_lista_com_no(lista *l)
     lista *lc;
     Long ligacao = 0;
     lc = l;
-    printf("\n");
     for(lc = l; lc != NULL; lc = lc->l)
     {
-        printf("\tLigacao %u: %d\n",ligacao,lc->n);
+        printf("\n\n\tLigacao %u:",ligacao);
         mostra_no(lc->n);
         ligacao++;
     }
+    printf("\n");
 }
 
 void mostra_arvore(no *n)
@@ -552,6 +550,7 @@ void mostra_arvore(no *n)
     l = enlista_arvore(n);
     mostra_lista_com_no(l);
     libera_lista_lista(l);
+    printf("\n");
 }
 
 void mostra_apply(apply *a)
@@ -575,6 +574,7 @@ void mostra_apply(apply *a)
         printf("\n\t%d",a->a2);
     }
     printf("\nProximo: %d",a->a);
+    printf("\n");
 }
 
 void mostra_apply_lista(apply *a)
@@ -583,6 +583,7 @@ void mostra_apply_lista(apply *a)
     Long i=0;
     for(ac = a; ac != NULL; ac = ac->a)
         printf("\nLigacao %d: %d",i++,ac);
+    printf("\n");
 }
 
 void mostra_apply_lista_com_no(apply *a)
@@ -591,18 +592,19 @@ void mostra_apply_lista_com_no(apply *a)
     Long i=0;
     for(ac = a; ac != NULL; ac = ac->a)
     {
-        printf("\n\n\n\n\nLigacao %d: %d\n",i++,ac);
+        printf("\n\n\n\n\nLigacao %d:",i++);
         mostra_apply(ac);
     }
+    printf("\n");
 }
 
 void mostra_conta_no(conta *c)
 {
     printf("\nEndereco (conta): %d",c);
     printf("\nNivel: %d",c->nivel);
-    printf("\nNo: ");
     mostra_no(c->n);
-    printf("\nProximo (conta): %d",c->c);
+    printf("Proximo (conta): %d",c->c);
+    printf("\n");
 }
 
 void mostra_conta_lista(conta *c)
@@ -611,22 +613,20 @@ void mostra_conta_lista(conta *c)
     cc = c;
     while(cc != NULL)
     {
+        printf("\n\n");
         mostra_conta_no(cc);
         cc = cc->c;
     }
+    printf("\n");
 }
 
 void mostra_suporte_no(suporte *s)
 {
     printf("\nEndereco (suporte): %d",s);
     printf("\nNivel: %d",s->nivel);
-    printf("\n\nLista conta V");
-    mostra_conta_lista(s->cV);
-    printf("\n\nLista conta R");
-    mostra_conta_lista(s->cR);
-    printf("\n\nLista conta C");
-    mostra_conta_lista(s->cC);
-    printf("\n\nProximo (suporte): %d\n\n",s->s);
+    mostra_conta_lista(s->c);
+    printf("\n\nProximo (suporte): %d",s->s);
+    printf("\n");
 }
 
 void mostra_suporte_lista(suporte *s)
@@ -634,6 +634,7 @@ void mostra_suporte_lista(suporte *s)
     suporte *sc;
     for(sc = s; sc != NULL; sc = sc->s)
         mostra_suporte_no(sc);
+    printf("\n");
 }
 
 void mostra_QDD(QDD *Q)
@@ -647,6 +648,7 @@ void mostra_QDD(QDD *Q)
     printf("\n\nAMPLITUDES");
     mostra_lista_com_no(Q->l);
     libera_lista_lista(l);
+    printf("\n");
 }
 
 void mostra_quantidades()
@@ -1731,6 +1733,7 @@ no* apply_produto_matriz_matriz(no *N1, no *N2)
         }
     }
     n = a->n;
+    mostra_apply_lista_com_no(a);
     libera_apply_lista(a);
     return n;
 }
@@ -2417,10 +2420,10 @@ QDD* produto_matriz_matriz(QDD *Q1, QDD *Q2)
         cc = cc->c;
         cc->n = lc->n;
     }
-    s->cC = c->c;
+    s->c = c->c;
     libera_conta(c);
 
-    mostra_suporte_no(s);
+    //mostra_suporte_no(s);
 }
 
 
@@ -2550,8 +2553,7 @@ int main()
     QDD *Q2;
     Q2 = H(1);
 
-   //produto_matriz_matriz(Q1,Q2);
-
+    produto_matriz_matriz(Q1,Q2);
 
     /***********************************/
     finaliza_relatorio_memoria();
