@@ -822,7 +822,7 @@ void libera_arvore(no *n)
     no *el, *th;
     lista *l, *laux;
     if(n->l != NULL)
-        ERRO("ARVORE CONECTADA");
+        return;
     l = cria_lista();
     l->n = n;
     while(l != NULL)
@@ -987,6 +987,35 @@ lista* copia_lista_sem_cabeca(lista *l1)
 
 
 
+lista* acha_lista_fim_arvore(no *n)
+{
+    lista *l, *lc, *laux;
+    l = enlista_arvore(n);
+    lc = l;
+
+    while(lc->l != NULL)
+    {
+        if(lc->l->n->tipo == Fim)
+        {
+            lc = lc->l;
+        }
+        else
+        {
+            laux = lc->l;
+            lc->l = laux->l;
+            libera_lista_no(laux);
+        }
+    }
+
+    lc = l->l;
+    libera_lista_no(l);
+    l = lc;
+
+    return l;
+}
+
+
+
 no* soma(no *n1, no *n2)
 {
     no *n;
@@ -999,7 +1028,7 @@ no* soma(no *n1, no *n2)
     return n;
 }
 
-no* produto_complexo(no *n1, no *n2)
+no* produto_no_no(no *n1, no *n2)
 {
     no *n;
     float re, im;
@@ -1009,7 +1038,7 @@ no* produto_complexo(no *n1, no *n2)
     return n;
 }
 
-no* produto_complexo_conjugado(no *n1, no *n2)
+no* produto_no_no_conjugado(no *n1, no *n2)
 {
     no *n;
     float re, im;
@@ -1019,10 +1048,19 @@ no* produto_complexo_conjugado(no *n1, no *n2)
     return n;
 }
 
-void produto_por_real(no *n, float re)
+void produto_no_real(no *n, float re)
 {
     (n->at.f.re) *= re;
     (n->at.f.im) *= im;
+}
+
+void produto_arvore_real(no *n, float re)
+{
+    lista *l, *lc;
+    l = acha_lista_fim_arvore(n);
+    for(lc = l; lc != NULL; lc = lc->l)
+        produto_no_real(lc->n,re);
+    libera_lista_lista(l);
 }
 
 no* copia_arvore(no *n)
@@ -1218,193 +1256,6 @@ no* apply_soma(no *N1, no *N2)
         }
 
         if(regra != 4)
-        {
-            for(aaux = a; aaux != NULL; aaux = aaux->a)
-                if(compara_apply(aaux,a1))
-                    break;
-            if(aaux == NULL)
-            {
-                ac->a1 = a1;
-                a1->a = ac->a;
-                ac->a = a1;
-            }
-            else
-            {
-                ac->a1 = aaux;
-                libera_apply_no(a1);
-            }
-
-
-            for(aaux = a; aaux != NULL; aaux = aaux->a)
-                if(compara_apply(aaux,a2))
-                    break;
-            if(aaux == NULL)
-            {
-                ac->a2 = a2;
-                a2->a = ac->a;
-                ac->a = a2;
-            }
-            else
-            {
-                ac->a2 = aaux;
-                libera_apply_no(a2);
-            }
-        }
-    }
-
-    for(ac = a; ac != NULL; ac = ac->a)
-    {
-        n = ac->n;
-        if(n->tipo == Meio)
-        {
-            a1 = ac->a1;
-            a2 = ac->a2;
-
-            for(aaux = a; aaux != NULL; aaux = aaux->a)
-                if(aaux == a1)
-                    break;
-            n1 = aaux->n;
-
-            for(aaux = a; aaux != NULL; aaux = aaux->a)
-                if(aaux == a2)
-                    break;
-            n2 = aaux->n;
-
-            conecta_DOIS(n,n1,n2);
-        }
-    }
-    n = a->n;
-    libera_apply_lista(a);
-    return n;
-}
-
-no* apply_produto_interno(no *N1, no *N2)
-{
-    apply *a;
-    a = cria_apply();
-    a->n1 = N1;
-    a->n2 = N2;
-
-    apply *ac, *a1 = NULL, *a2 = NULL, *aaux;
-    no *n, *n1, *n2;
-    Short regra = 0;
-    for(ac = a; ac != NULL; ac = ac->a)
-    {
-        n1 = ac->n1;
-        n2 = ac->n2;
-
-        switch(n1->tipo)
-        {
-            case Meio:
-            switch(n2->tipo)
-            {
-                case Meio:
-                if(n1->at.m.nivel < n2->at.m.nivel)
-                    regra = 1;
-                if(n1->at.m.nivel > n2->at.m.nivel)
-                    regra = 2;
-                if(n1->at.m.nivel == n2->at.m.nivel)
-                {
-                    if(n1->at.m.classe < n2->at.m.classe)
-                        regra = 1;
-                    if(n1->at.m.classe > n2->at.m.classe)
-                        regra = 2;
-                    if(n1->at.m.classe == n2->at.m.classe)
-                        regra = 3;
-                }
-                break;
-
-                case Fim:
-                if(compara_zero(n2))
-                    regra = 5;
-                else
-                    regra = 1;
-                break;
-            }
-            break;
-
-            case Fim:
-            if(compara_zero(n1))
-            {
-                regra = 5;
-            }
-            else
-            {
-                switch(n2->tipo)
-                {
-                    case Meio:
-                    regra = 2;
-                    break;
-
-                    case Fim:
-                    if(compara_zero(n2))
-                        regra = 5;
-                    else
-                        regra = 4;
-                    break;
-                }
-            }
-            break;
-        }
-
-        switch(regra)
-        {
-            case 1:
-            /** n1 antes de n2 **/
-            n = copia_no(n1);
-            ac->n = n;
-
-            a1 = cria_apply();
-            a1->n1 = n1->at.m.el;
-            a1->n2 = n2;
-
-            a2 = cria_apply();
-            a2->n1 = n1->at.m.th;
-            a2->n2 = n2;
-            break;
-
-            case 2:
-            /** n1 depois de n2 **/
-            n = copia_no(n2);
-            ac->n = n;
-
-            a1 = cria_apply();
-            a1->n1 = n1;
-            a1->n2 = n2->at.m.el;
-
-            a2 = cria_apply();
-            a2->n1 = n1;
-            a2->n2 = n2->at.m.th;
-            break;
-
-            case 3:
-            /** n1 no mesmo nivel de n2 intermediario **/
-            n = copia_no(n1);
-            ac->n = n;
-
-            a1 = cria_apply();
-            a1->n1 = n1->at.m.el;
-            a1->n2 = n2->at.m.el;
-
-            a2 = cria_apply();
-            a2->n1 = n1->at.m.th;
-            a2->n2 = n2->at.m.th;
-            break;
-
-            case 4:
-            /** n1 no mesmo nivel de n2 fim **/
-            n = produto_complexo_conjugado(n1,n2);
-            ac->n = n;
-            break;
-
-            case 5:
-            /** n1 ou n2 0 **/
-            n = cria_no_fim(0,0);
-            ac->n = n;
-            break;
-        }
-
-        if((regra != 4)&&(regra != 5))
         {
             for(aaux = a; aaux != NULL; aaux = aaux->a)
                 if(compara_apply(aaux,a1))
@@ -1673,7 +1524,7 @@ no* apply_produto_matriz_matriz(no *N1, no *N2)
             break;
 
             case 6:
-            n = produto_complexo(n1,n2);
+            n = produto_no_no(n1,n2);
             ac->n = n;
             break;
 
@@ -1766,33 +1617,6 @@ void reduz_lista(lista *l)
             }
         }
     }
-}
-
-lista* acha_lista_fim_arvore(no *n)
-{
-    lista *l, *lc, *laux;
-    l = enlista_arvore(n);
-    lc = l;
-
-    while(lc->l != NULL)
-    {
-        if(lc->l->n->tipo == Fim)
-        {
-            lc = lc->l;
-        }
-        else
-        {
-            laux = lc->l;
-            lc->l = laux->l;
-            libera_lista_no(laux);
-        }
-    }
-
-    lc = l->l;
-    libera_lista_no(l);
-    l = lc;
-
-    return l;
 }
 
 lista* acha_lista_fim_QDD(QDD *Q)
@@ -2291,7 +2115,7 @@ QDD* produto_tensorial(QDD *Q1, QDD *Q2)
             for(lc = Q2b->l; lc != NULL; lc = lc->l)
             {
                 n2 = lc->n;
-                naux = produto_complexo(n1,n2);
+                naux = produto_no_no(n1,n2);
                 transfere_conexao(naux,n2);
                 lc->n = naux;
                 libera_no(n2);
@@ -2350,7 +2174,7 @@ void produto_por_escalar(QDD *Q, float re, float im)
     for(l = Q->l; l != NULL; l = l->l)
     {
         n1 = l->n;
-        naux = produto_complexo(n1,n);
+        naux = produto_no_no(n1,n);
         transfere_conexao(naux,n1);
         l->n = naux;
         libera_no(n1);
@@ -2376,24 +2200,6 @@ QDD* soma_QDD(QDD *Q1, QDD *Q2)
     return Q;
 }
 
-no* produto_interno(QDD *Q1, QDD *Q2)
-{
-    no *n0, *n1;
-    n0 = cria_no_inicio();
-    n1 = apply_produto_interno(Q1->n,Q2->n);
-    conecta_UM(n0,n1,0);
-
-    QDD *Q;
-    Q = cria_QDD(Q1->nqbit);
-    Q->n = n1;
-    Q->l = acha_lista_fim_QDD(Q);
-
-    no *n;
-    n = copia_no(Q->n);
-    libera_QDD(Q);
-    return n;
-}
-
 QDD* produto_matriz_matriz(QDD *Q1, QDD *Q2)
 {
     Short nqbit;
@@ -2409,21 +2215,135 @@ QDD* produto_matriz_matriz(QDD *Q1, QDD *Q2)
     Q->l =  acha_lista_fim_arvore(n1);
 
     suporte *s, *sc, *saux;
-    conta *c, *cc;
+    conta *c, *cc1;
     lista *lc;
     s = cria_suporte(nqbit);
     c = cria_conta(nqbit);
-    cc = c;
+    cc1 = c;
     for(lc = Q->l; lc != NULL; lc = lc->l)
     {
-        cc->c = cria_conta(nqbit);
-        cc = cc->c;
-        cc->n = lc->n;
+        cc1->c = cria_conta(nqbit);
+        cc1 = cc1->c;
+        cc1->n = lc->n;
     }
     s->c = c->c;
     libera_conta(c);
 
-    //mostra_suporte_no(s);
+    no *n;
+    conta *ci, *caux, *cn, *cc2;
+    Short espalha, ini = 0, delta;
+    while(s != 0)
+    {
+        c = cria_conta(0);
+        c->c = s->c;
+
+        cc1 = c;
+        while(cc1->c != NULL)
+        {
+            caux = cc1->c;
+            n0 = caux->n;
+            espalha = 0;
+            if(n0->tipo == Meio)
+            if(n0->at.m.classe == C)
+                espalha = 1;
+            if(n0->tipo == Fim)
+                espalha = 1;
+            if(espalha)
+            {
+                for(lc =  n0->l; lc != NULL; lc = lc->l)
+                {
+                    n1 = lc->n;
+                    if(n1->tipo == Inicio)
+                    {
+                        ci = cria_conta(caux->nivel);
+                        ci->n = n0;
+                        ini = 1;
+                        break;
+                    }
+
+                    for(sc = s; sc != NULL; sc = sc->s)
+                    {
+                        if(n1->at.m.nivel == sc->nivel)
+                            break;
+                        if(sc->s != NULL)
+                            break;
+                        if(n1->at.m.nivel > sc->s->nivel)
+                            break;
+                    }
+
+                    cn = cria_conta(caux->nivel);
+                    cn->n = n1;
+
+                    if(n1->at.m.nivel == sc->nivel)
+                    {
+
+                        for(cc2 = sc->c; cc2 != NULL; cc2 = cc2->c)
+                            if(cc2->n == n1)
+                                break;
+                        if(cc2 == NULL)
+                        {
+                            cn->c = sc->c;
+                            sc->c = cn;
+                        }
+                        else
+                        {
+                            if(cc2->nivel != cn->nivel)
+                            {
+                                if(cc2->nivel > cn->nivel)
+                                {
+                                    if(cc2->n->at.m.el == n0)
+                                        n1 = cc2->n->at.m.th;
+                                    else
+                                        n1 = cc2->n->at.m.el;
+                                    delta = cc2->nivel - cn->nivel;
+                                }
+                                else
+                                {
+                                    n1 = n0;
+                                    delta = cn->nivel - cc2->nivel;
+                                }
+                                n = copia_arvore(n1);
+                                transfere_conexao(n,n1);
+                                libera_arvore(n1);
+
+                                while(delta > 0)
+                                {
+                                    produto_arvore_real(n,2);
+                                    delta--;
+                                }
+                            }
+                            libera_conta(cn);
+                        }
+                    }
+                    else
+                    {
+                        saux = cria_suporte(n1->at.m.nivel);
+                        saux->c = cn;
+
+                        saux->s = sc->s;
+                        sc->s = saux;
+                    }
+                }
+                if(ini)
+                    break;
+            }
+        }
+        if(ini)
+            break;
+    }
+    while(s != NULL)
+    {
+        while(s->c != NULL)
+        {
+            caux = s->c;
+            s->c = caux->c;
+            libera_conta(caux);
+        }
+
+        saux = s->s;
+        libera_suporte(s);
+        s = saux;
+    }
 }
 
 
