@@ -2,37 +2,34 @@
 #include<stdlib.h>
 #include<math.h>
 
-#define pi 3.1415926535
-
 int main()
 {
-    int i, j;
-    int N1, N2, N3;
+    int N;
+    printf("N: ");
+    scanf("%d",&N);
 
-    printf("N1: ");
-    scanf("%d",&N1);
-    N2 = 1;
-    for(i=0; i<N1; i++)
-        N2 *= 2;
-    N3 = N2;
+    int e;
+    e = (int)pow(2,N);
+
+    float theta;
+    theta = 2*3.1415926535897932384626433832795/e;
 
     FILE *fp;
     fp = fopen("QFT.txt","w");
-    fprintf(fp,"%d %d\n%d\n",N1,N2,N3);
+    fprintf(fp,"%d\n",N);
 
-    float re, im;
-    for(i=0; i<N2; i++)
+    float re, im, theta2, amp;
+    amp = pow(2,-0.5*N);
+    for(int i=0; i<e; i++)
     {
-        re = (cos(2*pi*i/N2))/(sqrt(N2));
-        im = (sin(2*pi*i/N2))/(sqrt(N2));
-        fprintf(fp,"%f %f ",re,im);
-    }
-
-    for(i=0; i<N2; i++)
-    {
+        for(int j=0; j<e; j++)
+        {
+            theta2 = i*j*theta;
+            re = amp*cos(theta2);
+            im = amp*sin(theta2);
+            fprintf(fp,"%f %f ",re,im);
+        }
         fprintf(fp,"\n");
-        for(j=0; j<N2; j++)
-            fprintf(fp,"%d ",(i*j)%N2);
     }
 
     return 0;

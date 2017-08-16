@@ -233,8 +233,6 @@ lista* cria_lista()
     aumenta_memoria(sizeof(lista));
     il++;
 
-    if(l == NULL)
-        exit(0);
     l->l = NULL;
     l->n = NULL;
     return l;
@@ -460,9 +458,7 @@ lista* enlista_arvore(no *N)
 lista* enlista_QDD(QDD *Q)
 {
     lista *l;
-    l = cria_lista();
-    l->n = Q->n->l->n;
-    l->l = enlista_arvore(Q->n);
+    l = enlista_arvore(Q->n);
     return l;
 }
 
@@ -1628,231 +1624,49 @@ lista* acha_lista_fim_QDD(QDD *Q)
 
 
 
-void completa_QDD_matriz(no *n, Long r, Long c, Long ex, Long **M, lista **L)
-{
-    no *el, *th;
-    Long ind1, ind2;
-    if((n->at.m.classe == C)&&(ex == 1))
-    {
-        ind1 = M[r][c];
-        ind2 = M[r][c+1];
-
-        el = L[ind1]->n;
-        th = L[ind2]->n;
-
-        conecta_DOIS(n,el,th);
-    }
-    else
-    {
-        if(n->at.m.classe == R)
-        {
-            completa_QDD_matriz(n->at.m.el,r,c,ex,M,L);
-            completa_QDD_matriz(n->at.m.th,r+ex,c,ex,M,L);
-        }
-        if(n->at.m.classe == C)
-        {
-            completa_QDD_matriz(n->at.m.el,r,c,ex/2,M,L);
-            completa_QDD_matriz(n->at.m.th,r,c+ex,ex/2,M,L);
-        }
-    }
-}
-
 QDD* le_matriz(char *nome)
 {
     Long i, j, k;
+    float re, im;
 
     FILE *fp;
     fp = fopen(nome,"r");
-    if(fp == NULL)
-        ERRO("LE MATRIZ");
 
-    Long N1, N2, N3;
-    fscanf(fp,"%lu %lu\n%lu\n",&N1, &N2, &N3);
+    Short N, e;
+    fscanf(fp,"%hu",&N);
+    e = (int)pow(2,N);
 
-    lista **L;
-    float re, im;
-    L = malloc(N3*sizeof(lista*));
-    if(L == NULL)
-        ERRO("L");
-    aumenta_memoria(N3*sizeof(lista*));
-    for(i=0; i<N3; i++)
+    no ***nf;
+    nf = malloc(e*sizeof(no**));
+    if(nf == NULL)
+        ERRO("ERRO LE MATRIZ NF");
+    aumenta_memoria(e*sizeof(no**));
+    for(i=0; i<e; i++)
     {
-        L[i] = cria_lista();
-        fscanf(fp,"%f %f",&re, &im);
-        L[i]->n = cria_no_fim(re,im);
-    }
-    fscanf(fp,"\n");
-    for(i=0; i<N3-1; i++)
-        L[i]->l = L[i+1];
+        nf[i] = malloc(e*sizeof(no*));
+        if(nf == NULL)
+            ERRO("ERRO LE MATRIZ NF[]");
+        aumenta_memoria(e*sizeof(no*));
 
-    Long **M;
-    M = malloc(N2*sizeof(Long*));
-    if(M == NULL)
-        ERRO("M");
-    aumenta_memoria(N2*sizeof(Long*));
-    for(i=0; i<N2; i++)
-    {
-        M[i] = malloc(N2*sizeof(Long));
-        if(M[i] == NULL)
-            ERRO("M[]");
-        aumenta_memoria(N2*sizeof(Long));
-        for(j=0; j<N2; j++)
-            fscanf(fp,"%lu",&M[i][j]);
-    }
-
-    no **N;
-    N = malloc((N2*N2-1)*sizeof(no*));
-    if(N == NULL)
-        ERRO("N");
-    aumenta_memoria((N2*N2-1)*sizeof(no*));
-
-    Long ex, ind;
-    ex = 1;
-    ind = 0;
-    for(i=0; i<N1; i++)
-    {
-        for(j=1; j<=2; j++)
+        for(j=0; j<e; j++)
         {
-            for(k=0; k<ex; k++)
-            {
-                N[ind] = cria_no_meio(j,i);
-                ind++;
-            }
-            ex *= 2;
+            fscanf(fp,"%f, %f",&re, &im);
+            nf[i][j] = cria_no_fim(re,im);
         }
     }
 
-    for(i=0; i<(N2*N2-1)/2; i++)
-        conecta_DOIS(N[i],N[2*i+1],N[2*i+2]);
+    no **nm;
+    nm = malloc((e*e-1)*sizeof(no*));
+    if(nm == NULL)
+        ERRO("ERRO LE MATRIZ NM");
+    aumenta_memoria((e*e-1)*sizeof(no*));
 
-    completa_QDD_matriz(N[0],0,0,N2/2,M,L);
-
-    QDD *Q;
-    Q = cria_QDD(N1);
-    Q->n = cria_no_inicio();
-    conecta_UM(Q->n,N[0],0);
-    Q->n = N[0];
-    Q->l = L[0];
-
-    free(N);
-    diminui_memoria((N2*N2-1)*sizeof(no*));
-    free(L);
-    diminui_memoria(N3*sizeof(lista*));
-    for(i=0; i<N2; i++)
-    {
-        free(M[i]);
-        diminui_memoria(N2*sizeof(Long));
-    }
-    free(M);
-    diminui_memoria(N2*sizeof(Long*));
-    fclose(fp);
-
-    return Q;
-}
-
-void completa_QDD_vetor(no *n, Long v, Long ex, Long *M, lista **L)
-{
-    no *el, *th;
-    Long ind1, ind2;
-    if(ex == 1)
-    {
-
-        ind1 = M[v];
-        ind2 = M[v+1];
-
-        el = L[ind1]->n;
-        th = L[ind2]->n;
-
-        conecta_DOIS(n,el,th);
-    }
-    else
-    {
-        completa_QDD_vetor(n->at.m.el,v,ex/2,M,L);
-        completa_QDD_vetor(n->at.m.th,v+ex,ex/2,M,L);
-    }
 }
 
 QDD* le_vetor(char *nome)
 {
-    Long i, j;
 
-    FILE *fp;
-    fp = fopen(nome,"r");
-    if(fp == NULL)
-        ERRO("LE VETOR");
-
-    Long N1, N2, N3;
-    fscanf(fp,"%lu %lu\n%lu\n",&N1,&N2,&N3);
-    lista **L;
-    float re, im;
-    L = malloc(N3*sizeof(lista*));
-    if(L == NULL)
-        ERRO("L");
-    aumenta_memoria(N3*sizeof(lista*));
-    for(i=0; i<N3; i++)
-    {
-        L[i] = cria_lista();
-        fscanf(fp,"%f %f",&re, &im);
-        L[i]->n = cria_no_fim(re,im);
-    }
-
-    fscanf(fp,"\n");
-    for(i=0; i<N3-1; i++)
-        L[i]->l = L[i+1];
-
-    Long *M;
-    M = malloc(N2*sizeof(Long));
-    if(M == NULL)
-        ERRO("M");
-    aumenta_memoria(N2*sizeof(Long));
-    for(i=0; i<N2; i++)
-        fscanf(fp,"%lu",&M[i]);
-
-    no **N;
-    N = malloc((N2-1)*sizeof(no*));
-    if(N == NULL)
-        ERRO("N");
-    aumenta_memoria((N2-1)*sizeof(no*));
-
-    Long ex, ind;
-    no *n;
-    ex = 1;
-    ind = 0;
-    for(i=0; i<N1; i++)
-    {
-        for(j=0; j<ex; j++)
-        {
-            n = cria_no_meio(0,i);
-            N[ind] = n;
-            ind++;
-        }
-        ex *= 2;
-    }
-
-    for(i=0; i<(N2/2)-1; i++)
-        conecta_DOIS(N[i],N[2*i+1],N[2*i+2]);
-
-    completa_QDD_vetor(N[0],0,N2/2,M,L);
-
-    n = cria_no_inicio();
-    conecta_UM(n,N[0],0);
-
-    QDD *Q;
-    Q = cria_QDD(N1);
-    Q->n = N[0];
-    Q->l = L[0];
-
-    free(N);
-    diminui_memoria((N2-1)*sizeof(no*));
-    free(L);
-    diminui_memoria(N3*sizeof(lista*));
-    free(M);
-    diminui_memoria(N2*sizeof(Long));
-    fclose(fp);
-
-    return Q;
 }
-
 
 
 void reduz_QDD(QDD *Q)

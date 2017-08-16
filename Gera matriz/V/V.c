@@ -6,26 +6,28 @@
 
 int main()
 {
-    FILE *fp;
-    fp = fopen("V.txt","w");
-    long N1, N2, i;
-    printf("N1: ");
-    scanf("%d",&N1);
-    N2 = 1;
-    for(i=0; i<N1; i++)
-        N2 *= 2;
-    fprintf(fp,"%d %d\n%d\n",N1,N2,N2);
-    float re, im, amp;
-    amp = pow(2,-(N1/(2.0)));
-    for(i=0; i<N2; i++)
-    {
-        im = 2*pi*i/N2;
+    int N;
+    printf("N: ");
+    scanf("%d",&N);
 
-        re = amp*cos(im);
-        im = amp*sin(im);
+    int e;
+    e = (int)pow(2,N);
+
+    float theta;
+    theta = 2*pi/e;
+
+    FILE *fp;
+    float theta2, re, im, amp;
+    fp = fopen("V.txt","w");
+    fprintf(fp,"%d\n",N);
+    amp = pow(2,-0.5*N);
+    for(int i=0; i<e; i++)
+    {
+        theta2 = i*theta;
+        re = amp*cos(theta2);
+        im = amp*sin(theta2);
         fprintf(fp,"%f %f ",re,im);
     }
-    fprintf(fp,"\n");
-    for(i=0; i<N2; i++)
-        fprintf(fp,"%d ",i);
+    fclose(fp);
+    return 0;
 }
