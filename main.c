@@ -7,10 +7,12 @@
 #define Meio 1
 #define Fim 2
 
-
 #define V 0
 #define R 1
 #define C 2
+
+#define El 1
+#define Th 2
 
 
 
@@ -398,6 +400,7 @@ void libera_suporte(suporte *s)
 }
 
 
+
 lista* enlista_arvore(no *N)
 {
     /**  l é a lista final                      ***
@@ -717,15 +720,15 @@ void conecta_UM(no *n1, no *n2, Short lado)
 
     switch(lado)
     {
-        case 0:
+        case Inicio:
         n1->at.i.n = n2;
         break;
 
-        case 1:
+        case El:
         n1->at.m.el = n2;
         break;
 
-        case 2:
+        case Th:
         n1->at.m.th = n2;
         break;
     }
@@ -1624,9 +1627,32 @@ lista* acha_lista_fim_QDD(QDD *Q)
 
 
 
+void completa_QDD_matriz(no *n, no ***nf, int r, int c, int exp)
+{
+    switch(n->at.m.classe)
+    {
+        case R:
+        completa_QDD_matriz(n->at.m.el,nf,r,c,exp);
+        completa_QDD_matriz(n->at.m.th,nf,r+exp,c,exp);
+        break;
+
+        case C:
+        if(exp == 1)
+        {
+            conecta_DOIS(n,nf[r][c],nf[r][c+1]);
+        }
+        else
+        {
+            completa_QDD_matriz(n->at.m.el,nf,r,c,exp/2);
+            completa_QDD_matriz(n->at.m.th,nf,r,c+exp,exp/2);
+        }
+        break;
+    }
+}
+
 QDD* le_matriz(char *nome)
 {
-    Long i, j, k;
+    Long i, j;
     float re, im;
 
     FILE *fp;
@@ -1650,17 +1676,63 @@ QDD* le_matriz(char *nome)
 
         for(j=0; j<e; j++)
         {
-            fscanf(fp,"%f, %f",&re, &im);
+            fscanf(fp,"%f %f",&re, &im);
             nf[i][j] = cria_no_fim(re,im);
         }
     }
+    fclose(fp);
 
     no **nm;
+    int ind, exp, k;
+    exp = 1;
+    ind = 0;
     nm = malloc((e*e-1)*sizeof(no*));
     if(nm == NULL)
         ERRO("ERRO LE MATRIZ NM");
     aumenta_memoria((e*e-1)*sizeof(no*));
+    for(i=0; i<N; i++)
+    {
+        for(j=0; j<2; j++)
+        {
+            for(k=0; k<exp; k++)
+            {
+                switch(j)
+                {
+                    case 0:
+                    nm[ind++] = cria_no_meio(R,i);
+                    break;
 
+                    case 1:
+                    nm[ind++] = cria_no_meio(C,i);
+                    break;
+                }
+            }
+            exp *= 2;
+        }
+    }
+
+    for(i=0; i<((e*e)/2)-1; i++)
+        conecta_DOIS(nm[i],nm[2*i+1],nm[2*i+2]);
+
+    completa_QDD_matriz(nm[0],nf,0,0,e/2);
+
+    QDD *Q;
+    Q = cria_QDD(N);
+    Q->n = cria_no_inicio();
+    Q->n->at.i.n = nm[0];
+    Q->l = acha_lista_fim_QDD(Q);
+
+    free(nm);
+    diminui_memoria((e*e-1)*sizeof(no*));
+    for(i=0; i<e; i++)
+    {
+        free(nf[i]);
+        diminui_memoria(e*sizeof(no*));
+    }
+    free(nf);
+    diminui_memoria(e*sizeof(no**));
+
+    return Q;
 }
 
 QDD* le_vetor(char *nome)
@@ -2165,8 +2237,18 @@ QDD* produto_matriz_matriz(QDD *Q1, QDD *Q2)
 QDD* I_1()
 {
     QDD *Q;
-    Q = le_matriz("I1.txt");
-    reduz_QDD(Q);
+    Q = cria_QDD(1);
+
+    no *n1, *n2, *n3;
+    n1 = cria_no_inicio();
+    Q->n = n1;
+    n2 = cria_no_meio(R,0);
+    conecta_UM(n1,n2,Inicio);
+    n1 = n2;
+    n2 = cria_no_meio(C,0);
+    n3 = cria_no_meio(C,0);
+    conecta_DOIS(n1,n2,n3);
+
     return Q;
 }
 
@@ -2281,13 +2363,11 @@ int main()
         mostra_quantidades();
     }*/
 
-    QDD *Q1;
-    Q1 = H(1);
-
-    QDD *Q2;
-    Q2 = H(1);
-
-    produto_matriz_matriz(Q1,Q2);
+    QDD *Q;
+    Q = le_matriz("Pasta2.txt");
+    mostra_quantidades();
+    reduz_QDD(Q);
+    mostra_quantidades();
 
     /***********************************/
     finaliza_relatorio_memoria();
