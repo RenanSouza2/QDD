@@ -1,0 +1,203 @@
+
+MemUP: 16			 16		MemMax
+MemUP: 32			 16		MemMax
+MemUP: 52			 20		MemMax
+MemUP: 72			 20		MemMax
+MemUP: 92			 20		MemMax
+MemUP: 112			 20		MemMax
+MemUP: 128			 16		MemMax
+MemUP: 148			 20		MemMax
+MemUP: 168			 20		MemMax
+MemUP: 188			 20		MemMax
+MemUP: 208			 20		MemMax
+MemUP: 224			 16		MemMax
+MemUP: 244			 20		MemMax
+MemUP: 264			 20		MemMax
+MemUP: 284			 20		MemMax
+MemUP: 304			 20		MemMax
+MemUP: 320			 16		MemMax
+MemUP: 340			 20		MemMax
+MemUP: 360			 20		MemMax
+MemUP: 380			 20		MemMax
+MemUP: 400			 20		MemMax
+MemUP: 416			 16		MemMax
+MemUP: 420			 4		MemMax
+MemUP: 440			 20		MemMax
+MemUP: 448			 8		MemMax
+MemUP: 468			 20		MemMax
+MemUP: 476			 8		MemMax
+MemUP: 496			 20		MemMax
+MemUP: 504			 8		MemMax
+MemUP: 520			 16		MemMax
+MemUP: 540			 20		MemMax
+MemUP: 548			 8		MemMax
+MemUP: 568			 20		MemMax
+MemUP: 576			 8		MemMax
+MemUP: 596			 20		MemMax
+MemUP: 604			 8		MemMax
+MemUP: 624			 20		MemMax
+MemUP: 632			 8		MemMax
+MemUP: 664			 32		MemMax
+MemUP: 684			 20		MemMax
+MemUP: 692			 8		MemMax
+MemUP: 712			 20		MemMax
+MemUP: 720			 8		MemMax
+MemUP: 740			 20		MemMax
+MemUP: 748			 8		MemMax
+MemUP: 768			 20		MemMax
+MemUP: 776			 8		MemMax
+MemUP: 796			 20		MemMax
+MemUP: 804			 8		MemMax
+MemUP: 824			 20		MemMax
+MemUP: 832			 8		MemMax
+MemUP: 852			 20		MemMax
+MemUP: 860			 8		MemMax
+MemUP: 880			 20		MemMax
+MemUP: 888			 8		MemMax
+MemUP: 896			 8		MemMax
+MemUP: 904			 8		MemMax
+MemUP: 912			 8		MemMax
+MemUP: 920			 8		MemMax
+MemUP: 928			 8		MemMax
+MemUP: 936			 8		MemMax
+MemUP: 944			 8		MemMax
+MemUP: 952			 8		MemMax
+MemUP: 960			 8		MemMax
+MemUP: 968			 8		MemMax
+MemUP: 976			 8		MemMax
+MemUP: 984			 8		MemMax
+MemUP: 992			 8		MemMax
+MemUP: 1000			 8		MemMax
+MemUP: 1008			 8		MemMax
+MemUP: 1016			 8		MemMax
+MemUP: 1028			 12		MemMax
+MemUP: 1048			 20		MemMax
+MemUP: 1056			 8		MemMax
+MemUP: 1064			 8		MemMax
+MemUP: 1072			 8		MemMax
+MemUP: 1080			 8		MemMax
+MemUP: 1088			 8		MemMax
+MemUP: 1096			 8		MemMax
+MemUP: 1104			 8		MemMax
+MemUP: 1112			 8		MemMax
+MemUP: 1120			 8		MemMax
+MemUP: 1128			 8		MemMax
+MemUP: 1136			 8		MemMax
+MemUP: 1144			 8		MemMax
+MemUP: 1152			 8		MemMax
+MemUP: 1160			 8		MemMax
+MemUP: 1168			 8		MemMax
+MemUP: 1176			 8		MemMax
+MemUP: 1184			 8		MemMax
+MemUP: 1192			 8		MemMax
+	MemDOWN: 1184		4294967288
+	MemDOWN: 1168		4294967280
+	MemDOWN: 1152		4294967280
+	MemDOWN: 1136		4294967280
+	MemDOWN: 1120		4294967280
+	MemDOWN: 1104		4294967280
+	MemDOWN: 1100		4294967292
+	MemDOWN: 1092		4294967288
+	MemDOWN: 1076		4294967280
+	MemDOWN: 1044		4294967264
+	MemDOWN: 1028		4294967280
+MemUP: 1036			 8
+MemUP: 1044			 8
+MemUP: 1052			 8
+MemUP: 1060			 8
+MemUP: 1068			 8
+MemUP: 1076			 8
+MemUP: 1084			 8
+MemUP: 1092			 8
+MemUP: 1100			 8
+MemUP: 1108			 8
+MemUP: 1116			 8
+MemUP: 1124			 8
+	MemDOWN: 1116		4294967288
+MemUP: 1124			 8
+	MemDOWN: 1116		4294967288
+MemUP: 1124			 8
+MemUP: 1132			 8
+MemUP: 1140			 8
+	MemDOWN: 1132		4294967288
+MemUP: 1140			 8
+	MemDOWN: 1132		4294967288
+MemUP: 1140			 8
+MemUP: 1148			 8
+MemUP: 1156			 8
+MemUP: 1164			 8
+MemUP: 1172			 8
+	MemDOWN: 1164		4294967288
+MemUP: 1172			 8
+	MemDOWN: 1164		4294967288
+MemUP: 1172			 8
+MemUP: 1180			 8
+MemUP: 1188			 8
+	MemDOWN: 1180		4294967288
+MemUP: 1188			 8
+	MemDOWN: 1180		4294967288
+MemUP: 1188			 8
+MemUP: 1196			 8		MemMax
+MemUP: 1204			 8		MemMax
+MemUP: 1212			 8		MemMax
+MemUP: 1220			 8		MemMax
+MemUP: 1228			 8		MemMax
+MemUP: 1236			 8		MemMax
+	MemDOWN: 1228		4294967288
+MemUP: 1236			 8
+	MemDOWN: 1228		4294967288
+MemUP: 1236			 8
+MemUP: 1244			 8		MemMax
+MemUP: 1252			 8		MemMax
+	MemDOWN: 1244		4294967288
+MemUP: 1252			 8
+	MemDOWN: 1244		4294967288
+MemUP: 1252			 8
+MemUP: 1260			 8		MemMax
+MemUP: 1268			 8		MemMax
+MemUP: 1276			 8		MemMax
+MemUP: 1284			 8		MemMax
+	MemDOWN: 1276		4294967288
+MemUP: 1284			 8
+	MemDOWN: 1276		4294967288
+MemUP: 1284			 8
+MemUP: 1292			 8		MemMax
+MemUP: 1300			 8		MemMax
+	MemDOWN: 1292		4294967288
+MemUP: 1300			 8
+	MemDOWN: 1292		4294967288
+	MemDOWN: 1284		4294967288
+	MemDOWN: 1276		4294967288
+	MemDOWN: 1268		4294967288
+	MemDOWN: 1260		4294967288
+	MemDOWN: 1252		4294967288
+	MemDOWN: 1244		4294967288
+	MemDOWN: 1236		4294967288
+	MemDOWN: 1228		4294967288
+	MemDOWN: 1220		4294967288
+	MemDOWN: 1212		4294967288
+	MemDOWN: 1204		4294967288
+	MemDOWN: 1196		4294967288
+	MemDOWN: 1188		4294967288
+	MemDOWN: 1180		4294967288
+	MemDOWN: 1172		4294967288
+	MemDOWN: 1164		4294967288
+	MemDOWN: 1156		4294967288
+	MemDOWN: 1148		4294967288
+	MemDOWN: 1140		4294967288
+	MemDOWN: 1132		4294967288
+	MemDOWN: 1124		4294967288
+	MemDOWN: 1116		4294967288
+	MemDOWN: 1108		4294967288
+	MemDOWN: 1100		4294967288
+	MemDOWN: 1092		4294967288
+	MemDOWN: 1084		4294967288
+	MemDOWN: 1076		4294967288
+	MemDOWN: 1068		4294967288
+	MemDOWN: 1060		4294967288
+	MemDOWN: 1052		4294967288
+	MemDOWN: 1044		4294967288
+	MemDOWN: 1036		4294967288
+	MemDOWN: 1028		4294967288
+
+MemMax: 1300
