@@ -202,7 +202,7 @@ lista* cria_lista()
 
 /** Destrutores  **/
 
-void libera_no_QDD(QDD *Q)
+void libera_QDD_no(QDD *Q)
 {
     diminui_memoria(sizeof(QDD));
     if(iQ == 0)
@@ -315,6 +315,7 @@ lista* enlista_QDD(QDD *Q)
     l = enlista_arvore(Q->n);
     return l;
 }
+
 
 
 /** Mostra  **/
@@ -605,9 +606,27 @@ void libera_QDD(QDD *Q)*/
 
 /** Compara estruturas  **/
 
-/*Short compara_no_meio(no *n1, no *n2)
+Short compara_no_meio_parcial(no *n1, no *n2)
+{
+    if(n1->tipo != Meio||n2->tipo != Meio)
+        return 0;
 
-Short compara_no_fim(no *n1, no *n2)
+    if(n1->at.m.classe == n2->at.m.classe)
+    if(n1->at.m.nivel  == n2->at.m.nivel )
+        return 1;
+    return 0;
+}
+
+Short compara_no_meio_completo(no *n1, no *n2)
+{
+    if(compara_no_meio_parcial(n1,n2))
+    if(n1->at.m.el == n2->at.m.el)
+    if(n1->at.m.th == n2->at.m.th)
+        return 1;
+    return 0;
+}
+
+/*Short compara_no_fim(no *n1, no *n2)
 
 Short compara_zero(no *n)*/
 
@@ -896,6 +915,11 @@ void reduz_QDD(QDD *Q)*/
 
 /**  Operações QDD  **/
 
+no* primeiro_no(QDD *Q)
+{
+    return Q->n->at.i.n;
+}
+
 /*QDD* produto_tensorial(QDD *Q1, QDD *Q2)
 
 QDD* potencia_tensorial(QDD *Q, Short i)
@@ -905,6 +929,85 @@ void produto_por_escalar(QDD *Q, float re, float im)
 QDD* soma_QDD(QDD *Q1, QDD *Q2)
 
 QDD* produto_matriz_matriz(QDD *Q1, QDD *Q2)*/
+
+void completa_conversao_QDD_matriz(no *n, no *nesp, Long i, Long j, Long exp, float **m)
+{
+    no *naux;
+    if(exp == 0)
+    {
+        m[i][2*j]   = n->at.f.re;
+        m[i][2*j+1] = n->at.f.im;
+    }
+    else
+    {
+        if(compara_no_meio_parcial(n,nesp))
+        {
+            switch(n->at.m.classe)
+            {
+                case R:
+                    naux = cria_no_meio(C,n->at.m.nivel);
+                    completa_conversao_QDD_matriz(n->at.m.el,naux,i    ,j,exp,m);
+                    completa_conversao_QDD_matriz(n->at.m.th,naux,i+exp,j,exp,m);
+                    libera_no(naux);
+                    break;
+
+                case C:
+                    naux = cria_no_meio(R,1+n->at.m.nivel);
+                    completa_conversao_QDD_matriz(n->at.m.el,naux,i,j    ,exp/2,m);
+                    completa_conversao_QDD_matriz(n->at.m.th,naux,i,j+exp,exp/2,m);
+                    libera_no(naux);
+                    break;
+            }
+        }
+        else
+        {
+            switch(nesp->at.m.classe)
+            {
+                case R:
+                    naux = cria_no_meio(C,n->at.m.nivel);
+                    completa_conversao_QDD_matriz(n,naux,i,j    ,exp,m);
+                    completa_conversao_QDD_matriz(n,naux,i,j+exp,exp,m);
+                    libera_no(naux);
+                    break;
+
+                case C:
+                    naux = cria_no_meio(R,1+n->at.m.nivel);
+                    completa_conversao_QDD_matriz(n,naux,i+exp,j,exp/2,m);
+                    completa_conversao_QDD_matriz(n,naux,i    ,j,exp/2,m);
+                    libera_no(naux);
+                    break;
+            }
+        }
+    }
+}
+
+float** converte_QDD_matriz(QDD *Q)
+{
+    Long i;
+
+    Long exp;
+    exp = (Long)pow(2,Q->nqbit);
+
+    float **m;
+    m = malloc(exp*sizeof(float*));
+    if(m == NULL)
+        ERRO("CONVERTE QDD MATRIZ M");
+    aumenta_memoria(exp*sizeof(float*));
+    for(i = 0; i < exp; i++)
+    {
+        m[i] = malloc(2*exp*sizeof(float));
+        if(m[i] == NULL)
+            ERRO("CONVERTE QDD MATRIZ M[]");
+        aumenta_memoria(2*exp*sizeof(float));
+    }
+
+    no *naux;
+    naux = cria_no_meio(R,0);
+    completa_conversao_QDD_matriz(primeiro_no(Q),naux,0,0,exp/2,m);
+    libera_no(naux);
+
+    return m;
+}
 
 
 
@@ -1051,11 +1154,11 @@ QDD* CNOT()
     n2 = n5;
     n3 = cria_no_fim(1,0);
     conecta_DOIS(n1,n3,n4);
-    conecta_DOIS(n2,n4,n5);
+    conecta_DOIS(n2,n4,n3);
 
     lista *l1, *l2;
     l1 = cria_lista();
-    l2 =  cria_lista();
+    l2 = cria_lista();
 
     l1->n = n3;
     l1->l = l2;
@@ -1147,8 +1250,19 @@ int main()
     /***********************************/
 
     QDD *Q;
-    Q = le_matriz("V2.txt");
-    mostra_QDD(Q);
+    Q = H_1();
+
+    //mostra_QDD(Q);
+
+    float **m;
+    int q = 2;
+    m = converte_QDD_matriz(Q);
+    for(Long i=0; i<q; i++)
+    {
+        for(Long j=0; j<2*q; j++)
+            printf("%f ",m[i][j]);
+        printf("\n");
+    }
 
     /***********************************/
     finaliza_relatorio_memoria();
