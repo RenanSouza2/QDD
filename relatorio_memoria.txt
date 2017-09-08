@@ -7,21 +7,26 @@ MemUP: 88			 20		MemMax
 MemUP: 96			 8		MemMax
 MemUP: 104			 8		MemMax
 MemUP: 124			 20		MemMax
-MemUP: 132			 8		MemMax
-MemUP: 140			 8		MemMax
-MemUP: 148			 8		MemMax
-MemUP: 156			 8		MemMax
-MemUP: 168			 12		MemMax
-MemUP: 176			 8		MemMax
-MemUP: 192			 16		MemMax
-MemUP: 208			 16		MemMax
-MemUP: 228			 20		MemMax
-MemUP: 248			 20		MemMax
-MemUP: 268			 20		MemMax
-	MemDOWN: 248		4294967276
-MemUP: 268			 20
-	MemDOWN: 248		4294967276
-	MemDOWN: 228		4294967276
-	MemDOWN: 208		4294967276
+MemUP: 144			 20		MemMax
+MemUP: 164			 20		MemMax
+MemUP: 172			 8		MemMax
+MemUP: 180			 8		MemMax
+MemUP: 188			 8		MemMax
+MemUP: 196			 8		MemMax
+MemUP: 204			 8		MemMax
+MemUP: 212			 8		MemMax
+MemUP: 220			 8		MemMax
+MemUP: 232			 12		MemMax
+MemUP: 240			 8		MemMax
+MemUP: 256			 16		MemMax
+MemUP: 272			 16		MemMax
+MemUP: 292			 20		MemMax
+MemUP: 312			 20		MemMax
+MemUP: 332			 20		MemMax
+	MemDOWN: 312		4294967276
+MemUP: 332			 20
+	MemDOWN: 312		4294967276
+	MemDOWN: 292		4294967276
+	MemDOWN: 272		4294967276
 
-MemMax: 268
+MemMax: 332

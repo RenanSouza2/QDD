@@ -11,9 +11,10 @@
 #define R 1
 #define C 2
 
-#define El 1
-#define Th 2
+#define Else 1
+#define Then 2
 
+#define pi 3.1415926535897932384626433832795
 
 
 FILE *fm;
@@ -493,11 +494,11 @@ void conecta_UM(no *n1, no *n2, Short lado)
             n1->at.i.n = n2;
             break;
 
-        case El:
+        case Else:
             n1->at.m.el = n2;
             break;
 
-        case Th:
+        case Then:
             n1->at.m.th = n2;
             break;
     }
@@ -515,8 +516,8 @@ void conecta_DOIS(no *n, no *el, no *th)
     if(n->tipo == Inicio)
         ERRO("INICIO NAO CONECTA DOIS");
 
-    conecta_UM(n,el,El);
-    conecta_UM(n,th,Th);
+    conecta_UM(n,el,Else);
+    conecta_UM(n,th,Then);
 }
 
 Short desconecta_UM(no *n1, no *n2)
@@ -553,12 +554,12 @@ Short desconecta_UM(no *n1, no *n2)
             if(n1->at.m.el == n2)
             {
                 n1->at.m.el = NULL;
-                return El;
+                return Else;
             }
             if(n1->at.m.th == n2)
             {
                 n1->at.m.th = NULL;
-                return Th;
+                return Then;
             }
             ERRO("CONEXAO NAO ANOTADA");
             break;
@@ -583,6 +584,9 @@ void desconecta_DOIS(no *n)
 
 void transfere_conexao(no *n1, no *n2)
 {
+    if(n1 == n2)
+        ERRO("TRANSFERE CONEXAO| NOS IGUAIS");
+
     no *n;
     Short lado;
     while(n2->l != NULL)
@@ -595,12 +599,86 @@ void transfere_conexao(no *n1, no *n2)
 
 
 
-/** Descontrutores de estruturas complexas  **/
+/** Destrutores de estruturas complexas  **/
 
-/*void libera_arvore(no *n)
+void libera_arvore(no *n)
+{
+    if(n->l != NULL)
+        return;
 
-void libera_QDD(QDD *Q)*/
+    lista *l, *laux;
+    l = cria_lista();
+    l->n = n;
 
+    no *naux1, *naux2;
+
+    while(l != NULL)
+    {
+        n = l->n;
+        switch(n->tipo)
+        {
+            case Inicio:
+                naux1 = n->at.i.n;
+                desconecta_DOIS(n);
+                libera_no(n);
+
+                if(naux1->l == NULL)
+                    l->n = naux1;
+                break;
+
+            case Meio:
+                naux1 = n->at.m.el;
+                naux2 = n->at.m.th;
+                desconecta_DOIS(n);
+                libera_no(n);
+
+                if(naux1->l == NULL)
+                {
+                    if(naux2->l == NULL)
+                    {
+                        l->n = naux2;
+                        laux = cria_lista();
+                        laux->n = naux1;
+                        laux->l = l;
+                        l = laux;
+                    }
+                    else
+                    {
+                        l->n = naux1;
+                    }
+                }
+                else
+                {
+                    if(naux2->l == NULL)
+                    {
+                        l->n = naux2;
+                    }
+                    else
+                    {
+                        laux = l->l;
+                        libera_lista_no(l);
+                        l = laux;
+                    }
+                }
+                break;
+
+            case Fim:
+                libera_no(n);
+
+                laux = l->l;
+                libera_lista_no(l);
+                l = laux;
+                break;
+        }
+    }
+}
+
+void libera_QDD(QDD *Q)
+{
+    libera_arvore(Q->n);
+    libera_lista_lista(Q->l);
+    libera_QDD_no(Q);
+}
 
 
 
@@ -619,6 +697,7 @@ Short compara_no_meio_parcial(no *n1, no *n2)
 
 Short compara_no_meio_completo(no *n1, no *n2)
 {
+    if(n1 != n2)
     if(compara_no_meio_parcial(n1,n2))
     if(n1->at.m.el == n2->at.m.el)
     if(n1->at.m.th == n2->at.m.th)
@@ -626,38 +705,295 @@ Short compara_no_meio_completo(no *n1, no *n2)
     return 0;
 }
 
-/*Short compara_no_fim(no *n1, no *n2)
+Short compara_no_fim(no *n1, no *n2)
+{
+    float re, im;
+    re = (n1->at.f.re) - (n2->at.f.re);
+    im = (n1->at.f.im) - (n2->at.f.im);
 
-Short compara_zero(no *n)*/
+    if(re< eps)
+    if(re>-eps)
+    if(im< eps)
+    if(im>-eps)
+        return 1;
+    return 0;
+}
+
+Short compara_no_fim_zero(no *n)
+{
+    if(n->at.f.re< eps)
+    if(n->at.f.re>-eps)
+    if(n->at.f.im< eps)
+    if(n->at.f.im>-eps)
+        return 1;
+    return 0;
+}
+
+
+
+/**  Operações estruturais simples  **/
+
+Long conta_items_lista(lista *l)
+{
+    Long i;
+    i = 0;
+    lista *lc;
+    for(lc = l; lc != NULL; lc = lc->l)
+        i++;
+    return i;
+}
+
+lista* acha_lista_fim_arvore(no *n)
+{
+    lista *l, *lc, *laux;;
+    l =  cria_lista();
+    l->l = enlista_arvore(n);
+
+    for(lc = l; lc->l != NULL; lc = lc->l)
+    {
+        if(lc->l->n->tipo != Fim)
+        {
+            laux = lc->l;
+            lc->l = laux->l;
+            libera_lista_no(laux);
+        }
+    }
+
+    laux = l->l;
+    libera_lista_no(l);
+
+    return laux;
+}
+
+lista* acha_lista_fim_QDD(QDD *Q)
+{
+    lista *l;
+    l = acha_lista_fim_arvore(Q->n);
+    return l;
+}
+
+lista* acha_fim_lista(lista *l)
+{
+    lista *lc;
+    for(lc = l; lc->l != NULL; lc = lc->l);
+    return lc;
+}
+
+void reduz_lista(lista *l)
+{
+    lista *lc1, *lc2, *laux;
+
+    lc1 = l;
+    do
+    {
+        lc2 = lc1;
+        while(lc2->l != NULL)
+        {
+            if(compara_no_fim(lc1->n,lc2->l->n))
+            {
+                laux = lc2->l;
+                lc2->l = laux->l;
+
+                transfere_conexao(lc1->n,laux->n);
+                libera_no(laux->n);
+                libera_lista_no(laux);
+            }
+            else
+            {
+                lc2 = lc2->l;
+            }
+        }
+        lc1 = lc1->l;
+    }
+    while(lc1 != NULL);
+}
 
 
 
 /** Copia estrururas  **/
 
-/*no* copia_no(no *n1)
+no* copia_no(no *n1)
+{
+    no *n2 = NULL;
+    switch(n1->tipo)
+    {
+        case Inicio:
+            n2 = cria_no_inicio(n1->at.i.n);
+            break;
+
+        case Meio:
+            n2 = cria_no_meio(n1->at.m.classe,n1->at.m.nivel);
+            break;
+
+        case Fim:
+            n2 = cria_no_fim(n1->at.f.re,n1->at.f.im);
+            break;
+    }
+    return n2;
+}
 
 lista* copia_lista_com_cabeca(lista *l1)
+{
+    lista *l2, *lc1, *lc2;
+    l2 = cria_lista();
+    lc2 = l2;
+
+    for(lc1 = l1; lc1 != NULL; lc1 = lc1->l)
+    {
+        lc2->l = cria_lista();
+        lc2 = lc2->l;
+        lc2->n = lc1->n;
+    }
+    return l2;
+}
 
 lista* copia_lista_sem_cabeca(lista *l1)
+{
+    lista *l2, *laux;
+    l2 = copia_lista_com_cabeca(l1);
+    laux = l2->l;
+    libera_lista_no(l2);
+    return laux;
+}
 
 no* copia_arvore(no *n)
+{
+    lista *l1, *l2;
+    l1 = enlista_arvore(n);
+    l2 = copia_lista_sem_cabeca(l1);
 
-QDD* copia_QDD(QDD *Q1)*/
+    lista *lc1a, *lc1b, *lc2a, *lc2b;
+    for(lc2a = l2; lc2a != NULL; lc2a = lc2a->l)
+        lc2a->n = copia_no(lc2a->n);
+
+    no *n1, *n2, *nf1, *nf2;
+    lc1a = l1;
+    lc2a = l2;
+    do
+    {
+        n1 = lc1a->n;
+        n2 = lc2a->n;
+
+        switch(n1->tipo)
+        {
+            case Inicio:
+                nf1 = n1->at.i.n;
+
+                lc1b = l1;
+                lc2b = l2;
+                do
+                {
+                    lc1b = lc1b->l;
+                    lc2b = lc2b->l;
+                }
+                while(lc1b->n != nf1);
+                nf2 = lc2b->n;
+                conecta_UM(n2,nf2,Inicio);
+                break;
+
+            case Meio:
+                nf1 = n1->at.m.el;
+
+                lc1b = l1;
+                lc2b = l2;
+                do
+                {
+                    lc1b = lc1b->l;
+                    lc2b = lc2b->l;
+                }
+                while(lc1b->n != nf1);
+                nf2 = lc2b->n;
+                conecta_UM(n2,nf2,Else);
+
+
+                nf1 = n1->at.m.th;
+
+                lc1b = l1;
+                lc2b = l2;
+                do
+                {
+                    lc1b = lc1b->l;
+                    lc2b = lc2b->l;
+                }
+                while(lc1b->n != nf1);
+                nf2 = lc2b->n;
+                conecta_UM(n2,nf2,Then);
+                break;
+        }
+
+        lc1a = lc1a->l;
+        lc2a = lc2a->l;
+    }
+    while(lc1a != NULL);
+
+    n2 = l2->n;
+    libera_lista_lista(l1);
+    libera_lista_lista(l2);
+
+    return n2;
+}
+
+QDD* copia_QDD(QDD *Q1)
+{
+    QDD *Q2;
+    Q2 = cria_QDD(Q1->nqbit);
+
+    Q2->n = copia_arvore(Q1->n);
+    Q2->l = acha_lista_fim_QDD(Q2);
+
+    return Q2;
+}
 
 
 
 
-/** Operações algebricas com estruturas  **/
+/** Operações algebricas com estruturas simples  **/
 
-/*no* soma(no *n1, no *n2)
+no* soma(no *n1, no *n2)
+{
+    no *n;
+    float re, im;
+    re = (n1->at.f.re) - (n2->at.f.re);
+    im = (n1->at.f.im) - (n2->at.f.im);
+    n = cria_no_fim(re,im);
+    return n;
+}
 
 no* produto_no_no(no *n1, no *n2)
+{
+    no *n;
+    float re, im;
+    re = (n1->at.f.re)*(n2->at.f.re) - (n1->at.f.im)*(n2->at.f.im);
+    im = (n1->at.f.re)*(n2->at.f.im) + (n1->at.f.im)*(n2->at.f.re);
+    n = cria_no_fim(re,im);
+    return n;
+}
 
 no* produto_no_no_conjugado(no *n1, no *n2)
+{
+    no *n;
+    float re, im;
+    re = (n1->at.f.re)*(n2->at.f.re) + (n1->at.f.im)*(n2->at.f.im);
+    im = (n1->at.f.re)*(n2->at.f.im) - (n1->at.f.im)*(n2->at.f.re);
+    n = cria_no_fim(re,im);
+    return n;
+}
 
 void produto_no_real(no *n, float re)
+{
+    (n->at.f.re) *= re;
+    (n->at.f.im) *= re;
+}
 
-void produto_arvore_real(no *n, float re)*/
+void produto_arvore_real(no *n, float re)
+{
+    lista *l, *lc;
+    l = enlista_arvore(n);
+    for(lc = l; lc != NULL; lc=  lc->l)
+        if(lc->n->tipo == Fim)
+            produto_no_real(lc->n,re);
+    libera_lista_lista(l);
+}
 
 
 
@@ -743,9 +1079,9 @@ QDD* le_matriz(char *nome)
             if(i>0)
             {
                 if(j%2 == 0)
-                    conecta_UM(nm[i-1][j/2],nm[i][j],El);
+                    conecta_UM(nm[i-1][j/2],nm[i][j],Else);
                 else
-                    conecta_UM(nm[i-1][j/2],nm[i][j],Th);
+                    conecta_UM(nm[i-1][j/2],nm[i][j],Then);
             }
         }
         exp2 *= 2;
@@ -855,9 +1191,9 @@ QDD* le_vetor(char *nome)
             if(i>0)
             {
                 if(j%2 == 0)
-                    conecta_UM(nm[i-1][j/2],nm[i][j],El);
+                    conecta_UM(nm[i-1][j/2],nm[i][j],Else);
                 else
-                    conecta_UM(nm[i-1][j/2],nm[i][j],Th);
+                    conecta_UM(nm[i-1][j/2],nm[i][j],Then);
             }
         }
         exp2 *= 2;
@@ -901,34 +1237,13 @@ QDD* le_vetor(char *nome)
 
 
 
-/**  Opeações estruturais  **/
+/**  apply  */
 
-/*lista* acha_lista_fim_arvore(no *n)
-
-lista* acha_lista_fim_QDD(QDD *Q)
-
-void reduz_lista(lista *l)
-
-void reduz_QDD(QDD *Q)*/
+/*void apply_estrutura(int (*a_regras)())*/
 
 
 
-/**  Operações QDD  **/
-
-no* primeiro_no(QDD *Q)
-{
-    return Q->n->at.i.n;
-}
-
-/*QDD* produto_tensorial(QDD *Q1, QDD *Q2)
-
-QDD* potencia_tensorial(QDD *Q, Short i)
-
-void produto_por_escalar(QDD *Q, float re, float im)
-
-QDD* soma_QDD(QDD *Q1, QDD *Q2)
-
-QDD* produto_matriz_matriz(QDD *Q1, QDD *Q2)*/
+/**  Operações QDD estruturais   **/
 
 void completa_conversao_QDD_matriz(no *n, no *nesp, Long i, Long j, Long exp, float **m)
 {
@@ -965,15 +1280,15 @@ void completa_conversao_QDD_matriz(no *n, no *nesp, Long i, Long j, Long exp, fl
             {
                 case R:
                     naux = cria_no_meio(C,n->at.m.nivel);
-                    completa_conversao_QDD_matriz(n,naux,i,j    ,exp,m);
-                    completa_conversao_QDD_matriz(n,naux,i,j+exp,exp,m);
+                    completa_conversao_QDD_matriz(n,naux,i    ,j,exp,m);
+                    completa_conversao_QDD_matriz(n,naux,i+exp,j,exp,m);
                     libera_no(naux);
                     break;
 
                 case C:
                     naux = cria_no_meio(R,1+n->at.m.nivel);
-                    completa_conversao_QDD_matriz(n,naux,i+exp,j,exp/2,m);
-                    completa_conversao_QDD_matriz(n,naux,i    ,j,exp/2,m);
+                    completa_conversao_QDD_matriz(n,naux,i,j    ,exp/2,m);
+                    completa_conversao_QDD_matriz(n,naux,i,j+exp,exp/2,m);
                     libera_no(naux);
                     break;
             }
@@ -1003,11 +1318,120 @@ float** converte_QDD_matriz(QDD *Q)
 
     no *naux;
     naux = cria_no_meio(R,0);
-    completa_conversao_QDD_matriz(primeiro_no(Q),naux,0,0,exp/2,m);
+    completa_conversao_QDD_matriz(Q->n->at.i.n,naux,0,0,exp/2,m);
     libera_no(naux);
 
     return m;
 }
+
+void reduz_QDD(QDD *Q)
+{
+    lista *l, *lf;
+    reduz_lista(Q->l);
+    l = copia_lista_com_cabeca(Q->l);
+    lf = acha_fim_lista(l);
+
+    no *nc, *n1, *n2;
+    lista *lc, *lnc1, *lnc2, *lr, *lrc;
+    Short del, mudou, saida;
+    while(l->l != NULL)
+    {
+        for(lc = l; lc->l != NULL; lc = lc->l)
+        {
+            nc = lc->l->n;
+            do
+            {
+                mudou = 0;
+                /* Regra 2 */
+                lnc1 = nc->l;
+                do
+                {
+                    n1 = lnc1->n;
+
+                    lnc2 = lnc1->l;
+                    do
+                    {
+                        n2 = lnc2->n;
+                        if(compara_no_meio_completo(n1,n2))
+                        {
+                            lr = cria_lista();
+                            lrc = cria_lista();
+
+                            lr->n = n1;
+                            lr->l = lrc;
+                            lrc->n = n2;
+
+                            lnc2 = lnc2->l;
+                            while(lnc2 != NULL)
+                            {
+                                n2 = lnc2->n;
+                                if(compara_no_meio_completo(n1,n2));
+                                {
+                                    if(n1->at.m.el == n1->at.m.th)
+                                        for(lrc = lr; lrc->l != NULL; lrc = lrc->l)
+                                            if(lrc->l->n == n2)
+                                                break;
+                                    if(lrc->l == NULL)
+                                    {
+                                        lrc->l = cria_lista();
+                                        lrc = lrc->l;
+                                        lrc->n = n2;
+                                    }
+                                }
+                                lnc2 = lnc2->l;
+                            }
+
+                            while(lr->l != NULL)
+                            {
+                                lrc = lr->l;
+                                n2 = lrc->n;
+
+                                transfere_conexao(n1,n2);
+                                desconecta_DOIS(n2);
+                                libera_no(n2);
+
+                                lr->l = lrc->l;
+                                libera_lista_no(lrc);
+                            }
+
+                            if(n1->at.m.el != n1->at.m.th)
+                            {
+                                lf->l = cria_lista();
+                                lf = lf->l;
+                                lf->n = n1;
+                            }
+
+                            mudou = 1;
+                            break;
+                        }
+
+                        lnc2 = lnc2->l;
+                    }
+                    while(lnc2 != NULL);
+                }
+                while(lnc1->l != NULL);
+
+                /* Regra 1 */
+
+            }
+            while(mudou);
+        }
+    }
+}
+
+
+
+/**  Operações QDD algebricas  **/
+
+/*QDD* produto_tensorial(QDD *Q1, QDD *Q2)
+
+QDD* potencia_tensorial(QDD *Q, Short i)
+
+void produto_por_escalar(QDD *Q, float re, float im)
+
+QDD* soma_QDD(QDD *Q1, QDD *Q2)
+
+QDD* produto_matriz_matriz(QDD *Q1, QDD *Q2)*/
 
 
 
@@ -1017,13 +1441,10 @@ QDD* I_1()
 {
     no *ni, *n1, *n2, *n3, *n4;
 
-    n1 = cria_no_inicio();
-    n2 = cria_no_meio(R,0);
-    conecta_UM(n1,n2,Inicio);
+    ni = cria_no_inicio();
+    n1 = cria_no_meio(R,0);
+    conecta_UM(ni,n1,Inicio);
 
-    ni = n1;
-
-    n1 = n2;
     n2 = cria_no_meio(C,0);
     n3 = cria_no_meio(C,0);
     conecta_DOIS(n1,n2,n3);
@@ -1191,7 +1612,7 @@ QDD* Ro(double theta)
     n4 = cria_no_fim(0,0);
     re = cos(theta);
     im = sin(theta);
-    n5 = cria_no_inicio(re,im);
+    n5 = cria_no_fim(re,im);
     conecta_DOIS(n1,n3,n4);
     conecta_DOIS(n2,n4,n5);
 
@@ -1216,6 +1637,7 @@ QDD* Ro(double theta)
 
 
 
+/**  Relatorios e configuração  **/
 
 void inicia_relatorio_memoria(Short i)
 {
@@ -1245,24 +1667,37 @@ void configuracao(Short i)
 
 int main()
 {
-    inicia_relatorio_memoria(1);
+    inicia_relatorio_memoria(0);
     configuracao(20);
     /***********************************/
 
-    QDD *Q;
-    Q = H_1();
+    no *n1, *n2, *n3, *n4, *n5;
+    n1 = cria_no_meio(R,0);
+    n2 = cria_no_fim(1,0);
+    n3 = cria_no_meio(R,0);
+    n4 = cria_no_meio(C,0);
+    n5 = cria_no_meio(C,1);
 
-    //mostra_QDD(Q);
+    conecta_DOIS(n1,n2,n2);
+    conecta_DOIS(n3,n2,n2);
+    conecta_UM(n4,n1,Then);
+    conecta_UM(n5,n3,Else);
 
-    float **m;
-    int q = 2;
-    m = converte_QDD_matriz(Q);
-    for(Long i=0; i<q; i++)
-    {
-        for(Long j=0; j<2*q; j++)
-            printf("%f ",m[i][j]);
-        printf("\n");
-    }
+    mostra_no(n1);
+    mostra_no(n2);
+    mostra_no(n3);
+    mostra_no(n4);
+    mostra_no(n5);
+
+    transfere_conexao(n1,n3);
+    desconecta_DOIS(n3);
+
+    printf("\nDEPOIS");
+    mostra_no(n1);
+    mostra_no(n2);
+    mostra_no(n3);
+    mostra_no(n4);
+    mostra_no(n5);
 
     /***********************************/
     finaliza_relatorio_memoria();
