@@ -686,9 +686,8 @@ void libera_QDD(QDD *Q)
 
 Short compara_no_meio_parcial(no *n1, no *n2)
 {
-    if(n1->tipo != Meio||n2->tipo != Meio)
-        return 0;
-
+    if(n1->tipo == Meio)
+    if(n2->tipo == Meio)
     if(n1->at.m.classe == n2->at.m.classe)
     if(n1->at.m.nivel  == n2->at.m.nivel )
         return 1;
@@ -707,6 +706,9 @@ Short compara_no_meio_completo(no *n1, no *n2)
 
 Short compara_no_fim(no *n1, no *n2)
 {
+    if(n1->tipo != Fim||n2->tipo != Fim)
+        ERRO("COMPARA NO FIM| TIPO DE NO ERRADO");
+
     float re, im;
     re = (n1->at.f.re) - (n2->at.f.re);
     im = (n1->at.f.im) - (n2->at.f.im);
@@ -721,6 +723,9 @@ Short compara_no_fim(no *n1, no *n2)
 
 Short compara_no_fim_zero(no *n)
 {
+    if(n->tipo != Fim)
+        ERRO("COMPARA NO FIM ZERO| TIPO DE NO ERRADO");
+
     if(n->at.f.re< eps)
     if(n->at.f.re>-eps)
     if(n->at.f.im< eps)
@@ -779,7 +784,7 @@ lista* acha_fim_lista(lista *l)
     return lc;
 }
 
-void reduz_lista(lista *l)
+void reduz_lista_fim(lista *l)
 {
     lista *lc1, *lc2, *laux;
 
@@ -887,6 +892,7 @@ no* copia_arvore(no *n)
                     lc2b = lc2b->l;
                 }
                 while(lc1b->n != nf1);
+
                 nf2 = lc2b->n;
                 conecta_UM(n2,nf2,Inicio);
                 break;
@@ -902,6 +908,7 @@ no* copia_arvore(no *n)
                     lc2b = lc2b->l;
                 }
                 while(lc1b->n != nf1);
+
                 nf2 = lc2b->n;
                 conecta_UM(n2,nf2,Else);
 
@@ -916,6 +923,7 @@ no* copia_arvore(no *n)
                     lc2b = lc2b->l;
                 }
                 while(lc1b->n != nf1);
+
                 nf2 = lc2b->n;
                 conecta_UM(n2,nf2,Then);
                 break;
@@ -953,8 +961,8 @@ no* soma(no *n1, no *n2)
 {
     no *n;
     float re, im;
-    re = (n1->at.f.re) - (n2->at.f.re);
-    im = (n1->at.f.im) - (n2->at.f.im);
+    re = (n1->at.f.re) + (n2->at.f.re);
+    im = (n1->at.f.im) + (n2->at.f.im);
     n = cria_no_fim(re,im);
     return n;
 }
@@ -1324,100 +1332,6 @@ float** converte_QDD_matriz(QDD *Q)
     return m;
 }
 
-void reduz_QDD(QDD *Q)
-{
-    lista *l, *lf;
-    reduz_lista(Q->l);
-    l = copia_lista_com_cabeca(Q->l);
-    lf = acha_fim_lista(l);
-
-    no *nc, *n1, *n2;
-    lista *lc, *lnc1, *lnc2, *lr, *lrc;
-    Short del, mudou, saida;
-    while(l->l != NULL)
-    {
-        for(lc = l; lc->l != NULL; lc = lc->l)
-        {
-            nc = lc->l->n;
-            do
-            {
-                mudou = 0;
-                /* Regra 2 */
-                lnc1 = nc->l;
-                do
-                {
-                    n1 = lnc1->n;
-
-                    lnc2 = lnc1->l;
-                    do
-                    {
-                        n2 = lnc2->n;
-                        if(compara_no_meio_completo(n1,n2))
-                        {
-                            lr = cria_lista();
-                            lrc = cria_lista();
-
-                            lr->n = n1;
-                            lr->l = lrc;
-                            lrc->n = n2;
-
-                            lnc2 = lnc2->l;
-                            while(lnc2 != NULL)
-                            {
-                                n2 = lnc2->n;
-                                if(compara_no_meio_completo(n1,n2));
-                                {
-                                    if(n1->at.m.el == n1->at.m.th)
-                                        for(lrc = lr; lrc->l != NULL; lrc = lrc->l)
-                                            if(lrc->l->n == n2)
-                                                break;
-                                    if(lrc->l == NULL)
-                                    {
-                                        lrc->l = cria_lista();
-                                        lrc = lrc->l;
-                                        lrc->n = n2;
-                                    }
-                                }
-                                lnc2 = lnc2->l;
-                            }
-
-                            while(lr->l != NULL)
-                            {
-                                lrc = lr->l;
-                                n2 = lrc->n;
-
-                                transfere_conexao(n1,n2);
-                                desconecta_DOIS(n2);
-                                libera_no(n2);
-
-                                lr->l = lrc->l;
-                                libera_lista_no(lrc);
-                            }
-
-                            if(n1->at.m.el != n1->at.m.th)
-                            {
-                                lf->l = cria_lista();
-                                lf = lf->l;
-                                lf->n = n1;
-                            }
-
-                            mudou = 1;
-                            break;
-                        }
-
-                        lnc2 = lnc2->l;
-                    }
-                    while(lnc2 != NULL);
-                }
-                while(lnc1->l != NULL);
-
-                /* Regra 1 */
-
-            }
-            while(mudou);
-        }
-    }
-}
 
 
 
