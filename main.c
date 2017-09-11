@@ -2,6 +2,7 @@
 #include<stdlib.h>
 #include<math.h>
 #include<time.h>
+#include<string.h>
 
 #define Inicio 0
 #define Meio 1
@@ -17,8 +18,9 @@
 #define pi 3.1415926535897932384626433832795
 
 
+
 FILE *fm;
-unsigned long mem = 0, memMax = 0, iQ = 0, ii = 0, iM = 0, ifi = 0, il = 0, ia = 0, ic = 0, is = 0;
+unsigned long mem = 0, memMax = 0, iQ = 0, iI = 0, iM = 0, iF = 0, iL = 0;
 unsigned short print, nqbit;
 float eps;
 
@@ -108,7 +110,7 @@ void diminui_memoria(Long m)
     if(m<=mem)
         mem -= m;
     if(print)
-        fprintf(fm,"\n\tMemDOWN: %d\t\t%u",mem,-m);
+        fprintf(fm,"\n\tMemDOWN: %d\t\t-%u",mem,m);
 }
 
 
@@ -137,7 +139,7 @@ no* cria_no_inicio()
     if(n == NULL)
         ERRO("INICIO");
     aumenta_memoria(sizeof(no));
-    ii++;
+    iI++;
 
     n->tipo = Inicio;
     n->l = NULL;
@@ -174,7 +176,7 @@ no* cria_no_fim(float re,float im)
     if(n == NULL)
         ERRO("FIM");
     aumenta_memoria(sizeof(no));
-    ifi++;
+    iF++;
 
     n->tipo = Fim;
     n->l = NULL;
@@ -192,7 +194,7 @@ lista* cria_lista()
     if(l == NULL)
         ERRO("LISTA");
     aumenta_memoria(sizeof(lista));
-    il++;
+    iL++;
 
     l->l = NULL;
     l->n = NULL;
@@ -218,9 +220,9 @@ void libera_no(no *n)
     switch(n->tipo)
     {
         case Inicio:
-        if(ii == 0)
+        if(iI == 0)
             ERRO("LIBERA INICIO");
-        ii--;
+        iI--;
         break;
 
         case Meio:
@@ -230,9 +232,9 @@ void libera_no(no *n)
         break;
 
         case Fim:
-        if(ifi == 0)
+        if(iF == 0)
             ERRO("LIBERA FIM");
-        ifi--;
+        iF--;
         break;
     }
     free(n);
@@ -241,9 +243,9 @@ void libera_no(no *n)
 void libera_lista_no(lista *l)
 {
     diminui_memoria(sizeof(lista));
-    if(il == 0)
+    if(iL == 0)
         ERRO("LIBERA LISTA");
-    il--;
+    iL--;
     free(l);
 }
 
@@ -433,35 +435,25 @@ void mostra_quantidades()
         vazio = 0;
         printf("\nQDD: %d",iQ);
     }
-    if(ii != 0)
+    if(iI != 0)
     {
         vazio = 0;
-        printf("\ni:   %d",ii);
+        printf("\ni:   %d",iI);
     }
     if(iM != 0)
     {
         vazio = 0;
         printf("\nm:   %d",iM);
     }
-    if(ifi != 0)
+    if(iF != 0)
     {
         vazio = 0;
-        printf("\nf:   %d",ifi);
+        printf("\nf:   %d",iF);
     }
-    if(il != 0)
+    if(iL != 0)
     {
         vazio = 0;
-        printf("\nl:   %d",il);
-    }
-    if(ia != 0)
-    {
-        vazio = 0;
-        printf("\na:   %d",ia);
-    }
-    if(ic != 0)
-    {
-        vazio = 0;
-        printf("\nc:   %d",ic);
+        printf("\nl:   %d",iL);
     }
     if(vazio)
         printf("\nTUDO ZERADO");
@@ -1062,6 +1054,7 @@ QDD* le_matriz(char *nome)
             nf[i][j] = cria_no_fim(re,im);
         }
     }
+    fclose(fp);
 
     no ***nm;
     nm = malloc(2*N*sizeof(no**));
@@ -1176,6 +1169,7 @@ QDD* le_vetor(char *nome)
         fscanf(fp,"%f",&im);
         nf[i] = cria_no_fim(re,im);
     }
+    fclose(fp);
 
     no ***nm;
     nm = malloc(N*sizeof(no**));
@@ -1330,6 +1324,131 @@ float** converte_QDD_matriz(QDD *Q)
     libera_no(naux);
 
     return m;
+}
+
+void reduz_QDD(QDD *Q)
+{
+    reduz_lista_fim(Q->l);
+    lista *l, *lf;
+    l = copia_lista_sem_cabeca(Q->l);
+    lf = acha_fim_lista(l);
+
+    no *nc, *n1, *n2;
+    lista *lnc1, *lnc2, *lr, *lrc;
+    Short mudou;
+    while(l != NULL)
+    {
+        nc = l->n;
+
+        /* Regra 1 */
+        do
+        {
+            mudou = 0;
+
+
+            n1 = nc->l->n;
+            if(n1->tipo == Inicio)
+                break;
+
+            while(n1->at.m.el == n1->at.m.th)
+            {
+                desconecta_DOIS(n1);
+                transfere_conexao(nc,n1);
+                libera_no(n1);
+                n1 = nc->l->n;
+            }
+
+            lnc1 = nc->l;
+            lnc2 = nc->l;
+            do
+            {
+                n1 = lnc1->n;
+                if(n1->at.m.el == n1->at.m.th)
+                {
+                    mudou = 1;
+                    desconecta_DOIS(n1);
+                    transfere_conexao(nc,n1);
+                    libera_no(n1);
+                    lnc1 = lnc2->l;
+                }
+                else
+                {
+                    lnc2 = lnc1;
+                    lnc1 = lnc1->l;
+                }
+            }
+            while(lnc1 != NULL);
+        }
+        while(mudou);
+
+        /* Regra 2 */
+        lnc1 = nc->l;
+        while(lnc1->l != NULL)
+        {
+            n1 = lnc1->n;
+
+            lnc2 = lnc1->l;
+            while(lnc2 != NULL)
+            {
+                n2 = lnc2->n;
+
+                if(compara_no_meio_completo(n1,n2))
+                {
+                    lr = cria_lista();
+                    lrc = cria_lista();
+
+                    lr->n = n1;
+                    lr->l = lrc;
+                    lrc->n = n2;
+
+                    while(lnc2->l != NULL)
+                    {
+                        lnc2 = lnc2->l;
+
+                        n2 = lnc2->n;
+                        if(compara_no_meio_completo(n1,n2))
+                        {
+                            lrc->l = cria_lista();
+                            lrc = lrc->l;
+                            lrc->n = n2;
+                        }
+                    }
+
+                    while(lr->l != NULL)
+                    {
+                        lrc = lr->l;
+                        n2 = lrc->n;
+
+                        desconecta_DOIS(n2);
+                        transfere_conexao(n1,n2);
+
+                        lr->l = lrc->l;
+
+                        libera_no(n2);
+                        libera_lista_no(lrc);
+                    }
+                    libera_lista_no(lr);
+
+                    lf->l = cria_lista();
+                    lf = lf->l;
+                    lf->n = n1;
+
+                    break;
+                }
+                else
+                {
+                    lnc2 = lnc2->l;
+                }
+            }
+            if(lnc1->l == NULL)
+                break;
+            lnc1 = lnc1->l;
+        }
+
+        lnc1 = l->l;
+        free(l);
+        l = lnc1;
+    }
 }
 
 
@@ -1551,6 +1670,96 @@ QDD* Ro(double theta)
 
 
 
+/**  Testes  **/
+
+void imprime_numero_csv(FILE *fp, double numero, Short precisao)
+{
+    int antes, depois;
+    antes = numero;
+    numero -= antes;
+
+    int potencia;
+    potencia = pow(10,precisao);
+    numero *= potencia;
+    depois = numero;
+
+    fprintf(fp,"%d,",antes);
+    while(potencia > 1)
+    {
+        potencia /= 10;
+        if(depois < potencia)
+        {
+            fprintf(fp,"0");
+        }
+        else
+        {
+            fprintf(fp,"%d",depois);
+            break;
+        }
+    }
+}
+
+void teste_velocidade_base(char *nomeI, Short limiteinf, Short limitesup, QDD* (*func)(char*))
+{
+    FILE *fp;
+    fp = fopen("RelatorioVelocidade.csv","w");
+    fprintf(fp,"sep=-\n");
+
+    int i, j;
+    float total;
+    char nome[10];
+    time_t antes, depois;
+    for(i=limiteinf; i<limitesup; i++)
+    {
+        nome[0] = '\0';
+        strcpy(nome,nomeI);
+        sprintf(nome,"%s%d.txt",nomeI,i);
+        printf("\n\n\nTestando: %s",nome);
+
+        QDD *Q;
+        Q = func(nome);
+        mostra_quantidades();
+        fprintf(fp,"%d-%d-%d-%d-",mem,iM,iF,iL);
+        reduz_QDD(Q);
+        printf("\n");
+        mostra_quantidades();
+        fprintf(fp,"%d-%d-%d-%d-",mem,iM,iF,iL);
+        printf("\n");
+
+        for(j=0; j<10; j++)
+        {
+            printf("\nTeste %d: ",j);
+
+            Q = func(nome);
+            antes = clock();
+            reduz_QDD(Q);
+            depois = clock();
+            total = (float)(depois-antes)/CLOCKS_PER_SEC;
+            imprime_numero_csv(fp,total,3);
+            fprintf(fp,"-");
+            printf("%.3f",total);
+        }
+        fprintf(fp,"\n");
+    }
+    fclose(fp);
+}
+
+void teste_velocidade_matriz(char *nomeI, Short limiteinf, Short limitesup)
+{
+    QDD* (*func)(char*);
+    func = le_matriz;
+    teste_velocidade_base(nomeI,limiteinf,limitesup,func);
+}
+
+void teste_velocidade_vetor(char *nomeI, Short limiteinf, Short limitesup)
+{
+    QDD* (*func)(char*);
+    func = le_vetor;
+    teste_velocidade_base(nomeI,limiteinf,limitesup,func);
+}
+
+
+
 /**  Relatorios e configuração  **/
 
 void inicia_relatorio_memoria(Short i)
@@ -1585,33 +1794,7 @@ int main()
     configuracao(20);
     /***********************************/
 
-    no *n1, *n2, *n3, *n4, *n5;
-    n1 = cria_no_meio(R,0);
-    n2 = cria_no_fim(1,0);
-    n3 = cria_no_meio(R,0);
-    n4 = cria_no_meio(C,0);
-    n5 = cria_no_meio(C,1);
-
-    conecta_DOIS(n1,n2,n2);
-    conecta_DOIS(n3,n2,n2);
-    conecta_UM(n4,n1,Then);
-    conecta_UM(n5,n3,Else);
-
-    mostra_no(n1);
-    mostra_no(n2);
-    mostra_no(n3);
-    mostra_no(n4);
-    mostra_no(n5);
-
-    transfere_conexao(n1,n3);
-    desconecta_DOIS(n3);
-
-    printf("\nDEPOIS");
-    mostra_no(n1);
-    mostra_no(n2);
-    mostra_no(n3);
-    mostra_no(n4);
-    mostra_no(n5);
+    teste_velocidade_matriz("H",1,10);
 
     /***********************************/
     finaliza_relatorio_memoria();
