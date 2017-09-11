@@ -218,6 +218,20 @@ void libera_no(no *n)
 {
     if(n->l != NULL)
         ERRO("LIBERA NO| NO DEVERIA ESTAR DESCONECTADO");
+    switch(n->tipo)
+    {
+        case Inicio:
+            if(n->at.i.n != NULL)
+                ERRO("LIBERA NO| NO INICIO AINDA CONECTADO");
+            break;
+
+        case Meio:
+            if(n->at.m.el != NULL)
+                ERRO("LIBERA NO| NO MEIO AINDA CONECTADO EL");
+            if(n->at.m.th != NULL)
+                ERRO("LIBERA NO| NO MEIO AINDA CONECTADO TH");
+            break;
+    }
 
     diminui_memoria(sizeof(no));
     switch(n->tipo)
@@ -269,6 +283,9 @@ void libera_lista_lista(lista *l)
 
 lista* enlista_arvore(no *n)
 {
+    if(n == NULL)
+        ERRO("ENLISTA ARVORE| ARVORE VAZIA");
+
     lista *la, *l, *laux;
 
     l = cria_lista();
@@ -290,15 +307,21 @@ lista* enlista_arvore(no *n)
             {
                 case Inicio:
                     la->n = n->at.i.n;
+                    if(la->n == NULL)
+                            ERRO("ENISTA ARVORE| ARVORE DESCONEXA 1");
                     break;
 
                 case Meio:
                     la->n = n->at.m.th;
+                    if(la->n == NULL)
+                            ERRO("ENISTA ARVORE| ARVORE DESCONEXA 2");
 
                     laux = cria_lista();
                     laux->n = n->at.m.el;
                     laux->l = la;
                     la = laux;
+                    if(la->n == NULL)
+                            ERRO("ENISTA ARVORE| ARVORE DESCONEXA 3");
                     break;
             }
         }
@@ -784,6 +807,9 @@ lista* acha_lista_fim_QDD(QDD *Q)
 
 lista* acha_fim_lista(lista *l)
 {
+    if(l == NULL)
+        ERRO("ACHA FIM LISTA| LISTA VAZIA");
+
     lista *lc;
     for(lc = l; lc->l != NULL; lc = lc->l);
     return lc;
@@ -956,7 +982,6 @@ QDD* copia_QDD(QDD *Q1)
 
     return Q2;
 }
-
 
 
 
@@ -1252,12 +1277,6 @@ QDD* le_vetor(char *nome)
 
 
 
-/**  apply  */
-
-/*void apply_estrutura(int (*a_regras)())*/
-
-
-
 /**  Operações QDD estruturais   **/
 
 void completa_conversao_QDD_matriz(no *n, no *nesp, Long i, Long j, Long exp, float **m)
@@ -1265,8 +1284,10 @@ void completa_conversao_QDD_matriz(no *n, no *nesp, Long i, Long j, Long exp, fl
     no *naux;
     if(exp == 0)
     {
+        mostra_no(n);
         m[i][2*j]   = n->at.f.re;
         m[i][2*j+1] = n->at.f.im;
+        printf("m[%d][%d]: %f\tm[%d][%d]: %f\n",i,2*j,m[i][2*j],i,2*j+1,m[i][2*j+1]);
     }
     else
     {
@@ -1468,6 +1489,21 @@ void reduz_QDD(QDD *Q)
 
 /**  Operações QDD algebricas  **/
 
+void produto_QDD_escalar(QDD *Q, float re, float im)
+{
+    no *n1, *n2, *n3;
+    n1 = cria_no_fim(re,im);
+    lista *l;
+    for(l = Q->l; l != NULL; l = l->l)
+    {
+        n2 = l->n;
+        n3 = produto_no_no(n1,n2);
+        transfere_conexao(n3,n2);
+        libera_no(n2);
+        l->n = n3;
+    }
+}
+
 QDD* produto_tensorial(QDD *Q1, QDD *Q2)
 {
     Short nqbit1, nqbit2;
@@ -1475,12 +1511,12 @@ QDD* produto_tensorial(QDD *Q1, QDD *Q2)
     nqbit2 = Q2->nqbit;
 
     QDD *Q;
+    lista *l;
     Q = copia_QDD(Q1);
     Q->nqbit = nqbit1 + nqbit2;
 
-    mostra_no(Q->n);
-    QDD *Q2a, *Q2b;
-    lista *l, *lc;
+    QDD *Q2a;
+    lista *lc;
     Q2a = copia_QDD(Q2);
     l = enlista_QDD(Q2a);
     for(lc = l; lc != NULL; lc = lc->l)
@@ -1488,64 +1524,70 @@ QDD* produto_tensorial(QDD *Q1, QDD *Q2)
             (lc->n->at.m.nivel) += nqbit1;
     libera_lista_lista(l);
 
+    QDD *Q2b;
     no *n1, *n2, *n3;
-    lista *lQ, *lf;
+    lista *lf;
     l = Q->l;
-    lQ = NULL;
+    Q->l = NULL;
     while(l != NULL)
     {
-        Q2b = copia_QDD(Q2a);
         n1 = l->n;
-
-        /* Adequa as amplitudes de Q2b */
-        for(lc = Q2b->l; lc != NULL; lc = lc->l)
+        if(compara_no_fim_zero(n1))
         {
-            n2 = lc->n;
-            n3 = produto_no_no(n1,n2);
-            transfere_conexao(n3,n2);
-            lc->n = n3;
+            lc = l->l;
 
-            libera_no(n2);
+            l->l = Q->l;
+            Q->l = l;
+            l = lc;
         }
+        else
+        {
+            Q2b = copia_QDD(Q2a);
+            produto_QDD_escalar(Q2b,n1->at.f.re,n1->at.f.im);
 
-        /* Adiciona as amplitudes na lista final */
-        lf = acha_fim_lista(Q2b->l);
-        lf->l = lQ;
-        lQ = Q2b->l;
+            lf = acha_fim_lista(Q2b->l);
+            lf->l = Q->l;
+            Q->l = Q2b->l;
 
-        /* Desconecta o no inicio */
-        n3 = Q2b->n;
-        if(n3->tipo != Inicio)
-            ERRO("PRODUTO TENSORIAL| NO DEVERIA SER INICIO");
-        n2 = n3->at.i.n;
-        desconecta_DOIS(n3);
-        libera_no(n3);
+            n3 = Q2b->n;
+            if(n3->tipo != Inicio)
+                ERRO("PRODUTO TENSORIAL| NO DEVERIA SER INICIO");
+            n2 = n3->at.i.n;
+            desconecta_DOIS(n3);
+            libera_no(n3);
 
-        if(n2->l != NULL)
-            ERRO("PRODUTO TENSORIAL| NO DEVERIA ESTAR DESCONECTADO");
+            transfere_conexao(n2,n1);
+            libera_no(n1);
+            libera_QDD_no(Q2b);
 
-        /* conecta o no em Q*/
-        transfere_conexao(n2,n1);
-        libera_no(n1);
-
-        /* passa para o proximo */
-        libera_QDD_no(Q);
-
-        lc = l->l;
-        libera_lista_no(l);
-        l = lc;
+            lc = l->l;
+            libera_lista_no(l);
+            l = lc;
+        }
     }
-    Q->l = lQ;
-    mostra_no(Q->n);
-    //mostra_QDD(Q);
+    libera_QDD(Q2a);
 
+    reduz_QDD(Q);
+    return Q;
 }
 
-/*QDD* potencia_tensorial(QDD *Q, Short i)
+QDD* potencia_tensorial(QDD *Q, Short i)
+{
+    QDD *Qf, *Qaux;
+    Qf = copia_QDD(Q);
 
-void produto_por_escalar(QDD *Q, float re, float im)
+    Short j;
+    for(j=1; j<i; j++)
+    {
+        Qaux = produto_tensorial(Qf,Q);
+        libera_QDD(Qf);
+        Qf = Qaux;
+    }
+    return Qf;
+}
 
-QDD* soma_QDD(QDD *Q1, QDD *Q2)
+
+/*QDD* soma_QDD(QDD *Q1, QDD *Q2)
 
 QDD* produto_matriz_matriz(QDD *Q1, QDD *Q2)*/
 
@@ -1759,7 +1801,7 @@ void inicia_relatorio_memoria(Short i)
 {
     print = i;
     if(print)
-    fm = fopen("relatorio_memoria.txt","w");
+        fm = fopen("relatorio_memoria.txt","w");
 }
 
 void finaliza_relatorio_memoria()
@@ -1877,14 +1919,28 @@ void teste_velocidade_vetor(char *nomeI, Short limiteinf, Short limitesup, Short
 
 int main()
 {
-    inicia_relatorio_memoria(0);
+    inicia_relatorio_memoria(1);
     configuracao(20);
     /***********************************/
 
     QDD *Q1, *Q2;
-    Q1 = H_1();
-    Q2 = H_1();
-    produto_tensorial(Q1,Q2);
+    Q1 = I_1();
+    Q2 = potencia_tensorial(Q1,3);
+
+    mostra_QDD(Q2);
+
+    float **m;
+    m = converte_QDD_matriz(Q2);
+    int i, j;
+    for(i=0; i<8; i++)
+    {
+        for(j=0; j<16; j++)
+            printf("m[%d][%d]: %d\n",i,j,m[i][j]);
+        printf("\n");
+    }
+
+    libera_QDD(Q1);
+    libera_QDD(Q2);
 
     /***********************************/
     finaliza_relatorio_memoria();
