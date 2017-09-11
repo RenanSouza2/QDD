@@ -216,6 +216,9 @@ void libera_QDD_no(QDD *Q)
 
 void libera_no(no *n)
 {
+    if(n->l != NULL)
+        ERRO("LIBERA NO| NO DEVERIA ESTAR DESCONECTADO");
+
     diminui_memoria(sizeof(no));
     switch(n->tipo)
     {
@@ -332,6 +335,8 @@ void mostra_lista(lista *l)
     {
         printf("\tLigacao %u: %d\n",ligacao,lc->n);
         ligacao++;
+        if(ligacao == 20)
+            break;
     }
 }
 
@@ -746,15 +751,23 @@ lista* acha_lista_fim_arvore(no *n)
     l =  cria_lista();
     l->l = enlista_arvore(n);
 
-    for(lc = l; lc->l != NULL; lc = lc->l)
+    lc = l;
+    do
     {
         if(lc->l->n->tipo != Fim)
         {
             laux = lc->l;
             lc->l = laux->l;
             libera_lista_no(laux);
+            if(lc == NULL)
+                break;
+        }
+        else
+        {
+            lc = lc->l;
         }
     }
+    while(lc->l != NULL);
 
     laux = l->l;
     libera_lista_no(l);
@@ -1446,19 +1459,89 @@ void reduz_QDD(QDD *Q)
         }
 
         lnc1 = l->l;
-        free(l);
+        libera_lista_no(l);
         l = lnc1;
     }
 }
 
 
 
-
 /**  Operações QDD algebricas  **/
 
-/*QDD* produto_tensorial(QDD *Q1, QDD *Q2)
+QDD* produto_tensorial(QDD *Q1, QDD *Q2)
+{
+    Short nqbit1, nqbit2;
+    nqbit1 = Q1->nqbit;
+    nqbit2 = Q2->nqbit;
 
-QDD* potencia_tensorial(QDD *Q, Short i)
+    QDD *Q;
+    Q = copia_QDD(Q1);
+    Q->nqbit = nqbit1 + nqbit2;
+
+    mostra_no(Q->n);
+    QDD *Q2a, *Q2b;
+    lista *l, *lc;
+    Q2a = copia_QDD(Q2);
+    l = enlista_QDD(Q2a);
+    for(lc = l; lc != NULL; lc = lc->l)
+        if(lc->n->tipo == Meio)
+            (lc->n->at.m.nivel) += nqbit1;
+    libera_lista_lista(l);
+
+    no *n1, *n2, *n3;
+    lista *lQ, *lf;
+    l = Q->l;
+    lQ = NULL;
+    while(l != NULL)
+    {
+        Q2b = copia_QDD(Q2a);
+        n1 = l->n;
+
+        /* Adequa as amplitudes de Q2b */
+        for(lc = Q2b->l; lc != NULL; lc = lc->l)
+        {
+            n2 = lc->n;
+            n3 = produto_no_no(n1,n2);
+            transfere_conexao(n3,n2);
+            lc->n = n3;
+
+            libera_no(n2);
+        }
+
+        /* Adiciona as amplitudes na lista final */
+        lf = acha_fim_lista(Q2b->l);
+        lf->l = lQ;
+        lQ = Q2b->l;
+
+        /* Desconecta o no inicio */
+        n3 = Q2b->n;
+        if(n3->tipo != Inicio)
+            ERRO("PRODUTO TENSORIAL| NO DEVERIA SER INICIO");
+        n2 = n3->at.i.n;
+        desconecta_DOIS(n3);
+        libera_no(n3);
+
+        if(n2->l != NULL)
+            ERRO("PRODUTO TENSORIAL| NO DEVERIA ESTAR DESCONECTADO");
+
+        /* conecta o no em Q*/
+        transfere_conexao(n2,n1);
+        libera_no(n1);
+
+        /* passa para o proximo */
+        libera_QDD_no(Q);
+
+        lc = l->l;
+        libera_lista_no(l);
+        l = lc;
+    }
+    Q->l = lQ;
+    mostra_no(Q->n);
+    //mostra_QDD(Q);
+
+}
+
+/*QDD* potencia_tensorial(QDD *Q, Short i)
 
 void produto_por_escalar(QDD *Q, float re, float im)
 
@@ -1670,6 +1753,34 @@ QDD* Ro(double theta)
 
 
 
+/**  Relatorios e configuração  **/
+
+void inicia_relatorio_memoria(Short i)
+{
+    print = i;
+    if(print)
+    fm = fopen("relatorio_memoria.txt","w");
+}
+
+void finaliza_relatorio_memoria()
+{
+    printf("\n\nMemMax  : %d",memMax);
+    printf("\nMemFinal: %d",mem);
+    if(print)
+    {
+        fprintf(fm,"\n\nMemMax: %d",memMax);
+        fclose(fm);
+    }
+}
+
+void configuracao(Short i)
+{
+    nqbit = i;
+    eps = pow(2,-(i/2.0))/20;
+}
+
+
+
 /**  Testes  **/
 
 void imprime_numero_csv(FILE *fp, double numero, Short precisao)
@@ -1699,7 +1810,7 @@ void imprime_numero_csv(FILE *fp, double numero, Short precisao)
     }
 }
 
-void teste_velocidade_base(char *nomeI, Short limiteinf, Short limitesup, QDD* (*func)(char*))
+void teste_velocidade_base(char *nomeI, Short limiteinf, Short limitesup, Short quantidade, QDD* (*func)(char*))
 {
     FILE *fp;
     fp = fopen("RelatorioVelocidade.csv","w");
@@ -1709,12 +1820,13 @@ void teste_velocidade_base(char *nomeI, Short limiteinf, Short limitesup, QDD* (
     float total;
     char nome[10];
     time_t antes, depois;
-    for(i=limiteinf; i<limitesup; i++)
+    for(i=limiteinf; i<=limitesup; i++)
     {
         nome[0] = '\0';
         strcpy(nome,nomeI);
         sprintf(nome,"%s%d.txt",nomeI,i);
         printf("\n\n\nTestando: %s",nome);
+        configuracao(i);
 
         QDD *Q;
         Q = func(nome);
@@ -1725,8 +1837,9 @@ void teste_velocidade_base(char *nomeI, Short limiteinf, Short limitesup, QDD* (
         mostra_quantidades();
         fprintf(fp,"%d-%d-%d-%d-",mem,iM,iF,iL);
         printf("\n");
+        libera_QDD(Q);
 
-        for(j=0; j<10; j++)
+        for(j=1; j<=quantidade; j++)
         {
             printf("\nTeste %d: ",j);
 
@@ -1734,6 +1847,8 @@ void teste_velocidade_base(char *nomeI, Short limiteinf, Short limitesup, QDD* (
             antes = clock();
             reduz_QDD(Q);
             depois = clock();
+            libera_QDD(Q);
+
             total = (float)(depois-antes)/CLOCKS_PER_SEC;
             imprime_numero_csv(fp,total,3);
             fprintf(fp,"-");
@@ -1744,46 +1859,18 @@ void teste_velocidade_base(char *nomeI, Short limiteinf, Short limitesup, QDD* (
     fclose(fp);
 }
 
-void teste_velocidade_matriz(char *nomeI, Short limiteinf, Short limitesup)
+void teste_velocidade_matriz(char *nomeI, Short limiteinf, Short limitesup, Short quantidade)
 {
     QDD* (*func)(char*);
     func = le_matriz;
-    teste_velocidade_base(nomeI,limiteinf,limitesup,func);
+    teste_velocidade_base(nomeI,limiteinf,limitesup,quantidade,func);
 }
 
-void teste_velocidade_vetor(char *nomeI, Short limiteinf, Short limitesup)
+void teste_velocidade_vetor(char *nomeI, Short limiteinf, Short limitesup, Short quantidade)
 {
     QDD* (*func)(char*);
     func = le_vetor;
-    teste_velocidade_base(nomeI,limiteinf,limitesup,func);
-}
-
-
-
-/**  Relatorios e configuração  **/
-
-void inicia_relatorio_memoria(Short i)
-{
-    print = i;
-    if(print)
-    fm = fopen("relatorio_memoria.txt","w");
-}
-
-void finaliza_relatorio_memoria()
-{
-    printf("\n\nMemMax  : %d",memMax);
-    printf("\nMemFinal: %d",mem);
-    if(print)
-    {
-        fprintf(fm,"\n\nMemMax: %d",memMax);
-        fclose(fm);
-    }
-}
-
-void configuracao(Short i)
-{
-    nqbit = i;
-    eps = pow(2,-(i/2.0))/20;
+    teste_velocidade_base(nomeI,limiteinf,limitesup,quantidade,func);
 }
 
 
@@ -1794,7 +1881,10 @@ int main()
     configuracao(20);
     /***********************************/
 
-    teste_velocidade_matriz("H",1,10);
+    QDD *Q1, *Q2;
+    Q1 = H_1();
+    Q2 = H_1();
+    produto_tensorial(Q1,Q2);
 
     /***********************************/
     finaliza_relatorio_memoria();

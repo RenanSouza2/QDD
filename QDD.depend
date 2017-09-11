@@ -5,9 +5,10 @@
 	<math.h>
 	<time.h>
 
-1503927116 source:c:\users\renan_000\documents\github\qdd\main.c
+1505139586 source:c:\users\renan_000\documents\github\qdd\main.c
 	<stdio.h>
 	<stdlib.h>
 	<math.h>
 	<time.h>
+	<string.h>
 
