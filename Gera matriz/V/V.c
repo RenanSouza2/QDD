@@ -17,8 +17,10 @@ int main()
     theta = 2*pi/e;
 
     FILE *fp;
+    char s[20];
     float theta2, re, im, amp;
-    fp = fopen("V.txt","w");
+    sprintf(s,"V%d.txt",N);
+    fp = fopen(s,"w");
     fprintf(fp,"%d\n",N);
     amp = pow(2,-0.5*N);
     for(int i=0; i<e; i++)

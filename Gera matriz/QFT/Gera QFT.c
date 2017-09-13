@@ -15,7 +15,9 @@ int main()
     theta = 2*3.1415926535897932384626433832795/e;
 
     FILE *fp;
-    fp = fopen("QFT.txt","w");
+    char s[20];
+    sprintf(s,"QFT%d.txt",N);
+    fp = fopen(s,"w");
     fprintf(fp,"%d\n",N);
 
     float re, im, theta2, amp;

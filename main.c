@@ -78,6 +78,34 @@ typedef unsigned long Long;
 
 
 
+/**  Relatorios e configuração  **/
+
+void inicia_relatorio_memoria(Short i)
+{
+    print = i;
+    if(print)
+        fm = fopen("relatorio_memoria.txt","w");
+}
+
+void finaliza_relatorio_memoria()
+{
+    printf("\n\nMemMax  : %d",memMax);
+    printf("\nMemFinal: %d",mem);
+    if(print)
+    {
+        fprintf(fm,"\n\nMemMax: %d",memMax);
+        fclose(fm);
+    }
+}
+
+void configuracao(Short i)
+{
+    nqbit = i;
+    eps = pow(2,-(i/2.0))/20;
+}
+
+
+
 /** ERRO**/
 
 void ERRO(char *s)
@@ -85,6 +113,7 @@ void ERRO(char *s)
     printf("\n\nERRO %s",s);
     if(print)
         fprintf(fm,"\n\nERRO %s",s);
+    finaliza_relatorio_memoria();
     exit(EXIT_FAILURE);
 }
 
@@ -1066,6 +1095,8 @@ QDD* le_matriz(char *nome)
 
     FILE *fp;
     fp = fopen(nome,"r");
+    if(fp == NULL)
+        ERRO("LE MATRIZ| NAO CONSEGUIU ABRIR ARQUIVO");
 
     Short N;
     fscanf(fp,"%hu\n",&N);
@@ -1189,6 +1220,8 @@ QDD* le_vetor(char *nome)
 
     FILE *fp;
     fp = fopen(nome,"r");
+    if(fp == NULL)
+        ERRO("LE VETOR| NAO CONSEGUIU ABRIR ARQUIVO");
 
     Short N;
     fscanf(fp,"%hu\n",&N);
@@ -1586,7 +1619,6 @@ QDD* potencia_tensorial(QDD *Q, Short i)
     return Qf;
 }
 
-
 /*QDD* soma_QDD(QDD *Q1, QDD *Q2)
 
 QDD* produto_matriz_matriz(QDD *Q1, QDD *Q2)*/
@@ -1795,34 +1827,6 @@ QDD* Ro(double theta)
 
 
 
-/**  Relatorios e configuração  **/
-
-void inicia_relatorio_memoria(Short i)
-{
-    print = i;
-    if(print)
-        fm = fopen("relatorio_memoria.txt","w");
-}
-
-void finaliza_relatorio_memoria()
-{
-    printf("\n\nMemMax  : %d",memMax);
-    printf("\nMemFinal: %d",mem);
-    if(print)
-    {
-        fprintf(fm,"\n\nMemMax: %d",memMax);
-        fclose(fm);
-    }
-}
-
-void configuracao(Short i)
-{
-    nqbit = i;
-    eps = pow(2,-(i/2.0))/20;
-}
-
-
-
 /**  Testes  **/
 
 void imprime_numero_csv(FILE *fp, double numero, Short precisao)
@@ -1852,10 +1856,12 @@ void imprime_numero_csv(FILE *fp, double numero, Short precisao)
     }
 }
 
-void teste_velocidade_base(char *nomeI, Short limiteinf, Short limitesup, Short quantidade, QDD* (*func)(char*))
+void teste_velocidade_base(char *nomeI, Short limiteinf, Short limitesup, Short quantidade, Short arquivo, QDD* (*func)(char*))
 {
     FILE *fp;
-    fp = fopen("RelatorioVelocidade.csv","w");
+    char s[30];
+    sprintf(s,"RelatorioVelocidade%d.csv",arquivo);
+    fp = fopen(s,"w");
     fprintf(fp,"sep=-\n");
 
     int i, j;
@@ -1876,7 +1882,6 @@ void teste_velocidade_base(char *nomeI, Short limiteinf, Short limitesup, Short 
         fprintf(fp,"%d-%d-%d-%d-",mem,iM,iF,iL);
         reduz_QDD(Q);
         printf("\n");
-        mostra_quantidades();
         fprintf(fp,"%d-%d-%d-%d-",mem,iM,iF,iL);
         printf("\n");
         libera_QDD(Q);
@@ -1901,46 +1906,29 @@ void teste_velocidade_base(char *nomeI, Short limiteinf, Short limitesup, Short 
     fclose(fp);
 }
 
-void teste_velocidade_matriz(char *nomeI, Short limiteinf, Short limitesup, Short quantidade)
+void teste_velocidade_matriz(char *nomeI, Short limiteinf, Short limitesup, Short quantidade, Short arquivo)
 {
     QDD* (*func)(char*);
     func = le_matriz;
-    teste_velocidade_base(nomeI,limiteinf,limitesup,quantidade,func);
+    teste_velocidade_base(nomeI,limiteinf,limitesup,quantidade,arquivo,func);
 }
 
-void teste_velocidade_vetor(char *nomeI, Short limiteinf, Short limitesup, Short quantidade)
+void teste_velocidade_vetor(char *nomeI, Short limiteinf, Short limitesup, Short quantidade, Short arquivo)
 {
     QDD* (*func)(char*);
     func = le_vetor;
-    teste_velocidade_base(nomeI,limiteinf,limitesup,quantidade,func);
+    teste_velocidade_base(nomeI,limiteinf,limitesup,quantidade,arquivo,func);
 }
 
 
 
 int main()
 {
-    inicia_relatorio_memoria(1);
+    inicia_relatorio_memoria(0);
     configuracao(20);
     /***********************************/
 
-    QDD *Q1, *Q2;
-    Q1 = I_1();
-    Q2 = potencia_tensorial(Q1,3);
-
-    mostra_QDD(Q2);
-
-    float **m;
-    m = converte_QDD_matriz(Q2);
-    int i, j;
-    for(i=0; i<8; i++)
-    {
-        for(j=0; j<16; j++)
-            printf("m[%d][%d]: %d\n",i,j,m[i][j]);
-        printf("\n");
-    }
-
-    libera_QDD(Q1);
-    libera_QDD(Q2);
+    teste_velocidade_matriz("I",10,12,10,1);
 
     /***********************************/
     finaliza_relatorio_memoria();

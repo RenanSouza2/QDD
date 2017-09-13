@@ -1,6 +1,7 @@
 #include<stdio.h>
 #include<stdlib.h>
 #include<math.h>
+#include<string.h>
 
 int main()
 {
@@ -12,7 +13,9 @@ int main()
     e = pow(2,N);
 
     FILE *fp;
-    fp = fopen("I.txt","w");
+    char s[20];
+    sprintf(s,"I%d.txt",N);
+    fp = fopen(s,"w");
     fprintf(fp,"%d\n",N);
     for(int i=0; i<e; i++)
     {
