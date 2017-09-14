@@ -1317,10 +1317,8 @@ void completa_conversao_QDD_matriz(no *n, no *nesp, Long i, Long j, Long exp, fl
     no *naux;
     if(exp == 0)
     {
-        mostra_no(n);
         m[i][2*j]   = n->at.f.re;
         m[i][2*j+1] = n->at.f.im;
-        printf("m[%d][%d]: %f\tm[%d][%d]: %f\n",i,2*j,m[i][2*j],i,2*j+1,m[i][2*j+1]);
     }
     else
     {
@@ -1825,12 +1823,77 @@ QDD* Ro(double theta)
     return Q;
 }
 
+QDD* SWITCH()
+{
+    no *ni, *n1, *n2, *n3, *n4, *n5;
+
+    ni = cria_no_inicio();
+    n1 = cria_no_meio(R,0);
+    conecta_UM(ni,n1,Inicio);
+
+    n2 = cria_no_meio(C,0);
+    n3 = cria_no_meio(C,0);
+    conecta_DOIS(n1,n2,n3);
+
+    n1 = n2;
+    n2 = n3;
+    n3 = cria_no_meio(R,1);
+    n4 = cria_no_meio(R,1);
+    conecta_DOIS(n1,n3,n4);
+
+    n1 = n3;
+    n3 = n4;
+    n4 = cria_no_meio(C,1);
+    n5 = cria_no_fim(0,0);
+    conecta_DOIS(n1,n4,n5);
+    conecta_DOIS(n3,n4,n5);
+
+    n1 = n4;
+    n4 = cria_no_fim(1,0);
+    conecta_DOIS(n1,n4,n5);
+
+    n1 = n2;
+    n2 = cria_no_meio(R,1);
+    n3=  cria_no_meio(R,1);
+    conecta_DOIS(n1,n2,n3);
+
+    n1 = n2;
+    n2 = n3;
+    n3 = cria_no_meio(C,1);
+    conecta_DOIS(n1,n3,n5);
+    conecta_DOIS(n2,n5,n3);
+
+    n1 = n3;
+    conecta_DOIS(n1,n5,n4);
+
+    lista *l1, *l2;
+    l1 = cria_lista();
+    l2 = cria_lista();
+
+    l1->n = n4;
+    l1->l = l2;
+    l2->l = n5;
+
+    QDD *Q;
+    Q = cria_QDD(2);
+    Q->n = ni;
+    Q->l = l1;
+
+    return Q;
+}
+
 
 
 /**  Testes  **/
 
 void imprime_numero_csv(FILE *fp, double numero, Short precisao)
 {
+    if(numero < 0)
+    {
+        fprintf(fp,"-");
+        numero *= -1;
+    }
+
     int antes, depois;
     antes = numero;
     numero -= antes;
@@ -1847,6 +1910,7 @@ void imprime_numero_csv(FILE *fp, double numero, Short precisao)
         if(depois < potencia)
         {
             fprintf(fp,"0");
+            printf("0");
         }
         else
         {
@@ -1862,7 +1926,7 @@ void teste_velocidade_base(char *nomeI, Short limiteinf, Short limitesup, Short 
     char s[30];
     sprintf(s,"RelatorioVelocidade%d.csv",arquivo);
     fp = fopen(s,"w");
-    fprintf(fp,"sep=-\n");
+    fprintf(fp,"sep=|\n");
 
     int i, j;
     float total;
@@ -1879,10 +1943,11 @@ void teste_velocidade_base(char *nomeI, Short limiteinf, Short limitesup, Short 
         QDD *Q;
         Q = func(nome);
         mostra_quantidades();
-        fprintf(fp,"%d-%d-%d-%d-",mem,iM,iF,iL);
+        fprintf(fp,"%d\%d|%d|%d|",mem,iM,iF,iL);
         reduz_QDD(Q);
         printf("\n");
-        fprintf(fp,"%d-%d-%d-%d-",mem,iM,iF,iL);
+        mostra_quantidades();
+        fprintf(fp,"%d|%d|%d|%d|",mem,iM,iF,iL);
         printf("\n");
         libera_QDD(Q);
 
@@ -1898,7 +1963,7 @@ void teste_velocidade_base(char *nomeI, Short limiteinf, Short limitesup, Short 
 
             total = (float)(depois-antes)/CLOCKS_PER_SEC;
             imprime_numero_csv(fp,total,3);
-            fprintf(fp,"-");
+            fprintf(fp,"|");
             printf("%.3f",total);
         }
         fprintf(fp,"\n");
@@ -1928,7 +1993,19 @@ int main()
     configuracao(20);
     /***********************************/
 
-    teste_velocidade_matriz("I",10,12,10,1);
+    QDD *Q;
+    Q = SWITCH();
+    mostra_QDD(Q);
+
+    /*int i, j;
+    float **m;
+    m = converte_QDD_matriz(Q);
+    for(i=0; i<4; i++)
+    {
+        for(j=0; j<8; j++)
+            printf("%d ",(int)m[i][j]);
+        printf("\n");
+    }*/
 
     /***********************************/
     finaliza_relatorio_memoria();
