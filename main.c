@@ -67,7 +67,7 @@ struct lista
 
 struct apply
 {
-    struct no *n, *n1, *n2;
+    struct no    *n, *n1, *n2;
     struct apply *a, *a1, *a2;
 };
 
@@ -353,6 +353,7 @@ void libera_apply_lista(apply *a)
 }
 
 
+
 /** Enlistadores  **/
 
 lista* enlista_arvore(no *n)
@@ -534,7 +535,7 @@ void mostra_apply_no(apply *a)
     printf("\n");
     printf("\na1: %d",a->a1);
     printf("\na2: %d",a->a2);
-    printf("\na : %d\n",a->a);
+    printf("\n\na:  %d\n",a->a);
 }
 
 void mostra_apply_lista(apply *a)
@@ -543,7 +544,7 @@ void mostra_apply_lista(apply *a)
     Long ligacao = 0;
     for(ac = a; ac != NULL; ac = ac->a)
     {
-        printf("\nLigacao apply %d",ligacao);
+        printf("\n\n\n\n\nLigacao apply %d",ligacao);
         mostra_apply_no(ac);
         ligacao++;
     }
@@ -714,6 +715,33 @@ void fmostra_QDD(FILE *fp, QDD *Q)
     fmostra_lista_com_no(fp,Q->l);
     libera_lista_lista(l);
     fprintf(fp,"\n");
+}
+
+void fmostra_apply_no(FILE *fp, apply *a)
+{
+    fprintf(fp,"\nEndereco (apply): %d",a);
+    fprintf(fp,"\n\nNo 1:");
+    fmostra_no(fp,a->n1);
+    fprintf(fp,"\nNo 2:");
+    fmostra_no(fp,a->n2);
+    fprintf(fp,"\nNo:");
+    fmostra_no(fp,a->n);
+    fprintf(fp,"\n");
+    fprintf(fp,"\na1: %d",a->a1);
+    fprintf(fp,"\na2: %d",a->a2);
+    fprintf(fp,"\n\na:  %d\n",a->a);
+}
+
+void fmostra_apply_lista(FILE *fp, apply *a)
+{
+    apply *ac;
+    Long ligacao = 0;
+    for(ac = a; ac != NULL; ac = ac->a)
+    {
+        fprintf(fp,"\n\n\n\n\nLigacao apply %d",ligacao);
+        fmostra_apply_no(fp,ac);
+        ligacao++;
+    }
 }
 
 void fmostra_quantidades(FILE *fp)
@@ -1037,6 +1065,14 @@ Short compara_no_fim_zero(no *n)
     return 0;
 }
 
+Short compara_apply(apply *a1, apply *a2)
+{
+    if(a1->n1 == a2->n1)
+    if(a1->n2 == a2->n2)
+        return 1;
+    return 0;
+}
+
 
 
 /**  Operações estruturais simples  **/
@@ -1270,7 +1306,7 @@ QDD* copia_QDD(QDD *Q1)
 
 /** Operações algebricas com estruturas simples  **/
 
-no* soma(no *n1, no *n2)
+no* soma_no(no *n1, no *n2)
 {
     no *n;
     float re, im;
@@ -1771,7 +1807,295 @@ void reduz_QDD(QDD *Q)
 }
 
 
-/**  apply  **/
+
+/**  apply esqueleto  **/
+
+void encaixa_apply(apply *a, apply *ac, Short lado)
+{
+    apply *aa;
+    aa = NULL;
+    switch(lado)
+    {
+        case Else:
+            aa = ac->a1;
+            break;
+
+        case Then:
+            aa = ac->a2;
+            break;
+
+        default:
+            ERRO("ENCAIXA APPLY| LADO INVALIDO");
+            break;
+    }
+
+    apply *ae;
+    for(ae = a; ae != NULL; ae = ae->a)
+        if(compara_apply(aa,ae))
+            break;
+    if(ae == NULL)
+    {
+        aa->a = ac->a;
+        ac->a = aa;
+    }
+    else
+    {
+        switch(lado)
+        {
+            case Else:
+                ac->a1 = ae;
+                break;
+
+            case Then:
+                ac->a2 = ae;
+                break;
+            libera_apply_no(aa);
+        }
+    }
+}
+
+no* apply_base(no *n1, no *n2, void monta_apply(apply *a))
+{
+    apply *a;
+    a = cria_apply();
+    a->n1 = n1;
+    a->n2 = n2;
+
+    no *n;
+    apply *ac;
+    ac = a;
+    for(ac = a; ac != NULL; ac = ac->a)
+    {
+        monta_apply(ac);
+        n = ac->n;
+        switch(n->tipo)
+        {
+            case Inicio:
+                ac->a = ac->a1;
+                break;
+
+            case Meio:
+                encaixa_apply(a,ac,Then);
+                encaixa_apply(a,ac,Else);
+                break;
+        }
+    }
+
+    apply *a1, *a2;
+    for(ac = a; ac != NULL; ac = ac->a)
+    {
+        n = ac->n;
+        switch(n->tipo)
+        {
+            case Inicio:
+                a1 = ac->a1;
+                n1 = a1->n;
+                conecta_UM(n,n1,Inicio);
+                break;
+
+            case Meio:
+                a1 = ac->a1;
+                a2 = ac->a2;
+
+                n1 = a1->n;
+                n2 = a2->n;
+
+                conecta_DOIS(n,n1,n2);
+                break;
+        }
+    }
+
+    n = a->n;
+    libera_apply_lista(a);
+
+    return n;
+}
+
+
+
+/**  monta_apply  **/
+
+void monta_apply_soma(apply *a)
+{
+    no *n1, *n2;
+    n1 = a->n1;
+    n2 = a->n2;
+
+    apply *a1, *a2;
+    Short regra;
+    regra = 0;
+    switch(n1->tipo)
+    {
+        case Inicio:
+            if(n2->tipo != Inicio)
+                ERRO("MONTA APPLY SOMA| N1 INICIO N2 NAO");
+
+            regra = 0;
+            break;
+
+        case Meio:
+            switch(n2->tipo)
+            {
+                case Inicio:
+                    ERRO("MONTA APPLY SOMA| N2 MEIO N1 INICIO");
+                    break;
+
+                case Meio:
+                    if(n1->at.m.nivel < n2->at.m.nivel)
+                        regra = 1;
+                    if(n1->at.m.nivel > n2->at.m.nivel)
+                        regra = 2;
+                    if(n1->at.m.nivel == n2->at.m.nivel)
+                    {
+                        switch(n1->at.m.classe)
+                        {
+                            case V:
+                                if(n2->at.m.classe != V)
+                                    ERRO("MONTA APPLY SOMA| N1 VETOR N2 MATRIZ");
+
+                                regra = 3;
+                                break;
+
+                            case R:
+                                switch(n2->at.m.classe)
+                                {
+                                    case V:
+                                        ERRO("MONTA APPLY SOMA| N1 MATRIZ N2 VETOR");
+                                        break;
+
+                                    case R:
+                                        regra = 3;
+                                        break;
+
+                                    case C:
+                                        regra = 1;
+                                        break;
+                                }
+                                break;
+
+                            case C:
+                                switch(n2->at.m.classe)
+                                {
+                                    case V:
+                                        ERRO("MONTA APPLY SOMA| N1 MATRIZ N2 VETOR");
+                                        break;
+
+                                    case R:
+                                        regra = 2;
+                                        break;
+
+                                    case C:
+                                        regra = 3;
+                                        break;
+                                }
+                                break;
+                        }
+                    }
+                    break;
+
+                case Fim:
+                    regra = 1;
+                    break;
+            }
+            break;
+
+        case Fim:
+            switch(n2->tipo)
+            {
+                case Inicio:
+                    ERRO("MONTA APPLY SOMA| N1 FIM N2 INICIO");
+                    break;
+
+                case Meio:
+                    regra = 2;
+                    break;
+
+                case Fim:
+                    regra = 4;
+                    break;
+            }
+            break;
+    }
+
+    no *n;
+    switch(regra)
+    {
+        case 0:
+            n = cria_no_inicio();
+            a->n = n;
+
+            a1 = cria_apply();
+            a1->n1 = n1->at.i.n;
+            a1->n2 = n2->at.i.n;
+
+            a->a1 = a1;
+            break;
+
+        case 1:
+            n = copia_no(n1);
+            a->n = n;
+
+            a1 = cria_apply();
+            a1->n1 = n1->at.m.el;
+            a1->n2 = n2;
+
+            a2 = cria_apply();
+            a2->n1 = n1->at.m.th;
+            a2->n2 = n2;
+
+            a->a1 = a1;
+            a->a2 = a2;
+            break;
+
+        case 2:
+            n = copia_no(n2);
+            a->n = n;
+
+            a1 = cria_apply();
+            a1->n1 = n1;
+            a1->n2 = n2->at.m.el;
+
+            a2 = cria_apply();
+            a2->n1 = n1;
+            a2->n2 = n2->at.m.th;
+
+            a->a1 = a1;
+            a->a2 = a2;
+            break;
+
+        case 3:
+            n = copia_no(n1);
+            a->n = n;
+
+            a1 = cria_apply();
+            a1->n1 = n1->at.m.el;
+            a1->n2 = n2->at.m.el;
+
+            a2 = cria_apply();
+            a2->n1 = n1->at.m.th;
+            a2->n2 = n2->at.m.th;
+
+            a->a1 = a1;
+            a->a2 = a2;
+            break;
+
+        case 4:
+            n = soma_no(n1,n2);
+            a->n = n;
+            break;
+    }
+}
+
+
+/**  apply pronto  **/
+
+no* apply_soma(no *n1, no *n2)
+{
+    no *n;
+    n = apply_base(n1,n2,monta_apply_soma);
+    return n;
+}
+
 
 
 /**  Operações QDD algebricas  **/
@@ -1858,13 +2182,13 @@ QDD* produto_tensorial(QDD *Q1, QDD *Q2)
     return Q;
 }
 
-QDD* potencia_tensorial(QDD *Q, Short i)
+QDD* potencia_tensorial(QDD *Q, Short n)
 {
     QDD *Qf, *Qaux;
     Qf = copia_QDD(Q);
 
     Short j;
-    for(j=1; j<i; j++)
+    for(j=1; j<n; j++)
     {
         Qaux = produto_tensorial(Qf,Q);
         libera_QDD(Qf);
@@ -1873,13 +2197,25 @@ QDD* potencia_tensorial(QDD *Q, Short i)
     return Qf;
 }
 
-/*QDD* soma_QDD(QDD *Q1, QDD *Q2)
+QDD* soma_QDD(QDD *Q1, QDD *Q2)
+{
+    if(Q1->nqbit != Q2->nqbit)
+        ERRO("SOMA QDD| QDDs COM QUANTIDADES DIFERENTES DE QBITS");
 
-QDD* produto_matriz_matriz(QDD *Q1, QDD *Q2)*/
+    QDD *Q;
+    Q = cria_QDD(Q1->nqbit);
+    Q->n = apply_soma(Q1->n,Q2->n);
+    Q->l = acha_lista_fim_QDD(Q);
+    reduz_QDD(Q);
+
+    return Q;
+}
+
+/*QDD* produto_matriz_matriz(QDD *Q1, QDD *Q2)*/
 
 
 
-/** Blocos universais  **/
+/**  Blocos usuais  **/
 
 QDD* I_1()
 {
@@ -2039,6 +2375,10 @@ QDD* CNOT()
 
 QDD* Ro(double theta)
 {
+    if(theta <  1.0/20)
+    if(theta > -1.0/20)
+        return I_1();
+
     no *ni, *n1, *n2, *n3, *n4, *n5;
 
     ni = cria_no_inicio();
@@ -2079,62 +2419,32 @@ QDD* Ro(double theta)
     return Q;
 }
 
-QDD* SWITCH()
+/*QDD* SWITCH()*/
+
+
+
+/**  Potencias tensoriais usuais  **/
+
+QDD *potencia_tensorial_usual_base(Short n,QDD* (func)())
 {
-    no *ni, *n1, *n2, *n3, *n4, *n5;
+    QDD *Q, *Q1;
+    Q1 = func();
+    Q = potencia_tensorial(Q1,n);
+    libera_QDD(Q1);
+    return Q;
+}
 
-    ni = cria_no_inicio();
-    n1 = cria_no_meio(R,0);
-    conecta_UM(ni,n1,Inicio);
-
-    n2 = cria_no_meio(C,0);
-    n3 = cria_no_meio(C,0);
-    conecta_DOIS(n1,n2,n3);
-
-    n1 = n2;
-    n2 = n3;
-    n3 = cria_no_meio(R,1);
-    n4 = cria_no_meio(R,1);
-    conecta_DOIS(n1,n3,n4);
-
-    n1 = n3;
-    n3 = n4;
-    n4 = cria_no_meio(C,1);
-    n5 = cria_no_fim(0,0);
-    conecta_DOIS(n1,n4,n5);
-    conecta_DOIS(n3,n4,n5);
-
-    n1 = n4;
-    n4 = cria_no_fim(1,0);
-    conecta_DOIS(n1,n4,n5);
-
-    n1 = n2;
-    n2 = cria_no_meio(R,1);
-    n3=  cria_no_meio(R,1);
-    conecta_DOIS(n1,n2,n3);
-
-    n1 = n2;
-    n2 = n3;
-    n3 = cria_no_meio(C,1);
-    conecta_DOIS(n1,n3,n5);
-    conecta_DOIS(n2,n5,n3);
-
-    n1 = n3;
-    conecta_DOIS(n1,n5,n4);
-
-    lista *l1, *l2;
-    l1 = cria_lista();
-    l2 = cria_lista();
-
-    l1->n = n4;
-    l1->l = l2;
-    l2->n = n5;
-
+QDD* I(Short n)
+{
     QDD *Q;
-    Q = cria_QDD(2);
-    Q->n = ni;
-    Q->l = l1;
+    Q = potencia_tensorial_usual_base(n,I_1);
+    return Q;
+}
 
+QDD* H(Short n)
+{
+    QDD *Q;
+    Q = potencia_tensorial_usual_base(n,H_1);
     return Q;
 }
 
@@ -2179,12 +2489,17 @@ void imprime_numero_csv(FILE *fp, double numero, Short precisao)
 void teste_velocidade_base(char *nomeI, Short limiteinf, Short limitesup, Short quantidade, Short arquivo, QDD* (*func)(char*))
 {
     FILE *fp;
+    int i;
     char s[30];
     sprintf(s,"RelatorioVelocidade%d.csv",arquivo);
     fp = fopen(s,"w");
     fprintf(fp,"sep=|\n");
+    fprintf(fp,"mem|iM|iF|iL|mem|iM|iF|iL");
+    for(i=1; i<=quantidade; i++)
+        fprintf(fp,"|%d",i);
+    fprintf(fp,"\n");
 
-    int i, j;
+    int j;
     float total;
     char nome[10];
     time_t antes, depois;
@@ -2199,7 +2514,7 @@ void teste_velocidade_base(char *nomeI, Short limiteinf, Short limitesup, Short 
         QDD *Q;
         Q = func(nome);
         mostra_quantidades();
-        fprintf(fp,"%d\%d|%d|%d|",mem,iM,iF,iL);
+        fprintf(fp,"%d|%d|%d|%d|",mem,iM,iF,iL);
         reduz_QDD(Q);
         printf("\n");
         mostra_quantidades();
@@ -2229,16 +2544,12 @@ void teste_velocidade_base(char *nomeI, Short limiteinf, Short limitesup, Short 
 
 void teste_velocidade_matriz(char *nomeI, Short limiteinf, Short limitesup, Short quantidade, Short arquivo)
 {
-    QDD* (*func)(char*);
-    func = le_matriz;
-    teste_velocidade_base(nomeI,limiteinf,limitesup,quantidade,arquivo,func);
+    teste_velocidade_base(nomeI,limiteinf,limitesup,quantidade,arquivo,le_matriz);
 }
 
 void teste_velocidade_vetor(char *nomeI, Short limiteinf, Short limitesup, Short quantidade, Short arquivo)
 {
-    QDD* (*func)(char*);
-    func = le_vetor;
-    teste_velocidade_base(nomeI,limiteinf,limitesup,quantidade,arquivo,func);
+    teste_velocidade_base(nomeI,limiteinf,limitesup,quantidade,arquivo,le_vetor);
 }
 
 
@@ -2249,13 +2560,12 @@ int main()
     configuracao(20);
     /***********************************/
 
-    QDD *Q;
-    Q = SWITCH();
-    mostra_QDD(Q);
+    QDD *Q1, *Q2;
+    Q1 = H_1();
+    Q2 = I_1();
 
-    float **m;
-    m = converte_QDD_matriz(Q);
-    mostra_matriz(m,4,8);
+    QDD *Q;
+    Q = soma_QDD(Q1,Q2);
 
     /***********************************/
     finaliza_relatorio_memoria();
