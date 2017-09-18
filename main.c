@@ -20,7 +20,7 @@
 
 
 FILE *fm;
-unsigned long mem = 0, memMax = 0, iQ = 0, iI = 0, iM = 0, iF = 0, iL = 0;
+unsigned long mem = 0, memMax = 0, iQ = 0, iI = 0, iM = 0, iF = 0, iL = 0, iA;
 unsigned short print, nqbit;
 float eps;
 
@@ -65,6 +65,12 @@ struct lista
     struct no *n;
 };
 
+struct apply
+{
+    struct no *n, *n1, *n2;
+    struct apply *a, *a1, *a2;
+};
+
 
 
 /** Typedefs e definitions  **/
@@ -72,6 +78,7 @@ struct lista
 typedef struct QDD   QDD;
 typedef struct no    no;
 typedef struct lista lista;
+typedef struct apply apply;
 
 typedef unsigned short Short;
 typedef unsigned long Long;
@@ -151,7 +158,7 @@ QDD* cria_QDD(Short nqbit)
     QDD *Q;
     Q = malloc(sizeof(QDD));
     if(Q == NULL)
-        ERRO("QDD");
+        ERRO("CRIA QDD");
     aumenta_memoria(sizeof(QDD));
     iQ++;
 
@@ -166,7 +173,7 @@ no* cria_no_inicio()
     no *n;
     n = malloc(sizeof(no));
     if(n == NULL)
-        ERRO("INICIO");
+        ERRO("CRIA INICIO");
     aumenta_memoria(sizeof(no));
     iI++;
 
@@ -183,7 +190,7 @@ no* cria_no_meio(Short classe, Short nivel)
     no *n;
     n = malloc(sizeof(no));
     if(n == NULL)
-        ERRO("MEIO");
+        ERRO("CRIA MEIO");
     aumenta_memoria(sizeof(no));
     iM++;
 
@@ -203,7 +210,7 @@ no* cria_no_fim(float re,float im)
     no *n;
     n = malloc(sizeof(no));
     if(n == NULL)
-        ERRO("FIM");
+        ERRO("CRIA FIM");
     aumenta_memoria(sizeof(no));
     iF++;
 
@@ -221,13 +228,32 @@ lista* cria_lista()
     lista *l;
     l = malloc(sizeof(lista));
     if(l == NULL)
-        ERRO("LISTA");
+        ERRO("CRIA LISTA");
     aumenta_memoria(sizeof(lista));
     iL++;
 
     l->l = NULL;
     l->n = NULL;
     return l;
+}
+
+apply* cria_apply()
+{
+    apply *a;
+    a = malloc(sizeof(apply));
+    if(a == NULL)
+        ERRO("CRIA APPLY");
+    iA++;
+
+    a->n  = NULL;
+    a->n1 = NULL;
+    a->n2 = NULL;
+
+    a->a  = NULL;
+    a->a1 = NULL;
+    a->a2 = NULL;
+
+    return a;
 }
 
 
@@ -306,6 +332,25 @@ void libera_lista_lista(lista *l)
     }
 }
 
+void libera_apply_no(apply *a)
+{
+    diminui_memoria(sizeof(apply));
+    if(iA == 0)
+        ERRO("LIBERA APPLY");
+    iA--;
+    free(a);
+}
+
+void libera_apply_lista(apply *a)
+{
+    apply *ac;
+    while(a != NULL)
+    {
+        ac = a->a;
+        libera_apply_no(a);
+        a = ac;
+    }
+}
 
 
 /** Enlistadores  **/
@@ -376,7 +421,7 @@ lista* enlista_QDD(QDD *Q)
 
 
 
-/** Mostra  **/
+/**  Mostra  **/
 
 void mostra_lista(lista *l)
 {
@@ -387,8 +432,6 @@ void mostra_lista(lista *l)
     {
         printf("\tLigacao %u: %d\n",ligacao,lc->n);
         ligacao++;
-        if(ligacao == 20)
-            break;
     }
 }
 
@@ -479,6 +522,33 @@ void mostra_QDD(QDD *Q)
     printf("\n");
 }
 
+void mostra_apply_no(apply *a)
+{
+    printf("\nEndereco (apply): %d",a);
+    printf("\n\nNo 1:");
+    mostra_no(a->n1);
+    printf("\nNo 2:");
+    mostra_no(a->n2);
+    printf("\nNo:");
+    mostra_no(a->n);
+    printf("\n");
+    printf("\na1: %d",a->a1);
+    printf("\na2: %d",a->a2);
+    printf("\na : %d\n",a->a);
+}
+
+void mostra_apply_lista(apply *a)
+{
+    apply *ac;
+    Long ligacao = 0;
+    for(ac = a; ac != NULL; ac = ac->a)
+    {
+        printf("\nLigacao apply %d",ligacao);
+        mostra_apply_no(ac);
+        ligacao++;
+    }
+}
+
 void mostra_quantidades()
 {
     Short vazio = 1;
@@ -512,6 +582,11 @@ void mostra_quantidades()
         vazio = 0;
         printf("\nl:   %d",iL);
     }
+    if(iA != 0)
+    {
+        vazio = 0;
+        printf("\na:   %d",iA);
+    }
     if(vazio)
         printf("\nTUDO ZERADO");
     printf("\n");
@@ -523,7 +598,186 @@ void mostra_tamanhos()
     printf("\nQDD: %d",sizeof(QDD));
     printf("\nn:   %d",sizeof(no));
     printf("\nl:   %d",sizeof(lista));
+    printf("\na:   %d",sizeof(apply));
     printf("\n");
+}
+
+void mostra_matriz(float **m, Long r, Long c)
+{
+    Long i, j;
+    for(i = 0; i < r; i++)
+    {
+        for(j = 0; j < c; j++)
+            printf("%f ",m[i][j]);
+        printf("\n");
+    }
+}
+
+
+
+/**  Fmostra  **/
+
+void fmostra_lista(FILE *fp, lista *l)
+{
+    lista *lc;
+    Long ligacao = 0;
+    lc = l;
+    for(lc = l; lc != NULL; lc = lc->l)
+    {
+        fprintf(fp,"\tLigacao %u: %d\n",ligacao,lc->n);
+        ligacao++;
+    }
+}
+
+void fmostra_no(FILE *fp, no *n)
+{
+    fprintf(fp,"\nEndereco (no): %d\n",n);
+    if(n == NULL)
+        return;
+    if(n->l != NULL)
+    {
+        fprintf(fp,"Ligacoes anteriores:\n");
+        fmostra_lista(fp,n->l);
+    }
+    fprintf(fp,"Tipo");
+    switch(n->tipo)
+    {
+        case Inicio:
+        fprintf(fp,": Inicio\n");
+        fprintf(fp,"Ligacoes posteriores\n");
+        fprintf(fp,"\tn: %d\n",n->at.i.n);
+        break;
+
+        case Meio:
+        fprintf(fp,"/nivel: ");
+        switch(n->at.m.classe)
+        {
+            case V:
+            fprintf(fp,"V");
+            break;
+
+            case R:
+            fprintf(fp,"R");
+            break;
+
+            case C:
+            fprintf(fp,"C");
+            break;
+        }
+
+        fprintf(fp,"%d\n",n->at.m.nivel);
+        fprintf(fp,"Ligacoes posteriores\n");
+        fprintf(fp,"\telse: %d\n",n->at.m.el);
+        fprintf(fp,"\tThen: %d",n->at.m.th);
+        break;
+
+        case Fim:
+        fprintf(fp,": Numero\n");
+        fprintf(fp,"%f %f",n->at.f.re,n->at.f.im);
+        break;
+    }
+    fprintf(fp,"\n");
+}
+
+void fmostra_lista_com_no(FILE *fp, lista *l)
+{
+    lista *lc;
+    Long ligacao = 0;
+    lc = l;
+    for(lc = l; lc != NULL; lc = lc->l)
+    {
+        fprintf(fp,"\n\n\tLigacao %u:",ligacao);
+        fmostra_no(fp,lc->n);
+        ligacao++;
+    }
+    printf("\n");
+}
+
+void fmostra_arvore(FILE *fp, no *n)
+{
+    lista *l;
+    l = enlista_arvore(n);
+    fmostra_lista_com_no(fp,l);
+    libera_lista_lista(l);
+    fprintf(fp,"\n");
+}
+
+void fmostra_QDD(FILE *fp, QDD *Q)
+{
+    lista *l;
+    l = enlista_QDD(Q);
+
+    fprintf(fp,"\nEndereco (QDD): %d",Q);
+    fprintf(fp,"\nNQBIT: %d\n",Q->nqbit);
+    fmostra_lista_com_no(fp,l);
+    fprintf(fp,"\n\nAMPLITUDES");
+    fmostra_lista_com_no(fp,Q->l);
+    libera_lista_lista(l);
+    fprintf(fp,"\n");
+}
+
+void fmostra_quantidades(FILE *fp)
+{
+    Short vazio = 1;
+    if(mem != 0)
+    {
+        vazio = 0;
+        fprintf(fp,"\nMem: %d",mem);
+    }
+    if(iQ != 0)
+    {
+        vazio = 0;
+        fprintf(fp,"\nQDD: %d",iQ);
+    }
+    if(iI != 0)
+    {
+        vazio = 0;
+        fprintf(fp,"\ni:   %d",iI);
+    }
+    if(iM != 0)
+    {
+        vazio = 0;
+        fprintf(fp,"\nm:   %d",iM);
+    }
+    if(iF != 0)
+    {
+        vazio = 0;
+        fprintf(fp,"\nf:   %d",iF);
+    }
+    if(iL != 0)
+    {
+        vazio = 0;
+        fprintf(fp,"\nl:   %d",iL);
+    }
+    if(iA != 0)
+    {
+        vazio = 0;
+        fprintf(fp,"\na:   %d",iA);
+    }
+    if(vazio)
+        fprintf(fp,"\nTUDO ZERADO");
+    fprintf(fp,"\n");
+}
+
+void fmostra_tamanhos(FILE *fp)
+{
+    fprintf(fp,"\nTAMANHOS");
+    fprintf(fp,"\nQDD: %d",sizeof(QDD));
+    fprintf(fp,"\nn:   %d",sizeof(no));
+    fprintf(fp,"\nl:   %d",sizeof(lista));
+    fprintf(fp,"\na:   %d",sizeof(apply));
+    fprintf(fp,"\n");
+}
+
+void fmostra_matriz(FILE *fp, float **m, Long r, Long c)
+{
+    Long i, j;
+    for(i = 0; i < r; i++)
+    {
+        for(j = 0; j < c; j++)
+            fprintf(fp,"%f ",m[i][j]);
+        fprintf(fp,"\n");
+    }
 }
 
 
@@ -1517,6 +1771,8 @@ void reduz_QDD(QDD *Q)
 }
 
 
+/**  apply  **/
+
 
 /**  Operações QDD algebricas  **/
 
@@ -1872,7 +2128,7 @@ QDD* SWITCH()
 
     l1->n = n4;
     l1->l = l2;
-    l2->l = n5;
+    l2->n = n5;
 
     QDD *Q;
     Q = cria_QDD(2);
@@ -1997,15 +2253,9 @@ int main()
     Q = SWITCH();
     mostra_QDD(Q);
 
-    /*int i, j;
     float **m;
     m = converte_QDD_matriz(Q);
-    for(i=0; i<4; i++)
-    {
-        for(j=0; j<8; j++)
-            printf("%d ",(int)m[i][j]);
-        printf("\n");
-    }*/
+    mostra_matriz(m,4,8);
 
     /***********************************/
     finaliza_relatorio_memoria();
