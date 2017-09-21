@@ -3,6 +3,7 @@
 #include<math.h>
 #include<time.h>
 #include<string.h>
+#include<limits.h>
 
 #define Inicio 0
 #define Meio 1
@@ -19,8 +20,10 @@
 
 
 
+
+
 FILE *fm;
-unsigned long mem = 0, memMax = 0, iQ = 0, iI = 0, iM = 0, iF = 0, iL = 0, iA;
+unsigned long long mem = 0, memMax = 0, iQ = 0, iI = 0, iM = 0, iF = 0, iL = 0, iA;
 unsigned short print, nqbit;
 double eps;
 
@@ -81,7 +84,7 @@ typedef struct lista lista;
 typedef struct apply apply;
 
 typedef unsigned short Short;
-typedef unsigned long Long;
+typedef unsigned long long Long;
 
 
 
@@ -1867,6 +1870,7 @@ no* apply_base(no *n1, no *n2, void monta_apply(apply *a))
     for(ac = a; ac != NULL; ac = ac->a)
     {
         monta_apply(ac);
+
         n = ac->n;
         switch(n->tipo)
         {
@@ -1904,6 +1908,10 @@ no* apply_base(no *n1, no *n2, void monta_apply(apply *a))
                 break;
         }
     }
+
+    FILE *fp;
+    fp = fopen("apply.txt","w");
+    fmostra_apply_lista(fp,a);
 
     n = a->n;
     libera_apply_lista(a);
@@ -2115,7 +2123,7 @@ void monta_apply_produto_matriz_matriz(apply *a)
                         switch(n1->at.m.classe)
                         {
                             case V:
-                                ERRO("MONTA APPLY PRODUTO MATRIZ MATRIZ| N1 E VETOR");
+                                ERRO("MONTA APPLY PRODUTO MATRIZ MATRIZ| N1 E VETOR 1");
                                 break;
 
                             case R:
@@ -2132,7 +2140,7 @@ void monta_apply_produto_matriz_matriz(apply *a)
                         switch(n1->at.m.classe)
                         {
                             case V:
-                                ERRO("MONTA APPLY PRODUTO MATRIZ MATRIZ| N1 E VETOR");
+                                ERRO("MONTA APPLY PRODUTO MATRIZ MATRIZ| N1 E VETOR 2");
                                 break;
 
                             case R:
@@ -2143,7 +2151,7 @@ void monta_apply_produto_matriz_matriz(apply *a)
                                 switch(n2->at.m.classe)
                                 {
                                     case V:
-                                        ERRO("MONTA APPLY PRODUTO MATRIZ MATRIZ| N2 E VETOR");
+                                        ERRO("MONTA APPLY PRODUTO MATRIZ MATRIZ| N2 E VETOR 1");
                                         break;
 
                                     case R:
@@ -2162,7 +2170,7 @@ void monta_apply_produto_matriz_matriz(apply *a)
                         switch(n2->at.m.classe)
                         {
                             case V:
-                                ERRO("MONTA APPLY PRODUTO MATRIZ MATRIZ| N2 E VETOR");
+                                ERRO("MONTA APPLY PRODUTO MATRIZ MATRIZ| N2 E VETOR 2");
                                 break;
 
                             case R:
@@ -2186,7 +2194,7 @@ void monta_apply_produto_matriz_matriz(apply *a)
                         switch(n1->at.m.classe)
                         {
                             case V:
-                                ERRO("MONTA APPLY PRODUTO MATRIZ MATRIZ| N1 E VETOR");
+                                ERRO("MONTA APPLY PRODUTO MATRIZ MATRIZ| N1 E VETOR 3");
                                 break;
 
                             case R:
@@ -2217,10 +2225,10 @@ void monta_apply_produto_matriz_matriz(apply *a)
                         break;
 
                     case Meio:
-                        switch(n2->at.m.nivel)
+                        switch(n2->at.m.classe)
                         {
                             case V:
-                                ERRO("MONTA APPLY PRODUTO MATRIZ MATRIZ| N2 E VETOR");
+                                ERRO("MONTA APPLY PRODUTO MATRIZ MATRIZ| N2 E VETOR 3");
                                 break;
 
                             case R:
@@ -2276,7 +2284,7 @@ void monta_apply_produto_matriz_matriz(apply *a)
             break;
 
         case 2:
-            n = copia_no(n1);
+            n = copia_no(n2);
             a->n = n;
 
             a1 = cria_apply();
@@ -2597,55 +2605,6 @@ QDD* H_1()
     return Q;
 }
 
-QDD* CNOT()
-{
-    no *ni, *n1, *n2, *n3, *n4, *n5;
-
-    ni = cria_no_inicio();
-    n1 = cria_no_meio(R,0);
-    conecta_UM(ni,n1,Inicio);
-
-    n2 = cria_no_meio(C,0);
-    n3 = cria_no_meio(C,0);
-    conecta_DOIS(n1,n2,n3);
-
-    n1 = n2;
-    n2 = n3;
-    n3 = cria_no_meio(R,1);
-    n4 = cria_no_fim(0,0);
-    n5 = cria_no_meio(R,1);
-    conecta_DOIS(n1,n3,n4);
-    conecta_DOIS(n2,n4,n5);
-
-    n1 = n3;
-    n2 = n5;
-    n3 = cria_no_meio(C,1);
-    n5 = cria_no_meio(C,1);
-    conecta_DOIS(n1,n3,n5);
-    conecta_DOIS(n2,n5,n3);
-
-    n1 = n3;
-    n2 = n5;
-    n3 = cria_no_fim(1,0);
-    conecta_DOIS(n1,n3,n4);
-    conecta_DOIS(n2,n4,n3);
-
-    lista *l1, *l2;
-    l1 = cria_lista();
-    l2 = cria_lista();
-
-    l1->n = n3;
-    l1->l = l2;
-    l2->n = n4;
-
-    QDD *Q;
-    Q = cria_QDD(2);
-    Q->n = ni;
-    Q->l = l1;
-
-    return Q;
-}
-
 QDD* Ro(double theta)
 {
     if(theta <  1.0/20)
@@ -2689,35 +2648,6 @@ QDD* Ro(double theta)
     Q->n = ni;
     Q->l = l1;
 
-    return Q;
-}
-
-/*QDD* SWITCH()*/
-
-
-
-/**  Potencias tensoriais usuais  **/
-
-QDD *potencia_tensorial_usual_base(Short n,QDD* (func)())
-{
-    QDD *Q, *Q1;
-    Q1 = func();
-    Q = potencia_tensorial(Q1,n);
-    libera_QDD(Q1);
-    return Q;
-}
-
-QDD* I(Short n)
-{
-    QDD *Q;
-    Q = potencia_tensorial_usual_base(n,I_1);
-    return Q;
-}
-
-QDD* H(Short n)
-{
-    QDD *Q;
-    Q = potencia_tensorial_usual_base(n,H_1);
     return Q;
 }
 
@@ -2840,6 +2770,17 @@ int main()
     no *n;
     n = apply_produto_matriz_matriz(Q1->n,Q2->n);
     mostra_arvore(n);
+    libera_arvore(n);
+    libera_QDD(Q1);
+    libera_QDD(Q2);
+
+    /*QDD *Q;
+    Q = le_matriz("Pasta2.txt");
+    mostra_quantidades();
+    reduz_QDD(Q);
+    mostra_quantidades();*/
+
+    /*printf("%.16f",pow(2,-0.5));*/
 
     /***********************************/
     finaliza_relatorio_memoria();

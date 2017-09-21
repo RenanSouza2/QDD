@@ -1,0 +1,372 @@
+
+
+
+
+
+Ligacao apply 0
+Endereco (apply): 7480208
+
+No 1:
+Endereco (no): 7479632
+Tipo: Inicio
+Ligacoes posteriores
+	n: 7479664
+
+
+No 2:
+Endereco (no): 7479912
+Tipo: Inicio
+Ligacoes posteriores
+	n: 7479944
+
+
+No:
+Endereco (no): 7480240
+Tipo: Inicio
+Ligacoes posteriores
+	n: 7480304
+
+
+
+a1: 7480272
+a2: 0
+
+a:  7480272
+
+
+
+
+
+Ligacao apply 1
+Endereco (apply): 7480272
+
+No 1:
+Endereco (no): 7479664
+Ligacoes anteriores:
+	Ligacao 0: 0
+Tipo/nivel: R0
+Ligacoes posteriores
+	else: 7479696
+	Then: 7479728
+
+No 2:
+Endereco (no): 7479944
+Ligacoes anteriores:
+	Ligacao 0: 0
+Tipo/nivel: R0
+Ligacoes posteriores
+	else: 7479992
+	Then: 7480024
+
+No:
+Endereco (no): 7480304
+Ligacoes anteriores:
+	Ligacao 0: 0
+Tipo/nivel: R0
+Ligacoes posteriores
+	else: 7472288
+	Then: 7492840
+
+
+a1: 7480336
+a2: 7480368
+
+a:  7480336
+
+
+
+
+
+Ligacao apply 2
+Endereco (apply): 7480336
+
+No 1:
+Endereco (no): 7479696
+Ligacoes anteriores:
+	Ligacao 0: 0
+	Ligacao 1: 0
+Tipo: Numero
+0.707107 0.000000
+
+No 2:
+Endereco (no): 7479944
+Ligacoes anteriores:
+	Ligacao 0: 0
+Tipo/nivel: R0
+Ligacoes posteriores
+	else: 7479992
+	Then: 7480024
+
+No:
+Endereco (no): 7472288
+Ligacoes anteriores:
+	Ligacao 0: 0
+Tipo/nivel: V0
+Ligacoes posteriores
+	else: 7493416
+	Then: 7493032
+
+
+a1: 7492936
+a2: 7492680
+
+a:  7492936
+
+
+
+
+
+Ligacao apply 3
+Endereco (apply): 7492936
+
+No 1:
+Endereco (no): 7479696
+Ligacoes anteriores:
+	Ligacao 0: 0
+	Ligacao 1: 0
+Tipo: Numero
+0.707107 0.000000
+
+No 2:
+Endereco (no): 7479992
+Ligacoes anteriores:
+	Ligacao 0: 0
+	Ligacao 1: 0
+Tipo: Numero
+0.707107 0.000000
+
+No:
+Endereco (no): 7493416
+Ligacoes anteriores:
+	Ligacao 0: 0
+	Ligacao 1: 0
+	Ligacao 2: 0
+Tipo: Numero
+0.500000 0.000000
+
+
+a1: 0
+a2: 0
+
+a:  7492680
+
+
+
+
+
+Ligacao apply 4
+Endereco (apply): 7492680
+
+No 1:
+Endereco (no): 7479696
+Ligacoes anteriores:
+	Ligacao 0: 0
+	Ligacao 1: 0
+Tipo: Numero
+0.707107 0.000000
+
+No 2:
+Endereco (no): 7480024
+Ligacoes anteriores:
+	Ligacao 0: 0
+Tipo/nivel: C0
+Ligacoes posteriores
+	else: 7479992
+	Then: 7480088
+
+No:
+Endereco (no): 7493032
+Ligacoes anteriores:
+	Ligacao 0: 0
+Tipo/nivel: C0
+Ligacoes posteriores
+	else: 7493416
+	Then: 7492616
+
+
+a1: 7492936
+a2: 7493352
+
+a:  7493352
+
+
+
+
+
+Ligacao apply 5
+Endereco (apply): 7493352
+
+No 1:
+Endereco (no): 7479696
+Ligacoes anteriores:
+	Ligacao 0: 0
+	Ligacao 1: 0
+Tipo: Numero
+0.707107 0.000000
+
+No 2:
+Endereco (no): 7480088
+Ligacoes anteriores:
+	Ligacao 0: 0
+Tipo: Numero
+-0.707107 0.000000
+
+No:
+Endereco (no): 7492616
+Ligacoes anteriores:
+	Ligacao 0: 0
+Tipo: Numero
+-0.500000 0.000000
+
+
+a1: 0
+a2: 0
+
+a:  7480368
+
+
+
+
+
+Ligacao apply 6
+Endereco (apply): 7480368
+
+No 1:
+Endereco (no): 7479728
+Ligacoes anteriores:
+	Ligacao 0: 0
+Tipo/nivel: C0
+Ligacoes posteriores
+	else: 7479696
+	Then: 7479792
+
+No 2:
+Endereco (no): 7479944
+Ligacoes anteriores:
+	Ligacao 0: 0
+Tipo/nivel: R0
+Ligacoes posteriores
+	else: 7479992
+	Then: 7480024
+
+No:
+Endereco (no): 7492840
+Ligacoes anteriores:
+	Ligacao 0: 0
+Tipo/nivel: V0
+Ligacoes posteriores
+	else: 7493416
+	Then: 7492520
+
+
+a1: 7492936
+a2: 7493064
+
+a:  7493064
+
+
+
+
+
+Ligacao apply 7
+Endereco (apply): 7493064
+
+No 1:
+Endereco (no): 7479792
+Ligacoes anteriores:
+	Ligacao 0: 0
+Tipo: Numero
+-0.707107 0.000000
+
+No 2:
+Endereco (no): 7480024
+Ligacoes anteriores:
+	Ligacao 0: 0
+Tipo/nivel: C0
+Ligacoes posteriores
+	else: 7479992
+	Then: 7480088
+
+No:
+Endereco (no): 7492520
+Ligacoes anteriores:
+	Ligacao 0: 0
+Tipo/nivel: C0
+Ligacoes posteriores
+	else: 7492712
+	Then: 7493128
+
+
+a1: 7492872
+a2: 7492552
+
+a:  7492872
+
+
+
+
+
+Ligacao apply 8
+Endereco (apply): 7492872
+
+No 1:
+Endereco (no): 7479792
+Ligacoes anteriores:
+	Ligacao 0: 0
+Tipo: Numero
+-0.707107 0.000000
+
+No 2:
+Endereco (no): 7479992
+Ligacoes anteriores:
+	Ligacao 0: 0
+	Ligacao 1: 0
+Tipo: Numero
+0.707107 0.000000
+
+No:
+Endereco (no): 7492712
+Ligacoes anteriores:
+	Ligacao 0: 0
+Tipo: Numero
+-0.500000 0.000000
+
+
+a1: 0
+a2: 0
+
+a:  7492552
+
+
+
+
+
+Ligacao apply 9
+Endereco (apply): 7492552
+
+No 1:
+Endereco (no): 7479792
+Ligacoes anteriores:
+	Ligacao 0: 0
+Tipo: Numero
+-0.707107 0.000000
+
+No 2:
+Endereco (no): 7480088
+Ligacoes anteriores:
+	Ligacao 0: 0
+Tipo: Numero
+-0.707107 0.000000
+
+No:
+Endereco (no): 7493128
+Ligacoes anteriores:
+	Ligacao 0: 0
+Tipo: Numero
+0.500000 -0.000000
+
+
+a1: 0
+a2: 0
+
+a:  0
