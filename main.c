@@ -22,7 +22,7 @@
 FILE *fm;
 unsigned long mem = 0, memMax = 0, iQ = 0, iI = 0, iM = 0, iF = 0, iL = 0, iA;
 unsigned short print, nqbit;
-float eps;
+double eps;
 
 
 
@@ -54,7 +54,7 @@ struct no
 
         struct fim
         {
-            float re, im;
+            double re, im;
         }f;
     }at;
 };
@@ -205,7 +205,7 @@ no* cria_no_meio(Short classe, Short nivel)
     return n;
 }
 
-no* cria_no_fim(float re,float im)
+no* cria_no_fim(double re,double im)
 {
     no *n;
     n = malloc(sizeof(no));
@@ -603,7 +603,7 @@ void mostra_tamanhos()
     printf("\n");
 }
 
-void mostra_matriz(float **m, Long r, Long c)
+void mostra_matriz(double **m, Long r, Long c)
 {
     Long i, j;
     for(i = 0; i < r; i++)
@@ -797,7 +797,7 @@ void fmostra_tamanhos(FILE *fp)
     fprintf(fp,"\n");
 }
 
-void fmostra_matriz(FILE *fp, float **m, Long r, Long c)
+void fmostra_matriz(FILE *fp, double **m, Long r, Long c)
 {
     Long i, j;
     for(i = 0; i < r; i++)
@@ -1040,7 +1040,7 @@ Short compara_no_fim(no *n1, no *n2)
     if(n1->tipo != Fim||n2->tipo != Fim)
         ERRO("COMPARA NO FIM| TIPO DE NO ERRADO");
 
-    float re, im;
+    double re, im;
     re = (n1->at.f.re) - (n2->at.f.re);
     im = (n1->at.f.im) - (n2->at.f.im);
 
@@ -1309,7 +1309,7 @@ QDD* copia_QDD(QDD *Q1)
 no* soma_no(no *n1, no *n2)
 {
     no *n;
-    float re, im;
+    double re, im;
     re = (n1->at.f.re) + (n2->at.f.re);
     im = (n1->at.f.im) + (n2->at.f.im);
     n = cria_no_fim(re,im);
@@ -1319,7 +1319,7 @@ no* soma_no(no *n1, no *n2)
 no* produto_no_no(no *n1, no *n2)
 {
     no *n;
-    float re, im;
+    double re, im;
     re = (n1->at.f.re)*(n2->at.f.re) - (n1->at.f.im)*(n2->at.f.im);
     im = (n1->at.f.re)*(n2->at.f.im) + (n1->at.f.im)*(n2->at.f.re);
     n = cria_no_fim(re,im);
@@ -1329,20 +1329,20 @@ no* produto_no_no(no *n1, no *n2)
 no* produto_no_no_conjugado(no *n1, no *n2)
 {
     no *n;
-    float re, im;
+    double re, im;
     re = (n1->at.f.re)*(n2->at.f.re) + (n1->at.f.im)*(n2->at.f.im);
     im = (n1->at.f.re)*(n2->at.f.im) - (n1->at.f.im)*(n2->at.f.re);
     n = cria_no_fim(re,im);
     return n;
 }
 
-void produto_no_real(no *n, float re)
+void produto_no_real(no *n, double re)
 {
     (n->at.f.re) *= re;
     (n->at.f.im) *= re;
 }
 
-void produto_arvore_real(no *n, float re)
+void produto_arvore_real(no *n, double re)
 {
     lista *l, *lc;
     l = enlista_arvore(n);
@@ -1394,7 +1394,7 @@ QDD* le_matriz(char *nome)
     exp = (Long)pow(2,N);
 
     no ***nf;
-    float re, im;
+    double re, im;
     nf = malloc(exp*sizeof(no**));
     if(nf == NULL)
         ERRO("LE MATRIZ NF");
@@ -1408,8 +1408,8 @@ QDD* le_matriz(char *nome)
 
         for(j=0; j<exp; j++)
         {
-            fscanf(fp,"%f",&re);
-            fscanf(fp,"%f",&im);
+            fscanf(fp,"%lf",&re);
+            fscanf(fp,"%lf",&im);
             nf[i][j] = cria_no_fim(re,im);
         }
     }
@@ -1519,15 +1519,15 @@ QDD* le_vetor(char *nome)
     exp = (Long)pow(2,N);
 
     no **nf;
-    float re, im;
+    double re, im;
     nf = malloc(exp*sizeof(no*));
     if(nf == NULL)
         ERRO("LE VETOR NF");
     aumenta_memoria(exp*sizeof(no*));
     for(i=0; i<exp; i++)
     {
-        fscanf(fp,"%f",&re);
-        fscanf(fp,"%f",&im);
+        fscanf(fp,"%lf",&re);
+        fscanf(fp,"%lf",&im);
         nf[i] = cria_no_fim(re,im);
     }
     fclose(fp);
@@ -1602,7 +1602,7 @@ QDD* le_vetor(char *nome)
 
 /**  Operações QDD estruturais   **/
 
-void completa_conversao_QDD_matriz(no *n, no *nesp, Long i, Long j, Long exp, float **m)
+void completa_conversao_QDD_matriz(no *n, no *nesp, Long i, Long j, Long exp, double **m)
 {
     no *naux;
     if(exp == 0)
@@ -1653,24 +1653,24 @@ void completa_conversao_QDD_matriz(no *n, no *nesp, Long i, Long j, Long exp, fl
     }
 }
 
-float** converte_QDD_matriz(QDD *Q)
+double** converte_QDD_matriz(QDD *Q)
 {
     Long i;
 
     Long exp;
     exp = (Long)pow(2,Q->nqbit);
 
-    float **m;
-    m = malloc(exp*sizeof(float*));
+    double **m;
+    m = malloc(exp*sizeof(double*));
     if(m == NULL)
         ERRO("CONVERTE QDD MATRIZ M");
-    aumenta_memoria(exp*sizeof(float*));
+    aumenta_memoria(exp*sizeof(double*));
     for(i = 0; i < exp; i++)
     {
-        m[i] = malloc(2*exp*sizeof(float));
+        m[i] = malloc(2*exp*sizeof(double));
         if(m[i] == NULL)
             ERRO("CONVERTE QDD MATRIZ M[]");
-        aumenta_memoria(2*exp*sizeof(float));
+        aumenta_memoria(2*exp*sizeof(double));
     }
 
     no *naux;
@@ -1921,7 +1921,6 @@ void monta_apply_soma(apply *a)
     n1 = a->n1;
     n2 = a->n2;
 
-    apply *a1, *a2;
     Short regra;
     regra = 0;
     switch(n1->tipo)
@@ -2018,6 +2017,7 @@ void monta_apply_soma(apply *a)
     }
 
     no *n;
+    apply *a1, *a2;
     switch(regra)
     {
         case 0:
@@ -2086,6 +2086,272 @@ void monta_apply_soma(apply *a)
     }
 }
 
+void monta_apply_produto_matriz_matriz(apply *a)
+{
+    no *n1, *n2;
+    n1 = a->n1;
+    n2 = a->n2;
+
+    Short regra;
+    regra = 0;
+    switch(n1->tipo)
+    {
+        case Inicio:
+            regra = 0;
+            if(n2->tipo != Inicio)
+                ERRO("MONTA APPLY PRODUTO MATRIZ MATRIZ| N1 E INICIO N2 NAO");
+            break;
+
+        case Meio:
+            switch(n2->tipo)
+            {
+                case Inicio:
+                    ERRO("MONTA APPLY PRODUTO MATRIZ MATRIZ| N1 E MEIO N2 INICIO");
+                    break;
+
+                case Meio:
+                    if(n1->at.m.nivel < n1->at.m.nivel)
+                    {
+                        switch(n1->at.m.classe)
+                        {
+                            case V:
+                                ERRO("MONTA APPLY PRODUTO MATRIZ MATRIZ| N1 E VETOR");
+                                break;
+
+                            case R:
+                                regra = 1;
+                                break;
+
+                            case C:
+                                regra = 3;
+                                break;
+                        }
+                    }
+                    if(n1->at.m.nivel == n1->at.m.nivel)
+                    {
+                        switch(n1->at.m.classe)
+                        {
+                            case V:
+                                ERRO("MONTA APPLY PRODUTO MATRIZ MATRIZ| N1 E VETOR");
+                                break;
+
+                            case R:
+                                regra = 1;
+                                break;
+
+                            case C:
+                                switch(n2->at.m.classe)
+                                {
+                                    case V:
+                                        ERRO("MONTA APPLY PRODUTO MATRIZ MATRIZ| N2 E VETOR");
+                                        break;
+
+                                    case R:
+                                        regra = 5;
+                                        break;
+
+                                    case C:
+                                        regra = 3;
+                                        break;
+                                }
+                                break;
+                        }
+                    }
+                    if(n1->at.m.nivel > n1->at.m.nivel)
+                    {
+                        switch(n2->at.m.classe)
+                        {
+                            case V:
+                                ERRO("MONTA APPLY PRODUTO MATRIZ MATRIZ| N2 E VETOR");
+                                break;
+
+                            case R:
+                                regra = 4;
+                                break;
+
+                            case C:
+                                regra = 2;
+                                break;
+                        }
+                    }
+                    break;
+
+                case Fim:
+                    if(compara_no_fim_zero(n2))
+                    {
+                        regra = 7;
+                    }
+                    else
+                    {
+                        switch(n1->at.m.classe)
+                        {
+                            case V:
+                                ERRO("MONTA APPLY PRODUTO MATRIZ MATRIZ| N1 E VETOR");
+                                break;
+
+                            case R:
+                                regra = 1;
+                                break;
+
+                            case C:
+                                regra = 3;
+                                break;
+                        }
+                    }
+                    break;
+
+            }
+            break;
+
+        case Fim:
+            if(compara_no_fim_zero(n1))
+            {
+                regra = 7;
+            }
+            else
+            {
+                switch(n2->tipo)
+                {
+                    case Inicio:
+                        ERRO("MONTA APPLY PRODUTO MATRIZ MATRIZ| N1 E FIM N2 INICIO");
+                        break;
+
+                    case Meio:
+                        switch(n2->at.m.nivel)
+                        {
+                            case V:
+                                ERRO("MONTA APPLY PRODUTO MATRIZ MATRIZ| N2 E VETOR");
+                                break;
+
+                            case R:
+                                regra = 4;
+                                break;
+
+                            case C:
+                                regra = 2;
+                                break;
+                        }
+                        break;
+
+                    case Fim:
+                        if(compara_no_fim_zero(n2))
+                            regra = 7;
+                        else
+                            regra = 6;
+                        break;
+                }
+            }
+            break;
+    }
+
+    no *n;
+    apply *a1, *a2;
+    switch(regra)
+    {
+        case 0:
+            n = cria_no_inicio();
+            a->n = n;
+
+            a1 = cria_apply();
+            a1->n1 = n1->at.i.n;
+            a1->n2 = n2->at.i.n;
+
+            a->a1=  a1;
+            break;
+
+        case 1:
+            n = copia_no(n1);
+            a->n = n;
+
+            a1 = cria_apply();
+            a1->n1 = n1->at.m.el;
+            a1->n2 = n2;
+
+            a2 = cria_apply();
+            a2->n1 = n1->at.m.th;
+            a2->n2 = n2;
+
+            a->a1 = a1;
+            a->a2 = a2;
+            break;
+
+        case 2:
+            n = copia_no(n1);
+            a->n = n;
+
+            a1 = cria_apply();
+            a1->n1 = n1;
+            a1->n2 = n2->at.m.el;
+
+            a2 = cria_apply();
+            a2->n1 = n1;
+            a2->n2 = n2->at.m.th;
+
+            a->a1 = a1;
+            a->a2 = a2;
+            break;
+
+        case 3:
+            n = cria_no_meio(V,n1->at.m.nivel);
+            a->n = n;
+
+            a1 = cria_apply();
+            a1->n1 = n1->at.m.el;
+            a1->n2 = n2;
+
+            a2 = cria_apply();
+            a2->n1 = n1->at.m.th;
+            a2->n2 = n2;
+
+            a->a1 = a1;
+            a->a2 = a2;
+            break;
+
+        case 4:
+            n = cria_no_meio(V,n2->at.m.nivel);
+            a->n = n;
+
+            a1 = cria_apply();
+            a1->n1 = n1;
+            a1->n2 = n2->at.m.el;
+
+            a2 = cria_apply();
+            a2->n1 = n1;
+            a2->n2 = n2->at.m.th;
+
+            a->a1 = a1;
+            a->a2 = a2;
+            break;
+
+        case 5:
+            n = cria_no_meio(V,n1->at.m.nivel);
+            a->n = n;
+
+            a1 = cria_apply();
+            a1->n1 = n1->at.m.el;
+            a1->n2 = n2->at.m.el;
+
+            a2 = cria_apply();
+            a2->n1 = n1->at.m.th;
+            a2->n2 = n2->at.m.th;
+
+            a->a1 = a1;
+            a->a2 = a2;
+            break;
+
+        case 6:
+            n = produto_no_no(n1,n2);
+            a->n = n;
+            break;
+
+        case 7:
+            n = cria_no_fim(0,0);
+            a->n = n;
+            break;
+    }
+}
+
+
 
 /**  apply pronto  **/
 
@@ -2096,11 +2362,18 @@ no* apply_soma(no *n1, no *n2)
     return n;
 }
 
+no* apply_produto_matriz_matriz(no *n1, no *n2)
+{
+    no *n;
+    n = apply_base(n1,n2,monta_apply_produto_matriz_matriz);
+    return n;
+}
+
 
 
 /**  Operações QDD algebricas  **/
 
-void produto_QDD_escalar(QDD *Q, float re, float im)
+void produto_QDD_escalar(QDD *Q, double re, double im)
 {
     no *n1, *n2, *n3;
     n1 = cria_no_fim(re,im);
@@ -2298,7 +2571,7 @@ QDD* H_1()
     n1 = cria_no_meio(R,0);
     conecta_UM(ni,n1,Inicio);
 
-    float re;
+    double re;
     re = pow(2,-0.5);
     n2 = cria_no_fim(re,0);
     n3 = cria_no_meio(C,0);
@@ -2389,7 +2662,7 @@ QDD* Ro(double theta)
     n3 = cria_no_meio(C,0);
     conecta_DOIS(n1,n2,n3);
 
-    float re, im;
+    double re, im;
     n1 = n2;
     n2 = n3;
     n3 = cria_no_fim(1,0);
@@ -2500,7 +2773,7 @@ void teste_velocidade_base(char *nomeI, Short limiteinf, Short limitesup, Short 
     fprintf(fp,"\n");
 
     int j;
-    float total;
+    double total;
     char nome[10];
     time_t antes, depois;
     for(i=limiteinf; i<=limitesup; i++)
@@ -2532,7 +2805,7 @@ void teste_velocidade_base(char *nomeI, Short limiteinf, Short limitesup, Short 
             depois = clock();
             libera_QDD(Q);
 
-            total = (float)(depois-antes)/CLOCKS_PER_SEC;
+            total = (double)(depois-antes)/CLOCKS_PER_SEC;
             imprime_numero_csv(fp,total,3);
             fprintf(fp,"|");
             printf("%.3f",total);
@@ -2562,10 +2835,11 @@ int main()
 
     QDD *Q1, *Q2;
     Q1 = H_1();
-    Q2 = I_1();
+    Q2 = H_1();
 
-    QDD *Q;
-    Q = soma_QDD(Q1,Q2);
+    no *n;
+    n = apply_produto_matriz_matriz(Q1->n,Q2->n);
+    mostra_arvore(n);
 
     /***********************************/
     finaliza_relatorio_memoria();
