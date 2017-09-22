@@ -425,16 +425,20 @@ lista* enlista_QDD(QDD *Q)
 
 
 
+
 /**  Mostra  **/
 
 void mostra_lista(lista *l)
 {
+    no *n;
     lista *lc;
     Long ligacao = 0;
     lc = l;
     for(lc = l; lc != NULL; lc = lc->l)
     {
-        printf("\tLigacao %u: %d\n",ligacao,lc->n);
+        n = lc->n;
+        printf("\n\tLigacao %d:",ligacao);
+        printf(" %d",n);
         ligacao++;
     }
 }
@@ -446,10 +450,10 @@ void mostra_no(no *n)
         return;
     if(n->l != NULL)
     {
-        printf("Ligacoes anteriores:\n");
+        printf("Ligacoes anteriores:");
         mostra_lista(n->l);
     }
-    printf("Tipo");
+    printf("\nTipo");
     switch(n->tipo)
     {
         case Inicio:
@@ -623,12 +627,15 @@ void mostra_matriz(double **m, Long r, Long c)
 
 void fmostra_lista(FILE *fp, lista *l)
 {
+    no *n;
     lista *lc;
     Long ligacao = 0;
     lc = l;
     for(lc = l; lc != NULL; lc = lc->l)
     {
-        fprintf(fp,"\tLigacao %u: %d\n",ligacao,lc->n);
+        n = lc->n;
+        fprintf(fp,"\n\tLigacao %d:",ligacao);
+        fprintf(fp," %d",n);
         ligacao++;
     }
 }
@@ -640,10 +647,10 @@ void fmostra_no(FILE *fp, no *n)
         return;
     if(n->l != NULL)
     {
-        fprintf(fp,"Ligacoes anteriores:\n");
+        fprintf(fp,"Ligacoes anteriores:");
         fmostra_lista(fp,n->l);
     }
-    fprintf(fp,"Tipo");
+    fprintf(fp,"\nTipo");
     switch(n->tipo)
     {
         case Inicio:
@@ -818,21 +825,27 @@ void fmostra_matriz(FILE *fp, double **m, Long r, Long c)
 void conecta_UM(no *n1, no *n2, Short lado)
 {
     if(n1->tipo == Fim)
-        ERRO("FIM NAO CONECTA");
+        ERRO("CONECTA UM| FIM NAO TEM SUCESSORES");
     if(n2->tipo == Inicio)
-        ERRO("INICIO NAO CONECTA");
+        ERRO("CONECTA UM| INICIO NAO TEM ANTECESSORES");
 
     switch(lado)
     {
         case Inicio:
+            if(n1->tipo != Inicio)
+                    ERRO("CONECTA UM| FUNCAO CHAMADA PARA INICIO MAS NO NAO E");
             n1->at.i.n = n2;
             break;
 
         case Else:
+            if(n1->tipo != Meio)
+                    ERRO("CONECTA UM| FUNCAO CHAMADA PARA MEIO MAS NO NAO E 1");
             n1->at.m.el = n2;
             break;
 
         case Then:
+            if(n1->tipo != Meio)
+                    ERRO("CONECTA UM| FUNCAO CHAMADA PARA MEIO MAS NO NAO E 1");
             n1->at.m.th = n2;
             break;
     }
@@ -1885,6 +1898,9 @@ no* apply_base(no *n1, no *n2, void monta_apply(apply *a))
         }
     }
 
+    FILE *fp;
+    fp = fopen("conecxoes.txt","w");
+
     apply *a1, *a2;
     for(ac = a; ac != NULL; ac = ac->a)
     {
@@ -1894,27 +1910,48 @@ no* apply_base(no *n1, no *n2, void monta_apply(apply *a))
             case Inicio:
                 a1 = ac->a1;
                 n1 = a1->n;
+
+                fprintf(fp,"\nAntes: ");
+                fmostra_no(fp,n);
+                fmostra_no(fp,n1);
+
                 conecta_UM(n,n1,Inicio);
+
+                fprintf(fp,"\nDepois: ");
+                fmostra_no(fp,n);
+                fmostra_no(fp,n1);
+                fprintf(fp,"\n\n");
                 break;
 
             case Meio:
                 a1 = ac->a1;
                 a2 = ac->a2;
 
+                fprintf(fp,"\nAntes: ");
+                fmostra_no(fp,n);
+                fmostra_no(fp,n1);
+                fmostra_no(fp,n2);
+
                 n1 = a1->n;
                 n2 = a2->n;
 
                 conecta_DOIS(n,n1,n2);
+
+                fprintf(fp,"\nDepois: ");
+                fmostra_no(fp,n);
+                fmostra_no(fp,n1);
+                fmostra_no(fp,n2);
                 break;
         }
     }
 
-    FILE *fp;
+
     fp = fopen("apply.txt","w");
-    fmostra_apply_lista(fp,a);
 
     n = a->n;
+    fmostra_apply_lista(fp,a);
     libera_apply_lista(a);
+    fclose(fp);
 
     return n;
 }
@@ -2118,7 +2155,7 @@ void monta_apply_produto_matriz_matriz(apply *a)
                     break;
 
                 case Meio:
-                    if(n1->at.m.nivel < n1->at.m.nivel)
+                    if(n1->at.m.nivel < n2->at.m.nivel)
                     {
                         switch(n1->at.m.classe)
                         {
@@ -2135,7 +2172,7 @@ void monta_apply_produto_matriz_matriz(apply *a)
                                 break;
                         }
                     }
-                    if(n1->at.m.nivel == n1->at.m.nivel)
+                    if(n1->at.m.nivel == n2->at.m.nivel)
                     {
                         switch(n1->at.m.classe)
                         {
@@ -2165,7 +2202,7 @@ void monta_apply_produto_matriz_matriz(apply *a)
                                 break;
                         }
                     }
-                    if(n1->at.m.nivel > n1->at.m.nivel)
+                    if(n1->at.m.nivel > n2->at.m.nivel)
                     {
                         switch(n2->at.m.classe)
                         {
@@ -2498,7 +2535,7 @@ QDD* soma_QDD(QDD *Q1, QDD *Q2)
 
 /**  Blocos usuais  **/
 
-QDD* I_1()
+QDD* I()
 {
     no *ni, *n1, *n2, *n3, *n4;
 
@@ -2533,7 +2570,7 @@ QDD* I_1()
     return Q;
 }
 
-QDD* X_1()
+QDD* X()
 {
     no *ni, *n1, *n2, *n3, *n4;
 
@@ -2571,7 +2608,7 @@ QDD* X_1()
     return Q;
 }
 
-QDD* H_1()
+QDD* H()
 {
     no *ni, *n1, *n2, *n3;
 
@@ -2609,7 +2646,7 @@ QDD* Ro(double theta)
 {
     if(theta <  1.0/20)
     if(theta > -1.0/20)
-        return I_1();
+        return I();
 
     no *ni, *n1, *n2, *n3, *n4, *n5;
 
@@ -2763,24 +2800,28 @@ int main()
     configuracao(20);
     /***********************************/
 
+    QDD *QH, *QX;
+    QH = H();
+    QX = X();
+
     QDD *Q1, *Q2;
-    Q1 = H_1();
-    Q2 = H_1();
+    Q1 = produto_tensorial(QH,QH);
+    Q2 = produto_tensorial(QH,QX);
+
+    libera_QDD(QH);
+    libera_QDD(QX);
 
     no *n;
     n = apply_produto_matriz_matriz(Q1->n,Q2->n);
-    mostra_arvore(n);
-    libera_arvore(n);
+
+    FILE *fp;
+    fp = fopen("arvore.txt","w");
+    fmostra_arvore(fp,n);
+    fclose(fp);
+
     libera_QDD(Q1);
     libera_QDD(Q2);
-
-    /*QDD *Q;
-    Q = le_matriz("Pasta2.txt");
-    mostra_quantidades();
-    reduz_QDD(Q);
-    mostra_quantidades();*/
-
-    /*printf("%.16f",pow(2,-0.5));*/
+    libera_arvore(n);
 
     /***********************************/
     finaliza_relatorio_memoria();
