@@ -23,7 +23,7 @@
 
 
 FILE *fm;
-unsigned long long mem = 0, memMax = 0, iQ = 0, iI = 0, iM = 0, iF = 0, iL = 0, iA;
+unsigned long long mem = 0, memMax = 0, iQ = 0, iI = 0, iM = 0, iF = 0, iL = 0, iA = 0, iC = 0, iS = 0;
 unsigned short print, nqbit;
 double eps;
 
@@ -74,6 +74,20 @@ struct apply
     struct apply *a, *a1, *a2;
 };
 
+struct conta
+{
+    struct no *n;
+    unsigned short nivel;
+    struct conta *c;
+};
+
+struct suporte
+{
+    struct conta *cc, *cv, *cr;
+    unsigned short nivel;
+    struct suporte *s;
+};
+
 
 
 /** Typedefs e definitions  **/
@@ -81,7 +95,10 @@ struct apply
 typedef struct QDD   QDD;
 typedef struct no    no;
 typedef struct lista lista;
-typedef struct apply apply;
+
+typedef struct apply   apply;
+typedef struct conta   conta;
+typedef struct suporte suporte;
 
 typedef unsigned short Short;
 typedef unsigned long long Long;
@@ -259,6 +276,38 @@ apply* cria_apply()
     return a;
 }
 
+conta* cria_conta(Short nivel)
+{
+    conta *c;
+    c = malloc(sizeof(conta));
+    if(c == NULL)
+        ERRO("CRIA CONTA");
+    iC++;
+
+    c->n = NULL;
+    c->nivel = nivel;
+    c->c = NULL;
+
+    return c;
+}
+
+suporte* cria_suporte(Short nivel)
+{
+    suporte *s;
+    s = malloc(sizeof(suporte));
+    if(s == NULL)
+        ERRO("CRIA SUPORTE");
+    iS++;
+
+    s->cc = NULL;
+    s->cr = NULL;
+    s->cv = NULL;
+
+    s->nivel = nivel;
+    s->s = NULL;
+
+    return s;
+}
 
 
 /** Destrutores  **/
@@ -353,6 +402,24 @@ void libera_apply_lista(apply *a)
         libera_apply_no(a);
         a = ac;
     }
+}
+
+void libera_conta(conta *c)
+{
+    diminui_memoria(sizeof(conta));
+    if(iC == 0)
+        ERRO("LIBERA APPLY");
+    iC--;
+    free(c);
+}
+
+void libera_suporte(suporte *s)
+{
+    diminui_memoria(sizeof(suporte));
+    if(iS == 0)
+        ERRO("LIBERA APPLY");
+    iS--;
+    free(s);
 }
 
 
@@ -557,6 +624,14 @@ void mostra_apply_lista(apply *a)
     }
 }
 
+/* void mostra_conta_no(conta *c);
+
+void mostra_conta_lista(conta *c);
+
+void mostra_suporte_no(suporte *s);
+
+void mostra_suporte_lista(suporte *s);*/
+
 void mostra_quantidades()
 {
     Short vazio = 1;
@@ -594,6 +669,16 @@ void mostra_quantidades()
     {
         vazio = 0;
         printf("\na:   %d",iA);
+    }
+    if(iC != 0)
+    {
+        vazio = 0;
+        printf("\nc:   %d",iC);
+    }
+    if(iS != 0)
+    {
+        vazio = 0;
+        printf("\ns:   %d",iS);
     }
     if(vazio)
         printf("\nTUDO ZERADO");
