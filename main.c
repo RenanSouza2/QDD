@@ -692,6 +692,8 @@ void mostra_tamanhos()
     printf("\nn:   %d",sizeof(no));
     printf("\nl:   %d",sizeof(lista));
     printf("\na:   %d",sizeof(apply));
+    printf("\nc:   %d",sizeof(conta));
+    printf("\ns:   %d",sizeof(suporte));
     printf("\n");
 }
 
@@ -1136,34 +1138,34 @@ Short compara_no_meio_completo(no *n1, no *n2)
     return 0;
 }
 
-Short compara_no_fim(no *n1, no *n2)
+Short compara_no_fim(no *n1, no *n2, Short ex)
 {
     if(n1->tipo != Fim||n2->tipo != Fim)
         ERRO("COMPARA NO FIM| TIPO DE NO ERRADO");
 
-    double re, im;
+    double re, im, ep;
+    ep = pow(eps,ex);
     re = (n1->at.f.re) - (n2->at.f.re);
     im = (n1->at.f.im) - (n2->at.f.im);
 
-    if(re< eps)
-    if(re>-eps)
-    if(im< eps)
-    if(im>-eps)
+    if(re< ep)
+    if(re>-ep)
+    if(im< ep)
+    if(im>-ep)
         return 1;
     return 0;
 }
 
-Short compara_no_fim_zero(no *n)
+Short compara_no_fim_zero(no *n, Short ex)
 {
-    if(n->tipo != Fim)
-        ERRO("COMPARA NO FIM ZERO| TIPO DE NO ERRADO");
+    no *n0;
+    n0 = cria_no_fim(0,0);
 
-    if(n->at.f.re< eps)
-    if(n->at.f.re>-eps)
-    if(n->at.f.im< eps)
-    if(n->at.f.im>-eps)
-        return 1;
-    return 0;
+    Short res;
+    res = compara_no_fim(n,n0,ex);
+    libera_no(n0);
+
+    return res;
 }
 
 Short compara_apply(apply *a1, apply *a2)
@@ -1235,7 +1237,7 @@ lista* acha_fim_lista(lista *l)
     return lc;
 }
 
-void reduz_lista_fim(lista *l)
+void reduz_lista_fim(lista *l, Short ex)
 {
     lista *lc1, *lc2, *laux;
 
@@ -1245,7 +1247,7 @@ void reduz_lista_fim(lista *l)
         lc2 = lc1;
         while(lc2->l != NULL)
         {
-            if(compara_no_fim(lc1->n,lc2->l->n))
+            if(compara_no_fim(lc1->n,lc2->l->n,ex))
             {
                 laux = lc2->l;
                 lc2->l = laux->l;
@@ -1782,9 +1784,9 @@ double** converte_QDD_matriz(QDD *Q)
     return m;
 }
 
-void reduz_QDD(QDD *Q)
+void reduz_QDD(QDD *Q, Short ex)
 {
-    reduz_lista_fim(Q->l);
+    reduz_lista_fim(Q->l,ex);
     lista *l, *lf;
     l = copia_lista_sem_cabeca(Q->l);
     lf = acha_fim_lista(l);
@@ -2307,7 +2309,7 @@ void monta_apply_produto_matriz_matriz(apply *a)
                     break;
 
                 case Fim:
-                    if(compara_no_fim_zero(n2))
+                    if(compara_no_fim_zero(n2,1))
                     {
                         regra = 7;
                     }
@@ -2334,7 +2336,7 @@ void monta_apply_produto_matriz_matriz(apply *a)
             break;
 
         case Fim:
-            if(compara_no_fim_zero(n1))
+            if(compara_no_fim_zero(n1,1))
             {
                 regra = 7;
             }
@@ -2364,7 +2366,7 @@ void monta_apply_produto_matriz_matriz(apply *a)
                         break;
 
                     case Fim:
-                        if(compara_no_fim_zero(n2))
+                        if(compara_no_fim_zero(n2,1))
                             regra = 7;
                         else
                             regra = 6;
@@ -2546,7 +2548,7 @@ QDD* produto_tensorial(QDD *Q1, QDD *Q2)
     while(l != NULL)
     {
         n1 = l->n;
-        if(compara_no_fim_zero(n1))
+        if(compara_no_fim_zero(n1,1))
         {
             lc = l->l;
 
@@ -2581,7 +2583,7 @@ QDD* produto_tensorial(QDD *Q1, QDD *Q2)
     }
     libera_QDD(Q2a);
 
-    reduz_QDD(Q);
+    reduz_QDD(Q,1);
     return Q;
 }
 
@@ -2609,12 +2611,25 @@ QDD* soma_QDD(QDD *Q1, QDD *Q2)
     Q = cria_QDD(Q1->nqbit);
     Q->n = apply_soma(Q1->n,Q2->n);
     Q->l = acha_lista_fim_QDD(Q);
-    reduz_QDD(Q);
+    reduz_QDD(Q,1);
 
     return Q;
 }
 
-/*QDD* produto_matriz_matriz(QDD *Q1, QDD *Q2)*/
+QDD* produto_matriz_matriz(QDD *Q1, QDD *Q2)
+{
+    if(Q1->nqbit != Q2->nqbit)
+        ERRO("PRODUTO MATRIZ MATRIZ| QDDs COM QUANTIDADES DIFERENTES DE QBITS");
+
+    QDD *Q;
+    Q = cria_QDD(Q1->nqbit);
+    Q->n = apply_produto_matriz_matriz(Q1->n,Q2->n);
+    Q->l = acha_lista_fim_QDD(Q);
+    reduz_QDD(Q,2);
+
+    mostra_QDD(Q);
+    return Q;
+}
 
 
 
@@ -2840,7 +2855,7 @@ void teste_velocidade_base(char *nomeI, Short limiteinf, Short limitesup, Short 
         Q = func(nome);
         mostra_quantidades();
         fprintf(fp,"%d|%d|%d|%d|",mem,iM,iF,iL);
-        reduz_QDD(Q);
+        reduz_QDD(Q,1);
         printf("\n");
         mostra_quantidades();
         fprintf(fp,"%d|%d|%d|%d|",mem,iM,iF,iL);
@@ -2853,7 +2868,7 @@ void teste_velocidade_base(char *nomeI, Short limiteinf, Short limitesup, Short 
 
             Q = func(nome);
             antes = clock();
-            reduz_QDD(Q);
+            reduz_QDD(Q,1);
             depois = clock();
             libera_QDD(Q);
 
@@ -2896,17 +2911,18 @@ int main()
     libera_QDD(QH);
     libera_QDD(QX);
 
-    no *n;
-    n = apply_produto_matriz_matriz(Q1->n,Q2->n);
+    QDD *Q;
+    Q = produto_matriz_matriz(Q1,Q2);
+    mostra_QDD(Q);
 
     FILE *fp;
-    fp = fopen("arvore.txt","w");
-    fmostra_arvore(fp,n);
+    fp = fopen("QDD.txt","w");
+    fmostra_QDD(fp,Q);
     fclose(fp);
 
     libera_QDD(Q1);
     libera_QDD(Q2);
-    libera_arvore(n);
+    libera_QDD(Q);
 
     /***********************************/
     finaliza_relatorio_memoria();

@@ -1,0 +1,231 @@
+
+Endereco (QDD): 10618016
+NQBIT: 2
+
+
+	Ligacao 0:
+Endereco (no): 10643408
+
+Tipo: Inicio
+Ligacoes posteriores
+	n: 10643312
+
+
+
+	Ligacao 1:
+Endereco (no): 10643312
+Ligacoes anteriores:
+	Ligacao 0: 10643408
+Tipo/nivel: R0
+Ligacoes posteriores
+	else: 10643088
+	Then: 10641616
+
+
+	Ligacao 2:
+Endereco (no): 10643088
+Ligacoes anteriores:
+	Ligacao 0: 10643312
+Tipo/nivel: V0
+Ligacoes posteriores
+	else: 10643216
+	Then: 10641936
+
+
+	Ligacao 3:
+Endereco (no): 10643216
+Ligacoes anteriores:
+	Ligacao 0: 10641744
+	Ligacao 1: 10641616
+	Ligacao 2: 10641936
+	Ligacao 3: 10643088
+Tipo/nivel: R1
+Ligacoes posteriores
+	else: 10643472
+	Then: 10643896
+
+
+	Ligacao 4:
+Endereco (no): 10643472
+Ligacoes anteriores:
+	Ligacao 0: 10643216
+Tipo/nivel: V1
+Ligacoes posteriores
+	else: 10643768
+	Then: 10642448
+
+
+	Ligacao 5:
+Endereco (no): 10643768
+Ligacoes anteriores:
+	Ligacao 0: 10643472
+	Ligacao 1: 10643896
+Tipo/nivel: C1
+Ligacoes posteriores
+	else: 10642800
+	Then: 10643376
+
+
+	Ligacao 6:
+Endereco (no): 10642800
+Ligacoes anteriores:
+	Ligacao 0: 10643248
+	Ligacao 1: 10642448
+	Ligacao 2: 10639896
+	Ligacao 3: 10643768
+Tipo: Numero
+0.000000 0.000000
+
+
+	Ligacao 7:
+Endereco (no): 10643376
+Ligacoes anteriores:
+	Ligacao 0: 10642448
+	Ligacao 1: 10643768
+Tipo: Numero
+0.353553 0.000000
+
+
+	Ligacao 8:
+Endereco (no): 10642448
+Ligacoes anteriores:
+	Ligacao 0: 10643472
+	Ligacao 1: 10640216
+Tipo/nivel: C1
+Ligacoes posteriores
+	else: 10643376
+	Then: 10642800
+
+
+	Ligacao 9:
+Endereco (no): 10643896
+Ligacoes anteriores:
+	Ligacao 0: 10643216
+Tipo/nivel: V1
+Ligacoes posteriores
+	else: 10643768
+	Then: 10643248
+
+
+	Ligacao 10:
+Endereco (no): 10643248
+Ligacoes anteriores:
+	Ligacao 0: 10642512
+	Ligacao 1: 10643896
+Tipo/nivel: C1
+Ligacoes posteriores
+	else: 10642480
+	Then: 10642800
+
+
+	Ligacao 11:
+Endereco (no): 10642480
+Ligacoes anteriores:
+	Ligacao 0: 10639896
+	Ligacao 1: 10643248
+Tipo: Numero
+-0.353553 0.000000
+
+
+	Ligacao 12:
+Endereco (no): 10641936
+Ligacoes anteriores:
+	Ligacao 0: 10643088
+Tipo/nivel: C0
+Ligacoes posteriores
+	else: 10643216
+	Then: 10640152
+
+
+	Ligacao 13:
+Endereco (no): 10640152
+Ligacoes anteriores:
+	Ligacao 0: 10641936
+	Ligacao 1: 10641744
+Tipo/nivel: R1
+Ligacoes posteriores
+	else: 10642512
+	Then: 10640216
+
+
+	Ligacao 14:
+Endereco (no): 10642512
+Ligacoes anteriores:
+	Ligacao 0: 10640152
+Tipo/nivel: V1
+Ligacoes posteriores
+	else: 10639896
+	Then: 10643248
+
+
+	Ligacao 15:
+Endereco (no): 10639896
+Ligacoes anteriores:
+	Ligacao 0: 10642512
+	Ligacao 1: 10640216
+Tipo/nivel: C1
+Ligacoes posteriores
+	else: 10642800
+	Then: 10642480
+
+
+	Ligacao 16:
+Endereco (no): 10640216
+Ligacoes anteriores:
+	Ligacao 0: 10640152
+Tipo/nivel: V1
+Ligacoes posteriores
+	else: 10639896
+	Then: 10642448
+
+
+	Ligacao 17:
+Endereco (no): 10641616
+Ligacoes anteriores:
+	Ligacao 0: 10643312
+Tipo/nivel: V0
+Ligacoes posteriores
+	else: 10643216
+	Then: 10641744
+
+
+	Ligacao 18:
+Endereco (no): 10641744
+Ligacoes anteriores:
+	Ligacao 0: 10641616
+Tipo/nivel: C0
+Ligacoes posteriores
+	else: 10640152
+	Then: 10643216
+
+
+AMPLITUDES
+
+	Ligacao 0:
+Endereco (no): 10642800
+Ligacoes anteriores:
+	Ligacao 0: 10643248
+	Ligacao 1: 10642448
+	Ligacao 2: 10639896
+	Ligacao 3: 10643768
+Tipo: Numero
+0.000000 0.000000
+
+
+	Ligacao 1:
+Endereco (no): 10643376
+Ligacoes anteriores:
+	Ligacao 0: 10642448
+	Ligacao 1: 10643768
+Tipo: Numero
+0.353553 0.000000
+
+
+	Ligacao 2:
+Endereco (no): 10642480
+Ligacoes anteriores:
+	Ligacao 0: 10639896
+	Ligacao 1: 10643248
+Tipo: Numero
+-0.353553 0.000000
+
