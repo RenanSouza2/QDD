@@ -83,6 +83,7 @@ struct conta
 
 struct suporte
 {
+
     struct conta *cc, *cv, *cr;
     unsigned short nivel;
     struct suporte *s;
@@ -575,7 +576,7 @@ void mostra_no(no *n)
 
         case Fim:
         printf(": Numero\n");
-        printf("%f %f",n->at.f.re,n->at.f.im);
+        printf("%.3e %.3e",n->at.f.re,n->at.f.im);
         break;
     }
     printf("\n");
@@ -827,7 +828,7 @@ void fmostra_no(FILE *fp, no *n)
 
         case Fim:
         fprintf(fp,": Numero\n");
-        fprintf(fp,"%f %f",n->at.f.re,n->at.f.im);
+        fprintf(fp,"%.3e %.3e",n->at.f.re,n->at.f.im);
         break;
     }
     fprintf(fp,"\n");
@@ -3044,7 +3045,7 @@ int main()
     libera_QDD(Q2);
     libera_QDD(Q);*/
 
-    no *n;
+    /*no *n;
     n = cria_no_meio(R,0);
 
     conta *c;
@@ -3064,7 +3065,11 @@ int main()
 
     s->s = s;
 
-    mostra_suporte_no(s);
+    mostra_suporte_no(s);*/
+
+    no *n;
+    n = cria_no_fim(eps,pow(eps,0.5));
+    mostra_no(n);
 
     /***********************************/
     finaliza_structs_globais();
