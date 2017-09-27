@@ -310,6 +310,7 @@ suporte* cria_suporte(Short nivel)
 }
 
 
+
 /** Destrutores  **/
 
 void libera_QDD_no(QDD *Q)
@@ -513,7 +514,6 @@ lista* enlista_QDD(QDD *Q)
 
 
 
-
 /**  Mostra  **/
 
 void mostra_lista(lista *l)
@@ -645,13 +645,48 @@ void mostra_apply_lista(apply *a)
     }
 }
 
-/* void mostra_conta_no(conta *c);
+ void mostra_conta_no(conta *c)
+ {
+     printf("\nEndereco (conta): %d",c);
+     printf("\nnivel: %d",c->nivel);
+     printf("\n\nno: ");
+     mostra_no(c->n);
+     printf("\nc: %d",c->c);
+ }
 
-void mostra_conta_lista(conta *c);
+void mostra_conta_lista(conta *c)
+{
+    conta *cc;
+    Short ligacao = 0;
+    for(cc = c; cc != NULL; cc = cc->c)
+    {
+        printf("\n\n\n\nLigacao conta %d: ",ligacao);
+        mostra_conta_no(cc);
+        ligacao++;
+    }
+}
 
-void mostra_suporte_no(suporte *s);
+void mostra_suporte_no(suporte *s)
+{
+    printf("\nEndereco (suporte): %d",s);
+    printf("\nnivel: %d",s->nivel);
+    printf("\n\ncc: %d",s->cc);
+    printf("\ncv: %d",s->cv);
+    printf("\ncr: %d",s->cr);
+    printf("\n\ns: %d",s->s);
+}
 
-void mostra_suporte_lista(suporte *s);*/
+void mostra_suporte_lista(suporte *s)
+{
+    suporte *sc;
+    Short ligacao = 0;
+    for(sc = s; sc != NULL; sc = sc->s)
+    {
+        printf("\n\n\n\nLigacao suporte %d: ",ligacao);
+        mostra_suporte_no(sc);
+        ligacao++;
+    }
+}
 
 void mostra_quantidades()
 {
@@ -862,6 +897,49 @@ void fmostra_apply_lista(FILE *fp, apply *a)
     }
 }
 
+void fmostra_conta_no(FILE *fp, conta *c)
+{
+    fprintf(fp,"\nEndereco (conta): %d",c);
+    fprintf(fp,"\nnivel: %d",c->nivel);
+    fprintf(fp,"\n\nno: ");
+    fmostra_no(fp,c->n);
+    fprintf(fp,"\nc: %d",c->c);
+}
+
+void fmostra_conta_lista(FILE *fp, conta *c)
+{
+    conta *cc;
+    Short ligacao = 0;
+    for(cc = c; cc != NULL; cc = cc->c)
+    {
+        fprintf(fp,"\n\n\n\nLigacao conta %d: ",ligacao);
+        fmostra_conta_no(fp,cc);
+        ligacao++;
+    }
+}
+
+void fmostra_suporte_no(FILE *fp, suporte *s)
+{
+    fprintf(fp,"\nEndereco (suporte): %d",s);
+    fprintf(fp,"\nnivel: %d",s->nivel);
+    fprintf(fp,"\n\ncc: %d",s->cc);
+    fprintf(fp,"\ncv: %d",s->cv);
+    fprintf(fp,"\ncr: %d",s->cr);
+    fprintf(fp,"\n\ns: %d",s->s);
+}
+
+void fmostra_suporte_lista(FILE *fp, suporte *s)
+{
+    suporte *sc;
+    Short ligacao = 0;
+    for(sc = s; sc != NULL; sc = sc->s)
+    {
+        fprintf(fp,"\n\n\n\nLigacao suporte %d: ",ligacao);
+        fmostra_suporte_no(fp,sc);
+        ligacao++;
+    }
+}
+
 void fmostra_quantidades(FILE *fp)
 {
     Short vazio = 1;
@@ -900,6 +978,16 @@ void fmostra_quantidades(FILE *fp)
         vazio = 0;
         fprintf(fp,"\na:   %d",iA);
     }
+    if(iC != 0)
+    {
+        vazio = 0;
+        fprintf(fp,"\nc:   %d",iC);
+    }
+    if(iS != 0)
+    {
+        vazio = 0;
+        fprintf(fp,"\ns:   %d",iS);
+    }
     if(vazio)
         fprintf(fp,"\nTUDO ZERADO");
     fprintf(fp,"\n");
@@ -912,6 +1000,8 @@ void fmostra_tamanhos(FILE *fp)
     fprintf(fp,"\nn:   %d",sizeof(no));
     fprintf(fp,"\nl:   %d",sizeof(lista));
     fprintf(fp,"\na:   %d",sizeof(apply));
+    fprintf(fp,"\nc:   %d",sizeof(conta));
+    fprintf(fp,"\ns:   %d",sizeof(suporte));
     fprintf(fp,"\n");
 }
 
@@ -2930,7 +3020,7 @@ int main()
     inicia_structs_globais();
     /***********************************/
 
-    QDD *QH, *QX;
+    /*QDD *QH, *QX;
     QH = H();
     QX = X();
 
@@ -2952,7 +3042,29 @@ int main()
 
     libera_QDD(Q1);
     libera_QDD(Q2);
-    libera_QDD(Q);
+    libera_QDD(Q);*/
+
+    no *n;
+    n = cria_no_meio(R,0);
+
+    conta *c;
+    c = cria_conta(1);
+    c->n = n;
+
+    conta *c2;
+    c2 = cria_conta(2);
+    c2->n = n;
+
+    c->c = c2;
+
+    suporte *s;
+    s = cria_suporte(1);
+    s->cc = c;
+    s->cr = c2;
+
+    s->s = s;
+
+    mostra_suporte_no(s);
 
     /***********************************/
     finaliza_structs_globais();
