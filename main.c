@@ -24,7 +24,7 @@
 
 FILE *fm;
 unsigned long long mem = 0, memMax = 0, iQ = 0, iI = 0, iM = 0, iF = 0, iL = 0, iA = 0, iC = 0, iS = 0;
-unsigned short print, nqbit;
+unsigned short print, Nqbit;
 double eps;
 
 
@@ -127,7 +127,7 @@ void finaliza_relatorio_memoria()
 
 void configuracao(Short i)
 {
-    nqbit = i;
+    Nqbit = i;
     eps = pow(2,-(i/2.0))/20;
 }
 
@@ -420,6 +420,27 @@ void libera_suporte(suporte *s)
         ERRO("LIBERA APPLY");
     iS--;
     free(s);
+}
+
+
+
+/**  structs globais  **/
+
+QDD *Qred;
+no  *nzero;
+
+void inicia_structs_globais()
+{
+    Qred  = cria_QDD(1);
+    Qred->n = cria_no_inicio();
+    nzero = cria_no_fim(0,0);
+}
+
+void finaliza_structs_globais()
+{
+    libera_no(Qred->n);
+    libera_QDD_no(Qred);
+    libera_no(nzero);
 }
 
 
@@ -1158,13 +1179,8 @@ Short compara_no_fim(no *n1, no *n2, Short ex)
 
 Short compara_no_fim_zero(no *n, Short ex)
 {
-    no *n0;
-    n0 = cria_no_fim(0,0);
-
     Short res;
-    res = compara_no_fim(n,n0,ex);
-    libera_no(n0);
-
+    res = compara_no_fim(n,nzero,ex);
     return res;
 }
 
@@ -1907,6 +1923,19 @@ void reduz_QDD(QDD *Q, Short ex)
         libera_lista_no(l);
         l = lnc1;
     }
+}
+
+no* reduz_arvore(no *n, Short ex)
+{
+    transfere_conexao(nzero,n);
+
+    conecta_UM(Qred->n,n,Inicio);
+    Qred->l = acha_lista_fim_arvore(n);
+    reduz_QDD(Qred,ex);
+
+    n = Qred->n->at.i.n;
+    transfere_conexao(n,nzero);
+    return n;
 }
 
 
@@ -2898,6 +2927,7 @@ int main()
 {
     inicia_relatorio_memoria(0);
     configuracao(20);
+    inicia_structs_globais();
     /***********************************/
 
     QDD *QH, *QX;
@@ -2925,6 +2955,7 @@ int main()
     libera_QDD(Q);
 
     /***********************************/
+    finaliza_structs_globais();
     finaliza_relatorio_memoria();
     return 0;
 }
