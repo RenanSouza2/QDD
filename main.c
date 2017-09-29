@@ -25,7 +25,7 @@
 FILE *fm;
 unsigned long long mem = 0, memMax = 0, iQ = 0, iI = 0, iM = 0, iF = 0, iL = 0, iA = 0, iC = 0, iS = 0;
 unsigned short print, Nqbit;
-double eps;
+float eps;
 
 
 
@@ -57,7 +57,7 @@ struct no
 
         struct fim
         {
-            double re, im;
+            float re, im;
         }f;
     }at;
 };
@@ -226,7 +226,7 @@ no* cria_no_meio(Short classe, Short nivel)
     return n;
 }
 
-no* cria_no_fim(double re,double im)
+no* cria_no_fim(float re,float im)
 {
     no *n;
     n = malloc(sizeof(no));
@@ -646,14 +646,14 @@ void mostra_apply_lista(apply *a)
     }
 }
 
- void mostra_conta_no(conta *c)
- {
-     printf("\nEndereco (conta): %d",c);
-     printf("\nnivel: %d",c->nivel);
-     printf("\n\nno: ");
-     mostra_no(c->n);
-     printf("\nc: %d",c->c);
- }
+void mostra_conta_no(conta *c)
+{
+    printf("\nEndereco (conta): %d",c);
+    printf("\nnivel: %d",c->nivel);
+    printf("\n\nno: ");
+    mostra_no(c->n);
+    printf("\nc: %d",c->c);
+}
 
 void mostra_conta_lista(conta *c)
 {
@@ -1032,19 +1032,28 @@ void conecta_UM(no *n1, no *n2, Short lado)
     {
         case Inicio:
             if(n1->tipo != Inicio)
-                    ERRO("CONECTA UM| FUNCAO CHAMADA PARA INICIO MAS NO NAO E");
+                ERRO("CONECTA UM| FUNCAO CHAMADA PARA INICIO MAS NO NAO E");
+            if(n1->at.i.n != NULL)
+                ERRO("CONCETA UM| NO JA CONECTADO 1");
+
             n1->at.i.n = n2;
             break;
 
         case Else:
             if(n1->tipo != Meio)
-                    ERRO("CONECTA UM| FUNCAO CHAMADA PARA MEIO MAS NO NAO E 1");
+                ERRO("CONECTA UM| FUNCAO CHAMADA PARA MEIO MAS NO NAO E 1");
+            if(n1->at.m.el != NULL)
+                ERRO("CONCETA UM| NO JA CONECTADO 2");
+
             n1->at.m.el = n2;
             break;
 
         case Then:
             if(n1->tipo != Meio)
-                    ERRO("CONECTA UM| FUNCAO CHAMADA PARA MEIO MAS NO NAO E 1");
+                ERRO("CONECTA UM| FUNCAO CHAMADA PARA MEIO MAS NO NAO E 1");
+            if(n1->at.m.th != NULL)
+                ERRO("CONCETA UM| NO JA CONECTADO 3");
+
             n1->at.m.th = n2;
             break;
     }
@@ -1899,14 +1908,13 @@ void reduz_QDD(QDD *Q, Short ex)
     lf = acha_fim_lista(l);
 
     no *nc, *n1, *n2;
-    lista *lnc1, *lnc2, *lnc3, *lnc4, *lr, *lrc;
+    lista *lnc1, *lnc2, *lr, *lrc;
     Short mudou;
     while(l != NULL)
     {
         nc = l->n;
 
         /* Regra 1 */
-        lnc3 = NULL;
         do
         {
             mudou = 0;
@@ -1924,9 +1932,9 @@ void reduz_QDD(QDD *Q, Short ex)
             }
 
             lnc2 = nc->l;
-            lnc4 = nc->l;
             lnc1 = lnc2->l;
-            while(lnc1 != lnc3)
+
+            while(lnc1 != NULL)
             {
                 n1 = lnc1->n;
                 if(n1->at.m.el == n1->at.m.th)
@@ -1943,7 +1951,6 @@ void reduz_QDD(QDD *Q, Short ex)
                     lnc1 = lnc1->l;
                 }
             }
-            lnc3 = lnc4;
         }
         while(mudou);
 
@@ -2635,11 +2642,11 @@ Short espalha(suporte *s, conta *c)
     cp = cria_conta(0);
     cp->n = n;
 
-    no *na;
+    no *na, *naux1, *naux2;
     lista *l;
-    conta *cc;
+    conta *cc, *caux;
     suporte *sc, *saux;
-    Short classe, nivel;
+    Short classe, nivel, delta, lado;
     for(l = n->l; l != NULL; l = l->l)
     {
         na = l->n;
@@ -2648,17 +2655,67 @@ Short espalha(suporte *s, conta *c)
 
         classe = na->at.m.classe;
         nivel  = na->at.m.nivel;
-        for(sc = s; sc != NULL; sc = sc->s)
-        {
+        for(sc = s; sc->s  != NULL; sc = sc->s)
             if(sc->nivel <= na->at.m.nivel)
                 break;
-            if(sc->s == NULL)
-                break;
-        }
 
         if(sc->nivel == nivel)
         {
+            for(cc = sc->c[classe]; cc != NULL; cc = cc->c)
+                if(cc->n == na)
+                    break;
 
+            if(cc == NULL)
+            {
+                cc = cria_conta(c->nivel);
+                cc->n = na;
+
+                cc->c = sc->c[classe];
+                sc->c[classe] = cc;
+            }
+            else
+            {
+                if(cc->nivel < c->nivel)
+                {
+                    delta = c->nivel - cc->nivel;
+
+                    if(n == na->at.m.el)
+                        naux1 = na->at.m.th;
+                    else
+                        naux1 = na->at.m.el;
+                    lado = desconecta_UM(na,naux1);
+                    naux2 = copia_arvore(naux1);
+                    libera_arvore(naux1);
+
+                    produto_arvore_real(naux2,pow(2,delta));
+                    conecta_UM(na,naux2,lado);
+
+                }
+                if(cc->nivel > c->nivel)
+                {
+                    delta = cc->nivel - c->nivel;
+
+                    for(caux = cp; caux->c != NULL; caux = caux->c)
+                        if(caux->c->nivel > delta)
+                            break;
+
+                    if(caux->nivel == delta)
+                    {
+                        naux1 = cc->n;
+
+                    }
+                    else
+                    {
+                        caux = cria_conta(delta);
+                        naux1 = copia_arvore(n);
+                        produto_arvore_real(naux1,pow(2,delta));
+
+                    }
+                    lado = desconecta_UM(na,n);
+                    conecta_UM(na,naux1,lado);
+                }
+
+            }
         }
         else
         {
@@ -2670,6 +2727,7 @@ Short espalha(suporte *s, conta *c)
             sc->s   = saux;
         }
     }
+    return 0;
 }
 
 void contrai(QDD *Q, short classe)
@@ -2681,11 +2739,12 @@ void contrai(QDD *Q, short classe)
     for(l = Q->l; l != NULL; l = l->l)
     {
         cc->n = l->n;
-        cc->c = cria_suporte(Q->nqbit);
+        cc->c = cria_conta(Q->nqbit);
         cc = cc->c;
     }
     libera_conta(cc);
 
+    conta *ci;
     suporte *s;
     s = cria_suporte(Q->nqbit);
     if(classe == R)
@@ -2693,6 +2752,10 @@ void contrai(QDD *Q, short classe)
     else
         s->c[R] = c;
 
+    while(s != NULL)
+    {
+
+    }
 }
 
 
@@ -3094,55 +3157,12 @@ int main()
     inicia_structs_globais();
     /***********************************/
 
-    /*QDD *QH, *QX;
-    QH = H();
-    QX = X();
+    /*teste_velocidade_matriz("H",1,10,10,1);
+    teste_velocidade_matriz("I",1,10,10,2);
+    teste_velocidade_matriz("QFT",1,12,10,3);
+    teste_velocidade_vetor("V",1,23,10,4);*/
 
-    QDD *Q1, *Q2;
-    Q1 = produto_tensorial(QH,QH);
-    Q2 = produto_tensorial(QH,QX);
-
-    libera_QDD(QH);
-    libera_QDD(QX);
-
-    QDD *Q;
-    Q = produto_matriz_matriz(Q1,Q2);
-    mostra_QDD(Q);
-
-    FILE *fp;
-    fp = fopen("QDD.txt","w");
-    fmostra_QDD(fp,Q);
-    fclose(fp);
-
-    libera_QDD(Q1);
-    libera_QDD(Q2);
-    libera_QDD(Q);*/
-
-    /*no *n;
-    n = cria_no_meio(R,0);
-
-    conta *c;
-    c = cria_conta(1);
-    c->n = n;
-
-    conta *c2;
-    c2 = cria_conta(2);
-    c2->n = n;
-
-    c->c = c2;
-
-    suporte *s;
-    s = cria_suporte(1);
-    s->cc = c;
-    s->cr = c2;
-
-    s->s = s;
-
-    mostra_suporte_no(s);*/
-
-    no *n;
-    n = cria_no_fim(eps,pow(eps,0.5));
-    mostra_no(n);
+    mostra_tamanhos();
 
     /***********************************/
     finaliza_structs_globais();
