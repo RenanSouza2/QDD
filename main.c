@@ -84,7 +84,7 @@ struct conta
 struct suporte
 {
 
-    struct conta *cc, *cv, *cr;
+    struct conta *c[3];
     unsigned short nivel;
     struct suporte *s;
 };
@@ -300,9 +300,9 @@ suporte* cria_suporte(Short nivel)
         ERRO("CRIA SUPORTE");
     iS++;
 
-    s->cc = NULL;
-    s->cr = NULL;
-    s->cv = NULL;
+    s->c[C] = NULL;
+    s->c[R] = NULL;
+    s->c[V] = NULL;
 
     s->nivel = nivel;
     s->s = NULL;
@@ -671,9 +671,9 @@ void mostra_suporte_no(suporte *s)
 {
     printf("\nEndereco (suporte): %d",s);
     printf("\nnivel: %d",s->nivel);
-    printf("\n\ncc: %d",s->cc);
-    printf("\ncv: %d",s->cv);
-    printf("\ncr: %d",s->cr);
+    printf("\n\ncc: %d",s->c[C]);
+    printf("\ncv: %d",s->c[V]);
+    printf("\ncr: %d",s->c[R]);
     printf("\n\ns: %d",s->s);
 }
 
@@ -923,9 +923,9 @@ void fmostra_suporte_no(FILE *fp, suporte *s)
 {
     fprintf(fp,"\nEndereco (suporte): %d",s);
     fprintf(fp,"\nnivel: %d",s->nivel);
-    fprintf(fp,"\n\ncc: %d",s->cc);
-    fprintf(fp,"\ncv: %d",s->cv);
-    fprintf(fp,"\ncr: %d",s->cr);
+    fprintf(fp,"\n\ncc: %d",s->c[C]);
+    fprintf(fp,"\ncv: %d",s->c[V]);
+    fprintf(fp,"\ncr: %d",s->c[R]);
     fprintf(fp,"\n\ns: %d",s->s);
 }
 
@@ -2622,6 +2622,78 @@ no* apply_produto_matriz_matriz(no *n1, no *n2)
     return n;
 }
 
+
+
+/**  contrai  **/
+
+Short espalha(suporte *s, conta *c)
+{
+    no *n;
+    n = c->n;
+
+    conta *cp;
+    cp = cria_conta(0);
+    cp->n = n;
+
+    no *na;
+    lista *l;
+    conta *cc;
+    suporte *sc, *saux;
+    Short classe, nivel;
+    for(l = n->l; l != NULL; l = l->l)
+    {
+        na = l->n;
+        if(na->tipo == Inicio)
+            return 1;
+
+        classe = na->at.m.classe;
+        nivel  = na->at.m.nivel;
+        for(sc = s; sc != NULL; sc = sc->s)
+        {
+            if(sc->nivel <= na->at.m.nivel)
+                break;
+            if(sc->s == NULL)
+                break;
+        }
+
+        if(sc->nivel == nivel)
+        {
+
+        }
+        else
+        {
+            saux = cria_suporte(nivel);
+            saux->c[classe] = cria_conta(c->nivel);
+            saux->c[classe]->n = na;
+
+            saux->s = sc->s;
+            sc->s   = saux;
+        }
+    }
+}
+
+void contrai(QDD *Q, short classe)
+{
+    lista *l;
+    conta *c, *cc;
+    c = cria_conta(Q->nqbit);
+    cc = c;
+    for(l = Q->l; l != NULL; l = l->l)
+    {
+        cc->n = l->n;
+        cc->c = cria_suporte(Q->nqbit);
+        cc = cc->c;
+    }
+    libera_conta(cc);
+
+    suporte *s;
+    s = cria_suporte(Q->nqbit);
+    if(classe == R)
+        s->c[V] = c;
+    else
+        s->c[R] = c;
+
+}
 
 
 /**  Operações QDD algebricas  **/
