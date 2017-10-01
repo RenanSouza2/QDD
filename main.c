@@ -1908,33 +1908,38 @@ void reduz_QDD(QDD *Q, Short ex)
     lf = acha_fim_lista(l);
 
     no *nc, *n1, *n2;
-    lista *lnc1, *lnc2, *lr, *lrc;
+    lista *lnc1, *lnc2, *lnc3, *lnc4, *lr, *lrc;
     Short mudou;
     while(l != NULL)
     {
         nc = l->n;
 
         /* Regra 1 */
+        lnc3 = NULL;
         do
         {
             mudou = 0;
 
             n1 = nc->l->n;
-            if(n1->tipo == Inicio)
-                break;
 
             while(n1->at.m.el == n1->at.m.th)
             {
+                if(n1->tipo == Inicio)
+                    break;
+
                 desconecta_DOIS(n1);
                 transfere_conexao(nc,n1);
                 libera_no(n1);
                 n1 = nc->l->n;
             }
+            if(n1->tipo == Inicio)
+                break;
 
             lnc2 = nc->l;
+            lnc4 = nc->l;
             lnc1 = lnc2->l;
 
-            while(lnc1 != NULL)
+            while(lnc1 != lnc3)
             {
                 n1 = lnc1->n;
                 if(n1->at.m.el == n1->at.m.th)
@@ -1951,6 +1956,9 @@ void reduz_QDD(QDD *Q, Short ex)
                     lnc1 = lnc1->l;
                 }
             }
+            for(lnc3 = lnc4; lnc3 != NULL; lnc3 = lnc3->l)
+                if(lnc3->n->at.m.el != lnc3->n->at.m.th)
+                    break;
         }
         while(mudou);
 
