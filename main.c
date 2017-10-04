@@ -20,10 +20,8 @@
 
 
 
-
-
 FILE *fm;
-unsigned long long mem = 0, memMax = 0, iQ = 0, iI = 0, iM = 0, iF = 0, iL = 0, iA = 0, iC = 0, iS = 0;
+unsigned long long mem = 0, memMax = 0, memF = 0, iQ = 0, iI = 0, iM = 0, iF = 0, iL = 0, iA = 0, iC = 0, iS = 0;
 unsigned short print, Nqbit;
 float eps;
 
@@ -122,6 +120,7 @@ void finaliza_relatorio_memoria()
     if(print)
     {
         fprintf(fm,"\n\nMemMax: %d",memMax);
+        fprintf(fm,"\nMemFinal: %d",mem);
         fclose(fm);
     }
 }
@@ -164,10 +163,27 @@ void aumenta_memoria(Long m)
 
 void diminui_memoria(Long m)
 {
-    if(m<=mem)
-        mem -= m;
+    if(m > mem)
+        ERRO("DIMINUI MEMORIA| MEMORIA NEGATIVA");
+
+    mem -= m;
     if(print)
         fprintf(fm,"\n\tMemDOWN: %d\t\t-%u",mem,m);
+}
+
+void aumenta_memoria_fora(Long m)
+{
+    memF += m;
+    aumenta_memoria(m);
+}
+
+void diminui_memoria_fora(Long m)
+{
+    if(m > memF)
+        ERRO("DIMINUI MEMORIA FORA| MEMORIA NEGATIVA");
+
+    memF -= m;
+    diminui_memoria(m);
 }
 
 
@@ -264,6 +280,7 @@ apply* cria_apply()
     a = malloc(sizeof(apply));
     if(a == NULL)
         ERRO("CRIA APPLY");
+    aumenta_memoria(sizeof(apply));
     iA++;
 
     a->n  = NULL;
@@ -283,6 +300,7 @@ conta* cria_conta(Short nivel)
     c = malloc(sizeof(conta));
     if(c == NULL)
         ERRO("CRIA CONTA");
+    aumenta_memoria(sizeof(conta));
     iC++;
 
     c->n = NULL;
@@ -298,6 +316,7 @@ suporte* cria_suporte(Short nivel)
     s = malloc(sizeof(suporte));
     if(s == NULL)
         ERRO("CRIA SUPORTE");
+    aumenta_memoria(sizeof(suporte));
     iS++;
 
     s->c[C] = NULL;
@@ -695,47 +714,52 @@ void mostra_quantidades()
     if(mem != 0)
     {
         vazio = 0;
-        printf("\nMem: %d",mem);
+        printf("\nMem: %llu",mem);
+    }
+    if(memF != 0)
+    {
+        vazio = 0;
+        printf("\nMem: %llu",memF);
     }
     if(iQ != 0)
     {
         vazio = 0;
-        printf("\nQDD: %d",iQ);
+        printf("\nQDD: %llu",iQ);
     }
     if(iI != 0)
     {
         vazio = 0;
-        printf("\ni:   %d",iI);
+        printf("\ni:   %llu",iI);
     }
     if(iM != 0)
     {
         vazio = 0;
-        printf("\nm:   %d",iM);
+        printf("\nm:   %llu",iM);
     }
     if(iF != 0)
     {
         vazio = 0;
-        printf("\nf:   %d",iF);
+        printf("\nf:   %llu",iF);
     }
     if(iL != 0)
     {
         vazio = 0;
-        printf("\nl:   %d",iL);
+        printf("\nl:   %llu",iL);
     }
     if(iA != 0)
     {
         vazio = 0;
-        printf("\na:   %d",iA);
+        printf("\na:   %llu",iA);
     }
     if(iC != 0)
     {
         vazio = 0;
-        printf("\nc:   %d",iC);
+        printf("\nc:   %llu",iC);
     }
     if(iS != 0)
     {
         vazio = 0;
-        printf("\ns:   %d",iS);
+        printf("\ns:   %llu",iS);
     }
     if(vazio)
         printf("\nTUDO ZERADO");
@@ -1613,22 +1637,23 @@ QDD* le_matriz(char *nome)
     exp = (Long)pow(2,N);
 
     no ***nf;
-    double re, im;
+    float re, im;
     nf = malloc(exp*sizeof(no**));
     if(nf == NULL)
         ERRO("LE MATRIZ NF");
-    aumenta_memoria(exp*sizeof(no**));
+    aumenta_memoria_fora(exp*sizeof(no**));
+
     for(i=0; i<exp; i++)
     {
         nf[i] = malloc(exp*sizeof(no*));
         if(nf[i] == NULL)
             ERRO("LE MATRIZ NF[]");
-        aumenta_memoria(exp*sizeof(no*));
+        aumenta_memoria_fora(exp*sizeof(no*));
 
         for(j=0; j<exp; j++)
         {
-            fscanf(fp,"%lf",&re);
-            fscanf(fp,"%lf",&im);
+            fscanf(fp,"%f",&re);
+            fscanf(fp,"%f",&im);
             nf[i][j] = cria_no_fim(re,im);
         }
     }
@@ -1638,7 +1663,7 @@ QDD* le_matriz(char *nome)
     nm = malloc(2*N*sizeof(no**));
     if(nm == NULL)
         ERRO("LE MATRIZ NM");
-    aumenta_memoria(2*N*sizeof(no**));
+    aumenta_memoria_fora(2*N*sizeof(no**));
 
     Long exp2 = 1;
     for(i=0; i<2*N; i++)
@@ -1646,7 +1671,7 @@ QDD* le_matriz(char *nome)
         nm[i] = malloc(exp2*sizeof(no*));
         if(nm[i] == NULL)
             ERRO("LE MATRIZ NM[]");
-        aumenta_memoria(exp2*sizeof(no*));
+        aumenta_memoria_fora(exp2*sizeof(no*));
 
         for(j=0; j<exp2; j++)
         {
@@ -1691,21 +1716,21 @@ QDD* le_matriz(char *nome)
 
     for(i=0; i<exp; i++)
     {
+        diminui_memoria_fora(exp*sizeof(no*));
         free(nf[i]);
-        diminui_memoria(exp*sizeof(no*));
     }
+    diminui_memoria_fora(exp*sizeof(no**));
     free(nf);
-    diminui_memoria(exp*sizeof(no**));
 
     exp2 = 1;
     for(i=0; i<2*N; i++)
     {
+        diminui_memoria_fora(exp2*sizeof(no*));
         free(nm[i]);
-        diminui_memoria(exp2*sizeof(no*));
         exp2 *= 2;
     }
+    diminui_memoria_fora(2*N*sizeof(no**));
     free(nm);
-    diminui_memoria(2*N*sizeof(no**));
 
     return Q;
 }
@@ -1738,15 +1763,15 @@ QDD* le_vetor(char *nome)
     exp = (Long)pow(2,N);
 
     no **nf;
-    double re, im;
+    float re, im;
     nf = malloc(exp*sizeof(no*));
     if(nf == NULL)
         ERRO("LE VETOR NF");
-    aumenta_memoria(exp*sizeof(no*));
+    aumenta_memoria_fora(exp*sizeof(no*));
     for(i=0; i<exp; i++)
     {
-        fscanf(fp,"%lf",&re);
-        fscanf(fp,"%lf",&im);
+        fscanf(fp,"%f",&re);
+        fscanf(fp,"%f",&im);
         nf[i] = cria_no_fim(re,im);
     }
     fclose(fp);
@@ -1755,7 +1780,7 @@ QDD* le_vetor(char *nome)
     nm = malloc(N*sizeof(no**));
     if(nm == NULL)
         ERRO("LE MATRIZ NM");
-    aumenta_memoria(N*sizeof(no**));
+    aumenta_memoria_fora(N*sizeof(no**));
 
     Long exp2 = 1;
     for(i=0; i<N; i++)
@@ -1763,11 +1788,10 @@ QDD* le_vetor(char *nome)
         nm[i] = malloc(exp2*sizeof(no*));
         if(nm[i] == NULL)
             ERRO("LE VETOR NM[]");
-        aumenta_memoria(exp2*sizeof(no*));
+        aumenta_memoria_fora(exp2*sizeof(no*));
 
         for(j=0; j<exp2; j++)
         {
-
             nm[i][j] = cria_no_meio(V,i);
 
             if(i>0)
@@ -1801,18 +1825,18 @@ QDD* le_vetor(char *nome)
 
     libera_lista_no(l);
 
+    diminui_memoria_fora(exp*sizeof(no*));
     free(nf);
-    diminui_memoria(exp*sizeof(no*));
 
     exp2 = 1;
     for(i=0; i<N; i++)
     {
+        diminui_memoria_fora(exp2*sizeof(no*));
         free(nm[i]);
-        diminui_memoria(exp2*sizeof(no*));
         exp2 *= 2;
     }
+    diminui_memoria_fora(N*sizeof(no**));
     free(nm);
-    diminui_memoria(2*N*sizeof(no**));
 
     return Q;
 }
@@ -2767,6 +2791,7 @@ void contrai(QDD *Q, short classe)
 }
 
 
+
 /**  Operações QDD algebricas  **/
 
 void produto_QDD_escalar(QDD *Q, double re, double im)
@@ -3056,7 +3081,7 @@ QDD* Ro(double theta)
 
 /**  Testes  **/
 
-void imprime_numero_csv(FILE *fp, double numero, Short precisao)
+void imprime_lf_csv(FILE *fp, double numero, Short precisao)
 {
     if(numero < 0)
     {
@@ -3095,10 +3120,10 @@ void teste_velocidade_base(char *nomeI, Short limiteinf, Short limitesup, Short 
     FILE *fp;
     int i;
     char s[30];
-    sprintf(s,"RelatorioVelocidade%d.csv",arquivo);
+    sprintf(s,"RelatorioVelocidade%s%d.csv",nomeI,arquivo);
     fp = fopen(s,"w");
     fprintf(fp,"sep=|\n");
-    fprintf(fp,"mem|iM|iF|iL|mem|iM|iF|iL");
+    fprintf(fp,"|mem|iM|iF|iL|mem|iM|iF|iL");
     for(i=1; i<=quantidade; i++)
         fprintf(fp,"|%d",i);
     fprintf(fp,"\n");
@@ -3118,15 +3143,26 @@ void teste_velocidade_base(char *nomeI, Short limiteinf, Short limitesup, Short 
         QDD *Q;
         Q = func(nome);
         mostra_quantidades();
-        fprintf(fp,"%d|%d|%d|%d|",mem,iM,iF,iL);
+        fprintf(fp,"%d|%llu|%llu|%llu|%llu|",i,mem,iM,iF,iL);
+        printf("\n%llu %llu %llu %llu",mem,iM,iF,iL);
+
+        antes = clock();
         reduz_QDD(Q,1);
+        depois = clock();
+
         printf("\n");
         mostra_quantidades();
-        fprintf(fp,"%d|%d|%d|%d|",mem,iM,iF,iL);
+        fprintf(fp,"%llu|%llu|%llu|%llu|",mem,iM,iF,iL);
         printf("\n");
         libera_QDD(Q);
 
-        for(j=1; j<=quantidade; j++)
+        printf("\nTeste 1: ");
+        total = (double)(depois-antes)/CLOCKS_PER_SEC;
+        imprime_lf_csv(fp,total,3);
+        fprintf(fp,"|");
+        printf("%.3f",total);
+
+        for(j=2; j<=quantidade; j++)
         {
             printf("\nTeste %d: ",j);
 
@@ -3137,7 +3173,7 @@ void teste_velocidade_base(char *nomeI, Short limiteinf, Short limitesup, Short 
             libera_QDD(Q);
 
             total = (double)(depois-antes)/CLOCKS_PER_SEC;
-            imprime_numero_csv(fp,total,3);
+            imprime_lf_csv(fp,total,3);
             fprintf(fp,"|");
             printf("%.3f",total);
         }
@@ -3165,12 +3201,9 @@ int main()
     inicia_structs_globais();
     /***********************************/
 
-    /*teste_velocidade_matriz("H",1,10,10,1);
-    teste_velocidade_matriz("I",1,10,10,2);
-    teste_velocidade_matriz("QFT",1,12,10,3);
-    teste_velocidade_vetor("V",1,23,10,4);*/
-
-    mostra_tamanhos();
+    QDD *Q;
+    Q = le_vetor("V24.txt");
+    mostra_quantidades();
 
     /***********************************/
     finaliza_structs_globais();
