@@ -587,38 +587,38 @@ void mostra_no(no *n)
     switch(n->tipo)
     {
         case Inicio:
-        printf(": Inicio\n");
-        printf("Ligacoes posteriores\n");
-        printf("\tn: %d\n",n->at.i.n);
-        break;
+            printf(": Inicio\n");
+            printf("Ligacoes posteriores\n");
+            printf("\tn: %d\n",n->at.i.n);
+            break;
 
         case Meio:
-        printf("/nivel: ");
-        switch(n->at.m.classe)
-        {
-            case V:
-            printf("V");
-            break;
+            printf("/nivel: ");
+            switch(n->at.m.classe)
+            {
+                case V:
+                    printf("V");
+                    break;
 
-            case R:
-            printf("R");
-            break;
+                case R:
+                    printf("R");
+                    break;
 
-            case C:
-            printf("C");
-            break;
-        }
+                case C:
+                    printf("C");
+                    break;
+            }
 
-        printf("%d\n",n->at.m.nivel);
-        printf("Ligacoes posteriores\n");
-        printf("\telse: %d\n",n->at.m.el);
-        printf("\tThen: %d",n->at.m.th);
-        break;
+            printf("%d\n",n->at.m.nivel);
+            printf("Ligacoes posteriores\n");
+            printf("\telse: %d\n",n->at.m.el);
+            printf("\tThen: %d",n->at.m.th);
+            break;
 
         case Fim:
-        printf(": Numero\n");
-        printf("%.3e %.3e",n->at.f.re,n->at.f.im);
-        break;
+            printf(": Numero\n");
+            printf("%.3e %.3e",n->at.f.re,n->at.f.im);
+            break;
     }
     printf("\n");
 }
@@ -869,38 +869,38 @@ void fmostra_no(FILE *fp, no *n)
     switch(n->tipo)
     {
         case Inicio:
-        fprintf(fp,": Inicio\n");
-        fprintf(fp,"Ligacoes posteriores\n");
-        fprintf(fp,"\tn: %d\n",n->at.i.n);
-        break;
+            fprintf(fp,": Inicio\n");
+            fprintf(fp,"Ligacoes posteriores\n");
+            fprintf(fp,"\tn: %d\n",n->at.i.n);
+            break;
 
         case Meio:
-        fprintf(fp,"/nivel: ");
-        switch(n->at.m.classe)
-        {
-            case V:
-            fprintf(fp,"V");
-            break;
+            fprintf(fp,"/nivel: ");
+            switch(n->at.m.classe)
+            {
+                case V:
+                    fprintf(fp,"V");
+                    break;
 
-            case R:
-            fprintf(fp,"R");
-            break;
+                case R:
+                    fprintf(fp,"R");
+                    break;
 
-            case C:
-            fprintf(fp,"C");
-            break;
-        }
+                case C:
+                    fprintf(fp,"C");
+                    break;
+            }
 
-        fprintf(fp,"%d\n",n->at.m.nivel);
-        fprintf(fp,"Ligacoes posteriores\n");
-        fprintf(fp,"\telse: %d\n",n->at.m.el);
-        fprintf(fp,"\tThen: %d",n->at.m.th);
-        break;
+            fprintf(fp,"%d\n",n->at.m.nivel);
+            fprintf(fp,"Ligacoes posteriores\n");
+            fprintf(fp,"\telse: %d\n",n->at.m.el);
+            fprintf(fp,"\tThen: %d",n->at.m.th);
+            break;
 
         case Fim:
-        fprintf(fp,": Numero\n");
-        fprintf(fp,"%.3e %.3e",n->at.f.re,n->at.f.im);
-        break;
+            fprintf(fp,": Numero\n");
+            fprintf(fp,"%.3e %.3e",n->at.f.re,n->at.f.im);
+            break;
     }
     fprintf(fp,"\n");
 }
@@ -1131,16 +1131,18 @@ void conecta_UM(no *n1, no *n2, Short lado)
     {
         case Inicio:
             if(n1->tipo != Inicio)
-                ERRO("CONECTA UM| FUNCAO CHAMADA PARA INICIO MAS NO NAO E");
+                ERRO("CONECTA UM| FUNCAO CHAMADA PARA INICIO MAS N1 NAO E");
             if(n1->at.i.n != NULL)
                 ERRO("CONCETA UM| NO JA CONECTADO 1");
+            if(n2->l != NULL)
+                ERRO("CONCETA UM| N1 E INICIO E N2 JA TEM CONEXAO ANTERIOR");
 
             n1->at.i.n = n2;
             break;
 
         case Else:
             if(n1->tipo != Meio)
-                ERRO("CONECTA UM| FUNCAO CHAMADA PARA MEIO MAS NO NAO E 1");
+                ERRO("CONECTA UM| FUNCAO CHAMADA PARA MEIO MAS N1 NAO E 1");
             if(n1->at.m.el != NULL)
                 ERRO("CONCETA UM| NO JA CONECTADO 2");
 
@@ -1149,7 +1151,7 @@ void conecta_UM(no *n1, no *n2, Short lado)
 
         case Then:
             if(n1->tipo != Meio)
-                ERRO("CONECTA UM| FUNCAO CHAMADA PARA MEIO MAS NO NAO E 1");
+                ERRO("CONECTA UM| FUNCAO CHAMADA PARA MEIO MAS N1 NAO E 2");
             if(n1->at.m.th != NULL)
                 ERRO("CONCETA UM| NO JA CONECTADO 3");
 
@@ -1177,7 +1179,7 @@ void conecta_DOIS(no *n, no *el, no *th)
 Short desconecta_UM(no *n1, no *n2)
 {
     if(n1->tipo == Fim)
-        ERRO("FIM NAO DESCONECTA");
+        ERRO("DESCONECTA UM| FIM NAO TEM SUCESSORES");
 
     lista *l;
     l = cria_lista();
@@ -1188,7 +1190,7 @@ Short desconecta_UM(no *n1, no *n2)
         if(lc->l->n == n1)
             break;
     if(lc->l == NULL)
-        ERRO("NOS NAO CONECTADOS");
+        ERRO("DESCONECTA UM| REGISTRO INCOMPATIVEL 1");
 
     lista *laux;
     laux = lc->l;
@@ -1215,7 +1217,7 @@ Short desconecta_UM(no *n1, no *n2)
                 n1->at.m.th = NULL;
                 return Then;
             }
-            ERRO("CONEXAO NAO ANOTADA");
+            ERRO("DESCONECTA UM| REGISTRO INCOMPATIVEL 2");
             break;
     }
     return 0;
@@ -1223,6 +1225,9 @@ Short desconecta_UM(no *n1, no *n2)
 
 void desconecta_DOIS(no *n)
 {
+    if(n->tipo == Fim)
+        ERRO("DESCONECTA DOIS| FIM NAO TEM SUCESSORES");
+
     switch(n->tipo)
     {
         case Inicio:
@@ -2204,8 +2209,8 @@ void encaixa_apply(apply *a, apply *ac, Short lado)
             case Then:
                 ac->a2 = ae;
                 break;
-            libera_apply_no(aa);
         }
+        libera_apply_no(aa);
     }
 }
 
@@ -2959,10 +2964,9 @@ void contrai(QDD *Q, Short classe)
 
 /**  Operações QDD algebricas  **/
 
-void produto_QDD_escalar(QDD *Q, double re, double im)
+void produto_QDD_escalar(QDD *Q, no *n1)
 {
-    no *n1, *n2, *n3;
-    n1 = cria_no_fim(re,im);
+    no *n2, *n3;
     lista *l;
     for(l = Q->l; l != NULL; l = l->l)
     {
@@ -3013,7 +3017,7 @@ QDD* produto_tensorial(QDD *Q1, QDD *Q2)
         else
         {
             Q2b = copia_QDD(Q2a);
-            produto_QDD_escalar(Q2b,n1->at.f.re,n1->at.f.im);
+            produto_QDD_escalar(Q2b,n1);
 
             lf = acha_fim_lista(Q2b->l);
             lf->l = Q->l;
@@ -3064,6 +3068,7 @@ QDD* soma_QDD(QDD *Q1, QDD *Q2)
     QDD *Q;
     Q = cria_QDD(Q1->nqbit);
     Q->n = apply_soma(Q1->n,Q2->n);
+
     Q->l = acha_lista_fim_QDD(Q);
     reduz_QDD(Q,1);
 
@@ -3081,7 +3086,6 @@ QDD* produto_matriz_matriz(QDD *Q1, QDD *Q2)
     Q->l = acha_lista_fim_QDD(Q);
     reduz_QDD(Q,2);
 
-    mostra_QDD(Q);
     return Q;
 }
 
@@ -3309,7 +3313,6 @@ void teste_velocidade_base(char *nomeI, Short limiteinf, Short limitesup, Short 
         Q = func(nome);
         mostra_quantidades();
         fprintf(fp,"%d|%llu|%llu|%llu|%llu|",i,mem,iM,iF,iL);
-        printf("\n%llu %llu %llu %llu",mem,iM,iF,iL);
 
         antes = clock();
         reduz_QDD(Q,1);
@@ -3357,12 +3360,34 @@ void teste_velocidade_vetor(char *nomeI, Short limiteinf, Short limitesup, Short
     teste_velocidade_base(nomeI,limiteinf,limitesup,quantidade,arquivo,le_vetor);
 }
 
-void teste_final_semana()
+void teste_curto()
 {
     teste_velocidade_matriz("H",1,10,10,1);
     teste_velocidade_matriz("I",1,10,10,1);
-    teste_velocidade_matriz("QFT",1,13,10,1);
-    teste_velocidade_vetor("V",1,24,10,1);
+    teste_velocidade_matriz("QFT",1,11,10,1);
+    teste_velocidade_vetor("V",1,23,10,1);
+}
+
+void teste_longo()
+{
+    teste_velocidade_matriz("H",11,11,10,2);
+    teste_velocidade_matriz("I",11,11,10,2);
+    teste_velocidade_matriz("QFT",12,13,10,2);
+    teste_velocidade_vetor("V",24,24,10,2);
+}
+
+Short teste_memoria()
+{
+    Long memt;
+    memt = memF + iQ*sizeof(QDD) + (iI+iM+iF)*sizeof(no) + iL*sizeof(lista) + iA*sizeof(apply) + iC*sizeof(conta) + iS*sizeof(suporte);
+    if(memt == mem)
+    {
+        printf("\nRegistro de memoria correto");
+        return 1;
+    }
+    printf("\nRegistro de memoria errado");
+    return 0;
+
 }
 
 
@@ -3382,20 +3407,14 @@ int main()
     Q1 = produto_tensorial(QH,QH);
     Q2 = produto_tensorial(QH,QX);
 
-    no *n;
-    n = apply_produto_matriz_matriz(Q1->n,Q2->n);
-
     QDD *Q;
-    Q = cria_QDD(2);
-    Q->n = n;
-    Q->l = acha_lista_fim_QDD(Q);
-    reduz_QDD(Q,2);
+    Q = produto_matriz_matriz(Q1,Q2);
 
-    contrai(Q,V);
-    libera_lista_lista(Q->l);
-    Q->l = acha_lista_fim_QDD(Q);
-
-    mostra_QDD(Q);
+    libera_QDD(QH);
+    libera_QDD(QX);
+    libera_QDD(Q1);
+    libera_QDD(Q2);
+    libera_QDD(Q);
 
     /***********************************/
     finaliza_structs_globais();
