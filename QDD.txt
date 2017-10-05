@@ -1,231 +1,247 @@
 
-Endereco (QDD): 10618016
+Endereco (QDD): 3802400
 NQBIT: 2
 
 
 	Ligacao 0:
-Endereco (no): 10643408
+Endereco (no): 3826792
 
 Tipo: Inicio
 Ligacoes posteriores
-	n: 10643312
+	n: 3827240
 
 
 
 	Ligacao 1:
-Endereco (no): 10643312
+Endereco (no): 3827240
 Ligacoes anteriores:
-	Ligacao 0: 10643408
+	Ligacao 0: 3826792
 Tipo/nivel: R0
 Ligacoes posteriores
-	else: 10643088
-	Then: 10641616
+	else: 3826664
+	Then: 3812480
 
 
 	Ligacao 2:
-Endereco (no): 10643088
+Endereco (no): 3826664
 Ligacoes anteriores:
-	Ligacao 0: 10643312
+	Ligacao 0: 3827240
 Tipo/nivel: V0
 Ligacoes posteriores
-	else: 10643216
-	Then: 10641936
+	else: 3827144
+	Then: 3812672
 
 
 	Ligacao 3:
-Endereco (no): 10643216
+Endereco (no): 3827144
 Ligacoes anteriores:
-	Ligacao 0: 10641744
-	Ligacao 1: 10641616
-	Ligacao 2: 10641936
-	Ligacao 3: 10643088
-Tipo/nivel: R1
+	Ligacao 0: 3826664
+Tipo/nivel: C0
 Ligacoes posteriores
-	else: 10643472
-	Then: 10643896
+	else: 3827176
+	Then: 3812032
 
 
 	Ligacao 4:
-Endereco (no): 10643472
+Endereco (no): 3827176
 Ligacoes anteriores:
-	Ligacao 0: 10643216
-Tipo/nivel: V1
+	Ligacao 0: 3827144
+Tipo/nivel: R1
 Ligacoes posteriores
-	else: 10643768
-	Then: 10642448
+	else: 3826472
+	Then: 3812032
 
 
 	Ligacao 5:
-Endereco (no): 10643768
+Endereco (no): 3826472
 Ligacoes anteriores:
-	Ligacao 0: 10643472
-	Ligacao 1: 10643896
-Tipo/nivel: C1
+	Ligacao 0: 3827176
+Tipo/nivel: V1
 Ligacoes posteriores
-	else: 10642800
-	Then: 10643376
+	else: 3826504
+	Then: 3812032
 
 
 	Ligacao 6:
-Endereco (no): 10642800
+Endereco (no): 3826504
 Ligacoes anteriores:
-	Ligacao 0: 10643248
-	Ligacao 1: 10642448
-	Ligacao 2: 10639896
-	Ligacao 3: 10643768
-Tipo: Numero
-0.000000 0.000000
+	Ligacao 0: 3811008
+	Ligacao 1: 3826472
+Tipo/nivel: C1
+Ligacoes posteriores
+	else: 3812192
+	Then: 3812032
 
 
 	Ligacao 7:
-Endereco (no): 10643376
+Endereco (no): 3812192
 Ligacoes anteriores:
-	Ligacao 0: 10642448
-	Ligacao 1: 10643768
+	Ligacao 0: 3812288
+	Ligacao 1: 3826504
 Tipo: Numero
-0.353553 0.000000
+1.000e+000 0.000e+000
 
 
 	Ligacao 8:
-Endereco (no): 10642448
+Endereco (no): 3812032
 Ligacoes anteriores:
-	Ligacao 0: 10643472
-	Ligacao 1: 10640216
-Tipo/nivel: C1
-Ligacoes posteriores
-	else: 10643376
-	Then: 10642800
+	Ligacao 0: 3827144
+	Ligacao 1: 3811072
+	Ligacao 2: 3810880
+	Ligacao 3: 3812672
+	Ligacao 4: 3811328
+	Ligacao 5: 3812256
+	Ligacao 6: 3810976
+	Ligacao 7: 3827176
+	Ligacao 8: 3826472
+	Ligacao 9: 3812064
+	Ligacao 10: 3811008
+	Ligacao 11: 3811040
+	Ligacao 12: 3812288
+	Ligacao 13: 3826504
+Tipo: Numero
+0.000e+000 0.000e+000
 
 
 	Ligacao 9:
-Endereco (no): 10643896
+Endereco (no): 3812672
 Ligacoes anteriores:
-	Ligacao 0: 10643216
-Tipo/nivel: V1
+	Ligacao 0: 3826664
+Tipo/nivel: C0
 Ligacoes posteriores
-	else: 10643768
-	Then: 10643248
+	else: 3812256
+	Then: 3812032
 
 
 	Ligacao 10:
-Endereco (no): 10643248
+Endereco (no): 3812256
 Ligacoes anteriores:
-	Ligacao 0: 10642512
-	Ligacao 1: 10643896
-Tipo/nivel: C1
+	Ligacao 0: 3812672
+Tipo/nivel: R1
 Ligacoes posteriores
-	else: 10642480
-	Then: 10642800
+	else: 3812032
+	Then: 3812064
 
 
 	Ligacao 11:
-Endereco (no): 10642480
+Endereco (no): 3812064
 Ligacoes anteriores:
-	Ligacao 0: 10639896
-	Ligacao 1: 10643248
-Tipo: Numero
--0.353553 0.000000
+	Ligacao 0: 3812256
+Tipo/nivel: V1
+Ligacoes posteriores
+	else: 3812288
+	Then: 3812032
 
 
 	Ligacao 12:
-Endereco (no): 10641936
+Endereco (no): 3812288
 Ligacoes anteriores:
-	Ligacao 0: 10643088
-Tipo/nivel: C0
+	Ligacao 0: 3811040
+	Ligacao 1: 3812064
+Tipo/nivel: C1
 Ligacoes posteriores
-	else: 10643216
-	Then: 10640152
+	else: 3812032
+	Then: 3812192
 
 
 	Ligacao 13:
-Endereco (no): 10640152
+Endereco (no): 3812480
 Ligacoes anteriores:
-	Ligacao 0: 10641936
-	Ligacao 1: 10641744
-Tipo/nivel: R1
+	Ligacao 0: 3827240
+Tipo/nivel: V0
 Ligacoes posteriores
-	else: 10642512
-	Then: 10640216
+	else: 3811072
+	Then: 3810880
 
 
 	Ligacao 14:
-Endereco (no): 10642512
+Endereco (no): 3811072
 Ligacoes anteriores:
-	Ligacao 0: 10640152
-Tipo/nivel: V1
+	Ligacao 0: 3812480
+Tipo/nivel: C0
 Ligacoes posteriores
-	else: 10639896
-	Then: 10643248
+	else: 3812032
+	Then: 3810976
 
 
 	Ligacao 15:
-Endereco (no): 10639896
+Endereco (no): 3810976
 Ligacoes anteriores:
-	Ligacao 0: 10642512
-	Ligacao 1: 10640216
-Tipo/nivel: C1
+	Ligacao 0: 3811072
+Tipo/nivel: R1
 Ligacoes posteriores
-	else: 10642800
-	Then: 10642480
+	else: 3811008
+	Then: 3812032
 
 
 	Ligacao 16:
-Endereco (no): 10640216
+Endereco (no): 3811008
 Ligacoes anteriores:
-	Ligacao 0: 10640152
+	Ligacao 0: 3810976
 Tipo/nivel: V1
 Ligacoes posteriores
-	else: 10639896
-	Then: 10642448
+	else: 3812032
+	Then: 3826504
 
 
 	Ligacao 17:
-Endereco (no): 10641616
+Endereco (no): 3810880
 Ligacoes anteriores:
-	Ligacao 0: 10643312
-Tipo/nivel: V0
+	Ligacao 0: 3812480
+Tipo/nivel: C0
 Ligacoes posteriores
-	else: 10643216
-	Then: 10641744
+	else: 3812032
+	Then: 3811328
 
 
 	Ligacao 18:
-Endereco (no): 10641744
+Endereco (no): 3811328
 Ligacoes anteriores:
-	Ligacao 0: 10641616
-Tipo/nivel: C0
+	Ligacao 0: 3810880
+Tipo/nivel: R1
 Ligacoes posteriores
-	else: 10640152
-	Then: 10643216
+	else: 3812032
+	Then: 3811040
+
+
+	Ligacao 19:
+Endereco (no): 3811040
+Ligacoes anteriores:
+	Ligacao 0: 3811328
+Tipo/nivel: V1
+Ligacoes posteriores
+	else: 3812032
+	Then: 3812288
 
 
 AMPLITUDES
 
 	Ligacao 0:
-Endereco (no): 10642800
+Endereco (no): 3812192
 Ligacoes anteriores:
-	Ligacao 0: 10643248
-	Ligacao 1: 10642448
-	Ligacao 2: 10639896
-	Ligacao 3: 10643768
+	Ligacao 0: 3812288
+	Ligacao 1: 3826504
 Tipo: Numero
-0.000000 0.000000
+1.000e+000 0.000e+000
 
 
 	Ligacao 1:
-Endereco (no): 10643376
+Endereco (no): 3812032
 Ligacoes anteriores:
-	Ligacao 0: 10642448
-	Ligacao 1: 10643768
+	Ligacao 0: 3827144
+	Ligacao 1: 3811072
+	Ligacao 2: 3810880
+	Ligacao 3: 3812672
+	Ligacao 4: 3811328
+	Ligacao 5: 3812256
+	Ligacao 6: 3810976
+	Ligacao 7: 3827176
+	Ligacao 8: 3826472
+	Ligacao 9: 3812064
+	Ligacao 10: 3811008
+	Ligacao 11: 3811040
+	Ligacao 12: 3812288
+	Ligacao 13: 3826504
 Tipo: Numero
-0.353553 0.000000
-
-
-	Ligacao 2:
-Endereco (no): 10642480
-Ligacoes anteriores:
-	Ligacao 0: 10639896
-	Ligacao 1: 10643248
-Tipo: Numero
--0.353553 0.000000
+0.000e+000 0.000e+000
 

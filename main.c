@@ -20,7 +20,7 @@
 
 
 
-FILE *fm;
+FILE *fm, *fs;
 unsigned long long mem = 0, memMax = 0, memF = 0, iQ = 0, iI = 0, iM = 0, iF = 0, iL = 0, iA = 0, iC = 0, iS = 0;
 unsigned short print, Nqbit;
 float eps;
@@ -2242,9 +2242,6 @@ no* apply_base(no *n1, no *n2, void monta_apply(apply *a))
         }
     }
 
-    FILE *fp;
-    fp = fopen("conecxoes.txt","w");
-
     apply *a1, *a2;
     for(ac = a; ac != NULL; ac = ac->a)
     {
@@ -2270,12 +2267,8 @@ no* apply_base(no *n1, no *n2, void monta_apply(apply *a))
         }
     }
 
-
-    fp = fopen("apply.txt","w");
-
     n = a->n;
     libera_apply_lista(a);
-    fclose(fp);
 
     return n;
 }
@@ -2772,6 +2765,7 @@ Short espalha(suporte *s, Short classe)
             libera_lista_lista(l);
             libera_conta_lista(cp);
             return 1;
+    printf("\nA");
         }
 
         for(sc = s; sc->s != NULL; sc = sc->s)
@@ -2868,6 +2862,8 @@ Short espalha(suporte *s, Short classe)
     s->c[classe] = c->c;
     libera_conta_no(c);
 
+    fmostra_suporte_lista_com_conta(fs,s);
+
     return 0;
 }
 
@@ -2909,6 +2905,8 @@ void contrai(QDD *Q, Short classe)
     else
         s->c[R] = c->c;
     libera_conta_no(c);
+
+    fmostra_suporte_lista_com_conta(fs,s);
 
     conta *ci = NULL;
     Short inicio = 0;
@@ -3080,11 +3078,19 @@ QDD* produto_matriz_matriz(QDD *Q1, QDD *Q2)
     if(Q1->nqbit != Q2->nqbit)
         ERRO("PRODUTO MATRIZ MATRIZ| QDDs COM QUANTIDADES DIFERENTES DE QBITS");
 
+    no *n;
+    n = apply_produto_matriz_matriz(Q1->n,Q2->n);
+
     QDD *Q;
     Q = cria_QDD(Q1->nqbit);
-    Q->n = apply_produto_matriz_matriz(Q1->n,Q2->n);
+    Q->n = n;
     Q->l = acha_lista_fim_QDD(Q);
     reduz_QDD(Q,2);
+
+    contrai(Q,V);
+    libera_lista_lista(Q->l);
+    Q->l = acha_lista_fim_QDD(Q);
+    reduz_QDD(Q,1);
 
     return Q;
 }
@@ -3399,22 +3405,21 @@ int main()
     inicia_structs_globais();
     /***********************************/
 
-    QDD *QH, *QX;
-    QH = H();
-    QX = X();
+    QDD *QH1, *QH2;
+    QH1 = H();
+    QH2 = H();
 
-    QDD *Q1, *Q2;
-    Q1 = produto_tensorial(QH,QH);
-    Q2 = produto_tensorial(QH,QX);
+    fs = fopen("suporte.txt","w");
 
     QDD *Q;
-    Q = produto_matriz_matriz(Q1,Q2);
+    Q = produto_matriz_matriz(QH1,QH2);
 
-    libera_QDD(QH);
-    libera_QDD(QX);
-    libera_QDD(Q1);
-    libera_QDD(Q2);
+    libera_QDD(QH1);
+    libera_QDD(QH2);
     libera_QDD(Q);
+
+    mostra_quantidades();
+    teste_memoria();
 
     /***********************************/
     finaliza_structs_globais();
