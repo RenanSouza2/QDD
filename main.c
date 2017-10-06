@@ -3405,7 +3405,7 @@ int main()
     inicia_structs_globais();
     /***********************************/
 
-    QDD *QH1, *QH2;
+    /*QDD *QH1, *QH2;
     QH1 = H();
     QH2 = H();
 
@@ -3419,7 +3419,7 @@ int main()
     libera_QDD(Q);
 
     mostra_quantidades();
-    teste_memoria();
+    teste_memoria();*/
 
     /***********************************/
     finaliza_structs_globais();
