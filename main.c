@@ -20,7 +20,7 @@
 
 
 
-FILE *fm, *fs;
+FILE *fm;
 unsigned long long mem = 0, memMax = 0, memF = 0, iQ = 0, iI = 0, iM = 0, iF = 0, iL = 0, iA = 0, iC = 0, iS = 0;
 unsigned short print, Nqbit;
 float eps;
@@ -940,6 +940,14 @@ void fmostra_QDD(FILE *fp, QDD *Q)
     fmostra_lista_com_no(fp,Q->l);
     libera_lista_lista(l);
     fprintf(fp,"\n");
+}
+
+void fmostra_QDD_sozinho(QDD *Q, char *arquivo)
+{
+    FILE *fp;
+    fp = fopen(arquivo,"w");
+    fmostra_QDD(fp,Q);
+    fclose(fp);
 }
 
 void fmostra_apply_no(FILE *fp, apply *a)
@@ -2012,14 +2020,13 @@ void reduz_QDD(QDD *Q, Short ex)
     lf = acha_fim_lista(l);
 
     no *nc, *n1, *n2;
-    lista *lnc1, *lnc2, *lnc3, *lnc4, *lr, *lrc;
+    lista *lnc1, *lnc2, *lr, *lrc;
     Short mudou;
     while(l != NULL)
     {
         nc = l->n;
 
         /* Regra 1 */
-        lnc3 = NULL;
         do
         {
             mudou = 0;
@@ -2040,10 +2047,9 @@ void reduz_QDD(QDD *Q, Short ex)
                 break;
 
             lnc2 = nc->l;
-            lnc4 = nc->l;
             lnc1 = lnc2->l;
 
-            while(lnc1 != lnc3)
+            while(lnc1 != NULL)
             {
                 n1 = lnc1->n;
                 if(n1->at.m.el == n1->at.m.th)
@@ -2060,9 +2066,6 @@ void reduz_QDD(QDD *Q, Short ex)
                     lnc1 = lnc1->l;
                 }
             }
-            for(lnc3 = lnc4; lnc3 != NULL; lnc3 = lnc3->l)
-                if(lnc3->n->at.m.el != lnc3->n->at.m.th)
-                    break;
         }
         while(mudou);
 
@@ -2163,6 +2166,7 @@ no* reduz_arvore(no *n, Short ex)
             transfere_conexao(n,nzero);
             break;
     }
+    libera_lista_lista(Qred->l);
     return n;
 }
 
@@ -2765,7 +2769,6 @@ Short espalha(suporte *s, Short classe)
             libera_lista_lista(l);
             libera_conta_lista(cp);
             return 1;
-    printf("\nA");
         }
 
         for(sc = s; sc->s != NULL; sc = sc->s)
@@ -2817,7 +2820,6 @@ Short espalha(suporte *s, Short classe)
                         caux->n = nt1;
                     }
                     lado = desconecta_UM(ne,n);
-                    printf("\nA");
                     conecta_UM(ne,nt1,lado);
 
                 }
@@ -2835,7 +2837,6 @@ Short espalha(suporte *s, Short classe)
                     produto_arvore_real(nt2,ex);
 
                     lado = desconecta_UM(ne,nt1);
-                    printf("\nB");
                     conecta_UM(ne,nt2,lado);
 
                     cc->nivel = c->nivel;
@@ -2861,8 +2862,7 @@ Short espalha(suporte *s, Short classe)
 
     s->c[classe] = c->c;
     libera_conta_no(c);
-
-    fmostra_suporte_lista_com_conta(fs,s);
+    libera_conta_lista(cp);
 
     return 0;
 }
@@ -2905,8 +2905,6 @@ void contrai(QDD *Q, Short classe)
     else
         s->c[R] = c->c;
     libera_conta_no(c);
-
-    fmostra_suporte_lista_com_conta(fs,s);
 
     conta *ci = NULL;
     Short inicio = 0;
@@ -3405,21 +3403,20 @@ int main()
     inicia_structs_globais();
     /***********************************/
 
-    /*QDD *QH1, *QH2;
-    QH1 = H();
-    QH2 = H();
-
-    fs = fopen("suporte.txt","w");
+    QDD *QH, *Q1, *Q2;
+    QH = H();
+    Q1 = potencia_tensorial(QH,7);
+    Q2 = copia_QDD(Q1);
 
     QDD *Q;
-    Q = produto_matriz_matriz(QH1,QH2);
+    Q = produto_matriz_matriz(Q1,Q2);
 
-    libera_QDD(QH1);
-    libera_QDD(QH2);
+    fmostra_QDD_sozinho(Q,"QDD.txt");
+
+    libera_QDD(QH);
+    libera_QDD(Q1);
+    libera_QDD(Q2);
     libera_QDD(Q);
-
-    mostra_quantidades();
-    teste_memoria();*/
 
     /***********************************/
     finaliza_structs_globais();

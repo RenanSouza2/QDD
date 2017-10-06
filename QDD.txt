@@ -1,247 +1,291 @@
 
-Endereco (QDD): 3802400
-NQBIT: 2
+Endereco (QDD): 4072176
+NQBIT: 7
 
 
 	Ligacao 0:
-Endereco (no): 3826792
+Endereco (no): 4092624
 
 Tipo: Inicio
 Ligacoes posteriores
-	n: 3827240
+	n: 4092432
 
 
 
 	Ligacao 1:
-Endereco (no): 3827240
+Endereco (no): 4092432
 Ligacoes anteriores:
-	Ligacao 0: 3826792
+	Ligacao 0: 4092624
 Tipo/nivel: R0
 Ligacoes posteriores
-	else: 3826664
-	Then: 3812480
+	else: 4095424
+	Then: 4092944
 
 
 	Ligacao 2:
-Endereco (no): 3826664
+Endereco (no): 4095424
 Ligacoes anteriores:
-	Ligacao 0: 3827240
-Tipo/nivel: V0
+	Ligacao 0: 4092432
+Tipo/nivel: C0
 Ligacoes posteriores
-	else: 3827144
-	Then: 3812672
+	else: 4095520
+	Then: 4094168
 
 
 	Ligacao 3:
-Endereco (no): 3827144
+Endereco (no): 4095520
 Ligacoes anteriores:
-	Ligacao 0: 3826664
-Tipo/nivel: C0
+	Ligacao 0: 4092944
+	Ligacao 1: 4095424
+Tipo/nivel: R1
 Ligacoes posteriores
-	else: 3827176
-	Then: 3812032
+	else: 4096576
+	Then: 4088352
 
 
 	Ligacao 4:
-Endereco (no): 3827176
+Endereco (no): 4096576
 Ligacoes anteriores:
-	Ligacao 0: 3827144
-Tipo/nivel: R1
+	Ligacao 0: 4095520
+Tipo/nivel: C1
 Ligacoes posteriores
-	else: 3826472
-	Then: 3812032
+	else: 4095616
+	Then: 4094168
 
 
 	Ligacao 5:
-Endereco (no): 3826472
+Endereco (no): 4095616
 Ligacoes anteriores:
-	Ligacao 0: 3827176
-Tipo/nivel: V1
+	Ligacao 0: 4096576
+	Ligacao 1: 4088352
+Tipo/nivel: R2
 Ligacoes posteriores
-	else: 3826504
-	Then: 3812032
+	else: 4093528
+	Then: 4094360
 
 
 	Ligacao 6:
-Endereco (no): 3826504
+Endereco (no): 4093528
 Ligacoes anteriores:
-	Ligacao 0: 3811008
-	Ligacao 1: 3826472
-Tipo/nivel: C1
+	Ligacao 0: 4095616
+Tipo/nivel: C2
 Ligacoes posteriores
-	else: 3812192
-	Then: 3812032
+	else: 4095296
+	Then: 4094168
 
 
 	Ligacao 7:
-Endereco (no): 3812192
+Endereco (no): 4095296
 Ligacoes anteriores:
-	Ligacao 0: 3812288
-	Ligacao 1: 3826504
-Tipo: Numero
-1.000e+000 0.000e+000
+	Ligacao 0: 4094360
+	Ligacao 1: 4093528
+Tipo/nivel: R3
+Ligacoes posteriores
+	else: 4094040
+	Then: 4094232
 
 
 	Ligacao 8:
-Endereco (no): 3812032
+Endereco (no): 4094040
 Ligacoes anteriores:
-	Ligacao 0: 3827144
-	Ligacao 1: 3811072
-	Ligacao 2: 3810880
-	Ligacao 3: 3812672
-	Ligacao 4: 3811328
-	Ligacao 5: 3812256
-	Ligacao 6: 3810976
-	Ligacao 7: 3827176
-	Ligacao 8: 3826472
-	Ligacao 9: 3812064
-	Ligacao 10: 3811008
-	Ligacao 11: 3811040
-	Ligacao 12: 3812288
-	Ligacao 13: 3826504
+	Ligacao 0: 4095296
+Tipo/nivel: C3
+Ligacoes posteriores
+	else: 4096832
+	Then: 4094168
+
+
+	Ligacao 9:
+Endereco (no): 4096832
+Ligacoes anteriores:
+	Ligacao 0: 4094232
+	Ligacao 1: 4094040
+Tipo/nivel: R4
+Ligacoes posteriores
+	else: 4093368
+	Then: 4094200
+
+
+	Ligacao 10:
+Endereco (no): 4093368
+Ligacoes anteriores:
+	Ligacao 0: 4096832
+Tipo/nivel: C4
+Ligacoes posteriores
+	else: 4096768
+	Then: 4094168
+
+
+	Ligacao 11:
+Endereco (no): 4096768
+Ligacoes anteriores:
+	Ligacao 0: 4094200
+	Ligacao 1: 4093368
+Tipo/nivel: R5
+Ligacoes posteriores
+	else: 4093400
+	Then: 4095128
+
+
+	Ligacao 12:
+Endereco (no): 4093400
+Ligacoes anteriores:
+	Ligacao 0: 4096768
+Tipo/nivel: C5
+Ligacoes posteriores
+	else: 4096448
+	Then: 4094168
+
+
+	Ligacao 13:
+Endereco (no): 4096448
+Ligacoes anteriores:
+	Ligacao 0: 4095128
+	Ligacao 1: 4093400
+Tipo/nivel: R6
+Ligacoes posteriores
+	else: 4095032
+	Then: 4095096
+
+
+	Ligacao 14:
+Endereco (no): 4095032
+Ligacoes anteriores:
+	Ligacao 0: 4096448
+Tipo/nivel: C6
+Ligacoes posteriores
+	else: 4096640
+	Then: 4094168
+
+
+	Ligacao 15:
+Endereco (no): 4096640
+Ligacoes anteriores:
+	Ligacao 0: 4095096
+	Ligacao 1: 4095032
+Tipo: Numero
+1.000e+000 -0.000e+000
+
+
+	Ligacao 16:
+Endereco (no): 4094168
+Ligacoes anteriores:
+	Ligacao 0: 4096576
+	Ligacao 1: 4094360
+	Ligacao 2: 4094232
+	Ligacao 3: 4094200
+	Ligacao 4: 4095128
+	Ligacao 5: 4095096
+	Ligacao 6: 4095032
+	Ligacao 7: 4093400
+	Ligacao 8: 4093368
+	Ligacao 9: 4094040
+	Ligacao 10: 4093528
+	Ligacao 11: 4088352
+	Ligacao 12: 4092944
+	Ligacao 13: 4095424
 Tipo: Numero
 0.000e+000 0.000e+000
 
 
-	Ligacao 9:
-Endereco (no): 3812672
-Ligacoes anteriores:
-	Ligacao 0: 3826664
-Tipo/nivel: C0
-Ligacoes posteriores
-	else: 3812256
-	Then: 3812032
-
-
-	Ligacao 10:
-Endereco (no): 3812256
-Ligacoes anteriores:
-	Ligacao 0: 3812672
-Tipo/nivel: R1
-Ligacoes posteriores
-	else: 3812032
-	Then: 3812064
-
-
-	Ligacao 11:
-Endereco (no): 3812064
-Ligacoes anteriores:
-	Ligacao 0: 3812256
-Tipo/nivel: V1
-Ligacoes posteriores
-	else: 3812288
-	Then: 3812032
-
-
-	Ligacao 12:
-Endereco (no): 3812288
-Ligacoes anteriores:
-	Ligacao 0: 3811040
-	Ligacao 1: 3812064
-Tipo/nivel: C1
-Ligacoes posteriores
-	else: 3812032
-	Then: 3812192
-
-
-	Ligacao 13:
-Endereco (no): 3812480
-Ligacoes anteriores:
-	Ligacao 0: 3827240
-Tipo/nivel: V0
-Ligacoes posteriores
-	else: 3811072
-	Then: 3810880
-
-
-	Ligacao 14:
-Endereco (no): 3811072
-Ligacoes anteriores:
-	Ligacao 0: 3812480
-Tipo/nivel: C0
-Ligacoes posteriores
-	else: 3812032
-	Then: 3810976
-
-
-	Ligacao 15:
-Endereco (no): 3810976
-Ligacoes anteriores:
-	Ligacao 0: 3811072
-Tipo/nivel: R1
-Ligacoes posteriores
-	else: 3811008
-	Then: 3812032
-
-
-	Ligacao 16:
-Endereco (no): 3811008
-Ligacoes anteriores:
-	Ligacao 0: 3810976
-Tipo/nivel: V1
-Ligacoes posteriores
-	else: 3812032
-	Then: 3826504
-
-
 	Ligacao 17:
-Endereco (no): 3810880
+Endereco (no): 4095096
 Ligacoes anteriores:
-	Ligacao 0: 3812480
-Tipo/nivel: C0
+	Ligacao 0: 4096448
+Tipo/nivel: C6
 Ligacoes posteriores
-	else: 3812032
-	Then: 3811328
+	else: 4094168
+	Then: 4096640
 
 
 	Ligacao 18:
-Endereco (no): 3811328
+Endereco (no): 4095128
 Ligacoes anteriores:
-	Ligacao 0: 3810880
-Tipo/nivel: R1
+	Ligacao 0: 4096768
+Tipo/nivel: C5
 Ligacoes posteriores
-	else: 3812032
-	Then: 3811040
+	else: 4094168
+	Then: 4096448
 
 
 	Ligacao 19:
-Endereco (no): 3811040
+Endereco (no): 4094200
 Ligacoes anteriores:
-	Ligacao 0: 3811328
-Tipo/nivel: V1
+	Ligacao 0: 4096832
+Tipo/nivel: C4
 Ligacoes posteriores
-	else: 3812032
-	Then: 3812288
+	else: 4094168
+	Then: 4096768
+
+
+	Ligacao 20:
+Endereco (no): 4094232
+Ligacoes anteriores:
+	Ligacao 0: 4095296
+Tipo/nivel: C3
+Ligacoes posteriores
+	else: 4094168
+	Then: 4096832
+
+
+	Ligacao 21:
+Endereco (no): 4094360
+Ligacoes anteriores:
+	Ligacao 0: 4095616
+Tipo/nivel: C2
+Ligacoes posteriores
+	else: 4094168
+	Then: 4095296
+
+
+	Ligacao 22:
+Endereco (no): 4088352
+Ligacoes anteriores:
+	Ligacao 0: 4095520
+Tipo/nivel: C1
+Ligacoes posteriores
+	else: 4094168
+	Then: 4095616
+
+
+	Ligacao 23:
+Endereco (no): 4092944
+Ligacoes anteriores:
+	Ligacao 0: 4092432
+Tipo/nivel: C0
+Ligacoes posteriores
+	else: 4094168
+	Then: 4095520
 
 
 AMPLITUDES
 
 	Ligacao 0:
-Endereco (no): 3812192
+Endereco (no): 4096640
 Ligacoes anteriores:
-	Ligacao 0: 3812288
-	Ligacao 1: 3826504
+	Ligacao 0: 4095096
+	Ligacao 1: 4095032
 Tipo: Numero
-1.000e+000 0.000e+000
+1.000e+000 -0.000e+000
 
 
 	Ligacao 1:
-Endereco (no): 3812032
+Endereco (no): 4094168
 Ligacoes anteriores:
-	Ligacao 0: 3827144
-	Ligacao 1: 3811072
-	Ligacao 2: 3810880
-	Ligacao 3: 3812672
-	Ligacao 4: 3811328
-	Ligacao 5: 3812256
-	Ligacao 6: 3810976
-	Ligacao 7: 3827176
-	Ligacao 8: 3826472
-	Ligacao 9: 3812064
-	Ligacao 10: 3811008
-	Ligacao 11: 3811040
-	Ligacao 12: 3812288
-	Ligacao 13: 3826504
+	Ligacao 0: 4096576
+	Ligacao 1: 4094360
+	Ligacao 2: 4094232
+	Ligacao 3: 4094200
+	Ligacao 4: 4095128
+	Ligacao 5: 4095096
+	Ligacao 6: 4095032
+	Ligacao 7: 4093400
+	Ligacao 8: 4093368
+	Ligacao 9: 4094040
+	Ligacao 10: 4093528
+	Ligacao 11: 4088352
+	Ligacao 12: 4092944
+	Ligacao 13: 4095424
 Tipo: Numero
 0.000e+000 0.000e+000
 
