@@ -3097,76 +3097,64 @@ QDD* produto_matriz_matriz(QDD *Q1, QDD *Q2)
 
 /**  Blocos usuais  **/
 
-QDD* I()
+QDD* matriz_cruzada(no *nf1, no *nf2)
 {
-    no *ni, *n1, *n2, *n3, *n4;
-
+    no *ni, *n1, *n2, *n3;
     ni = cria_no_inicio();
     n1 = cria_no_meio(R,0);
-    conecta_UM(ni,n1,Inicio);
-
     n2 = cria_no_meio(C,0);
     n3 = cria_no_meio(C,0);
-    conecta_DOIS(n1,n2,n3);
 
-    n1 = n2;
-    n2 = n3;
-    n3 = cria_no_fim(1,0);
-    n4 = cria_no_fim(0,0);
-    conecta_DOIS(n1,n3,n4);
-    conecta_DOIS(n2,n4,n3);
+    conecta_UM(ni,n1,Inicio);
+    conecta_DOIS(n1,n2,n3);
+    conecta_DOIS(n2,nf1,nf2);
+    conecta_DOIS(n3,nf2,nf1);
 
     lista *l1, *l2;
     l1 = cria_lista();
     l2 = cria_lista();
 
-    l1->n = n3;
     l1->l = l2;
-    l2->n = n4;
+    l1->n = nf1;
+    l2->n = nf2;
 
     QDD *Q;
     Q = cria_QDD(1);
     Q->n = ni;
     Q->l = l1;
+    return Q;
+}
 
+QDD* I()
+{
+    no *nf1, *nf2;
+    nf1 = cria_no_fim(1,0);
+    nf2 = cria_no_fim(0,0);
+
+    QDD *Q;
+    Q = matriz_cruzada(nf1,nf2);
     return Q;
 }
 
 QDD* X()
 {
-    no *ni, *n1, *n2, *n3, *n4;
-
-    n1 = cria_no_inicio();
-    n2 = cria_no_meio(R,0);
-    conecta_UM(n1,n2,Inicio);
-
-    ni = n1;
-
-    n1 = n2;
-    n2 = cria_no_meio(C,0);
-    n3 = cria_no_meio(C,0);
-    conecta_DOIS(n1,n2,n3);
-
-    n1 = n2;
-    n2 = n3;
-    n3 = cria_no_fim(0,0);
-    n4 = cria_no_fim(1,0);
-    conecta_DOIS(n1,n3,n4);
-    conecta_DOIS(n2,n4,n3);
-
-    lista *l1, *l2;
-    l1 = cria_lista();
-    l2 = cria_lista();
-
-    l1->n = n3;
-    l1->l = l2;
-    l2->n = n4;
+    no *nf1, *nf2;
+    nf1 = cria_no_fim(0,0);
+    nf2 = cria_no_fim(1,0);
 
     QDD *Q;
-    Q = cria_QDD(1);
-    Q->n = ni;
-    Q->l = l1;
+    Q = matriz_cruzada(nf1,nf2);
+    return Q;
+}
 
+QDD* S()
+{
+    no *nf1, *nf2;
+    nf1 = cria_no_fim(0.5,0.5);
+    nf2 = cria_no_fim(0.5,-0.5);
+
+    QDD *Q;
+    Q = matriz_cruzada(nf1,nf2);
     return Q;
 }
 
@@ -3403,20 +3391,12 @@ int main()
     inicia_structs_globais();
     /***********************************/
 
-    QDD *QH, *Q1, *Q2;
-    QH = H();
-    Q1 = potencia_tensorial(QH,7);
-    Q2 = copia_QDD(Q1);
+    QDD *QS;
+    QS = S();
 
     QDD *Q;
-    Q = produto_matriz_matriz(Q1,Q2);
-
-    fmostra_QDD_sozinho(Q,"QDD.txt");
-
-    libera_QDD(QH);
-    libera_QDD(Q1);
-    libera_QDD(Q2);
-    libera_QDD(Q);
+    Q = produto_matriz_matriz(QS,QS);
+    mostra_QDD(Q);
 
     /***********************************/
     finaliza_structs_globais();
