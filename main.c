@@ -21,7 +21,9 @@
 
 
 FILE *fm;
-unsigned long long mem = 0, memMax = 0, memF = 0, iQ = 0, iI = 0, iM = 0, iF = 0, iL = 0, iA = 0, iC = 0, iS = 0;
+unsigned long long mem = 0, memMax = 0, memF = 0;
+unsigned long long iQ = 0, iI = 0, iM = 0, iF = 0, iL = 0, iA = 0, iC = 0, iS = 0;
+unsigned long long MAX;
 unsigned short print, Nqbit;
 float eps;
 
@@ -125,10 +127,11 @@ void finaliza_relatorio_memoria()
     }
 }
 
-void configuracao(Short i)
+void configuracao(Short N)
 {
-    Nqbit = i;
-    eps = pow(2,-(i/2.0))/20;
+    Nqbit = N;
+    MAX = pow(2,N);
+    eps = pow(2,-0.5*N)/20;
 }
 
 
@@ -2198,6 +2201,7 @@ void encaixa_apply(apply *a, apply *ac, Short lado)
     for(ae = a; ae != NULL; ae = ae->a)
         if(compara_apply(aa,ae))
             break;
+
     if(ae == NULL)
     {
         aa->a = ac->a;
@@ -2226,56 +2230,80 @@ void monta_apply(apply *a, Short regra)
     n2 = a->n2;
 
     no *n;
-    apply *a1, *a2;
+    Short avanco;
+    n = NULL;
+    avanco = 4;
     switch(regra)
     {
         case 0:
             n = cria_no_inicio();
-            a->n = n;
-
-            a1 = cria_apply();
-            a1->n1 = n1->at.i.n;
-            a1->n2 = n2->at.i.n;
-
-            a->a1=  a1;
+            avanco = 0;
             break;
 
         case 1:
             n = copia_no(n1);
-            a->n = n;
-
-            a1 = cria_apply();
-            a1->n1 = n1->at.m.el;
-            a1->n2 = n2;
-
-            a2 = cria_apply();
-            a2->n1 = n1->at.m.th;
-            a2->n2 = n2;
-
-            a->a1 = a1;
-            a->a2 = a2;
+            avanco = 1;
             break;
 
         case 2:
             n = copia_no(n2);
-            a->n = n;
-
-            a1 = cria_apply();
-            a1->n1 = n1;
-            a1->n2 = n2->at.m.el;
-
-            a2 = cria_apply();
-            a2->n1 = n1;
-            a2->n2 = n2->at.m.th;
-
-            a->a1 = a1;
-            a->a2 = a2;
+            avanco = 2;
             break;
 
         case 3:
             n = cria_no_meio(V,n1->at.m.nivel);
-            a->n = n;
+            avanco = 1;
+            break;
 
+        case 4:
+            n = cria_no_meio(V,n2->at.m.nivel);
+            avanco = 2;
+            break;
+
+        case 5:
+            n = cria_no_meio(V,n1->at.m.nivel);
+            avanco =  3;
+            break;
+
+        case 6:
+            n = produto_no_no(n1,n2);
+            break;
+
+        case 7:
+            n = produto_no_conjugado_no(n1,n2);
+            break;
+
+        case 8:
+            n = cria_no_fim(0,0);
+            break;
+
+        case 9:
+            n = soma_no(n1,n2);
+            break;
+
+        case 10:
+            n = copia_no(n1);
+            avanco = 3;
+            break;
+
+        default:
+            ERRO("MONTA PPLY| REGRA NAO DEFINIDA");
+            break;
+    }
+    a->n = n;
+
+    apply *a1, *a2;
+    a1 = NULL;
+    a2 = NULL;
+    switch(avanco)
+    {
+        case 0:
+            a1 = cria_apply();
+            a1->n1 = n1->at.i.n;
+            a1->n2 = n2->at.i.n;
+            break;
+
+        case 1:
             a1 = cria_apply();
             a1->n1 = n1->at.m.el;
             a1->n2 = n2;
@@ -2283,15 +2311,9 @@ void monta_apply(apply *a, Short regra)
             a2 = cria_apply();
             a2->n1 = n1->at.m.th;
             a2->n2 = n2;
-
-            a->a1 = a1;
-            a->a2 = a2;
             break;
 
-        case 4:
-            n = cria_no_meio(V,n2->at.m.nivel);
-            a->n = n;
-
+        case 2:
             a1 = cria_apply();
             a1->n1 = n1;
             a1->n2 = n2->at.m.el;
@@ -2299,15 +2321,9 @@ void monta_apply(apply *a, Short regra)
             a2 = cria_apply();
             a2->n1 = n1;
             a2->n2 = n2->at.m.th;
-
-            a->a1 = a1;
-            a->a2 = a2;
             break;
 
-        case 5:
-            n = cria_no_meio(V,n1->at.m.nivel);
-            a->n = n;
-
+        case 3:
             a1 = cria_apply();
             a1->n1 = n1->at.m.el;
             a1->n2 = n2->at.m.el;
@@ -2315,31 +2331,10 @@ void monta_apply(apply *a, Short regra)
             a2 = cria_apply();
             a2->n1 = n1->at.m.th;
             a2->n2 = n2->at.m.th;
-
-            a->a1 = a1;
-            a->a2 = a2;
-            break;
-
-        case 6:
-            n = produto_no_no(n1,n2);
-            a->n = n;
-            break;
-
-        case 7:
-            n = produto_no_conjugado_no(n1,n2);
-            a->n = n;
-            break;
-
-        case 8:
-            n = cria_no_fim(0,0);
-            a->n = n;
-            break;
-
-        case 9:
-            n = soma_no(n1,n2);
-            a->n = n;
             break;
     }
+    a->a1 = a1;
+    a->a2 = a2;
 }
 
 no* apply_base(no *n1, no *n2, Short (*regra_apply)(apply *a))
@@ -2402,7 +2397,6 @@ no* apply_base(no *n1, no *n2, Short (*regra_apply)(apply *a))
 
     return n;
 }
-
 
 
 
@@ -2504,8 +2498,6 @@ Short regra_apply_produto_matriz_matriz(apply *a)
     n1 = a->n1;
     n2 = a->n2;
 
-    printf("\n\t\t\tApply: ");
-    mostra_apply_no(a);
     switch(n1->tipo)
     {
         case Inicio:
@@ -2666,8 +2658,6 @@ Short regra_apply_produto_vetor_vetor(apply *a)
     n1 = a->n1;
     n2 = a->n2;
 
-    mostra_apply_no(a);
-
     switch(n1->tipo)
     {
         case Inicio:
@@ -2694,14 +2684,14 @@ Short regra_apply_produto_vetor_vetor(apply *a)
                     if(n1->at.m.nivel < n2->at.m.nivel)
                         return 1;
                     if(n1->at.m.nivel == n2->at.m.nivel)
-                        return 3;
+                        return 5;
                     if(n1->at.m.nivel > n2->at.m.nivel)
                         return 2;
                     break;
 
                 case Fim:
                     if(compara_no_fim_zero(n2,1))
-                        return 5;
+                        return 8;
                     else
                         return 1;
                     break;
@@ -2712,11 +2702,10 @@ Short regra_apply_produto_vetor_vetor(apply *a)
         case Fim:
             if(compara_no_fim_zero(n1,1))
             {
-                return 5;
+                return 8;
             }
             else
             {
-                printf("\nn2: %d",n2);
                 switch(n2->tipo)
                 {
                     case Inicio:
@@ -2729,9 +2718,9 @@ Short regra_apply_produto_vetor_vetor(apply *a)
 
                     case Fim:
                         if(compara_no_fim_zero(n2,1))
-                            return 5;
+                            return 8;
                         else
-                            return 4;
+                            return 7;
                         break;
                 }
             }
@@ -3441,14 +3430,6 @@ int main()
     inicia_structs_globais();
     /***********************************/
 
-    QDD *QV;
-    QV = le_vetor("V17.txt");
-    configuracao(QV->nqbit);
-    reduz_QDD(QV,1);
-
-    no *n;
-    n = produto_vetor_vetor(QV,QV);
-    mostra_no(n);
 
     /***********************************/
     finaliza_structs_globais();
