@@ -2219,399 +2219,11 @@ void encaixa_apply(apply *a, apply *ac, Short lado)
     }
 }
 
-no* apply_base(no *n1, no *n2, void monta_apply(apply *a))
-{
-    apply *a;
-    a = cria_apply();
-    a->n1 = n1;
-    a->n2 = n2;
-
-    no *n;
-    apply *ac;
-    ac = a;
-    for(ac = a; ac != NULL; ac = ac->a)
-    {
-        monta_apply(ac);
-
-        n = ac->n;
-        switch(n->tipo)
-        {
-            case Inicio:
-                ac->a = ac->a1;
-                break;
-
-            case Meio:
-                encaixa_apply(a,ac,Then);
-                encaixa_apply(a,ac,Else);
-                break;
-        }
-    }
-
-    apply *a1, *a2;
-    for(ac = a; ac != NULL; ac = ac->a)
-    {
-        n = ac->n;
-        switch(n->tipo)
-        {
-            case Inicio:
-                a1 = ac->a1;
-                n1 = a1->n;
-
-                conecta_UM(n,n1,Inicio);
-                break;
-
-            case Meio:
-                a1 = ac->a1;
-                a2 = ac->a2;
-
-                n1 = a1->n;
-                n2 = a2->n;
-
-                conecta_DOIS(n,n1,n2);
-                break;
-        }
-    }
-
-    n = a->n;
-    libera_apply_lista(a);
-
-    return n;
-}
-
-
-
-
-/**  monta_apply  **/
-
-void monta_apply_soma(apply *a)
+void monta_apply(apply *a, Short regra)
 {
     no *n1, *n2;
     n1 = a->n1;
     n2 = a->n2;
-
-    Short regra;
-    regra = 0;
-    switch(n1->tipo)
-    {
-        case Inicio:
-            if(n2->tipo != Inicio)
-                ERRO("MONTA APPLY SOMA| N1 INICIO N2 NAO");
-
-            regra = 0;
-            break;
-
-        case Meio:
-            switch(n2->tipo)
-            {
-                case Inicio:
-                    ERRO("MONTA APPLY SOMA| N2 MEIO N1 INICIO");
-                    break;
-
-                case Meio:
-                    if(n1->at.m.nivel < n2->at.m.nivel)
-                        regra = 1;
-                    if(n1->at.m.nivel > n2->at.m.nivel)
-                        regra = 2;
-                    if(n1->at.m.nivel == n2->at.m.nivel)
-                    {
-                        switch(n1->at.m.classe)
-                        {
-                            case V:
-                                if(n2->at.m.classe != V)
-                                    ERRO("MONTA APPLY SOMA| N1 VETOR N2 MATRIZ");
-
-                                regra = 3;
-                                break;
-
-                            case R:
-                                switch(n2->at.m.classe)
-                                {
-                                    case V:
-                                        ERRO("MONTA APPLY SOMA| N1 MATRIZ N2 VETOR");
-                                        break;
-
-                                    case R:
-                                        regra = 3;
-                                        break;
-
-                                    case C:
-                                        regra = 1;
-                                        break;
-                                }
-                                break;
-
-                            case C:
-                                switch(n2->at.m.classe)
-                                {
-                                    case V:
-                                        ERRO("MONTA APPLY SOMA| N1 MATRIZ N2 VETOR");
-                                        break;
-
-                                    case R:
-                                        regra = 2;
-                                        break;
-
-                                    case C:
-                                        regra = 3;
-                                        break;
-                                }
-                                break;
-                        }
-                    }
-                    break;
-
-                case Fim:
-                    regra = 1;
-                    break;
-            }
-            break;
-
-        case Fim:
-            switch(n2->tipo)
-            {
-                case Inicio:
-                    ERRO("MONTA APPLY SOMA| N1 FIM N2 INICIO");
-                    break;
-
-                case Meio:
-                    regra = 2;
-                    break;
-
-                case Fim:
-                    regra = 4;
-                    break;
-            }
-            break;
-    }
-
-    no *n;
-    apply *a1, *a2;
-    switch(regra)
-    {
-        case 0:
-            n = cria_no_inicio();
-            a->n = n;
-
-            a1 = cria_apply();
-            a1->n1 = n1->at.i.n;
-            a1->n2 = n2->at.i.n;
-
-            a->a1 = a1;
-            break;
-
-        case 1:
-            n = copia_no(n1);
-            a->n = n;
-
-            a1 = cria_apply();
-            a1->n1 = n1->at.m.el;
-            a1->n2 = n2;
-
-            a2 = cria_apply();
-            a2->n1 = n1->at.m.th;
-            a2->n2 = n2;
-
-            a->a1 = a1;
-            a->a2 = a2;
-            break;
-
-        case 2:
-            n = copia_no(n2);
-            a->n = n;
-
-            a1 = cria_apply();
-            a1->n1 = n1;
-            a1->n2 = n2->at.m.el;
-
-            a2 = cria_apply();
-            a2->n1 = n1;
-            a2->n2 = n2->at.m.th;
-
-            a->a1 = a1;
-            a->a2 = a2;
-            break;
-
-        case 3:
-            n = copia_no(n1);
-            a->n = n;
-
-            a1 = cria_apply();
-            a1->n1 = n1->at.m.el;
-            a1->n2 = n2->at.m.el;
-
-            a2 = cria_apply();
-            a2->n1 = n1->at.m.th;
-            a2->n2 = n2->at.m.th;
-
-            a->a1 = a1;
-            a->a2 = a2;
-            break;
-
-        case 4:
-            n = soma_no(n1,n2);
-            a->n = n;
-            break;
-    }
-}
-
-void monta_apply_produto_matriz_matriz(apply *a)
-{
-    no *n1, *n2;
-    n1 = a->n1;
-    n2 = a->n2;
-
-    Short regra;
-    regra = 0;
-    switch(n1->tipo)
-    {
-        case Inicio:
-            if(n2->tipo != Inicio)
-                ERRO("MONTA APPLY PRODUTO MATRIZ MATRIZ| N1 E INICIO N2 NAO");
-
-            regra = 0;
-            break;
-
-        case Meio:
-            switch(n2->tipo)
-            {
-                case Inicio:
-                    ERRO("MONTA APPLY PRODUTO MATRIZ MATRIZ| N1 E MEIO N2 INICIO");
-                    break;
-
-                case Meio:
-                    if(n1->at.m.nivel < n2->at.m.nivel)
-                    {
-                        switch(n1->at.m.classe)
-                        {
-                            case V:
-                                ERRO("MONTA APPLY PRODUTO MATRIZ MATRIZ| N1 E VETOR 1");
-                                break;
-
-                            case R:
-                                regra = 1;
-                                break;
-
-                            case C:
-                                regra = 3;
-                                break;
-                        }
-                    }
-                    if(n1->at.m.nivel == n2->at.m.nivel)
-                    {
-                        switch(n1->at.m.classe)
-                        {
-                            case V:
-                                ERRO("MONTA APPLY PRODUTO MATRIZ MATRIZ| N1 E VETOR 2");
-                                break;
-
-                            case R:
-                                regra = 1;
-                                break;
-
-                            case C:
-                                switch(n2->at.m.classe)
-                                {
-                                    case V:
-                                        ERRO("MONTA APPLY PRODUTO MATRIZ MATRIZ| N2 E VETOR 1");
-                                        break;
-
-                                    case R:
-                                        regra = 5;
-                                        break;
-
-                                    case C:
-                                        regra = 3;
-                                        break;
-                                }
-                                break;
-                        }
-                    }
-                    if(n1->at.m.nivel > n2->at.m.nivel)
-                    {
-                        switch(n2->at.m.classe)
-                        {
-                            case V:
-                                ERRO("MONTA APPLY PRODUTO MATRIZ MATRIZ| N2 E VETOR 2");
-                                break;
-
-                            case R:
-                                regra = 4;
-                                break;
-
-                            case C:
-                                regra = 2;
-                                break;
-                        }
-                    }
-                    break;
-
-                case Fim:
-                    if(compara_no_fim_zero(n2,1))
-                    {
-                        regra = 7;
-                    }
-                    else
-                    {
-                        switch(n1->at.m.classe)
-                        {
-                            case V:
-                                ERRO("MONTA APPLY PRODUTO MATRIZ MATRIZ| N1 E VETOR 3");
-                                break;
-
-                            case R:
-                                regra = 1;
-                                break;
-
-                            case C:
-                                regra = 3;
-                                break;
-                        }
-                    }
-                    break;
-
-            }
-            break;
-
-        case Fim:
-            if(compara_no_fim_zero(n1,1))
-            {
-                regra = 7;
-            }
-            else
-            {
-                switch(n2->tipo)
-                {
-                    case Inicio:
-                        ERRO("MONTA APPLY PRODUTO MATRIZ MATRIZ| N1 E FIM N2 INICIO");
-                        break;
-
-                    case Meio:
-                        switch(n2->at.m.classe)
-                        {
-                            case V:
-                                ERRO("MONTA APPLY PRODUTO MATRIZ MATRIZ| N2 E VETOR 3");
-                                break;
-
-                            case R:
-                                regra = 4;
-                                break;
-
-                            case C:
-                                regra = 2;
-                                break;
-                        }
-                        break;
-
-                    case Fim:
-                        if(compara_no_fim_zero(n2,1))
-                            regra = 7;
-                        else
-                            regra = 6;
-                        break;
-                }
-            }
-            break;
-    }
 
     no *n;
     apply *a1, *a2;
@@ -2714,56 +2326,291 @@ void monta_apply_produto_matriz_matriz(apply *a)
             break;
 
         case 7:
+            n = produto_no_conjugado_no(n1,n2);
+            a->n = n;
+            break;
+
+        case 8:
             n = cria_no_fim(0,0);
+            a->n = n;
+            break;
+
+        case 9:
+            n = soma_no(n1,n2);
             a->n = n;
             break;
     }
 }
 
-void monta_apply_produto_vetor_vetor(apply *a)
+no* apply_base(no *n1, no *n2, Short (*regra_apply)(apply *a))
+{
+    apply *a;
+    a = cria_apply();
+    a->n1 = n1;
+    a->n2 = n2;
+
+    no *n;
+    apply *ac;
+    Short regra;
+    ac = a;
+    for(ac = a; ac != NULL; ac = ac->a)
+    {
+        regra = regra_apply(ac);
+        monta_apply(ac,regra);
+
+        n = ac->n;
+        switch(n->tipo)
+        {
+            case Inicio:
+                ac->a = ac->a1;
+                break;
+
+            case Meio:
+                encaixa_apply(a,ac,Then);
+                encaixa_apply(a,ac,Else);
+                break;
+        }
+    }
+
+    apply *a1, *a2;
+    for(ac = a; ac != NULL; ac = ac->a)
+    {
+        n = ac->n;
+        switch(n->tipo)
+        {
+            case Inicio:
+                a1 = ac->a1;
+                n1 = a1->n;
+
+                conecta_UM(n,n1,Inicio);
+                break;
+
+            case Meio:
+                a1 = ac->a1;
+                a2 = ac->a2;
+
+                n1 = a1->n;
+                n2 = a2->n;
+
+                conecta_DOIS(n,n1,n2);
+                break;
+        }
+    }
+
+    n = a->n;
+    libera_apply_lista(a);
+
+    return n;
+}
+
+
+
+
+/**  regra apply  **/
+
+Short regra_apply_soma(apply *a)
 {
     no *n1, *n2;
     n1 = a->n1;
     n2 = a->n2;
 
-    Short regra;
-    regra = 0;
     switch(n1->tipo)
     {
         case Inicio:
             if(n2->tipo != Inicio)
-                ERRO("MONTA APPLY PRODUTO VETOR VETOR| N1 E INICIO E N2 NAO");
+                ERRO("REGRA APPLY SOMA| N1 E INICIO N2 NAO");
 
-            regra = 0;
+            return 0;
             break;
 
         case Meio:
-            if(n1->at.m.classe != V)
-                ERRO("MONTA APPLY PRODUTO VETOR VETOR| Q1 NAO E VETOR");
-
             switch(n2->tipo)
             {
                 case Inicio:
-                    ERRO("MONTA APPLY PRODUTO VETOR VETOR| N2 E MEIO N2 INICIO");
+                    ERRO("REGRA APPLY SOMA| N1 E MEIO N2 E INICIO");
                     break;
 
                 case Meio:
-                    if(n1->at.m.classe != V)
-                        ERRO("MONTA APPLY PRODUTO VETOR VETOR| Q2 NAO E VETOR");
-
                     if(n1->at.m.nivel < n2->at.m.nivel)
-                        regra = 1;
-                    if(n1->at.m.nivel == n2->at.m.nivel)
-                        regra = 3;
+                        return 1;
                     if(n1->at.m.nivel > n2->at.m.nivel)
-                        regra = 2;
+                        return 2;
+                    if(n1->at.m.nivel == n2->at.m.nivel)
+                    {
+                        switch(n1->at.m.classe)
+                        {
+                            case C:
+                                if(n2->at.m.classe == C)
+                                    return 10;
+                                return 2;
+                                break;
+
+                            case V:
+                                switch(n2->at.m.classe)
+                                {
+                                    case C:
+                                        return 1;
+                                        break;
+
+                                    case V:
+                                        return 10;
+                                        break;
+
+                                    case R:
+                                        return 2;
+                                        break;
+                                }
+                                break;
+
+                            case R:
+                                if(n2->at.m.classe == R)
+                                    return 10;
+                                return 1;
+                                break;
+                        }
+                    }
+                    break;
+
+                case Fim:
+                    return 1;
+                    break;
+            }
+            break;
+
+        case Fim:
+            switch(n2->tipo)
+            {
+                case Inicio:
+                    ERRO("REGRA APPLY SOMA| N1 E FIM N2 E INICIO");
+                    break;
+
+                case Meio:
+                    return 2;
+                    break;
+
+                case Fim:
+                    return 9;
+                    break;
+            }
+            break;
+    }
+    ERRO("REGRA APPLY SOMA| NAO ATIVOU NENHUMA REGRA");
+    return 0;
+}
+
+Short regra_apply_produto_matriz_matriz(apply *a)
+{
+    no *n1, *n2;
+    n1 = a->n1;
+    n2 = a->n2;
+
+    printf("\n\t\t\tApply: ");
+    mostra_apply_no(a);
+    switch(n1->tipo)
+    {
+        case Inicio:
+            if(n2->tipo != Inicio)
+                ERRO("REGRA APPLY PRODUTO MATRIZ MATRIZ| N1 E INICIO N2 NAO");
+
+            return 0;
+            break;
+
+        case Meio:
+            switch(n2->tipo)
+            {
+                case Inicio:
+                    ERRO("REGRA APPLY PRODUTO MATRIZ MATRIZ| N1 E MEIO N2 INICIO");
+                    break;
+
+                case Meio:
+                    if(n1->at.m.nivel < n2->at.m.nivel)
+                    {
+                        switch(n1->at.m.classe)
+                        {
+                            case V:
+                                ERRO("REGRA APPLY PRODUTO MATRIZ MATRIZ| N1 E VETOR 1");
+                                break;
+
+                            case R:
+                                return 1;
+                                break;
+
+                            case C:
+                                return 3;
+                                break;
+                        }
+                    }
+                    if(n1->at.m.nivel == n2->at.m.nivel)
+                    {
+                        switch(n1->at.m.classe)
+                        {
+                            case V:
+                                ERRO("REGRA APPLY PRODUTO MATRIZ MATRIZ| N1 E VETOR 2");
+                                break;
+
+                            case R:
+                                return 1;
+                                break;
+
+                            case C:
+                                switch(n2->at.m.classe)
+                                {
+                                    case V:
+                                        ERRO("REGRA APPLY PRODUTO MATRIZ MATRIZ| N2 E VETOR 1");
+                                        break;
+
+                                    case R:
+                                        return 5;
+                                        break;
+
+                                    case C:
+                                        return 3;
+                                        break;
+                                }
+                                break;
+                        }
+                    }
+                    if(n1->at.m.nivel > n2->at.m.nivel)
+                    {
+                        switch(n2->at.m.classe)
+                        {
+                            case V:
+                                ERRO("REGRA APPLY PRODUTO MATRIZ MATRIZ| N2 E VETOR 2");
+                                break;
+
+                            case R:
+                                return 4;
+                                break;
+
+                            case C:
+                                return 2;
+                                break;
+                        }
+                    }
                     break;
 
                 case Fim:
                     if(compara_no_fim_zero(n2,1))
-                        regra = 5;
+                    {
+                        return 8;
+                    }
                     else
-                        regra = 1;
+                    {
+                        switch(n1->at.m.classe)
+                        {
+                            case V:
+                                ERRO("REGRA APPLY PRODUTO MATRIZ MATRIZ| N1 E VETOR 3");
+                                break;
+
+                            case R:
+                                return 1;
+                                break;
+
+                            case C:
+                                return 3;
+                                break;
+                        }
+                    }
                     break;
 
             }
@@ -2772,104 +2619,126 @@ void monta_apply_produto_vetor_vetor(apply *a)
         case Fim:
             if(compara_no_fim_zero(n1,1))
             {
-                regra = 5;
+                return 8;
             }
             else
             {
                 switch(n2->tipo)
                 {
                     case Inicio:
-                        ERRO("MONTA APPLY PRODUTO VETOR VETOR| N1 E FIM N2 INICIO");
+                        ERRO("REGRA APPLY PRODUTO MATRIZ MATRIZ| N1 E FIM N2 INICIO");
                         break;
 
                     case Meio:
-                        regra = 2;
+                        switch(n2->at.m.classe)
+                        {
+                            case V:
+                                ERRO("REGRA APPLY PRODUTO MATRIZ MATRIZ| N2 E VETOR 3");
+                                break;
+
+                            case R:
+                                return 4;
+                                break;
+
+                            case C:
+                                return 2;
+                                break;
+                        }
                         break;
 
                     case Fim:
                         if(compara_no_fim_zero(n2,1))
-                            regra = 5;
+                            return 8;
                         else
-                            regra = 4;
+                            return 6;
                         break;
                 }
             }
             break;
     }
+    ERRO("REGRA APPLY PRODUTO MATRIZ MATRIZ| NAO ACIOONOU NENHUMA REGRA");
+    return 0;
+}
 
-    no *n;
-    apply *a1, *a2;
-    switch(regra)
+Short regra_apply_produto_vetor_vetor(apply *a)
+{
+    no *n1, *n2;
+    n1 = a->n1;
+    n2 = a->n2;
+
+    mostra_apply_no(a);
+
+    switch(n1->tipo)
     {
-        case 0:
-            n = cria_no_inicio();
-            a->n = n;
+        case Inicio:
+            if(n2->tipo != Inicio)
+                ERRO("REGRA APPLY PRODUTO VETOR VETOR| N1 E INICIO E N2 NAO");
 
-            a1 = cria_apply();
-            a1->n1 = n1->at.i.n;
-            a1->n2 = n2->at.i.n;
-
-            a->a1 = a1;
+            return 0;
             break;
 
-        case 1:
-            n = copia_no(n1);
-            a->n = n;
+        case Meio:
+            if(n1->at.m.classe != V)
+                ERRO("REGRA APPLY PRODUTO VETOR VETOR| Q1 NAO E VETOR");
 
-            a1 = cria_apply();
-            a1->n1 = n1->at.m.el;
-            a1->n2 = n2;
+            switch(n2->tipo)
+            {
+                case Inicio:
+                    ERRO("REGRA APPLY PRODUTO VETOR VETOR| N2 E MEIO N2 INICIO");
+                    break;
 
-            a2 = cria_apply();
-            a2->n1 = n1->at.m.th;
-            a2->n2 = n2;
+                case Meio:
+                    if(n1->at.m.classe != V)
+                        ERRO("REGRA APPLY PRODUTO VETOR VETOR| Q2 NAO E VETOR");
 
-            a->a1 = a1;
-            a->a2 = a2;
+                    if(n1->at.m.nivel < n2->at.m.nivel)
+                        return 1;
+                    if(n1->at.m.nivel == n2->at.m.nivel)
+                        return 3;
+                    if(n1->at.m.nivel > n2->at.m.nivel)
+                        return 2;
+                    break;
+
+                case Fim:
+                    if(compara_no_fim_zero(n2,1))
+                        return 5;
+                    else
+                        return 1;
+                    break;
+
+            }
             break;
 
-        case 2:
-            n = copia_no(n2);
-            a->n = n;
+        case Fim:
+            if(compara_no_fim_zero(n1,1))
+            {
+                return 5;
+            }
+            else
+            {
+                printf("\nn2: %d",n2);
+                switch(n2->tipo)
+                {
+                    case Inicio:
+                        ERRO("REGRA APPLY PRODUTO VETOR VETOR| N1 E FIM N2 INICIO");
+                        break;
 
-            a1 = cria_apply();
-            a1->n1 = n1;
-            a1->n2 = n2->at.m.el;
+                    case Meio:
+                        return 2;
+                        break;
 
-            a2 = cria_apply();
-            a2->n1 = n1;
-            a2->n2 = n2->at.m.th;
-
-            a->a1 = a1;
-            a->a2 = a2;
-            break;
-
-        case 3:
-            n = copia_no(n1);
-            a->n = n;
-
-            a1 = cria_apply();
-            a1->n1 = n1->at.m.el;
-            a1->n2 = n2->at.m.el;
-
-            a2 = cria_apply();
-            a2->n1 = n1->at.m.th;
-            a2->n2 = n2->at.m.th;
-
-            a->a1 = a1;
-            a->a2 = a2;
-            break;
-
-        case 4:
-            n = produto_no_conjugado_no(n1,n2);
-            a->n = n;
-            break;
-
-        case 5:
-            n = cria_no_fim(0,0);
-            a->n = n;
+                    case Fim:
+                        if(compara_no_fim_zero(n2,1))
+                            return 5;
+                        else
+                            return 4;
+                        break;
+                }
+            }
             break;
     }
+    ERRO("REGRA APPLY PRODUTO VETOR VETOR| NAO ACIONOU NENHUMA REGRA");
+    return 0;
 }
 
 
@@ -2879,21 +2748,21 @@ void monta_apply_produto_vetor_vetor(apply *a)
 no* apply_soma(no *n1, no *n2)
 {
     no *n;
-    n = apply_base(n1,n2,monta_apply_soma);
+    n = apply_base(n1,n2,regra_apply_soma);
     return n;
 }
 
 no* apply_produto_matriz_matriz(no *n1, no *n2)
 {
     no *n;
-    n = apply_base(n1,n2,monta_apply_produto_matriz_matriz);
+    n = apply_base(n1,n2,regra_apply_produto_matriz_matriz);
     return n;
 }
 
 no* apply_produto_vetor_vetor(no *n1, no *n2)
 {
     no *n;
-    n = apply_base(n1,n2,monta_apply_produto_vetor_vetor);
+    n = apply_base(n1,n2,regra_apply_produto_vetor_vetor);
     return n;
 }
 
