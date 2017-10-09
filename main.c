@@ -1657,7 +1657,7 @@ no* produto_no_no(no *n1, no *n2)
     return n;
 }
 
-no* produto_no_no_conjugado(no *n1, no *n2)
+no* produto_no_conjugado_no(no *n1, no *n2)
 {
     no *n;
     double re, im;
@@ -2139,35 +2139,36 @@ void reduz_QDD(QDD *Q, Short ex)
     }
 }
 
-no* reduz_arvore(no *n, Short ex)
+void reduz_arvore(no **n, Short ex)
 {
-    no *ni;
-    switch(n->tipo)
+    no *ni, *n0;
+    n0 = *n;
+    switch(n0->tipo)
     {
         case Inicio:
             ni = Qred->n;
 
-            Qred->n = n;
-            Qred->l = acha_lista_fim_arvore(n);
+            Qred->n = n0;
+            Qred->l = acha_lista_fim_arvore(n0);
             reduz_QDD(Qred,ex);
 
             Qred->n = ni;
             break;
 
         case Meio:
-            transfere_conexao(nzero,n);
+            transfere_conexao(nzero,n0);
 
-            conecta_UM(Qred->n,n,Inicio);
-            Qred->l = acha_lista_fim_arvore(n);
+            conecta_UM(Qred->n,n0,Inicio);
+            Qred->l = acha_lista_fim_arvore(n0);
             reduz_QDD(Qred,ex);
 
-            n = Qred->n->at.i.n;
+            n0 = Qred->n->at.i.n;
             desconecta_DOIS(Qred->n);
-            transfere_conexao(n,nzero);
+            transfere_conexao(n0,nzero);
             break;
     }
+    *n = n0;
     libera_lista_lista(Qred->l);
-    return n;
 }
 
 
@@ -2276,6 +2277,7 @@ no* apply_base(no *n1, no *n2, void monta_apply(apply *a))
 
     return n;
 }
+
 
 
 
@@ -2463,9 +2465,10 @@ void monta_apply_produto_matriz_matriz(apply *a)
     switch(n1->tipo)
     {
         case Inicio:
-            regra = 0;
             if(n2->tipo != Inicio)
                 ERRO("MONTA APPLY PRODUTO MATRIZ MATRIZ| N1 E INICIO N2 NAO");
+
+            regra = 0;
             break;
 
         case Meio:
@@ -2717,6 +2720,158 @@ void monta_apply_produto_matriz_matriz(apply *a)
     }
 }
 
+void monta_apply_produto_vetor_vetor(apply *a)
+{
+    no *n1, *n2;
+    n1 = a->n1;
+    n2 = a->n2;
+
+    Short regra;
+    regra = 0;
+    switch(n1->tipo)
+    {
+        case Inicio:
+            if(n2->tipo != Inicio)
+                ERRO("MONTA APPLY PRODUTO VETOR VETOR| N1 E INICIO E N2 NAO");
+
+            regra = 0;
+            break;
+
+        case Meio:
+            if(n1->at.m.classe != V)
+                ERRO("MONTA APPLY PRODUTO VETOR VETOR| Q1 NAO E VETOR");
+
+            switch(n2->tipo)
+            {
+                case Inicio:
+                    ERRO("MONTA APPLY PRODUTO VETOR VETOR| N2 E MEIO N2 INICIO");
+                    break;
+
+                case Meio:
+                    if(n1->at.m.classe != V)
+                        ERRO("MONTA APPLY PRODUTO VETOR VETOR| Q2 NAO E VETOR");
+
+                    if(n1->at.m.nivel < n2->at.m.nivel)
+                        regra = 1;
+                    if(n1->at.m.nivel == n2->at.m.nivel)
+                        regra = 3;
+                    if(n1->at.m.nivel > n2->at.m.nivel)
+                        regra = 2;
+                    break;
+
+                case Fim:
+                    if(compara_no_fim_zero(n2,1))
+                        regra = 5;
+                    else
+                        regra = 1;
+                    break;
+
+            }
+            break;
+
+        case Fim:
+            if(compara_no_fim_zero(n1,1))
+            {
+                regra = 5;
+            }
+            else
+            {
+                switch(n2->tipo)
+                {
+                    case Inicio:
+                        ERRO("MONTA APPLY PRODUTO VETOR VETOR| N1 E FIM N2 INICIO");
+                        break;
+
+                    case Meio:
+                        regra = 2;
+                        break;
+
+                    case Fim:
+                        if(compara_no_fim_zero(n2,1))
+                            regra = 5;
+                        else
+                            regra = 4;
+                        break;
+                }
+            }
+            break;
+    }
+
+    no *n;
+    apply *a1, *a2;
+    switch(regra)
+    {
+        case 0:
+            n = cria_no_inicio();
+            a->n = n;
+
+            a1 = cria_apply();
+            a1->n1 = n1->at.i.n;
+            a1->n2 = n2->at.i.n;
+
+            a->a1 = a1;
+            break;
+
+        case 1:
+            n = copia_no(n1);
+            a->n = n;
+
+            a1 = cria_apply();
+            a1->n1 = n1->at.m.el;
+            a1->n2 = n2;
+
+            a2 = cria_apply();
+            a2->n1 = n1->at.m.th;
+            a2->n2 = n2;
+
+            a->a1 = a1;
+            a->a2 = a2;
+            break;
+
+        case 2:
+            n = copia_no(n2);
+            a->n = n;
+
+            a1 = cria_apply();
+            a1->n1 = n1;
+            a1->n2 = n2->at.m.el;
+
+            a2 = cria_apply();
+            a2->n1 = n1;
+            a2->n2 = n2->at.m.th;
+
+            a->a1 = a1;
+            a->a2 = a2;
+            break;
+
+        case 3:
+            n = copia_no(n1);
+            a->n = n;
+
+            a1 = cria_apply();
+            a1->n1 = n1->at.m.el;
+            a1->n2 = n2->at.m.el;
+
+            a2 = cria_apply();
+            a2->n1 = n1->at.m.th;
+            a2->n2 = n2->at.m.th;
+
+            a->a1 = a1;
+            a->a2 = a2;
+            break;
+
+        case 4:
+            n = produto_no_conjugado_no(n1,n2);
+            a->n = n;
+            break;
+
+        case 5:
+            n = cria_no_fim(0,0);
+            a->n = n;
+            break;
+    }
+}
+
 
 
 /**  apply pronto  **/
@@ -2735,9 +2890,16 @@ no* apply_produto_matriz_matriz(no *n1, no *n2)
     return n;
 }
 
+no* apply_produto_vetor_vetor(no *n1, no *n2)
+{
+    no *n;
+    n = apply_base(n1,n2,monta_apply_produto_vetor_vetor);
+    return n;
+}
 
 
-/**  contrai  **/
+
+/**  produto QDD QDD  **/
 
 Short espalha(suporte *s, Short classe)
 {
@@ -2875,7 +3037,7 @@ void contrai_conta(conta *c)
     {
         n = cc->n;
         nc = apply_soma(n->at.m.el,n->at.m.th);
-        nc = reduz_arvore(nc,2);
+        reduz_arvore(&nc,2);
 
         transfere_conexao(nc,n);
         cc->n = nc;
@@ -2954,6 +3116,28 @@ void contrai(QDD *Q, Short classe)
     n = ci->n;
     produto_arvore_real(n,ex);
     libera_conta_no(ci);
+}
+
+QDD* produto_QDD_QDD(QDD *Q1, QDD *Q2, no* (*apply)(no *n1, no *n2), Short classe)
+{
+    if(Q1->nqbit != Q2->nqbit)
+        ERRO("PRODUTO QDD QDD| QDDs COM QUANTIDADES DIFERENTES DE QBITS");
+
+    no *n;
+    n = apply(Q1->n,Q2->n);
+
+    QDD *Q;
+    Q = cria_QDD(Q1->nqbit);
+    Q->n = n;
+    Q->l = acha_lista_fim_QDD(Q);
+    reduz_QDD(Q,2);
+
+    contrai(Q,classe);
+    libera_lista_lista(Q->l);
+    Q->l = acha_lista_fim_QDD(Q);
+    reduz_QDD(Q,1);
+
+    return Q;
 }
 
 
@@ -3073,24 +3257,21 @@ QDD* soma_QDD(QDD *Q1, QDD *Q2)
 
 QDD* produto_matriz_matriz(QDD *Q1, QDD *Q2)
 {
-    if(Q1->nqbit != Q2->nqbit)
-        ERRO("PRODUTO MATRIZ MATRIZ| QDDs COM QUANTIDADES DIFERENTES DE QBITS");
+    QDD *Q;
+    Q = produto_QDD_QDD(Q1,Q2,apply_produto_matriz_matriz,V);
+    return Q;
+}
+
+no* produto_vetor_vetor(QDD *Q1, QDD *Q2)
+{
+    QDD *Q;
+    Q = produto_QDD_QDD(Q1,Q2,apply_produto_vetor_vetor,V);
 
     no *n;
-    n = apply_produto_matriz_matriz(Q1->n,Q2->n);
+    n = copia_no(Q->l->n);
+    libera_QDD(Q);
 
-    QDD *Q;
-    Q = cria_QDD(Q1->nqbit);
-    Q->n = n;
-    Q->l = acha_lista_fim_QDD(Q);
-    reduz_QDD(Q,2);
-
-    contrai(Q,V);
-    libera_lista_lista(Q->l);
-    Q->l = acha_lista_fim_QDD(Q);
-    reduz_QDD(Q,1);
-
-    return Q;
+    return n;
 }
 
 
@@ -3391,12 +3572,14 @@ int main()
     inicia_structs_globais();
     /***********************************/
 
-    QDD *QS;
-    QS = S();
+    QDD *QV;
+    QV = le_vetor("V17.txt");
+    configuracao(QV->nqbit);
+    reduz_QDD(QV,1);
 
-    QDD *Q;
-    Q = produto_matriz_matriz(QS,QS);
-    mostra_QDD(Q);
+    no *n;
+    n = produto_vetor_vetor(QV,QV);
+    mostra_no(n);
 
     /***********************************/
     finaliza_structs_globais();
