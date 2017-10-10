@@ -89,6 +89,10 @@ struct suporte
     struct suporte *s;
 };
 
+struct complexo
+{
+    float re, im;
+};
 
 
 /** Typedefs e definitions  **/
@@ -100,6 +104,8 @@ typedef struct lista lista;
 typedef struct apply   apply;
 typedef struct conta   conta;
 typedef struct suporte suporte;
+
+typedef struct complexo complexo;
 
 typedef unsigned short Short;
 typedef unsigned long long Long;
@@ -333,6 +339,29 @@ suporte* cria_suporte(Short nivel)
 }
 
 
+complexo** cria_matriz_complexo(Short N)
+{
+    Long ex;
+    ex = pow(2,N);
+
+    complexo **m;
+    m = malloc(ex*sizeof(complexo*));
+    if(m == NULL)
+        ERRO("LE MATRIZ NORMAL| ALOCA M");
+    aumenta_memoria_fora(ex*sizeof(complexo*));
+
+    Long i;
+    for(i=0; i<ex; i++)
+    {
+        m[i] = malloc(ex*sizeof(complexo));
+        if(m[i] == NULL)
+            ERRO("LE MATRIZ NORMAL| ALOCA M[]");
+        aumenta_memoria_fora(ex*sizeof(complexo));
+    }
+    return m;
+}
+
+
 
 /** Destrutores  **/
 
@@ -466,6 +495,22 @@ void libera_suporte_lista(suporte *s)
         libera_suporte_no(s);
         s = sc;
     }
+}
+
+
+void libera_matriz_complexo(complexo **m, Short N)
+{
+    Long ex;
+    ex = pow(2,N);
+
+    Long i;
+    for(i=0; i<ex; i++)
+    {
+        free(m[i]);
+        diminui_memoria_fora(ex*sizeof(complexo));
+    }
+    free(m);
+    diminui_memoria_fora(ex*sizeof(complexo*));
 }
 
 
@@ -839,6 +884,19 @@ void mostra_matriz(double **m, Long r, Long c)
     }
 }
 
+void mostra_matriz_complexo(complexo **m, Short N)
+{
+    Long ex;
+    ex = pow(2,N);
+
+    Long i, j;
+    for(i=0; i<ex; i++)
+    {
+        printf("\n");
+        for(j=0; j<ex; j++)
+            printf("%f %f ",m[i][j].re,m[i][j].im);
+    }
+}
 
 
 /**  Fmostra  **/
@@ -1688,6 +1746,74 @@ void produto_arvore_real(no *n, double re)
 
 
 
+/** Operações algebricas com complexos  **/
+
+complexo zero()
+{
+    complexo c;
+    c.re = 0;
+    c.im = 0;
+    return c;
+}
+
+complexo soma_complexo(complexo c1, complexo c2)
+{
+    complexo c;
+    c.re = c1.re + c2.re;
+    c.im = c1.im + c2.im;
+    return c;
+}
+
+complexo produto_complexo_real(complexo c, float re)
+{
+    c.re *= re;
+    c.im *= re;
+    return c;
+}
+
+complexo produto_complexo_complexo(complexo c1, complexo c2)
+{
+    complexo c;
+    c.re = (c1.re)*(c2.re) - (c1.im)*(c2.im);
+    c.im = (c1.re)*(c2.im) + (c1.im)*(c2.re);
+    return c;
+}
+
+complexo produto_complexo_conjugado_complexo(complexo c1, complexo c2)
+{
+    complexo c;
+    c.re = (c1.re)*(c2.re) + (c1.im)*(c2.im);
+    c.im = (c1.re)*(c2.im) - (c1.im)*(c2.re);
+    return c;
+}
+
+complexo** produto_matriz_matriz_complexo(complexo **m1, complexo **m2, Short N)
+{
+    Long ex;
+    ex = pow(2,N);
+
+    complexo **m;
+    m = cria_matriz_complexo(N);
+
+    complexo c, cp;
+    Long i, j, k;
+    for(i=0; i<ex; i++)
+    {
+        for(j=0; j<ex; j++)
+        {
+            c = zero();
+            for(k=0; k<ex; k++)
+            {
+                cp = produto_complexo_complexo(m1[i][k],m2[k][j]);
+                c = soma_complexo(c,cp);
+            }
+            m[i][j] = c;
+        }
+    }
+    return m;
+}
+
+
 /**  Le txt  **/
 
 void completa_QDD_matriz(no *n, no ***nf, int r, int c, int exp)
@@ -1930,6 +2056,32 @@ QDD* le_vetor(char *nome)
     free(nm);
 
     return Q;
+}
+
+
+complexo** le_matriz_normal(char *nome)
+{
+    FILE *fp;
+    fp = fopen(nome,"r");
+
+    Short N;
+    Long ex;
+    fscanf(fp,"%hu",&N);
+    ex = pow(2,N);
+
+    complexo **m;
+    Long i, j;
+    m = cria_matriz_complexo(N);
+    for(i=0; i<ex; i++)
+    {
+
+        for(j=0; j<ex; j++)
+        {
+            fscanf(fp,"%f",&m[i][j].re);
+            fscanf(fp,"%f",&m[i][j].im);
+        }
+    }
+    return m;
 }
 
 
@@ -2284,6 +2436,11 @@ void monta_apply(apply *a, Short regra)
         case 10:
             n = copia_no(n1);
             avanco = 3;
+            break;
+
+        case 11:
+            n = cria_no_meio(C,n2->at.m.nivel);
+            avanco = 2;
             break;
 
         default:
@@ -2652,6 +2809,132 @@ Short regra_apply_produto_matriz_matriz(apply *a)
     return 0;
 }
 
+Short regra_apply_produto_matriz_vetor(apply *a)
+{
+    no *n1, *n2;
+    n1 = a->n1;
+    n2 = a->n2;
+
+    switch(n1->tipo)
+    {
+        case Inicio:
+            if(n2->tipo != Inicio)
+                ERRO("REGRA APPLY PRODUTO MATRIZ VETOR| N1 E INICIO N2 NAO");
+
+            return 0;
+            break;
+
+        case Meio:
+            switch(n2->tipo)
+            {
+                case Inicio:
+                    ERRO("REGRA APPLY PRODUTO MATRIZ VETOR| N1 E MEIO N2 E INICIO");
+                    break;
+
+                case Meio:
+                    if(n2->at.m.classe != V)
+                        ERRO("REGRA APPLY PRODUTO MATRIZ VETOR| N2 TEM R OU C 1");
+
+                    if(n1->at.m.nivel < n2->at.m.nivel)
+                    {
+                        switch(n1->at.m.classe)
+                        {
+                                case V:
+                                    ERRO("REGRA APPLY PRODUTO MATRIZ VETOR| N1 TEM V 1");
+                                    break;
+
+                                case C:
+                                    return 1;
+                                    break;
+
+                                case R:
+                                    return 3;
+                                    break;
+                        }
+                    }
+                    if(n1->at.m.nivel == n2->at.m.nivel)
+                    {
+                        switch(n1->at.m.classe)
+                        {
+                                case V:
+                                    ERRO("REGRA APPLY PRODUTO MATRIZ VETOR| N1 TEM V 2");
+                                    break;
+
+                                case C:
+                                    return 10;
+                                    break;
+
+                                case R:
+                                    return 3;
+                                    break;
+                        }
+                    }
+                    if(n1->at.m.nivel > n2->at.m.nivel)
+                    {
+                        return 11;
+                    }
+                    break;
+
+                case Fim:
+                    if(compara_no_fim_zero(n2,1))
+                    {
+                        return 8;
+                    }
+                    else
+                    {
+                        switch(n1->at.m.classe)
+                        {
+                            case V:
+                                ERRO("REGRA APPLY PRODUTO MATRIZ VETOR| N1 TEM V 3");
+                                break;
+
+                            case C:
+                                return 1;
+                                break;
+
+                            case R:
+                                return 3;
+                                break;
+                        }
+                    }
+                    break;
+            }
+            break;
+
+        case Fim:
+            if(compara_no_fim_zero(n1,1))
+            {
+                return 8;
+            }
+            else
+            {
+                switch(n2->tipo)
+                {
+                    case Inicio:
+                        ERRO("REGRA APPLY PRODUTO MATRIZ VETOR| N1 E FIM N2 E INICIO");
+                        break;
+
+                    case Meio:
+                        if(n2->at.m.classe != V)
+                            ERRO("REGRA APPLY PRODUTO MATRIZ VETOR| N2 TEM R OU C 2");
+
+                        return 11;
+                        break;
+
+                    case Fim:
+                        if(compara_no_fim_zero(n2,1))
+                            return 8;
+                        else
+                            return 6;
+                        break;
+                }
+            }
+            break;
+    }
+    ERRO("REGRA APPLY PRODUTO MATRIZ VETOR| NAO ATIVOU NENHUMA REGRA");
+    return 0;
+}
+
 Short regra_apply_produto_vetor_vetor(apply *a)
 {
     no *n1, *n2;
@@ -2745,6 +3028,13 @@ no* apply_produto_matriz_matriz(no *n1, no *n2)
 {
     no *n;
     n = apply_base(n1,n2,regra_apply_produto_matriz_matriz);
+    return n;
+}
+
+no *apply_produto_matriz_vetor(no *n1, no *n2)
+{
+    no *n;
+    n = apply_base(n1,n2,regra_apply_produto_matriz_vetor);
     return n;
 }
 
@@ -2939,7 +3229,10 @@ void contrai(QDD *Q, Short classe)
                 break;
         }
         if(inicio)
+        {
             ci = s->c[C];
+            break;
+        }
 
         if(classe == V)
             contrai_conta(s->c[V]);
@@ -2950,7 +3243,10 @@ void contrai(QDD *Q, Short classe)
                 break;
         }
         if(inicio)
+        {
             ci = s->c[V];
+            break;
+        }
 
         if(classe == R)
             contrai_conta(s->c[R]);
@@ -2961,7 +3257,10 @@ void contrai(QDD *Q, Short classe)
                 break;
         }
         if(inicio)
+        {
             ci = s->c[R];
+            break;
+        }
 
         saux = s->s;
         libera_suporte_no(s);
@@ -3120,6 +3419,13 @@ QDD* produto_matriz_matriz(QDD *Q1, QDD *Q2)
     return Q;
 }
 
+QDD* produto_matriz_vetor(QDD *Q1, QDD *Q2)
+{
+    QDD *Q;
+    Q = produto_QDD_QDD(Q1,Q2,apply_produto_matriz_vetor,C);
+    return Q;
+}
+
 no* produto_vetor_vetor(QDD *Q1, QDD *Q2)
 {
     QDD *Q;
@@ -3134,7 +3440,20 @@ no* produto_vetor_vetor(QDD *Q1, QDD *Q2)
 
 
 
-/**  Blocos usuais  **/
+/**  QDDs usuais  **/
+
+lista* lista_fim_2(no *nf1, no *nf2)
+{
+    lista *l1, *l2;
+    l1 = cria_lista();
+    l2 = cria_lista();
+
+    l1->l = l2;
+    l1->n = nf1;
+    l2->n = nf2;
+
+    return l1;
+}
 
 QDD* matriz_cruzada(no *nf1, no *nf2)
 {
@@ -3149,18 +3468,10 @@ QDD* matriz_cruzada(no *nf1, no *nf2)
     conecta_DOIS(n2,nf1,nf2);
     conecta_DOIS(n3,nf2,nf1);
 
-    lista *l1, *l2;
-    l1 = cria_lista();
-    l2 = cria_lista();
-
-    l1->l = l2;
-    l1->n = nf1;
-    l2->n = nf2;
-
     QDD *Q;
     Q = cria_QDD(1);
     Q->n = ni;
-    Q->l = l1;
+    Q->l = lista_fim_2(nf1,nf2);
     return Q;
 }
 
@@ -3199,42 +3510,33 @@ QDD* S()
 
 QDD* H()
 {
-    no *ni, *n1, *n2, *n3;
-
+    no *ni, *n1, *n2;
     ni = cria_no_inicio();
     n1 = cria_no_meio(R,0);
-    conecta_UM(ni,n1,Inicio);
+    n2 = cria_no_meio(C,0);
 
+    no *nf1, *nf2;
     double re;
     re = pow(2,-0.5);
-    n2 = cria_no_fim(re,0);
-    n3 = cria_no_meio(C,0);
-    conecta_DOIS(n1,n2,n3);
+    nf1 = cria_no_fim( re,0);
+    nf2 = cria_no_fim(-re,0);
 
-    n1 = n3;
-    n3 = cria_no_fim(-re,0);
-    conecta_DOIS(n1,n2,n3);
-
-    lista *l1, *l2;
-    l1 = cria_lista();
-    l2 = cria_lista();
-
-    l1->n = n2;
-    l1->l = l2;
-    l2->n = n3;
+    conecta_UM(ni,n1,Inicio);
+    conecta_DOIS(n1,nf1,n2);
+    conecta_DOIS(n2,nf1,nf2);
 
     QDD *Q;
     Q = cria_QDD(1);
     Q->n = ni;
-    Q->l = l1;
+    Q->l = lista_fim_2(nf1,nf2);
 
     return Q;
 }
 
 QDD* Ro(double theta)
 {
-    if(theta <  1.0/20)
-    if(theta > -1.0/20)
+    if(theta <  eps)
+    if(theta > -eps)
         return I();
 
     no *ni, *n1, *n2, *n3, *n4, *n5;
@@ -3273,6 +3575,64 @@ QDD* Ro(double theta)
     Q = cria_QDD(1);
     Q->n = ni;
     Q->l = l1;
+
+    return Q;
+}
+
+QDD* BASE(Short N, Long n)
+{
+    no *ni, *n1, *n2, *nf0, *nf1;
+    ni = cria_no_inicio();
+    nf0 = cria_no_fim(0,0);
+    nf1 = cria_no_fim(1,0);
+
+    n1 = cria_no_meio(V,0);
+    conecta_UM(ni,n1,Inicio);
+
+    Short i;
+    Long ex;
+    ex = pow(2,N-1);
+    for(i = 1; i < N; i++)
+    {
+        n2 = cria_no_meio(V,i);
+        if(n < ex)
+            conecta_DOIS(n1,n2,nf0);
+        else
+            conecta_DOIS(n1,nf0,n2);
+
+        n1 = n2;
+        ex /= 2;
+    }
+    if(n == 0)
+        conecta_DOIS(n1,nf1,nf0);
+    else
+        conecta_DOIS(n1,nf0,nf1);
+
+    QDD *Q;
+    Q = cria_QDD(N);
+    Q->n = ni;
+    Q->l = lista_fim_2(nf0,nf1);
+    return Q;
+}
+
+QDD* W(Short N)
+{
+    no *ni;
+    ni = cria_no_inicio();
+
+    no *nf;
+    float re;
+    re = pow(2,-0.5*N);
+    nf = cria_no_fim(re,0);
+
+    lista *l;
+    l = cria_lista();
+    l->n = nf;
+
+    QDD *Q;
+    Q = cria_QDD(N);
+    Q->n = ni;
+    Q->l = l;
 
     return Q;
 }
@@ -3403,7 +3763,7 @@ void teste_longo()
 {
     teste_velocidade_matriz("H",11,11,10,2);
     teste_velocidade_matriz("I",11,11,10,2);
-    teste_velocidade_matriz("QFT",12,13,10,2);
+    teste_velocidade_matriz("QFT",12,12,10,2);
     teste_velocidade_vetor("V",24,24,10,2);
 }
 
@@ -3423,6 +3783,7 @@ Short teste_memoria()
 
 
 
+
 int main()
 {
     inicia_relatorio_memoria(0);
@@ -3430,9 +3791,47 @@ int main()
     inicia_structs_globais();
     /***********************************/
 
+    /*Short N = 100000;
+    time_t antes, depois;
+    float tempo;
+
+    QDD *QH, *QT;
+    QH = H();
+    QT = potencia_tensorial(QH,N);
+    libera_QDD(QH);
+
+    QDD *Q;
+
+    antes = clock();
+    Q = produto_matriz_matriz(QT,QT);
+    depois = clock();
+    libera_QDD(QT);
+    libera_QDD(Q);
+
+    tempo = (float)(depois-antes)/(CLOCKS_PER_SEC);
+    printf("\n%.3f\n",tempo);*/
+
+    printf("%d",sizeof(Long));
+
+
+    /*complexo **m;
+    m = le_matriz_normal("H12.txt");
+
+    complexo **m1;
+
+    antes = clock();
+    m1 = produto_matriz_matriz_complexo(m,m,N);
+    depois = clock();
+
+    libera_matriz_complexo(m,N);
+    libera_matriz_complexo(m1,N);
+
+    tempo = (float)(depois-antes)/(CLOCKS_PER_SEC);
+    printf("\n%.3f",tempo);*/
 
     /***********************************/
     finaliza_structs_globais();
+    mostra_quantidades();
     finaliza_relatorio_memoria();
     return 0;
 }
