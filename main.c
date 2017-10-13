@@ -3675,73 +3675,73 @@ void imprime_lf_csv(FILE *fp, double numero, Short precisao)
     }
 }
 
-float teste_velocidade_unico(QDD *Q0, FILE *fp, Short primeiro)
+double teste_velocidade_unico(QDD *Q0, FILE *fp, Short primeiro)
 {
+
     QDD *Q1;
     Q1 = copia_QDD(Q0);
 
-    time_t antes, depois, clk;
-    float tempo;
-    clk = CLOCKS_PER_SEC;
+    time_t antes, depois, delta;
+    double tempo, precisao, clk;
+    clk = (double)CLOCKS_PER_SEC;
 
     antes = clock();
-    reduz_QDD(Q1,1);
+    reduz_QDD(Q0,1);
     depois = clock();
-    tempo = (float)(depois-antes)/(clk);
 
-    float precisao;
-    Short casas;
-    precisao = (float)1/(clk);
-    casas = ceil(log10(clk));
-    //printf("\n%d",clk);
+    delta = depois - antes;
+    tempo = (double)delta/clk;
+    precisao = 1/clk;
 
     if(primeiro)
     {
-        printf("\n");
         mostra_quantidades();
         fprintf(fp,"%llu|%llu|%llu|%llu|",mem,iM,iF,iL);
-        printf("\nTempo  1:");
+        printf("\ntempo   1:");
     }
     libera_QDD(Q1);
 
-    if(tempo>2*precisao)
+    if(tempo > 10*precisao)
     {
-        printf("\nAQUI");
-        printf(" %.*f",casas,tempo);
-        imprime_lf_csv(fp,tempo,casas);
-        fprintf(fp,"|");
+        printf(" %.3E",tempo);
+        fprintf(fp,"=%E|",tempo);
         return precisao;
     }
 
     QDD **Q;
-    Short quantidade;
-    quantidade = 10;
-    Q = malloc(quantidade *sizeof(QDD*));
-    if(Q == NULL)
-        ERRO("TESTE VELOCIDADE UNICO| ALOCA Q");
-    aumenta_memoria_fora(quantidade*sizeof(QDD*));
+    Long quantidade, i;
+    quantidade = 1;
 
-    Short i;
-    for(i=0; i<quantidade; i++)
-        Q[i] = copia_QDD(Q0);
+    while(tempo < 10*precisao)
+    {
+        quantidade *= 10;
+        precisao /= 10;
 
-    antes = clock();
-    for(i=0; i<quantidade; i++)
-        reduz_QDD(Q[i],1);
-    depois = clock();
-    tempo = (float)(depois-antes)/(clk);
-    tempo /= quantidade;
+        Q = malloc(quantidade*sizeof(QDD*));
+        if(Q == NULL)
+            ERRO("TESTE VELOCIDADE UNICO| ALLOCAR Q");
+        aumenta_memoria_fora(quantidade*sizeof(QDD*));
 
+        for(i=0; i<quantidade; i++)
+            Q[i] = copia_QDD(Q0);
 
-    for(i=0; i<quantidade; i++)
-        libera_QDD(Q[i]);
-    diminui_memoria_fora(quantidade*sizeof(QDD*));
-    free(Q);
+        antes = clock();
+        for(i=0; i<quantidade; i++)
+            reduz_QDD(Q[i],1);
+        depois = clock();
 
-    precisao = (float)1/(quantidade*clk);
-    casas = ceil(log10(quantidade*clk));
-    imprime_lf_csv(fp,tempo,casas);
-    fprintf(fp,"|");
+        delta = depois-antes;
+        tempo = (double)delta/CLOCKS_PER_SEC;
+        tempo /= quantidade;
+
+        for(i=0; i<quantidade; i++)
+            libera_QDD(Q[i]);
+        diminui_memoria_fora(quantidade*sizeof(QDD*));
+        free(Q);
+    }
+
+    printf(" %.3E",tempo);
+    fprintf(fp,"=%E|",tempo);
     return precisao;
 }
 
@@ -3778,13 +3778,13 @@ void teste_velocidade_base(char *nomeI, Short limiteinf, Short limitesup, Short 
         precisao = teste_velocidade_unico(Q,fp,1);
         for(j=2; j<=amostras; j++)
         {
-            printf("\nTempo %2d:",j);
-            teste_velocidade_unico(Q,fp,0);
+            printf("\nTempo %3d:",j);
+            precisao = teste_velocidade_unico(Q,fp,0);
         }
 
         libera_QDD(Q);
-        imprime_lf_csv(fp,precisao,4);
-        printf("\n");
+        fprintf(fp,"=%E\n",precisao);
+        printf("\n\nPrecisao: %.3e\n\n",precisao);
     }
 }
 
@@ -3838,8 +3838,7 @@ int main()
     inicia_structs_globais();
     /***********************************/
 
-    teste_velocidade_matriz("H",1,2,10,1);
-    teste_memoria();
+    teste_velocidade_matriz("H",1,9,10,1);
 
     /***********************************/
     finaliza_structs_globais();
