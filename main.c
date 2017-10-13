@@ -3675,23 +3675,94 @@ void imprime_lf_csv(FILE *fp, double numero, Short precisao)
     }
 }
 
-void teste_velocidade_base(char *nomeI, Short limiteinf, Short limitesup, Short quantidade, Short arquivo, QDD* (*func)(char*))
+float teste_velocidade_unico(QDD *Q0, FILE *fp, Short primeiro)
+{
+    QDD *Q1;
+    Q1 = copia_QDD(Q0);
+
+    time_t antes, depois, clk;
+    float tempo;
+    clk = CLOCKS_PER_SEC;
+
+    antes = clock();
+    reduz_QDD(Q1,1);
+    depois = clock();
+    tempo = (float)(depois-antes)/(clk);
+
+    float precisao;
+    Short casas;
+    precisao = (float)1/(clk);
+    casas = ceil(log10(clk));
+    //printf("\n%d",clk);
+
+    if(primeiro)
+    {
+        printf("\n");
+        mostra_quantidades();
+        fprintf(fp,"%llu|%llu|%llu|%llu|",mem,iM,iF,iL);
+        printf("\nTempo  1:");
+    }
+    libera_QDD(Q1);
+
+    if(tempo>2*precisao)
+    {
+        printf("\nAQUI");
+        printf(" %.*f",casas,tempo);
+        imprime_lf_csv(fp,tempo,casas);
+        fprintf(fp,"|");
+        return precisao;
+    }
+
+    QDD **Q;
+    Short quantidade;
+    quantidade = 10;
+    Q = malloc(quantidade *sizeof(QDD*));
+    if(Q == NULL)
+        ERRO("TESTE VELOCIDADE UNICO| ALOCA Q");
+    aumenta_memoria_fora(quantidade*sizeof(QDD*));
+
+    Short i;
+    for(i=0; i<quantidade; i++)
+        Q[i] = copia_QDD(Q0);
+
+    antes = clock();
+    for(i=0; i<quantidade; i++)
+        reduz_QDD(Q[i],1);
+    depois = clock();
+    tempo = (float)(depois-antes)/(clk);
+    tempo /= quantidade;
+
+
+    for(i=0; i<quantidade; i++)
+        libera_QDD(Q[i]);
+    diminui_memoria_fora(quantidade*sizeof(QDD*));
+    free(Q);
+
+    precisao = (float)1/(quantidade*clk);
+    casas = ceil(log10(quantidade*clk));
+    imprime_lf_csv(fp,tempo,casas);
+    fprintf(fp,"|");
+    return precisao;
+}
+
+void teste_velocidade_base(char *nomeI, Short limiteinf, Short limitesup, Short amostras, Short arquivo, QDD* (*func)(char*))
 {
     FILE *fp;
-    int i;
+    Short i;
     char s[30];
+    s[0] = '\0';
     sprintf(s,"RelatorioVelocidade%s%d.csv",nomeI,arquivo);
     fp = fopen(s,"w");
     fprintf(fp,"sep=|\n");
     fprintf(fp,"|mem|iM|iF|iL|mem|iM|iF|iL");
-    for(i=1; i<=quantidade; i++)
-        fprintf(fp,"|%d",i);
-    fprintf(fp,"\n");
+    for(i=1; i<=amostras; i++)
+        fprintf(fp,"|%hu",i);
+    fprintf(fp,"|implicita\n");
 
-    int j;
-    double total;
+    QDD *Q;
+    Short j;
+    float precisao;
     char nome[10];
-    time_t antes, depois;
     for(i=limiteinf; i<=limitesup; i++)
     {
         nome[0] = '\0';
@@ -3700,55 +3771,31 @@ void teste_velocidade_base(char *nomeI, Short limiteinf, Short limitesup, Short 
         printf("\n\n\nTestando: %s",nome);
         configuracao(i);
 
-        QDD *Q;
         Q = func(nome);
         mostra_quantidades();
-        fprintf(fp,"%d|%llu|%llu|%llu|%llu|",i,mem,iM,iF,iL);
+        fprintf(fp,"%hu|%llu|%llu|%llu|%llu|",i,mem,iM,iF,iL);
 
-        antes = clock();
-        reduz_QDD(Q,1);
-        depois = clock();
-
-        printf("\n");
-        mostra_quantidades();
-        fprintf(fp,"%llu|%llu|%llu|%llu|",mem,iM,iF,iL);
-        printf("\n");
-        libera_QDD(Q);
-
-        printf("\nTeste 1: ");
-        total = (double)(depois-antes)/CLOCKS_PER_SEC;
-        imprime_lf_csv(fp,total,3);
-        fprintf(fp,"|");
-        printf("%.3f",total);
-
-        for(j=2; j<=quantidade; j++)
+        precisao = teste_velocidade_unico(Q,fp,1);
+        for(j=2; j<=amostras; j++)
         {
-            printf("\nTeste %d: ",j);
-
-            Q = func(nome);
-            antes = clock();
-            reduz_QDD(Q,1);
-            depois = clock();
-            libera_QDD(Q);
-
-            total = (double)(depois-antes)/CLOCKS_PER_SEC;
-            imprime_lf_csv(fp,total,3);
-            fprintf(fp,"|");
-            printf("%.3f",total);
+            printf("\nTempo %2d:",j);
+            teste_velocidade_unico(Q,fp,0);
         }
-        fprintf(fp,"\n");
+
+        libera_QDD(Q);
+        imprime_lf_csv(fp,precisao,4);
+        printf("\n");
     }
-    fclose(fp);
 }
 
-void teste_velocidade_matriz(char *nomeI, Short limiteinf, Short limitesup, Short quantidade, Short arquivo)
+void teste_velocidade_matriz(char *nomeI, Short limiteinf, Short limitesup, Short amostras, Short arquivo)
 {
-    teste_velocidade_base(nomeI,limiteinf,limitesup,quantidade,arquivo,le_matriz);
+    teste_velocidade_base(nomeI,limiteinf,limitesup,amostras,arquivo,le_matriz);
 }
 
-void teste_velocidade_vetor(char *nomeI, Short limiteinf, Short limitesup, Short quantidade, Short arquivo)
+void teste_velocidade_vetor(char *nomeI, Short limiteinf, Short limitesup, Short amostras, Short arquivo)
 {
-    teste_velocidade_base(nomeI,limiteinf,limitesup,quantidade,arquivo,le_vetor);
+    teste_velocidade_base(nomeI,limiteinf,limitesup,amostras,arquivo,le_vetor);
 }
 
 void teste_curto()
@@ -3791,47 +3838,11 @@ int main()
     inicia_structs_globais();
     /***********************************/
 
-    /*Short N = 100000;
-    time_t antes, depois;
-    float tempo;
-
-    QDD *QH, *QT;
-    QH = H();
-    QT = potencia_tensorial(QH,N);
-    libera_QDD(QH);
-
-    QDD *Q;
-
-    antes = clock();
-    Q = produto_matriz_matriz(QT,QT);
-    depois = clock();
-    libera_QDD(QT);
-    libera_QDD(Q);
-
-    tempo = (float)(depois-antes)/(CLOCKS_PER_SEC);
-    printf("\n%.3f\n",tempo);*/
-
-    printf("%d",sizeof(Long));
-
-
-    /*complexo **m;
-    m = le_matriz_normal("H12.txt");
-
-    complexo **m1;
-
-    antes = clock();
-    m1 = produto_matriz_matriz_complexo(m,m,N);
-    depois = clock();
-
-    libera_matriz_complexo(m,N);
-    libera_matriz_complexo(m1,N);
-
-    tempo = (float)(depois-antes)/(CLOCKS_PER_SEC);
-    printf("\n%.3f",tempo);*/
+    teste_velocidade_matriz("H",1,2,10,1);
+    teste_memoria();
 
     /***********************************/
     finaliza_structs_globais();
-    mostra_quantidades();
     finaliza_relatorio_memoria();
     return 0;
 }
