@@ -3686,7 +3686,7 @@ double teste_velocidade_unico(QDD *Q0, FILE *fp, Short primeiro)
     clk = (double)CLOCKS_PER_SEC;
 
     antes = clock();
-    reduz_QDD(Q0,1);
+    reduz_QDD(Q1,1);
     depois = clock();
 
     delta = depois - antes;
@@ -3779,7 +3779,7 @@ void teste_velocidade_base(char *nomeI, Short limiteinf, Short limitesup, Short 
         for(j=2; j<=amostras; j++)
         {
             printf("\nTempo %3d:",j);
-            precisao = teste_velocidade_unico(Q,fp,0);
+            teste_velocidade_unico(Q,fp,0);
         }
 
         libera_QDD(Q);
@@ -3838,7 +3838,7 @@ int main()
     inicia_structs_globais();
     /***********************************/
 
-    teste_velocidade_matriz("H",1,9,10,1);
+    teste_velocidade_matriz("H",8,8,2,2);
 
     /***********************************/
     finaliza_structs_globais();
