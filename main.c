@@ -3675,11 +3675,16 @@ void imprime_lf_csv(FILE *fp, double numero, Short precisao)
     }
 }
 
-double teste_velocidade_unico(QDD *Q0, FILE *fp, Short primeiro)
+double teste_velocidade_unico(char *nome, QDD* (*le)(char*), FILE *fp, Short primeiro)
 {
-
     QDD *Q1;
-    Q1 = copia_QDD(Q0);
+    Q1 = le(nome);
+
+    if(primeiro)
+    {
+        mostra_quantidades();
+        fprintf(fp,"%llu|%llu|%llu|%llu|",mem,iM,iF,iL);
+    }
 
     time_t antes, depois, delta;
     double tempo, precisao, clk;
@@ -3723,7 +3728,7 @@ double teste_velocidade_unico(QDD *Q0, FILE *fp, Short primeiro)
         aumenta_memoria_fora(quantidade*sizeof(QDD*));
 
         for(i=0; i<quantidade; i++)
-            Q[i] = copia_QDD(Q0);
+            Q[i] = le(nome);
 
         antes = clock();
         for(i=0; i<quantidade; i++)
@@ -3745,7 +3750,7 @@ double teste_velocidade_unico(QDD *Q0, FILE *fp, Short primeiro)
     return precisao;
 }
 
-void teste_velocidade_base(char *nomeI, Short limiteinf, Short limitesup, Short amostras, Short arquivo, QDD* (*func)(char*))
+void teste_velocidade_base(char *nomeI, Short limiteinf, Short limitesup, Short amostras, Short arquivo, QDD* (*le)(char*))
 {
     FILE *fp;
     Short i;
@@ -3759,7 +3764,6 @@ void teste_velocidade_base(char *nomeI, Short limiteinf, Short limitesup, Short 
         fprintf(fp,"|%hu",i);
     fprintf(fp,"|implicita\n");
 
-    QDD *Q;
     Short j;
     float precisao;
     char nome[10];
@@ -3770,19 +3774,15 @@ void teste_velocidade_base(char *nomeI, Short limiteinf, Short limitesup, Short 
         sprintf(nome,"%s%d.txt",nomeI,i);
         printf("\n\n\nTestando: %s",nome);
         configuracao(i);
+        fprintf(fp,"%hu|",i);
 
-        Q = func(nome);
-        mostra_quantidades();
-        fprintf(fp,"%hu|%llu|%llu|%llu|%llu|",i,mem,iM,iF,iL);
-
-        precisao = teste_velocidade_unico(Q,fp,1);
+        precisao = teste_velocidade_unico(nome,le,fp,1);
         for(j=2; j<=amostras; j++)
         {
             printf("\nTempo %3d:",j);
-            teste_velocidade_unico(Q,fp,0);
+            teste_velocidade_unico(nome,le,fp,0);
         }
 
-        libera_QDD(Q);
         fprintf(fp,"=%E\n",precisao);
         printf("\n\nPrecisao: %.3e\n\n",precisao);
     }
@@ -3838,7 +3838,7 @@ int main()
     inicia_structs_globais();
     /***********************************/
 
-    teste_velocidade_matriz("H",8,8,2,2);
+    teste_velocidade_matriz("H",1,9,10,2);
 
     /***********************************/
     finaliza_structs_globais();
