@@ -1,12 +1,37 @@
 #include<stdio.h>
 #include<stdlib.h>
 #include<math.h>
+#include <locale.h>
 
-int main()
+void H(int N)
 {
-    FILE *fp;
+    FILE *fp, *fp1;
+    if(N == 1)
+    {
+        fp = fopen("H.txt","w");
+        fp1 = fopen("H1.txt","w");
+        fprintf(fp,"1\n");
+        fprintf(fp1,"1\n");
+
+        float r;
+        r = pow(2,-0.5);
+        fprintf(fp,"%f 0 %f 0\n",r,r);
+        fprintf(fp,"%f 0 %f 0",r,-r);
+        fclose(fp);
+        fprintf(fp1,"%f 0 %f 0\n",r,r);
+        fprintf(fp1,"%f 0 %f 0",r,-r);
+        fclose(fp1);
+        return;
+    }
+
     fp = fopen("H.txt","r");
-    int N, e;
+    if(fp == NULL)
+    {
+        printf("\n\nERRO| NAO ABRIU H.TXT");
+        exit(EXIT_FAILURE);
+    }
+
+    int e;
     fscanf(fp,"%d",&N);
     e = (int)pow(2,N);
 
@@ -32,15 +57,39 @@ int main()
     }
     fclose(fp);
 
+
+    char nome[20];
+    nome[0] = '\0';
+    sprintf(nome,"H%d.txt",N+1);
+
     fp = fopen("H.txt","w");
+    fp1 = fopen(nome,"w");
     fprintf(fp,"%d\n",N+1);
+    fprintf(fp1,"%d\n",N+1);
     for(i=0; i<2*e; i++)
     {
         for(j=0; j<4*e; j++)
+        {
             fprintf(fp,"%f ",m[i][j]);
+            fprintf(fp1,"%f ",m[i][j]);
+        }
         fprintf(fp,"\n");
+        fprintf(fp1,"\n");
     }
     fclose(fp);
+}
+
+int main()
+{
+    setlocale(LC_ALL, "Portuguese");
+
+    int N;
+    printf("N: ");
+    scanf("%d",&N);
+
+    int i;
+    for(i=1; i<=N; i++)
+        H(i);
 
     return 0;
 }

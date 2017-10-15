@@ -1,12 +1,11 @@
 #include<stdio.h>
 #include<stdlib.h>
 #include<math.h>
+#include <locale.h>
 
-int main()
+void QFT(int N)
 {
-    int N;
-    printf("N: ");
-    scanf("%d",&N);
+    setlocale(LC_ALL, "Portuguese");
 
     int e;
     e = (int)pow(2,N);
@@ -33,6 +32,29 @@ int main()
         }
         fprintf(fp,"\n");
     }
+}
+
+int main()
+{
+    int p;
+    printf("0- Unico\n1- todos\n\np: ");
+    scanf("%d",&p);
+
+    int N;
+    printf("N: ");
+    scanf("%d",&N);
+
+    int i;
+    if(p == 0)
+    {
+        QFT(N);
+    }
+    if(p == 1)
+    {
+        for(i=1; i<=N; i++)
+            QFT(i);
+    }
+
 
     return 0;
 }

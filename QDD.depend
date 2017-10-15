@@ -1,17 +1,10 @@
 # depslib dependency file v1.0
-1507664769 source:c:\users\renan_000\documents\github\qdd\main.c
+1508029470 source:c:\users\renan\documents\github\qdd\main.c
 	<stdio.h>
 	<stdlib.h>
 	<math.h>
 	<time.h>
 	<string.h>
 	<limits.h>
-
-1507944715 source:c:\users\renan\documents\github\qdd\main.c
-	<stdio.h>
-	<stdlib.h>
-	<math.h>
-	<time.h>
-	<string.h>
-	<limits.h>
+	<locale.h>
 

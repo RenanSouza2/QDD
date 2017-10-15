@@ -4,6 +4,7 @@
 #include<time.h>
 #include<string.h>
 #include<limits.h>
+#include <locale.h>
 
 #define Inicio 0
 #define Meio 1
@@ -873,6 +874,15 @@ void mostra_tamanhos()
     printf("\n");
 }
 
+void mostra_configuracao()
+{
+    printf("\nConfiguracao: ");
+    printf("\nNqbit: %hu",Nqbit);
+    printf("\nMax: %lld",MAX);
+    printf("\neps: %.3e",eps);
+}
+
+
 void mostra_matriz(double **m, Long r, Long c)
 {
     Long i, j;
@@ -897,6 +907,7 @@ void mostra_matriz_complexo(complexo **m, Short N)
             printf("%f %f ",m[i][j].re,m[i][j].im);
     }
 }
+
 
 
 /**  Fmostra  **/
@@ -1172,6 +1183,14 @@ void fmostra_tamanhos(FILE *fp)
     fprintf(fp,"\nc:   %d",sizeof(conta));
     fprintf(fp,"\ns:   %d",sizeof(suporte));
     fprintf(fp,"\n");
+}
+
+void fmostra_configuracao(FILE *fp)
+{
+    fprintf(fp,"\nConfiguracao: ");
+    fprintf(fp,"\nNqbit: %hu",Nqbit);
+    fprintf(fp,"\nMax: %lld",MAX);
+    fprintf(fp,"\neps: %.3e",eps);
 }
 
 void fmostra_matriz(FILE *fp, double **m, Long r, Long c)
@@ -3641,50 +3660,22 @@ QDD* W(Short N)
 
 /**  Testes  **/
 
-void imprime_lf_csv(FILE *fp, double numero, Short precisao)
+double teste_velocidade_unico(char *nome, QDD* (*le)(char*), FILE *fp, FILE *fr, Short primeiro)
 {
-    if(numero < 0)
-    {
-        fprintf(fp,"-");
-        numero *= -1;
-    }
+    time_t antesT, depoisT, deltaT;
+    double tempoT;
+    antesT = clock();
 
-    int antes, depois;
-    antes = numero;
-    numero -= antes;
-
-    int potencia;
-    potencia = pow(10,precisao);
-    numero *= potencia;
-    depois = numero;
-
-    fprintf(fp,"%d,",antes);
-    while(potencia > 1)
-    {
-        potencia /= 10;
-        if(depois < potencia)
-        {
-            fprintf(fp,"0");
-            printf("0");
-        }
-        else
-        {
-            fprintf(fp,"%d",depois);
-            break;
-        }
-    }
-}
-
-double teste_velocidade_unico(char *nome, QDD* (*le)(char*), FILE *fp, Short primeiro)
-{
     QDD *Q1;
     Q1 = le(nome);
 
+    Long memantes, memdepois;
     if(primeiro)
     {
         mostra_quantidades();
         fprintf(fp,"%llu|%llu|%llu|%llu|",mem,iM,iF,iL);
     }
+    memantes = mem;
 
     time_t antes, depois, delta;
     double tempo, precisao, clk;
@@ -3703,13 +3694,41 @@ double teste_velocidade_unico(char *nome, QDD* (*le)(char*), FILE *fp, Short pri
         mostra_quantidades();
         fprintf(fp,"%llu|%llu|%llu|%llu|",mem,iM,iF,iL);
         printf("\ntempo   1:");
+        fprintf(fr,"\ntempo   1:");
     }
+    memdepois = mem;
     libera_QDD(Q1);
 
-    if(tempo > 10*precisao)
+    double iir = 0.001;
+
+    if(memantes == memdepois)
+    {
+        tempo = 0;
+        printf(" %.3E",tempo);
+        fprintf(fr," %.3E",tempo);
+        fprintf(fp,"=%E|",tempo);
+
+        depoisT = clock();
+        deltaT = depoisT-antesT;
+        tempoT = deltaT/clk;
+        printf("\t\tTotal: %.3e",tempoT);
+        fprintf(fr,"\t\tTotal: %.3e",tempoT);
+
+        precisao = 0;
+        return precisao;
+    }
+    if(precisao/tempo < iir)
     {
         printf(" %.3E",tempo);
+        fprintf(fr," %.3E",tempo);
         fprintf(fp,"=%E|",tempo);
+
+        depoisT = clock();
+        deltaT = depoisT-antesT;
+        tempoT = deltaT/clk;
+        printf("\t\tTotal: %.3e",tempoT);
+        fprintf(fr,"\t\tTotal: %.3e",tempoT);
+
         return precisao;
     }
 
@@ -3717,7 +3736,7 @@ double teste_velocidade_unico(char *nome, QDD* (*le)(char*), FILE *fp, Short pri
     Long quantidade, i;
     quantidade = 1;
 
-    while(tempo < 10*precisao)
+    while(precisao/tempo > iir)
     {
         quantidade *= 10;
         precisao /= 10;
@@ -3746,15 +3765,33 @@ double teste_velocidade_unico(char *nome, QDD* (*le)(char*), FILE *fp, Short pri
     }
 
     printf(" %.3E",tempo);
+    fprintf(fr," %.3E",tempo);
     fprintf(fp,"=%E|",tempo);
+
+    depoisT = clock();
+    deltaT = depoisT-antesT;
+    tempoT = deltaT/clk;
+    printf("\t\tTotal: %.3e",tempoT);
+    fprintf(fr,"\t\tTotal: %.3e",tempoT);
+
     return precisao;
 }
 
 void teste_velocidade_base(char *nomeI, Short limiteinf, Short limitesup, Short amostras, Short arquivo, QDD* (*le)(char*))
 {
-    FILE *fp;
+    time_t antesT, depoisT, deltaT;
+    double tempoT;
+    antesT = clock();
+
+    char nomeR[50];
+    FILE *fr;
+    nomeR[0] = '\0';
+    sprintf(nomeR,"RelatorioTesteVelocidade%s%d.txt",nomeI,arquivo);
+    fr = fopen(nomeR,"w");
+
     Short i;
-    char s[30];
+    char s[40];
+    FILE *fp;
     s[0] = '\0';
     sprintf(s,"RelatorioVelocidade%s%d.csv",nomeI,arquivo);
     fp = fopen(s,"w");
@@ -3764,28 +3801,51 @@ void teste_velocidade_base(char *nomeI, Short limiteinf, Short limitesup, Short 
         fprintf(fp,"|%hu",i);
     fprintf(fp,"|implicita\n");
 
+
+
     Short j;
     float precisao;
     char nome[10];
+    time_t antesi, depoisi, deltai;
+    double tempoi;
     for(i=limiteinf; i<=limitesup; i++)
     {
+        antesi = clock();
+
         nome[0] = '\0';
         strcpy(nome,nomeI);
         sprintf(nome,"%s%d.txt",nomeI,i);
         printf("\n\n\nTestando: %s",nome);
+        fprintf(fr,"\n\n\nTestando: %s",nome);
         configuracao(i);
         fprintf(fp,"%hu|",i);
 
-        precisao = teste_velocidade_unico(nome,le,fp,1);
+        precisao = teste_velocidade_unico(nome,le,fp,fr,1);
         for(j=2; j<=amostras; j++)
         {
             printf("\nTempo %3d:",j);
-            teste_velocidade_unico(nome,le,fp,0);
+            fprintf(fr,"\nTempo %3d:",j);
+            teste_velocidade_unico(nome,le,fp,fr,0);
         }
 
         fprintf(fp,"=%E\n",precisao);
         printf("\n\nPrecisao: %.3e\n\n",precisao);
+        fprintf(fr,"\n\nPrecisao: %.3e",precisao);
+        depoisi = clock();
+
+        deltai = depoisi-antesi;
+        tempoi = (double)deltai/CLOCKS_PER_SEC;
+        printf("Tempo i: %e\n\n",tempoi);
+        fprintf(fr,"Tempo i: %e\n\n",tempoi);
     }
+    fclose(fp);
+
+    depoisT = clock();
+    deltaT = depoisT-antesT;
+    tempoT = (double)deltaT/CLOCKS_PER_SEC;
+    printf("\n\nTempo total: %.3e",tempoT);
+    fprintf(fr,"\n\nTempo total: %.3e",tempoT);
+    fclose(fr);
 }
 
 void teste_velocidade_matriz(char *nomeI, Short limiteinf, Short limitesup, Short amostras, Short arquivo)
@@ -3798,20 +3858,20 @@ void teste_velocidade_vetor(char *nomeI, Short limiteinf, Short limitesup, Short
     teste_velocidade_base(nomeI,limiteinf,limitesup,amostras,arquivo,le_vetor);
 }
 
-void teste_curto()
+void teste_curto(Short amostras)
 {
-    teste_velocidade_matriz("H",1,10,10,1);
-    teste_velocidade_matriz("I",1,10,10,1);
-    teste_velocidade_matriz("QFT",1,11,10,1);
-    teste_velocidade_vetor("V",1,23,10,1);
+    teste_velocidade_matriz("H",1,9,amostras,1);
+    teste_velocidade_matriz("I",1,9,amostras,1);
+    teste_velocidade_matriz("QFT",1,10,amostras,1);
+    teste_velocidade_vetor("V",1,22,amostras,1);
 }
 
-void teste_longo()
+void teste_longo(Short amostras)
 {
-    teste_velocidade_matriz("H",11,11,10,2);
-    teste_velocidade_matriz("I",11,11,10,2);
-    teste_velocidade_matriz("QFT",12,12,10,2);
-    teste_velocidade_vetor("V",24,24,10,2);
+    teste_velocidade_matriz("H",10,11,amostras,2);
+    teste_velocidade_matriz("I",10,11,amostras,2);
+    teste_velocidade_matriz("QFT",11,12,amostras,2);
+    teste_velocidade_vetor("V",23,24,amostras,2);
 }
 
 Short teste_memoria()
@@ -3836,9 +3896,10 @@ int main()
     inicia_relatorio_memoria(0);
     configuracao(20);
     inicia_structs_globais();
+    setlocale(LC_ALL, "Portuguese");
     /***********************************/
 
-    teste_velocidade_matriz("H",1,9,10,2);
+    teste_curto(10);
 
     /***********************************/
     finaliza_structs_globais();

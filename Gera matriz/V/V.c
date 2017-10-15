@@ -1,15 +1,12 @@
 #include<stdio.h>
 #include<stdlib.h>
 #include<math.h>
+#include <locale.h>
 
 #define pi 3.1415926535
 
-int main()
+void V(int N)
 {
-    int N;
-    printf("N: ");
-    scanf("%d",&N);
-
     int e;
     e = (int)pow(2,N);
 
@@ -31,5 +28,30 @@ int main()
         fprintf(fp,"%f %f ",re,im);
     }
     fclose(fp);
+}
+
+int main()
+{
+    setlocale(LC_ALL, "Portuguese");
+
+    int p;
+    printf("0- Unico\n1- todos\n\np: ");
+    scanf("%d",&p);
+
+    int N;
+    printf("N: ");
+    scanf("%d",&N);
+
+    int i;
+    if(p == 0)
+    {
+        V(N);
+    }
+    if(p == 1)
+    {
+        for(i=1; i<=N; i++)
+            V(i);
+    }
+
     return 0;
 }
