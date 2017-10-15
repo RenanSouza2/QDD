@@ -1,5 +1,5 @@
 # depslib dependency file v1.0
-1508029470 source:c:\users\renan\documents\github\qdd\main.c
+1508034535 source:c:\users\renan\documents\github\qdd\main.c
 	<stdio.h>
 	<stdlib.h>
 	<math.h>

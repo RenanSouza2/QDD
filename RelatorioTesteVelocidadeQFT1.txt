@@ -1,0 +1,193 @@
+
+
+
+Testando: QFT1.txt
+tempo   1: 1,484E-006		Total: 5,955e+001
+Tempo   2: 1,516E-006		Total: 5,960e+001
+Tempo   3: 1,531E-006		Total: 5,930e+001
+Tempo   4: 1,500E-006		Total: 5,910e+001
+Tempo   5: 1,500E-006		Total: 5,903e+001
+Tempo   6: 1,532E-006		Total: 5,943e+001
+Tempo   7: 1,523E-006		Total: 6,013e+001
+Tempo   8: 1,531E-006		Total: 5,959e+001
+Tempo   9: 1,516E-006		Total: 5,953e+001
+Tempo  10: 1,500E-006		Total: 5,920e+001
+
+Precisao: 1,000e-009
+
+Tempo i: 5,945120e+002
+
+
+
+
+Testando: QFT2.txt
+tempo   1: 7,969E-006		Total: 9,226e+001
+Tempo   2: 7,969E-006		Total: 9,260e+001
+Tempo   3: 8,000E-006		Total: 9,215e+001
+Tempo   4: 7,957E-006		Total: 9,210e+001
+Tempo   5: 7,907E-006		Total: 9,270e+001
+Tempo   6: 7,922E-006		Total: 9,336e+001
+Tempo   7: 7,942E-006		Total: 9,290e+001
+Tempo   8: 7,953E-006		Total: 9,347e+001
+Tempo   9: 7,922E-006		Total: 9,299e+001
+Tempo  10: 7,984E-006		Total: 9,375e+001
+
+Precisao: 1,000e-009
+
+Tempo i: 9,283250e+002
+
+
+
+
+Testando: QFT3.txt
+tempo   1: 4,531E-005		Total: 2,453e+001
+Tempo   2: 4,453E-005		Total: 2,411e+001
+Tempo   3: 4,469E-005		Total: 2,388e+001
+Tempo   4: 4,641E-005		Total: 2,435e+001
+Tempo   5: 4,469E-005		Total: 2,389e+001
+Tempo   6: 4,503E-005		Total: 2,396e+001
+Tempo   7: 4,532E-005		Total: 2,398e+001
+Tempo   8: 4,532E-005		Total: 2,394e+001
+Tempo   9: 4,484E-005		Total: 2,367e+001
+Tempo  10: 4,485E-005		Total: 2,369e+001
+
+Precisao: 1,000e-008
+
+Tempo i: 2,400150e+002
+
+
+
+
+Testando: QFT4.txt
+tempo   1: 2,797E-004		Total: 9,157e+000
+Tempo   2: 2,766E-004		Total: 9,140e+000
+Tempo   3: 2,765E-004		Total: 9,108e+000
+Tempo   4: 2,765E-004		Total: 9,156e+000
+Tempo   5: 2,766E-004		Total: 9,047e+000
+Tempo   6: 2,781E-004		Total: 9,136e+000
+Tempo   7: 2,782E-004		Total: 9,094e+000
+Tempo   8: 2,781E-004		Total: 9,047e+000
+Tempo   9: 2,797E-004		Total: 9,128e+000
+Tempo  10: 2,753E-004		Total: 9,066e+000
+
+Precisao: 1,000e-007
+
+Tempo i: 9,110900e+001
+
+
+
+
+Testando: QFT5.txt
+tempo   1: 1,796E-003		Total: 4,282e+000
+Tempo   2: 1,796E-003		Total: 4,250e+000
+Tempo   3: 1,813E-003		Total: 4,313e+000
+Tempo   4: 1,813E-003		Total: 4,281e+000
+Tempo   5: 1,797E-003		Total: 4,250e+000
+Tempo   6: 1,796E-003		Total: 4,235e+000
+Tempo   7: 1,797E-003		Total: 4,265e+000
+Tempo   8: 1,797E-003		Total: 4,282e+000
+Tempo   9: 1,812E-003		Total: 4,281e+000
+Tempo  10: 1,797E-003		Total: 4,282e+000
+
+Precisao: 1,000e-006
+
+Tempo i: 4,275100e+001
+
+
+
+
+Testando: QFT6.txt
+tempo   1: 1,360E-002		Total: 2,468e+000
+Tempo   2: 1,391E-002		Total: 2,422e+000
+Tempo   3: 1,360E-002		Total: 2,422e+000
+Tempo   4: 1,359E-002		Total: 2,391e+000
+Tempo   5: 1,359E-002		Total: 2,422e+000
+Tempo   6: 1,344E-002		Total: 2,406e+000
+Tempo   7: 1,359E-002		Total: 2,422e+000
+Tempo   8: 1,360E-002		Total: 2,406e+000
+Tempo   9: 1,360E-002		Total: 2,422e+000
+Tempo  10: 1,360E-002		Total: 2,406e+000
+
+Precisao: 1,000e-005
+
+Tempo i: 2,418700e+001
+
+
+
+
+Testando: QFT7.txt
+tempo   1: 6,031E-002		Total: 1,061e+001
+Tempo   2: 5,782E-002		Total: 1,027e+001
+Tempo   3: 5,750E-002		Total: 1,030e+001
+Tempo   4: 5,837E-002		Total: 1,035e+001
+Tempo   5: 5,782E-002		Total: 1,030e+001
+Tempo   6: 5,860E-002		Total: 1,039e+001
+Tempo   7: 5,848E-002		Total: 1,039e+001
+Tempo   8: 5,766E-002		Total: 1,028e+001
+Tempo   9: 5,750E-002		Total: 1,025e+001
+Tempo  10: 5,844E-002		Total: 1,031e+001
+
+Precisao: 1,000e-005
+
+Tempo i: 1,035410e+002
+
+
+
+
+Testando: QFT8.txt
+tempo   1: 3,544E-001		Total: 5,531e+000
+Tempo   2: 3,547E-001		Total: 5,469e+000
+Tempo   3: 3,531E-001		Total: 5,391e+000
+Tempo   4: 3,547E-001		Total: 5,453e+000
+Tempo   5: 3,547E-001		Total: 5,422e+000
+Tempo   6: 3,547E-001		Total: 5,422e+000
+Tempo   7: 3,604E-001		Total: 5,495e+000
+Tempo   8: 3,562E-001		Total: 5,453e+000
+Tempo   9: 3,516E-001		Total: 5,391e+000
+Tempo  10: 3,531E-001		Total: 5,406e+000
+
+Precisao: 1,000e-004
+
+Tempo i: 5,446400e+001
+
+
+
+
+Testando: QFT9.txt
+tempo   1: 2,985E+000		Total: 3,563e+000
+Tempo   2: 2,890E+000		Total: 3,437e+000
+Tempo   3: 2,922E+000		Total: 3,453e+000
+Tempo   4: 2,875E+000		Total: 3,438e+000
+Tempo   5: 2,875E+000		Total: 3,422e+000
+Tempo   6: 2,882E+000		Total: 3,413e+000
+Tempo   7: 2,907E+000		Total: 3,453e+000
+Tempo   8: 2,891E+000		Total: 3,437e+000
+Tempo   9: 2,906E+000		Total: 3,438e+000
+Tempo  10: 2,890E+000		Total: 3,438e+000
+
+Precisao: 1,000e-003
+
+Tempo i: 3,450800e+001
+
+
+
+
+Testando: QFT10.txt
+tempo   1: 1,693E+001		Total: 1,914e+001
+Tempo   2: 1,675E+001		Total: 1,892e+001
+Tempo   3: 1,672E+001		Total: 1,889e+001
+Tempo   4: 1,678E+001		Total: 1,892e+001
+Tempo   5: 1,678E+001		Total: 1,896e+001
+Tempo   6: 1,698E+001		Total: 1,909e+001
+Tempo   7: 1,697E+001		Total: 1,913e+001
+Tempo   8: 1,680E+001		Total: 1,895e+001
+Tempo   9: 1,695E+001		Total: 1,914e+001
+Tempo  10: 1,680E+001		Total: 1,897e+001
+
+Precisao: 1,000e-003
+
+Tempo i: 1,901540e+002
+
+
+
+Tempo total: 2,304e+003

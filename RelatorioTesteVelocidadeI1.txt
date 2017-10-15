@@ -1,0 +1,174 @@
+
+
+
+Testando: I1.txt
+tempo   1: 1,156E-006		Total: 5,685e+001
+Tempo   2: 1,157E-006		Total: 5,617e+001
+Tempo   3: 1,140E-006		Total: 5,626e+001
+Tempo   4: 1,172E-006		Total: 5,607e+001
+Tempo   5: 1,172E-006		Total: 5,595e+001
+Tempo   6: 1,329E-006		Total: 5,642e+001
+Tempo   7: 1,172E-006		Total: 5,637e+001
+Tempo   8: 1,172E-006		Total: 5,607e+001
+Tempo   9: 1,157E-006		Total: 5,599e+001
+Tempo  10: 1,172E-006		Total: 5,628e+001
+
+Precisao: 1,000e-009
+
+Tempo i: 5,625090e+002
+
+
+
+
+Testando: I2.txt
+tempo   1: 1,125E-005		Total: 8,219e+000
+Tempo   2: 1,109E-005		Total: 8,250e+000
+Tempo   3: 1,125E-005		Total: 8,168e+000
+Tempo   4: 1,125E-005		Total: 8,219e+000
+Tempo   5: 1,125E-005		Total: 8,204e+000
+Tempo   6: 1,125E-005		Total: 8,078e+000
+Tempo   7: 1,109E-005		Total: 8,152e+000
+Tempo   8: 1,125E-005		Total: 8,172e+000
+Tempo   9: 1,125E-005		Total: 8,187e+000
+Tempo  10: 1,125E-005		Total: 8,157e+000
+
+Precisao: 1,000e-008
+
+Tempo i: 8,185200e+001
+
+
+
+
+Testando: I3.txt
+tempo   1: 5,640E-005		Total: 1,834e+001
+Tempo   2: 5,625E-005		Total: 1,816e+001
+Tempo   3: 5,610E-005		Total: 1,826e+001
+Tempo   4: 5,581E-005		Total: 1,827e+001
+Tempo   5: 5,625E-005		Total: 1,830e+001
+Tempo   6: 5,625E-005		Total: 1,830e+001
+Tempo   7: 5,626E-005		Total: 1,838e+001
+Tempo   8: 5,937E-005		Total: 1,859e+001
+Tempo   9: 5,594E-005		Total: 1,830e+001
+Tempo  10: 5,609E-005		Total: 1,833e+001
+
+Precisao: 1,000e-008
+
+Tempo i: 1,832250e+002
+
+
+
+
+Testando: I4.txt
+tempo   1: 2,610E-004		Total: 6,016e+000
+Tempo   2: 2,563E-004		Total: 5,937e+000
+Tempo   3: 2,615E-004		Total: 5,959e+000
+Tempo   4: 2,578E-004		Total: 5,953e+000
+Tempo   5: 2,594E-004		Total: 5,907e+000
+Tempo   6: 2,609E-004		Total: 5,969e+000
+Tempo   7: 2,687E-004		Total: 6,063e+000
+Tempo   8: 2,579E-004		Total: 5,906e+000
+Tempo   9: 2,625E-004		Total: 5,939e+000
+Tempo  10: 2,610E-004		Total: 5,984e+000
+
+Precisao: 1,000e-007
+
+Tempo i: 5,966400e+001
+
+
+
+
+Testando: I5.txt
+tempo   1: 1,375E-003		Total: 2,578e+000
+Tempo   2: 1,360E-003		Total: 2,547e+000
+Tempo   3: 1,344E-003		Total: 2,531e+000
+Tempo   4: 1,360E-003		Total: 2,531e+000
+Tempo   5: 1,359E-003		Total: 2,547e+000
+Tempo   6: 1,391E-003		Total: 2,547e+000
+Tempo   7: 1,359E-003		Total: 2,547e+000
+Tempo   8: 1,391E-003		Total: 2,563e+000
+Tempo   9: 1,390E-003		Total: 2,576e+000
+Tempo  10: 1,375E-003		Total: 2,547e+000
+
+Precisao: 1,000e-006
+
+Tempo i: 2,553000e+001
+
+
+
+
+Testando: I6.txt
+tempo   1: 1,188E-002		Total: 1,750e+000
+Tempo   2: 1,187E-002		Total: 1,703e+000
+Tempo   3: 1,188E-002		Total: 1,704e+000
+Tempo   4: 1,187E-002		Total: 1,718e+000
+Tempo   5: 1,188E-002		Total: 1,688e+000
+Tempo   6: 1,172E-002		Total: 1,703e+000
+Tempo   7: 1,188E-002		Total: 1,703e+000
+Tempo   8: 1,188E-002		Total: 1,719e+000
+Tempo   9: 1,281E-002		Total: 1,796e+000
+Tempo  10: 1,187E-002		Total: 1,719e+000
+
+Precisao: 1,000e-005
+
+Tempo i: 1,721900e+001
+
+
+
+
+Testando: I7.txt
+tempo   1: 2,265E-001		Total: 2,687e+000
+Tempo   2: 2,250E-001		Total: 2,641e+000
+Tempo   3: 2,266E-001		Total: 2,641e+000
+Tempo   4: 2,204E-001		Total: 2,579e+000
+Tempo   5: 2,213E-001		Total: 2,588e+000
+Tempo   6: 2,250E-001		Total: 2,641e+000
+Tempo   7: 2,234E-001		Total: 2,609e+000
+Tempo   8: 2,219E-001		Total: 2,594e+000
+Tempo   9: 2,219E-001		Total: 2,610e+000
+Tempo  10: 2,219E-001		Total: 2,609e+000
+
+Precisao: 1,000e-004
+
+Tempo i: 2,623000e+001
+
+
+
+
+Testando: I8.txt
+tempo   1: 3,609E+000		Total: 3,687e+000
+Tempo   2: 3,922E+000		Total: 3,985e+000
+Tempo   3: 3,859E+000		Total: 3,921e+000
+Tempo   4: 3,672E+000		Total: 3,735e+000
+Tempo   5: 3,649E+000		Total: 3,726e+000
+Tempo   6: 3,816E+000		Total: 3,863e+000
+Tempo   7: 3,703E+000		Total: 3,765e+000
+Tempo   8: 3,812E+000		Total: 3,859e+000
+Tempo   9: 3,906E+000		Total: 3,953e+000
+Tempo  10: 3,828E+000		Total: 3,891e+000
+
+Precisao: 1,000e-003
+
+Tempo i: 3,841700e+001
+
+
+
+
+Testando: I9.txt
+tempo   1: 6,847E+001		Total: 6,874e+001
+Tempo   2: 6,835E+001		Total: 6,859e+001
+Tempo   3: 6,464E+001		Total: 6,487e+001
+Tempo   4: 6,381E+001		Total: 6,406e+001
+Tempo   5: 6,800E+001		Total: 6,827e+001
+Tempo   6: 6,353E+001		Total: 6,375e+001
+Tempo   7: 6,520E+001		Total: 6,543e+001
+Tempo   8: 6,500E+001		Total: 6,523e+001
+Tempo   9: 6,579E+001		Total: 6,601e+001
+Tempo  10: 6,698E+001		Total: 6,722e+001
+
+Precisao: 1,000e-003
+
+Tempo i: 6,621980e+002
+
+
+
+Tempo total: 1,657e+003
