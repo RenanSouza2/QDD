@@ -3830,7 +3830,7 @@ void teste_velocidade_base(char *nomeI, Short limiteinf, Short limitesup, Short 
 
         fprintf(fp,"=%E\n",precisao);
         printf("\n\nPrecisao: %.3e\n\n",precisao);
-        fprintf(fr,"\n\nPrecisao: %.3e",precisao);
+        fprintf(fr,"\n\nPrecisao: %.3e\n\n",precisao);
         depoisi = clock();
 
         deltai = depoisi-antesi;
