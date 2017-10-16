@@ -3268,7 +3268,8 @@ void contrai(QDD *Q, Short classe)
         libera_suporte_no(s);
         s = saux;
     }
-    libera_suporte_no(s);
+    if(s != NULL)
+        libera_suporte_no(s);
 
     Long ex;
     no *n;
