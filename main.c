@@ -3072,126 +3072,129 @@ Short espalha(suporte *s, Short classe)
 {
     conta *c;
     c = s->c[classe];
-    if(c == NULL)
-        return 0;
 
-    no *n;
-    n = c->n;
-
-    lista *l;
-    l = copia_lista_sem_cabeca(n->l);
-
-    conta *cp;
-    cp = cria_conta(0);
-    cp->n = n;
-
-    no *ne, *nt1, *nt2;
-    lista *lc;
-    conta *cc, *cpc, *caux;
-    suporte *sc, *saux;
-    Short delta, ex, lado;
-    while(l != NULL)
+    while(c != NULL)
     {
-        ne = l->n;
-        if(ne->tipo == Inicio)
-        {
-            libera_lista_lista(l);
-            libera_conta_lista(cp);
-            return 1;
-        }
+        no *n;
+        n = c->n;
 
-        for(sc = s; sc->s != NULL; sc = sc->s)
-            if(sc->s->nivel < ne->at.m.nivel)
-                break;
+        lista *l;
+        l = copia_lista_sem_cabeca(n->l);
 
-        if(sc->nivel == ne->at.m.nivel)
+        conta *cp;
+        cp = cria_conta(0);
+        cp->n = n;
+
+        no *ne, *nt1, *nt2;
+        lista *lc;
+        conta *cc, *cpc, *caux;
+        suporte *sc, *saux;
+        Short delta, ex, lado;
+        while(l != NULL)
         {
-            /* Tem suporte */
-            for(cc = sc->c[ne->at.m.classe]; cc != NULL; cc = cc->c)
-                if(cc->n == ne)
+            ne = l->n;
+            if(ne->tipo == Inicio)
+            {
+                libera_lista_lista(l);
+                libera_conta_lista(cp);
+                s->c[classe] = c;
+                return 1;
+            }
+
+            for(sc = s; sc->s != NULL; sc = sc->s)
+                if(sc->s->nivel < ne->at.m.nivel)
                     break;
 
-            if(cc == NULL)
+            if(sc->nivel == ne->at.m.nivel)
             {
-                /* Nao tem o no */
-                cc = cria_conta(c->nivel);
-                cc->n = ne;
-                cc->c = sc->c[ne->at.m.classe];
-                sc->c[ne->at.m.classe] = cc;
+                /* Tem suporte */
+                for(cc = sc->c[ne->at.m.classe]; cc != NULL; cc = cc->c)
+                    if(cc->n == ne)
+                        break;
+
+                if(cc == NULL)
+                {
+                    /* Nao tem o no */
+                    cc = cria_conta(c->nivel);
+                    cc->n = ne;
+                    cc->c = sc->c[ne->at.m.classe];
+                    sc->c[ne->at.m.classe] = cc;
+                }
+                else
+                {
+                    /* Já tem o no */
+                    if(cc->nivel < c->nivel)
+                    {
+                        /* Ajustar novo */
+                        delta = c->nivel - cc->nivel;
+                        for(cpc = cp; cpc->c != NULL; cpc = cpc->c)
+                            if(cp->c->nivel > delta)
+                                break;
+
+                        if(cp->nivel == delta)
+                        {
+                            /* já tem em cp */
+                            nt1 = cp->n;
+                        }
+                        else
+                        {
+                            /* Não tem em cp */
+                            nt1 = copia_arvore(n);
+                            ex = pow(2,delta);
+                            produto_arvore_real(nt1,ex);
+
+                            caux = cria_conta(delta);
+                            caux->c = cpc->c;
+                            cpc->c = caux;
+
+                            caux->n = nt1;
+                        }
+                        lado = desconecta_UM(ne,n);
+                        conecta_UM(ne,nt1,lado);
+
+                    }
+                    if(cc->nivel > c->nivel)
+                    {
+                        /* Ajustar velho */
+                        if(ne->at.m.el == n)
+                            nt1 = ne->at.m.th;
+                        else
+                            nt1 = ne->at.m.el;
+
+                        nt2 = copia_arvore(nt1);
+                        delta = cc->nivel - c->nivel;
+                        ex = pow(2,delta);
+                        produto_arvore_real(nt2,ex);
+
+                        lado = desconecta_UM(ne,nt1);
+                        conecta_UM(ne,nt2,lado);
+
+                        cc->nivel = c->nivel;
+                    }
+                }
             }
             else
             {
-                /* Já tem o no */
-                if(cc->nivel < c->nivel)
-                {
-                    /* Ajustar novo */
-                    delta = c->nivel - cc->nivel;
-                    for(cpc = cp; cpc->c != NULL; cpc = cpc->c)
-                        if(cp->c->nivel > delta)
-                            break;
+                /* Não tem suporte */
+                saux = cria_suporte(ne->at.m.nivel);
+                saux->s = sc->s;
+                sc->s = saux;
 
-                    if(cp->nivel == delta)
-                    {
-                        /* já tem em cp */
-                        nt1 = cp->n;
-                    }
-                    else
-                    {
-                        /* Não tem em cp */
-                        nt1 = copia_arvore(n);
-                        ex = pow(2,delta);
-                        produto_arvore_real(nt1,ex);
-
-                        caux = cria_conta(delta);
-                        caux->c = cpc->c;
-                        cpc->c = caux;
-
-                        caux->n = nt1;
-                    }
-                    lado = desconecta_UM(ne,n);
-                    conecta_UM(ne,nt1,lado);
-
-                }
-                if(cc->nivel > c->nivel)
-                {
-                    /* Ajustar velho */
-                    if(ne->at.m.el == n)
-                        nt1 = ne->at.m.th;
-                    else
-                        nt1 = ne->at.m.el;
-
-                    nt2 = copia_arvore(nt1);
-                    delta = cc->nivel - c->nivel;
-                    ex = pow(2,delta);
-                    produto_arvore_real(nt2,ex);
-
-                    lado = desconecta_UM(ne,nt1);
-                    conecta_UM(ne,nt2,lado);
-
-                    cc->nivel = c->nivel;
-                }
+                cc = cria_conta(c->nivel);
+                cc->n = ne;
+                saux->c[ne->at.m.classe] = cc;
             }
-        }
-        else
-        {
-            /* Não tem suporte */
-            saux = cria_suporte(ne->at.m.nivel);
-            saux->s = sc->s;
-            sc->s = saux;
 
-            cc = cria_conta(c->nivel);
-            cc->n = ne;
-            saux->c[ne->at.m.classe] = cc;
+            lc = l->l;
+            libera_lista_no(l);
+            l = lc;
         }
 
-        lc = l->l;
-        libera_lista_no(l);
-        l = lc;
+        libera_conta_lista(cp);
+        cp = c->c;
+        libera_conta_no(c);
+        c = cp;
     }
-
-    s->c[classe] = c->c;
-    libera_conta_no(c);
-    libera_conta_lista(cp);
 
     return 0;
 }
@@ -3212,6 +3215,17 @@ void contrai_conta(conta *c)
 
         libera_arvore(n);
     }
+}
+
+conta* tratamento(suporte *s, Short classe, Short classeT)
+{
+    Short inicio;
+    if(classe == classeT)
+        contrai_conta(s->c[classeT]);
+    inicio = espalha(s,classeT);
+    if(inicio)
+        return s->c[classeT];
+    return NULL;
 }
 
 void contrai(QDD *Q, Short classe)
@@ -3236,55 +3250,25 @@ void contrai(QDD *Q, Short classe)
     libera_conta_no(c);
 
     conta *ci = NULL;
-    Short inicio = 0;
     while(s != NULL)
     {
-        if(classe == C)
-            contrai_conta(s->c[C]);
-        while(s->c[C] != NULL)
-        {
-            inicio = espalha(s,C);
-            if(inicio)
-                break;
-        }
-        if(inicio)
-        {
-            ci = s->c[C];
+        ci = tratamento(s,classe,C);
+        if(ci != NULL)
             break;
-        }
 
-        if(classe == V)
-            contrai_conta(s->c[V]);
-        while(s->c[V] != NULL)
-        {
-            inicio = espalha(s,V);
-            if(inicio)
-                break;
-        }
-        if(inicio)
-        {
-            ci = s->c[V];
+        ci = tratamento(s,classe,V);
+        if(ci != NULL)
             break;
-        }
 
-        if(classe == R)
-            contrai_conta(s->c[R]);
-        while(s->c[R] != NULL)
-        {
-            inicio = espalha(s,R);
-            if(inicio)
-                break;
-        }
-        if(inicio)
-        {
-            ci = s->c[R];
+        ci = tratamento(s,classe,R);
+        if(ci != NULL)
             break;
-        }
 
         saux = s->s;
         libera_suporte_no(s);
         s = saux;
     }
+    libera_suporte_no(s);
 
     Long ex;
     no *n;
