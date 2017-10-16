@@ -3050,7 +3050,7 @@ no* apply_produto_matriz_matriz(no *n1, no *n2)
     return n;
 }
 
-no *apply_produto_matriz_vetor(no *n1, no *n2)
+no* apply_produto_matriz_vetor(no *n1, no *n2)
 {
     no *n;
     n = apply_base(n1,n2,regra_apply_produto_matriz_vetor);
@@ -3066,7 +3066,7 @@ no* apply_produto_vetor_vetor(no *n1, no *n2)
 
 
 
-/**  produto QDD QDD  **/
+/**  produto QDD QDD base  **/
 
 Short espalha(suporte *s, Short classe)
 {
@@ -3459,7 +3459,7 @@ no* produto_vetor_vetor(QDD *Q1, QDD *Q2)
 
 
 
-/**  QDDs usuais  **/
+/**  auxiliar QDDs usuais  **/
 
 lista* lista_fim_2(no *nf1, no *nf2)
 {
@@ -3493,6 +3493,10 @@ QDD* matriz_cruzada(no *nf1, no *nf2)
     Q->l = lista_fim_2(nf1,nf2);
     return Q;
 }
+
+
+
+/** QDDs usuais  **/
 
 QDD* I()
 {
@@ -3643,6 +3647,8 @@ QDD* W(Short N)
     float re;
     re = pow(2,-0.5*N);
     nf = cria_no_fim(re,0);
+
+    conecta_UM(ni,nf,Inicio);
 
     lista *l;
     l = cria_lista();
@@ -3932,7 +3938,23 @@ int main()
     setlocale(LC_ALL, "Portuguese");
     /***********************************/
 
-    teste_curto(1);
+    QDD *Q1, *Q2;
+    Q2 = H();
+    Q1 = potencia_tensorial(Q2,8);
+    libera_QDD(Q2);
+    Q2 = copia_QDD(Q1);
+
+    QDD *Q;
+    Q = produto_matriz_matriz(Q1,Q2);
+    mostra_QDD(Q);
+
+    libera_QDD(Q1);
+    libera_QDD(Q2);
+    libera_QDD(Q);
+
+    mostra_quantidades();
+    mostra_tamanhos();
+    teste_memoria();
 
     /***********************************/
     finaliza_structs_globais();
