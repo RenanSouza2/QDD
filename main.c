@@ -3660,14 +3660,12 @@ double teste_velocidade_unico(char *nome, QDD* (*le)(char*), FILE *fp, FILE *fr,
     QDD *Q1;
     Q1 = le(nome);
 
-    Long memantes, memdepois;
     if(primeiro)
     {
         mostra_quantidades();
         fmostra_quantidades(fr);
         fprintf(fp,"%llu|%llu|%llu|%llu|",mem,iM,iF,iL);
     }
-    memantes = mem;
 
     time_t antes, depois, delta;
     double tempo, precisao, clk;
@@ -3689,27 +3687,10 @@ double teste_velocidade_unico(char *nome, QDD* (*le)(char*), FILE *fp, FILE *fr,
         printf("\ntempo   1:");
         fprintf(fr,"\ntempo   1:");
     }
-    memdepois = mem;
     libera_QDD(Q1);
 
     double iir = 0.001;
 
-    if(memantes == memdepois)
-    {
-        tempo = 0;
-        printf(" %.3E",tempo);
-        fprintf(fr," %.3E",tempo);
-        fprintf(fp,"=%E|",tempo);
-
-        depoisT = clock();
-        deltaT = depoisT-antesT;
-        tempoT = deltaT/clk;
-        printf("\t\tTotal: %.3e",tempoT);
-        fprintf(fr,"\t\tTotal: %.3e",tempoT);
-
-        precisao = 0;
-        return precisao;
-    }
     if(precisao/tempo < iir)
     {
         printf(" %.3E",tempo);
@@ -3755,6 +3736,9 @@ double teste_velocidade_unico(char *nome, QDD* (*le)(char*), FILE *fp, FILE *fr,
             libera_QDD(Q[i]);
         diminui_memoria_fora(quantidade*sizeof(QDD*));
         free(Q);
+
+        if(precisao < 5e-9)
+            break;
     }
 
     printf(" %.3E",tempo);
@@ -3832,8 +3816,8 @@ void teste_velocidade_base(char *nomeI, Short limiteinf, Short limitesup, Short 
 
         deltai = depoisi-antesi;
         tempoi = (double)deltai/CLOCKS_PER_SEC;
-        printf("Tempo %s%d: %e\n\n",nomeI,i,tempoi);
-        fprintf(fr,"Tempo %s%d: %e\n\n",nomeI,i,tempoi);
+        printf("Tempo %s%d: %.3e\n\n",nomeI,i,tempoi);
+        fprintf(fr,"Tempo %s%d: %.3e\n\n",nomeI,i,tempoi);
     }
     fclose(fp);
 
@@ -3856,12 +3840,16 @@ void teste_velocidade_vetor(char *nomeI, Short limiteinf, Short limitesup, Short
     teste_velocidade_base(nomeI,limiteinf,limitesup,amostras,arquivo,fr,le_vetor);
 }
 
-void teste_curto(Short amostras)
+void teste_curto(Short amostras, FILE *fr)
 {
     double tempo;
     time_t antes, depois, delta;
-    FILE *fr;
-    fr = fopen("RelatorioTesteCurto.txt","w");
+    Short ri = 0;
+    if(fr == NULL)
+    {
+        fr = fopen("RelatorioTesteCurto.txt","w");
+        ri = 1;
+    }
 
     antes = clock();
     teste_velocidade_matriz("H",1,9,amostras,1,fr);
@@ -3874,15 +3862,20 @@ void teste_curto(Short amostras)
     tempo = (double)delta/CLOCKS_PER_SEC;
     printf("\n\nTempo teste curto: %.3e",tempo);
     fprintf(fr,"\n\nTempo teste curto: %.3e",tempo);
-    fclose(fr);
+    if(ri)
+        fclose(fr);
 }
 
-void teste_longo(Short amostras)
+void teste_longo(Short amostras, FILE *fr)
 {
     double tempo;
     time_t antes, depois, delta;
-    FILE *fr;
-    fr = fopen("RelatorioTesteLongo.txt","w");
+    Short ri = 0;
+    if(fr == NULL)
+    {
+        fr = fopen("RelatorioTesteLongo.txt","w");
+        ri = 1;
+    }
 
     antes = clock();
     teste_velocidade_matriz("H",10,11,amostras,2,fr);
@@ -3895,6 +3888,26 @@ void teste_longo(Short amostras)
     tempo = (double)delta/CLOCKS_PER_SEC;
     printf("\n\nTempo teste longo: %.3e",tempo);
     fprintf(fr,"\n\nTempo teste longo: %.3e",tempo);
+    if(ri)
+        fclose(fr);
+}
+
+void teste_completo(Short amostras)
+{
+    double tempo;
+    time_t antes, depois, delta;
+    FILE *fr;
+    fr = fopen("RelatorioTesteCompleto.txt","w");
+
+    antes = clock();
+    teste_curto(amostras,fr);
+    teste_longo(amostras,fr);
+    depois = clock();
+
+    delta = depois-antes;
+    tempo = (double)delta/CLOCKS_PER_SEC;
+    printf("\n\nTempo teste Completo: %.3e",tempo);
+    fprintf(fr,"\n\nTempo teste Completo: %.3e",tempo);
     fclose(fr);
 }
 
@@ -3923,23 +3936,7 @@ int main()
     setlocale(LC_ALL, "Portuguese");
     /***********************************/
 
-    QDD *Q1, *Q2;
-    Q2 = H();
-    Q1 = potencia_tensorial(Q2,8);
-    libera_QDD(Q2);
-    Q2 = copia_QDD(Q1);
-
-    QDD *Q;
-    Q = produto_matriz_matriz(Q1,Q2);
-    mostra_QDD(Q);
-
-    libera_QDD(Q1);
-    libera_QDD(Q2);
-    libera_QDD(Q);
-
-    mostra_quantidades();
-    mostra_tamanhos();
-    teste_memoria();
+    teste_curto(10,NULL);
 
     /***********************************/
     finaliza_structs_globais();
