@@ -3673,6 +3673,7 @@ double teste_velocidade_unico(char *nome, QDD* (*le)(char*), FILE *fp, FILE *fr,
     if(primeiro)
     {
         mostra_quantidades();
+        fmostra_quantidades(fr);
         fprintf(fp,"%llu|%llu|%llu|%llu|",mem,iM,iF,iL);
     }
     memantes = mem;
@@ -3692,6 +3693,7 @@ double teste_velocidade_unico(char *nome, QDD* (*le)(char*), FILE *fp, FILE *fr,
     if(primeiro)
     {
         mostra_quantidades();
+        fmostra_quantidades(fr);
         fprintf(fp,"%llu|%llu|%llu|%llu|",mem,iM,iF,iL);
         printf("\ntempo   1:");
         fprintf(fr,"\ntempo   1:");
@@ -3777,17 +3779,21 @@ double teste_velocidade_unico(char *nome, QDD* (*le)(char*), FILE *fp, FILE *fr,
     return precisao;
 }
 
-void teste_velocidade_base(char *nomeI, Short limiteinf, Short limitesup, Short amostras, Short arquivo, QDD* (*le)(char*))
+void teste_velocidade_base(char *nomeI, Short limiteinf, Short limitesup, Short amostras, Short arquivo, FILE *fr, QDD* (*le)(char*))
 {
     time_t antesT, depoisT, deltaT;
     double tempoT;
     antesT = clock();
 
     char nomeR[50];
-    FILE *fr;
-    nomeR[0] = '\0';
-    sprintf(nomeR,"RelatorioTesteVelocidade%s%d.txt",nomeI,arquivo);
-    fr = fopen(nomeR,"w");
+    Short rin = 0;
+    if(fr == NULL)
+    {
+        nomeR[0] = '\0';
+        sprintf(nomeR,"RelatorioTesteVelocidade%s%d.txt",nomeI,arquivo);
+        fr = fopen(nomeR,"w");
+        rin = 1;
+    }
 
     Short i;
     char s[40];
@@ -3815,8 +3821,8 @@ void teste_velocidade_base(char *nomeI, Short limiteinf, Short limitesup, Short 
         nome[0] = '\0';
         strcpy(nome,nomeI);
         sprintf(nome,"%s%d.txt",nomeI,i);
-        printf("\n\n\nTestando: %s",nome);
-        fprintf(fr,"\n\n\nTestando: %s",nome);
+        printf("\n\n\nTestando: %s\n",nome);
+        fprintf(fr,"\n\n\nTestando: %s\n",nome);
         configuracao(i);
         fprintf(fp,"%hu|",i);
 
@@ -3835,43 +3841,70 @@ void teste_velocidade_base(char *nomeI, Short limiteinf, Short limitesup, Short 
 
         deltai = depoisi-antesi;
         tempoi = (double)deltai/CLOCKS_PER_SEC;
-        printf("Tempo i: %e\n\n",tempoi);
-        fprintf(fr,"Tempo i: %e\n\n",tempoi);
+        printf("Tempo %s%d: %e\n\n",nomeI,i,tempoi);
+        fprintf(fr,"Tempo %s%d: %e\n\n",nomeI,i,tempoi);
     }
     fclose(fp);
 
     depoisT = clock();
     deltaT = depoisT-antesT;
     tempoT = (double)deltaT/CLOCKS_PER_SEC;
-    printf("\n\nTempo total: %.3e",tempoT);
-    fprintf(fr,"\n\nTempo total: %.3e",tempoT);
-    fclose(fr);
+    printf("\n\nTempo total %s: %.3e",nomeI,tempoT);
+    fprintf(fr,"\n\nTempo total %s: %.3e",nomeI,tempoT);
+    if(rin)
+        fclose(fr);
 }
 
-void teste_velocidade_matriz(char *nomeI, Short limiteinf, Short limitesup, Short amostras, Short arquivo)
+void teste_velocidade_matriz(char *nomeI, Short limiteinf, Short limitesup, Short amostras, Short arquivo, FILE *fr)
 {
-    teste_velocidade_base(nomeI,limiteinf,limitesup,amostras,arquivo,le_matriz);
+    teste_velocidade_base(nomeI,limiteinf,limitesup,amostras,arquivo,fr,le_matriz);
 }
 
-void teste_velocidade_vetor(char *nomeI, Short limiteinf, Short limitesup, Short amostras, Short arquivo)
+void teste_velocidade_vetor(char *nomeI, Short limiteinf, Short limitesup, Short amostras, Short arquivo, FILE *fr)
 {
-    teste_velocidade_base(nomeI,limiteinf,limitesup,amostras,arquivo,le_vetor);
+    teste_velocidade_base(nomeI,limiteinf,limitesup,amostras,arquivo,fr,le_vetor);
 }
 
 void teste_curto(Short amostras)
 {
-    teste_velocidade_matriz("H",1,9,amostras,1);
-    teste_velocidade_matriz("I",1,9,amostras,1);
-    teste_velocidade_matriz("QFT",1,10,amostras,1);
-    teste_velocidade_vetor("V",1,22,amostras,1);
+    double tempo;
+    time_t antes, depois, delta;
+    FILE *fr;
+    fr = fopen("RelatorioTesteCurto.txt","w");
+
+    antes = clock();
+    teste_velocidade_matriz("H",1,9,amostras,1,fr);
+    teste_velocidade_matriz("I",1,9,amostras,1,fr);
+    teste_velocidade_matriz("QFT",1,10,amostras,1,fr);
+    teste_velocidade_vetor("V",1,22,amostras,1,fr);
+    depois = clock();
+
+    delta = depois-antes;
+    tempo = (double)delta/CLOCKS_PER_SEC;
+    printf("\n\nTempo teste curto: %.3e",tempo);
+    fprintf(fr,"\n\nTempo teste curto: %.3e",tempo);
+    fclose(fr);
 }
 
 void teste_longo(Short amostras)
 {
-    teste_velocidade_matriz("H",10,11,amostras,2);
-    teste_velocidade_matriz("I",10,11,amostras,2);
-    teste_velocidade_matriz("QFT",11,12,amostras,2);
-    teste_velocidade_vetor("V",23,24,amostras,2);
+    double tempo;
+    time_t antes, depois, delta;
+    FILE *fr;
+    fr = fopen("RelatorioTesteLongo.txt","w");
+
+    antes = clock();
+    teste_velocidade_matriz("H",10,11,amostras,2,fr);
+    teste_velocidade_matriz("I",10,11,amostras,2,fr);
+    teste_velocidade_matriz("QFT",11,12,amostras,2,fr);
+    teste_velocidade_vetor("V",23,24,amostras,2,fr);
+    depois = clock();
+
+    delta = depois-antes;
+    tempo = (double)delta/CLOCKS_PER_SEC;
+    printf("\n\nTempo teste longo: %.3e",tempo);
+    fprintf(fr,"\n\nTempo teste longo: %.3e",tempo);
+    fclose(fr);
 }
 
 Short teste_memoria()
@@ -3899,7 +3932,7 @@ int main()
     setlocale(LC_ALL, "Portuguese");
     /***********************************/
 
-    teste_curto(10);
+    teste_curto(1);
 
     /***********************************/
     finaliza_structs_globais();
