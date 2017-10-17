@@ -627,6 +627,7 @@ void mostra_no(no *n)
     printf("\nEndereco (no): %d\n",n);
     if(n == NULL)
         return;
+
     if(n->l != NULL)
     {
         printf("Ligacoes anteriores:");
@@ -688,6 +689,9 @@ void mostra_lista_com_no(lista *l)
 
 void mostra_arvore(no *n)
 {
+    if(n == NULL)
+        return;
+
     lista *l;
     l = enlista_arvore(n);
     mostra_lista_com_no(l);
@@ -701,6 +705,9 @@ void mostra_QDD(QDD *Q)
     l = enlista_QDD(Q);
 
     printf("\nEndereco (QDD): %d",Q);
+    if(Q == NULL)
+        return;
+
     printf("\nNQBIT: %d\n",Q->nqbit);
     mostra_lista_com_no(l);
     printf("\n\nAMPLITUDES");
@@ -712,6 +719,9 @@ void mostra_QDD(QDD *Q)
 void mostra_apply_no(apply *a)
 {
     printf("\nEndereco (apply): %d",a);
+    if(a == NULL)
+        return;
+
     printf("\n\nNo 1:");
     mostra_no(a->n1);
     printf("\nNo 2:");
@@ -739,6 +749,9 @@ void mostra_apply_lista(apply *a)
 void mostra_conta_no(conta *c)
 {
     printf("\nEndereco (conta): %d",c);
+    if(c== NULL)
+        return;
+
     printf("\nnivel: %d",c->nivel);
     printf("\n\nno: ");
     mostra_no(c->n);
@@ -760,6 +773,9 @@ void mostra_conta_lista(conta *c)
 void mostra_suporte_no(suporte *s)
 {
     printf("\nEndereco (suporte): %d",s);
+    if(s == NULL)
+        return;
+
     printf("\nnivel: %d",s->nivel);
     printf("\n\ncc: %d",s->c[C]);
     printf("\ncv: %d",s->c[V]);
@@ -770,6 +786,9 @@ void mostra_suporte_no(suporte *s)
 void mostra_suporte_no_com_conta(suporte *s)
 {
     printf("\nEndereco (suporte): %d",s);
+    if(s == NULL)
+        return;
+
     printf("\nnivel: %d",s->nivel);
     printf("\n\ncc: %d",s->c[C]);
     mostra_conta_lista(s->c[C]);
@@ -932,6 +951,7 @@ void fmostra_no(FILE *fp, no *n)
     fprintf(fp,"\nEndereco (no): %d\n",n);
     if(n == NULL)
         return;
+
     if(n->l != NULL)
     {
         fprintf(fp,"Ligacoes anteriores:");
@@ -993,6 +1013,9 @@ void fmostra_lista_com_no(FILE *fp, lista *l)
 
 void fmostra_arvore(FILE *fp, no *n)
 {
+    if(n == NULL)
+        return;
+
     lista *l;
     l = enlista_arvore(n);
     fmostra_lista_com_no(fp,l);
@@ -1006,6 +1029,9 @@ void fmostra_QDD(FILE *fp, QDD *Q)
     l = enlista_QDD(Q);
 
     fprintf(fp,"\nEndereco (QDD): %d",Q);
+    if(Q == NULL)
+        return;
+
     fprintf(fp,"\nNQBIT: %d\n",Q->nqbit);
     fmostra_lista_com_no(fp,l);
     fprintf(fp,"\n\nAMPLITUDES");
@@ -1025,6 +1051,9 @@ void fmostra_QDD_sozinho(QDD *Q, char *arquivo)
 void fmostra_apply_no(FILE *fp, apply *a)
 {
     fprintf(fp,"\nEndereco (apply): %d",a);
+    if(a == NULL)
+        return;
+
     fprintf(fp,"\n\nNo 1:");
     fmostra_no(fp,a->n1);
     fprintf(fp,"\nNo 2:");
@@ -1052,6 +1081,9 @@ void fmostra_apply_lista(FILE *fp, apply *a)
 void fmostra_conta_no(FILE *fp, conta *c)
 {
     fprintf(fp,"\nEndereco (conta): %d",c);
+    if(c == NULL)
+        return;
+
     fprintf(fp,"\nnivel: %d",c->nivel);
     fprintf(fp,"\n\nno: ");
     fmostra_no(fp,c->n);
@@ -1060,9 +1092,6 @@ void fmostra_conta_no(FILE *fp, conta *c)
 
 void fmostra_conta_lista(FILE *fp, conta *c)
 {
-    if(c == NULL)
-        return;
-
     conta *cc;
     Short ligacao = 0;
     for(cc = c; cc != NULL; cc = cc->c)
@@ -1076,6 +1105,9 @@ void fmostra_conta_lista(FILE *fp, conta *c)
 void fmostra_suporte_no(FILE *fp, suporte *s)
 {
     fprintf(fp,"\nEndereco (suporte): %d",s);
+    if(s == NULL)
+        return;
+
     fprintf(fp,"\nnivel: %d",s->nivel);
     fprintf(fp,"\n\ncc: %d",s->c[C]);
     fprintf(fp,"\ncv: %d",s->c[V]);
@@ -1086,6 +1118,9 @@ void fmostra_suporte_no(FILE *fp, suporte *s)
 void fmostra_suporte_no_com_conta(FILE *fp, suporte *s)
 {
     fprintf(fp,"\nEndereco (suporte): %d",s);
+    if(s == NULL)
+        return;
+
     fprintf(fp,"\nnivel: %d",s->nivel);
     fprintf(fp,"\n\ncc: %d",s->c[C]);
     fmostra_conta_lista(fp,s->c[C]);
@@ -2412,54 +2447,68 @@ void monta_apply(apply *a, Short regra)
             break;
 
         case 1:
-            n = copia_no(n1);
+            n = cria_no_meio(R,n1->at.m.nivel);
             avanco = 1;
             break;
 
         case 2:
-            n = copia_no(n2);
+            n = cria_no_meio(R,n2->at.m.nivel);
             avanco = 2;
             break;
 
         case 3:
+            n = cria_no_meio(R,n1->at.m.nivel);
+            avanco = 3;
+            break;
+
+        case 4:
+            n = cria_no_meio(C,n1->at.m.nivel);
+            avanco = 1;
+            break;
+
+        case 5:
+            n = cria_no_meio(C,n2->at.m.nivel);
+            avanco =  2;
+            break;
+
+        case 6:
+            n = cria_no_meio(C,n1->at.m.nivel);
+            avanco = 3;
+            break;
+
+        case 7:
             n = cria_no_meio(V,n1->at.m.nivel);
             avanco = 1;
             break;
 
-        case 4:
+        case 8:
             n = cria_no_meio(V,n2->at.m.nivel);
             avanco = 2;
             break;
 
-        case 5:
-            n = cria_no_meio(V,n1->at.m.nivel);
-            avanco =  3;
-            break;
-
-        case 6:
-            n = produto_no_no(n1,n2);
-            break;
-
-        case 7:
-            n = produto_no_conjugado_no(n1,n2);
-            break;
-
-        case 8:
-            n = cria_no_fim(0,0);
-            break;
-
         case 9:
-            n = soma_no(n1,n2);
-            break;
-
-        case 10:
-            n = copia_no(n1);
+            n = cria_no_meio(V,n1->at.m.nivel);
             avanco = 3;
             break;
 
+        case 10:
+            n = soma_no(n1,n2);
+            break;
+
         case 11:
-            n = cria_no_meio(C,n2->at.m.nivel);
-            avanco = 2;
+            n = produto_no_no(n1,n2);
+            break;
+
+        case 12:
+            n = produto_no_conjugado_no(n1,n2);
+            break;
+
+        case 13:
+            n = cria_no_fim(0,0);
+            break;
+
+        case 14:
+            ERRO("MONTA APPLY| NO INDEVIDO");
             break;
 
         default:
@@ -2513,7 +2562,280 @@ void monta_apply(apply *a, Short regra)
     a->a2 = a2;
 }
 
-no* apply_base(no *n1, no *n2, Short (*regra_apply)(apply *a))
+Short regra_apply(apply *a)
+{
+    no *n1, *n2;
+    n1 = a->n1;
+    n2 = a->n2;
+
+    switch(n1->tipo)
+    {
+        case Inicio:
+            if(n2->tipo != Inicio)
+                ERRO("REGRA APPLY| N1 INICIO N2 NAO");
+
+            return 0;
+            break;
+
+        case Meio:
+            switch(n2->tipo)
+            {
+                case Inicio:
+                    ERRO("REGRA APPLY| N1 E MEIO N2 E INICIO");
+                    break;
+
+                case Meio:
+                    if(n1->at.m.nivel < n2->at.m.nivel)
+                    {
+                        switch(n1->at.m.classe)
+                        {
+                            case V:
+                                switch(n2->at.m.nivel)
+                                {
+                                    case V:
+                                        break;
+
+                                    case R:
+                                        break;
+
+                                    case C:
+                                        break;
+                                }
+                                break;
+
+                            case R:
+                                switch(n2->at.m.nivel)
+                                {
+                                    case V:
+                                        break;
+
+                                    case R:
+                                        break;
+
+                                    case C:
+                                        break;
+                                }
+                                break;
+
+                            case C:
+                                switch(n2->at.m.nivel)
+                                {
+                                    case V:
+                                        break;
+
+                                    case R:
+                                        break;
+
+                                    case C:
+                                        break;
+                                }
+                                break;
+                        }
+                    }
+                    if(n1->at.m.nivel == n2->at.m.nivel)
+                    {
+                        switch(n1->at.m.classe)
+                        {
+                            case V:
+                                switch(n2->at.m.nivel)
+                                {
+                                    case V:
+                                        break;
+
+                                    case R:
+                                        break;
+
+                                    case C:
+                                        break;
+                                }
+                                break;
+
+                            case R:
+                                switch(n2->at.m.nivel)
+                                {
+                                    case V:
+                                        break;
+
+                                    case R:
+                                        break;
+
+                                    case C:
+                                        break;
+                                }
+                                break;
+
+                            case C:
+                                switch(n2->at.m.nivel)
+                                {
+                                    case V:
+                                        break;
+
+                                    case R:
+                                        break;
+
+                                    case C:
+                                        break;
+                                }
+                                break;
+                        }
+                    }
+                    if(n1->at.m.nivel > n2->at.m.nivel)
+                    {
+                        switch(n1->at.m.classe)
+                        {
+                            case V:
+                                switch(n2->at.m.nivel)
+                                {
+                                    case V:
+                                        break;
+
+                                    case R:
+                                        break;
+
+                                    case C:
+                                        break;
+                                }
+                                break;
+
+                            case R:
+                                switch(n2->at.m.nivel)
+                                {
+                                    case V:
+                                        break;
+
+                                    case R:
+                                        break;
+
+                                    case C:
+                                        break;
+                                }
+                                break;
+
+                            case C:
+                                switch(n2->at.m.nivel)
+                                {
+                                    case V:
+                                        break;
+
+                                    case R:
+                                        break;
+
+                                    case C:
+                                        break;
+                                }
+                                break;
+                        }
+                    }
+                    break;
+
+                case Fim:
+                    if(compara_no_fim_zero(n2,1))
+                    {
+                        switch(n1->at.m.classe)
+                        {
+                            case V:
+                                break;
+
+                            case R:
+                                break;
+
+                            case C:
+                                break;
+                        }
+                    }
+                    else
+                    {
+                        switch(n1->at.m.classe)
+                        {
+                            case V:
+                                break;
+
+                            case R:
+                                break;
+
+                            case C:
+                                break;
+                        }
+                    }
+                    break;
+            }
+            break;
+
+        case Fim:
+            if(compara_no_fim_zero(n1,1))
+            {
+                switch(n2->tipo)
+                {
+                    case Inicio:
+                        ERRO("REGRA APPLY| N1 E FIM N2 INICIO 1");
+                        break;
+
+                    case Meio:
+                        switch(n2->at.m.classe)
+                        {
+                            case V:
+                                break;
+
+                            case R:
+                                break;
+
+                            case C:
+                                break;
+                        }
+                        break;
+
+                    case Fim:
+                        if(compara_no_fim_zero(n2,1))
+                        {
+
+                        }
+                        else
+                        {
+
+                        }
+                        break;
+                }
+            }
+            else
+            {
+                switch(n2->tipo)
+                {
+                    case Inicio:
+                        ERRO("REGRA APPLY| N1 E FIM N2 INICIO 2");
+                        break;
+
+                    case Meio:
+                        switch(n2->at.m.classe)
+                        {
+                            case V:
+                                break;
+
+                            case R:
+                                break;
+
+                            case C:
+                                break;
+                        }
+                        break;
+
+                    case Fim:
+                        if(compara_no_fim_zero(n2,1))
+                        {
+
+                        }
+                        else
+                        {
+
+                        }
+                        break;
+                }
+            }
+            break;
+    }
+    return 0;
+}
+
+no* apply_base(no *n1, no *n2)
 {
     apply *a;
     a = cria_apply();
@@ -2576,491 +2898,33 @@ no* apply_base(no *n1, no *n2, Short (*regra_apply)(apply *a))
 
 
 
-/**  regra apply  **/
-
-Short regra_apply_soma(apply *a)
-{
-    no *n1, *n2;
-    n1 = a->n1;
-    n2 = a->n2;
-
-    switch(n1->tipo)
-    {
-        case Inicio:
-            if(n2->tipo != Inicio)
-                ERRO("REGRA APPLY SOMA| N1 E INICIO N2 NAO");
-
-            return 0;
-            break;
-
-        case Meio:
-            switch(n2->tipo)
-            {
-                case Inicio:
-                    ERRO("REGRA APPLY SOMA| N1 E MEIO N2 E INICIO");
-                    break;
-
-                case Meio:
-                    if(n1->at.m.nivel < n2->at.m.nivel)
-                        return 1;
-                    if(n1->at.m.nivel > n2->at.m.nivel)
-                        return 2;
-                    if(n1->at.m.nivel == n2->at.m.nivel)
-                    {
-                        switch(n1->at.m.classe)
-                        {
-                            case C:
-                                if(n2->at.m.classe == C)
-                                    return 10;
-                                return 2;
-                                break;
-
-                            case V:
-                                switch(n2->at.m.classe)
-                                {
-                                    case C:
-                                        return 1;
-                                        break;
-
-                                    case V:
-                                        return 10;
-                                        break;
-
-                                    case R:
-                                        return 2;
-                                        break;
-                                }
-                                break;
-
-                            case R:
-                                if(n2->at.m.classe == R)
-                                    return 10;
-                                return 1;
-                                break;
-                        }
-                    }
-                    break;
-
-                case Fim:
-                    return 1;
-                    break;
-            }
-            break;
-
-        case Fim:
-            switch(n2->tipo)
-            {
-                case Inicio:
-                    ERRO("REGRA APPLY SOMA| N1 E FIM N2 E INICIO");
-                    break;
-
-                case Meio:
-                    return 2;
-                    break;
-
-                case Fim:
-                    return 9;
-                    break;
-            }
-            break;
-    }
-    ERRO("REGRA APPLY SOMA| NAO ATIVOU NENHUMA REGRA");
-    return 0;
-}
-
-Short regra_apply_produto_matriz_matriz(apply *a)
-{
-    no *n1, *n2;
-    n1 = a->n1;
-    n2 = a->n2;
-
-    switch(n1->tipo)
-    {
-        case Inicio:
-            if(n2->tipo != Inicio)
-                ERRO("REGRA APPLY PRODUTO MATRIZ MATRIZ| N1 E INICIO N2 NAO");
-
-            return 0;
-            break;
-
-        case Meio:
-            switch(n2->tipo)
-            {
-                case Inicio:
-                    ERRO("REGRA APPLY PRODUTO MATRIZ MATRIZ| N1 E MEIO N2 INICIO");
-                    break;
-
-                case Meio:
-                    if(n1->at.m.nivel < n2->at.m.nivel)
-                    {
-                        switch(n1->at.m.classe)
-                        {
-                            case V:
-                                ERRO("REGRA APPLY PRODUTO MATRIZ MATRIZ| N1 E VETOR 1");
-                                break;
-
-                            case R:
-                                return 1;
-                                break;
-
-                            case C:
-                                return 3;
-                                break;
-                        }
-                    }
-                    if(n1->at.m.nivel == n2->at.m.nivel)
-                    {
-                        switch(n1->at.m.classe)
-                        {
-                            case V:
-                                ERRO("REGRA APPLY PRODUTO MATRIZ MATRIZ| N1 E VETOR 2");
-                                break;
-
-                            case R:
-                                return 1;
-                                break;
-
-                            case C:
-                                switch(n2->at.m.classe)
-                                {
-                                    case V:
-                                        ERRO("REGRA APPLY PRODUTO MATRIZ MATRIZ| N2 E VETOR 1");
-                                        break;
-
-                                    case R:
-                                        return 5;
-                                        break;
-
-                                    case C:
-                                        return 3;
-                                        break;
-                                }
-                                break;
-                        }
-                    }
-                    if(n1->at.m.nivel > n2->at.m.nivel)
-                    {
-                        switch(n2->at.m.classe)
-                        {
-                            case V:
-                                ERRO("REGRA APPLY PRODUTO MATRIZ MATRIZ| N2 E VETOR 2");
-                                break;
-
-                            case R:
-                                return 4;
-                                break;
-
-                            case C:
-                                return 2;
-                                break;
-                        }
-                    }
-                    break;
-
-                case Fim:
-                    if(compara_no_fim_zero(n2,1))
-                    {
-                        return 8;
-                    }
-                    else
-                    {
-                        switch(n1->at.m.classe)
-                        {
-                            case V:
-                                ERRO("REGRA APPLY PRODUTO MATRIZ MATRIZ| N1 E VETOR 3");
-                                break;
-
-                            case R:
-                                return 1;
-                                break;
-
-                            case C:
-                                return 3;
-                                break;
-                        }
-                    }
-                    break;
-
-            }
-            break;
-
-        case Fim:
-            if(compara_no_fim_zero(n1,1))
-            {
-                return 8;
-            }
-            else
-            {
-                switch(n2->tipo)
-                {
-                    case Inicio:
-                        ERRO("REGRA APPLY PRODUTO MATRIZ MATRIZ| N1 E FIM N2 INICIO");
-                        break;
-
-                    case Meio:
-                        switch(n2->at.m.classe)
-                        {
-                            case V:
-                                ERRO("REGRA APPLY PRODUTO MATRIZ MATRIZ| N2 E VETOR 3");
-                                break;
-
-                            case R:
-                                return 4;
-                                break;
-
-                            case C:
-                                return 2;
-                                break;
-                        }
-                        break;
-
-                    case Fim:
-                        if(compara_no_fim_zero(n2,1))
-                            return 8;
-                        else
-                            return 6;
-                        break;
-                }
-            }
-            break;
-    }
-    ERRO("REGRA APPLY PRODUTO MATRIZ MATRIZ| NAO ACIOONOU NENHUMA REGRA");
-    return 0;
-}
-
-Short regra_apply_produto_matriz_vetor(apply *a)
-{
-    no *n1, *n2;
-    n1 = a->n1;
-    n2 = a->n2;
-
-    switch(n1->tipo)
-    {
-        case Inicio:
-            if(n2->tipo != Inicio)
-                ERRO("REGRA APPLY PRODUTO MATRIZ VETOR| N1 E INICIO N2 NAO");
-
-            return 0;
-            break;
-
-        case Meio:
-            switch(n2->tipo)
-            {
-                case Inicio:
-                    ERRO("REGRA APPLY PRODUTO MATRIZ VETOR| N1 E MEIO N2 E INICIO");
-                    break;
-
-                case Meio:
-                    if(n2->at.m.classe != V)
-                        ERRO("REGRA APPLY PRODUTO MATRIZ VETOR| N2 TEM R OU C 1");
-
-                    if(n1->at.m.nivel < n2->at.m.nivel)
-                    {
-                        switch(n1->at.m.classe)
-                        {
-                                case V:
-                                    ERRO("REGRA APPLY PRODUTO MATRIZ VETOR| N1 TEM V 1");
-                                    break;
-
-                                case C:
-                                    return 1;
-                                    break;
-
-                                case R:
-                                    return 3;
-                                    break;
-                        }
-                    }
-                    if(n1->at.m.nivel == n2->at.m.nivel)
-                    {
-                        switch(n1->at.m.classe)
-                        {
-                                case V:
-                                    ERRO("REGRA APPLY PRODUTO MATRIZ VETOR| N1 TEM V 2");
-                                    break;
-
-                                case C:
-                                    return 10;
-                                    break;
-
-                                case R:
-                                    return 3;
-                                    break;
-                        }
-                    }
-                    if(n1->at.m.nivel > n2->at.m.nivel)
-                    {
-                        return 11;
-                    }
-                    break;
-
-                case Fim:
-                    if(compara_no_fim_zero(n2,1))
-                    {
-                        return 8;
-                    }
-                    else
-                    {
-                        switch(n1->at.m.classe)
-                        {
-                            case V:
-                                ERRO("REGRA APPLY PRODUTO MATRIZ VETOR| N1 TEM V 3");
-                                break;
-
-                            case C:
-                                return 1;
-                                break;
-
-                            case R:
-                                return 3;
-                                break;
-                        }
-                    }
-                    break;
-            }
-            break;
-
-        case Fim:
-            if(compara_no_fim_zero(n1,1))
-            {
-                return 8;
-            }
-            else
-            {
-                switch(n2->tipo)
-                {
-                    case Inicio:
-                        ERRO("REGRA APPLY PRODUTO MATRIZ VETOR| N1 E FIM N2 E INICIO");
-                        break;
-
-                    case Meio:
-                        if(n2->at.m.classe != V)
-                            ERRO("REGRA APPLY PRODUTO MATRIZ VETOR| N2 TEM R OU C 2");
-
-                        return 11;
-                        break;
-
-                    case Fim:
-                        if(compara_no_fim_zero(n2,1))
-                            return 8;
-                        else
-                            return 6;
-                        break;
-                }
-            }
-            break;
-    }
-    ERRO("REGRA APPLY PRODUTO MATRIZ VETOR| NAO ATIVOU NENHUMA REGRA");
-    return 0;
-}
-
-Short regra_apply_produto_vetor_vetor(apply *a)
-{
-    no *n1, *n2;
-    n1 = a->n1;
-    n2 = a->n2;
-
-    switch(n1->tipo)
-    {
-        case Inicio:
-            if(n2->tipo != Inicio)
-                ERRO("REGRA APPLY PRODUTO VETOR VETOR| N1 E INICIO E N2 NAO");
-
-            return 0;
-            break;
-
-        case Meio:
-            if(n1->at.m.classe != V)
-                ERRO("REGRA APPLY PRODUTO VETOR VETOR| Q1 NAO E VETOR");
-
-            switch(n2->tipo)
-            {
-                case Inicio:
-                    ERRO("REGRA APPLY PRODUTO VETOR VETOR| N2 E MEIO N2 INICIO");
-                    break;
-
-                case Meio:
-                    if(n1->at.m.classe != V)
-                        ERRO("REGRA APPLY PRODUTO VETOR VETOR| Q2 NAO E VETOR");
-
-                    if(n1->at.m.nivel < n2->at.m.nivel)
-                        return 1;
-                    if(n1->at.m.nivel == n2->at.m.nivel)
-                        return 5;
-                    if(n1->at.m.nivel > n2->at.m.nivel)
-                        return 2;
-                    break;
-
-                case Fim:
-                    if(compara_no_fim_zero(n2,1))
-                        return 8;
-                    else
-                        return 1;
-                    break;
-
-            }
-            break;
-
-        case Fim:
-            if(compara_no_fim_zero(n1,1))
-            {
-                return 8;
-            }
-            else
-            {
-                switch(n2->tipo)
-                {
-                    case Inicio:
-                        ERRO("REGRA APPLY PRODUTO VETOR VETOR| N1 E FIM N2 INICIO");
-                        break;
-
-                    case Meio:
-                        return 2;
-                        break;
-
-                    case Fim:
-                        if(compara_no_fim_zero(n2,1))
-                            return 8;
-                        else
-                            return 7;
-                        break;
-                }
-            }
-            break;
-    }
-    ERRO("REGRA APPLY PRODUTO VETOR VETOR| NAO ACIONOU NENHUMA REGRA");
-    return 0;
-}
-
-
-
 /**  apply pronto  **/
 
 no* apply_soma(no *n1, no *n2)
 {
     no *n;
-    n = apply_base(n1,n2,regra_apply_soma);
+    n = apply_base(n1,n2);
     return n;
 }
 
 no* apply_produto_matriz_matriz(no *n1, no *n2)
 {
     no *n;
-    n = apply_base(n1,n2,regra_apply_produto_matriz_matriz);
+    n = apply_base(n1,n2);
     return n;
 }
 
 no* apply_produto_matriz_vetor(no *n1, no *n2)
 {
     no *n;
-    n = apply_base(n1,n2,regra_apply_produto_matriz_vetor);
+    n = apply_base(n1,n2);
     return n;
 }
 
 no* apply_produto_vetor_vetor(no *n1, no *n2)
 {
     no *n;
-    n = apply_base(n1,n2,regra_apply_produto_vetor_vetor);
+    n = apply_base(n1,n2);
     return n;
 }
 
@@ -3268,8 +3132,9 @@ void contrai(QDD *Q, Short classe)
         libera_suporte_no(s);
         s = saux;
     }
-    if(s != NULL)
-        libera_suporte_no(s);
+    /*if(s != NULL)
+        libera_suporte_no(s);*/
+    mostra_suporte_no(s);
 
     Long ex;
     no *n;
