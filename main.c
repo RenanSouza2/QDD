@@ -526,6 +526,7 @@ void inicia_structs_globais()
     Qred  = cria_QDD(1);
     Qred->n = cria_no_inicio();
     nzero = cria_no_fim(0,0);
+    mem -= sizeof(QDD) + 2*sizeof(no);
 }
 
 void finaliza_structs_globais()
@@ -533,6 +534,7 @@ void finaliza_structs_globais()
     libera_no(Qred->n);
     libera_QDD_no(Qred);
     libera_no(nzero);
+    mem -= sizeof(QDD) + 2*sizeof(no);
 }
 
 
@@ -3549,8 +3551,8 @@ double teste_velocidade_unico(char *nome, QDD* (*le)(char*), FILE *fp, FILE *fr,
         mostra_quantidades();
         fmostra_quantidades(fr);
         fprintf(fp,"%llu|%llu|%llu|%llu|",mem,iM,iF,iL);
-        printf("\ntempo   1:");
-        fprintf(fr,"\ntempo   1:");
+        printf("\nTempo   1:");
+        fprintf(fr,"\nTempo   1:");
     }
     libera_QDD(Q1);
 
@@ -3613,8 +3615,16 @@ double teste_velocidade_unico(char *nome, QDD* (*le)(char*), FILE *fp, FILE *fr,
     depoisT = clock();
     deltaT = depoisT-antesT;
     tempoT = deltaT/clk;
-    printf("\t\tTotal: %.3e",tempoT);
-    fprintf(fr,"\t\tTotal: %.3e",tempoT);
+    printf("\tTotal: %.3e",tempoT);
+    fprintf(fr,"\tTotal: %.3e",tempoT);
+
+    time_t rawtime;
+    struct tm *timeinfo;
+    time(&rawtime);
+    timeinfo = localtime(&rawtime);
+
+    printf("\t%d:%d  %2d/%02d",timeinfo->tm_hour,timeinfo->tm_min,timeinfo->tm_mday,timeinfo->tm_mon+1);
+    fprintf(fr,"\t%d:%d  %2d/%02d",timeinfo->tm_hour,timeinfo->tm_min,timeinfo->tm_mday,timeinfo->tm_mon+1);
 
     return precisao;
 }
@@ -3705,7 +3715,7 @@ void teste_velocidade_vetor(char *nomeI, Short limiteinf, Short limitesup, Short
     teste_velocidade_base(nomeI,limiteinf,limitesup,amostras,arquivo,fr,le_vetor);
 }
 
-void teste_curto(Short amostras, FILE *fr)
+void teste_curto(Short amostras, Short arquivo, FILE *fr)
 {
     double tempo;
     time_t antes, depois, delta;
@@ -3717,10 +3727,10 @@ void teste_curto(Short amostras, FILE *fr)
     }
 
     antes = clock();
-    teste_velocidade_matriz("H",1,9,amostras,1,fr);
-    teste_velocidade_matriz("I",1,9,amostras,1,fr);
-    teste_velocidade_matriz("QFT",1,10,amostras,1,fr);
-    teste_velocidade_vetor("V",1,22,amostras,1,fr);
+    teste_velocidade_matriz("H",1,9,amostras,arquivo,fr);
+    teste_velocidade_matriz("I",1,9,amostras,arquivo,fr);
+    teste_velocidade_matriz("QFT",1,10,amostras,arquivo,fr);
+    teste_velocidade_vetor("V",1,22,amostras,arquivo,fr);
     depois = clock();
 
     delta = depois-antes;
@@ -3731,7 +3741,7 @@ void teste_curto(Short amostras, FILE *fr)
         fclose(fr);
 }
 
-void teste_longo(Short amostras, FILE *fr)
+void teste_longo(Short amostras, Short arquivo, FILE *fr)
 {
     double tempo;
     time_t antes, depois, delta;
@@ -3743,10 +3753,10 @@ void teste_longo(Short amostras, FILE *fr)
     }
 
     antes = clock();
-    teste_velocidade_matriz("H",10,11,amostras,2,fr);
-    teste_velocidade_matriz("I",10,11,amostras,2,fr);
-    teste_velocidade_matriz("QFT",11,12,amostras,2,fr);
-    teste_velocidade_vetor("V",23,24,amostras,2,fr);
+    teste_velocidade_matriz("H",10,11,amostras,arquivo,fr);
+    teste_velocidade_matriz("I",10,11,amostras,arquivo,fr);
+    teste_velocidade_matriz("QFT",11,12,amostras,arquivo,fr);
+    teste_velocidade_vetor("V",23,24,amostras,arquivo,fr);
     depois = clock();
 
     delta = depois-antes;
@@ -3757,7 +3767,7 @@ void teste_longo(Short amostras, FILE *fr)
         fclose(fr);
 }
 
-void teste_completo(Short amostras)
+void teste_completo(Short amostras, Short arquivo)
 {
     double tempo;
     time_t antes, depois, delta;
@@ -3765,8 +3775,8 @@ void teste_completo(Short amostras)
     fr = fopen("RelatorioTesteCompleto.txt","w");
 
     antes = clock();
-    teste_curto(amostras,fr);
-    teste_longo(amostras,fr);
+    teste_curto(amostras,arquivo,fr);
+    teste_longo(amostras,arquivo,fr);
     depois = clock();
 
     delta = depois-antes;
@@ -3801,7 +3811,7 @@ int main()
     setlocale(LC_ALL, "Portuguese");
     /***********************************/
 
-    teste_curto(10,NULL);
+    teste_curto(2,1,NULL);
 
     /***********************************/
     finaliza_structs_globais();
