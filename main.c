@@ -520,6 +520,11 @@ void libera_matriz_complexo(complexo **m, Short N)
 
 QDD *Qred;
 no  *nzero;
+Short mrf_soma[5][5], mrm_soma[3][3][3];
+Short mrf_produto_vetor_vetor[5][5], mrm_produto_vetor_vetor[3][3][3];
+Short mrf_produto_matriz_vetor[5][5], mrm_produto_matriz_vetor[3][3][3];
+Short mrf_produto_matriz_matriz[5][5], mrm_produto_matriz_matriz[3][3][3];
+
 
 void inicia_structs_globais()
 {
@@ -527,14 +532,271 @@ void inicia_structs_globais()
     Qred->n = cria_no_inicio();
     nzero = cria_no_fim(0,0);
     mem -= sizeof(QDD) + 2*sizeof(no);
+    iQ--;
+    iI--;
+    iF--;
+
+
+    mrf_soma[0][3] = 7;
+    mrf_soma[0][4] = 7;
+
+    mrf_soma[1][3] = 1;
+    mrf_soma[1][4] = 1;
+
+    mrf_soma[2][3] = 4;
+    mrf_soma[2][4] = 4;
+
+    mrf_soma[3][0] = 8;
+    mrf_soma[3][1] = 2;
+    mrf_soma[3][2] = 5;
+    mrf_soma[3][3] = 9;
+    mrf_soma[3][4] = 9;
+
+    mrf_soma[4][0] = 8;
+    mrf_soma[4][1] = 2;
+    mrf_soma[4][2] = 5;
+    mrf_soma[4][3] = 9;
+    mrf_soma[4][4] = 9;
+
+
+
+    mrm_soma[0][0][0] = 7;
+    mrm_soma[0][0][1] = 14;
+    mrm_soma[0][0][2] = 14;
+
+    mrm_soma[0][1][0] = 14;
+    mrm_soma[0][1][1] = 1;
+    mrm_soma[0][1][2] = 1;
+
+    mrm_soma[0][2][0] = 14;
+    mrm_soma[0][2][1] = 4;
+    mrm_soma[0][2][2] = 4;
+
+
+    mrm_soma[1][0][0] = 9;
+    mrm_soma[1][0][1] = 14;
+    mrm_soma[1][0][2] = 14;
+
+    mrm_soma[1][1][0] = 14;
+    mrm_soma[1][1][1] = 3;
+    mrm_soma[1][1][2] = 1;
+
+    mrm_soma[1][2][0] = 14;
+    mrm_soma[1][2][1] = 2;
+    mrm_soma[1][2][2] = 6;
+
+
+    mrm_soma[2][0][0] = 8;
+    mrm_soma[2][0][1] = 14;
+    mrm_soma[2][0][2] = 14;
+
+    mrm_soma[2][1][0] = 14;
+    mrm_soma[2][1][1] = 2;
+    mrm_soma[2][1][2] = 5;
+
+    mrm_soma[2][2][0] = 14;
+    mrm_soma[2][2][1] = 2;
+    mrm_soma[2][2][2] = 5;
+
+
+
+    mrf_produto_vetor_vetor[0][3] = 7;
+    mrf_produto_vetor_vetor[0][4] = 13;
+
+    mrf_produto_vetor_vetor[1][3] = 14;
+    mrf_produto_vetor_vetor[1][4] = 14;
+
+    mrf_produto_vetor_vetor[2][3] = 14;
+    mrf_produto_vetor_vetor[2][4] = 14;
+
+    mrf_produto_vetor_vetor[3][0] = 8;
+    mrf_produto_vetor_vetor[3][1] = 14;
+    mrf_produto_vetor_vetor[3][2] = 14;
+    mrf_produto_vetor_vetor[3][3] = 12;
+    mrf_produto_vetor_vetor[3][4] = 13;
+
+    mrf_produto_vetor_vetor[4][0] = 13;
+    mrf_produto_vetor_vetor[4][1] = 14;
+    mrf_produto_vetor_vetor[4][2] = 14;
+    mrf_produto_vetor_vetor[4][3] = 13;
+    mrf_produto_vetor_vetor[4][4] = 13;
+
+
+
+    mrm_produto_vetor_vetor[0][0][0] = 7;
+    mrm_produto_vetor_vetor[0][0][1] = 14;
+    mrm_produto_vetor_vetor[0][0][2] = 14;
+
+    mrm_produto_vetor_vetor[0][1][0] = 14;
+    mrm_produto_vetor_vetor[0][1][1] = 14;
+    mrm_produto_vetor_vetor[0][1][2] = 14;
+
+    mrm_produto_vetor_vetor[0][2][0] = 14;
+    mrm_produto_vetor_vetor[0][2][1] = 14;
+    mrm_produto_vetor_vetor[0][2][2] = 14;
+
+
+    mrm_produto_vetor_vetor[1][0][0] = 9;
+    mrm_produto_vetor_vetor[1][0][1] = 14;
+    mrm_produto_vetor_vetor[1][0][2] = 14;
+
+    mrm_produto_vetor_vetor[1][1][0] = 14;
+    mrm_produto_vetor_vetor[1][1][1] = 14;
+    mrm_produto_vetor_vetor[1][1][2] = 14;
+
+    mrm_produto_vetor_vetor[1][2][0] = 14;
+    mrm_produto_vetor_vetor[1][2][1] = 14;
+    mrm_produto_vetor_vetor[1][2][2] = 14;
+
+
+    mrm_produto_vetor_vetor[2][0][0] = 8;
+    mrm_produto_vetor_vetor[2][0][1] = 14;
+    mrm_produto_vetor_vetor[2][0][2] = 14;
+
+    mrm_produto_vetor_vetor[2][1][0] = 14;
+    mrm_produto_vetor_vetor[2][1][1] = 14;
+    mrm_produto_vetor_vetor[2][1][2] = 14;
+
+    mrm_produto_vetor_vetor[2][2][0] = 14;
+    mrm_produto_vetor_vetor[2][2][1] = 14;
+    mrm_produto_vetor_vetor[2][2][2] = 14;
+
+
+
+    mrf_produto_matriz_vetor[0][3] = 14;
+    mrf_produto_matriz_vetor[0][4] = 14;
+
+    mrf_produto_matriz_vetor[1][3] = 7;
+    mrf_produto_matriz_vetor[1][4] = 13;
+
+    mrf_produto_matriz_vetor[2][3] = 4;
+    mrf_produto_matriz_vetor[2][4] = 13;
+
+    mrf_produto_matriz_vetor[3][0] = 5;
+    mrf_produto_matriz_vetor[3][1] = 14;
+    mrf_produto_matriz_vetor[3][2] = 14;
+    mrf_produto_matriz_vetor[3][3] = 11;
+    mrf_produto_matriz_vetor[3][4] = 13;
+
+    mrf_produto_matriz_vetor[4][0] = 13;
+    mrf_produto_matriz_vetor[4][1] = 14;
+    mrf_produto_matriz_vetor[4][2] = 14;
+    mrf_produto_matriz_vetor[4][3] = 13;
+    mrf_produto_matriz_vetor[4][4] = 13;
+
+
+
+    mrm_produto_matriz_vetor[0][0][0] = 14;
+    mrm_produto_matriz_vetor[0][0][1] = 14;
+    mrm_produto_matriz_vetor[0][0][2] = 14;
+
+    mrm_produto_matriz_vetor[0][1][0] = 7;
+    mrm_produto_matriz_vetor[0][1][1] = 14;
+    mrm_produto_matriz_vetor[0][1][2] = 14;
+
+    mrm_produto_matriz_vetor[0][2][0] = 4;
+    mrm_produto_matriz_vetor[0][2][1] = 14;
+    mrm_produto_matriz_vetor[0][2][2] = 14;
+
+
+    mrm_produto_matriz_vetor[1][0][0] = 14;
+    mrm_produto_matriz_vetor[1][0][1] = 14;
+    mrm_produto_matriz_vetor[1][0][2] = 14;
+
+    mrm_produto_matriz_vetor[1][1][0] = 7;
+    mrm_produto_matriz_vetor[1][1][1] = 14;
+    mrm_produto_matriz_vetor[1][1][2] = 14;
+
+    mrm_produto_matriz_vetor[1][2][0] = 6;
+    mrm_produto_matriz_vetor[1][2][1] = 14;
+    mrm_produto_matriz_vetor[1][2][2] = 14;
+
+
+    mrm_produto_matriz_vetor[2][0][0] = 14;
+    mrm_produto_matriz_vetor[2][0][1] = 14;
+    mrm_produto_matriz_vetor[2][0][2] = 14;
+
+    mrm_produto_matriz_vetor[2][1][0] = 5;
+    mrm_produto_matriz_vetor[2][1][1] = 14;
+    mrm_produto_matriz_vetor[2][1][2] = 14;
+
+    mrm_produto_matriz_vetor[2][2][0] = 5;
+    mrm_produto_matriz_vetor[2][2][1] = 14;
+    mrm_produto_matriz_vetor[2][2][2] = 14;
+
+
+
+    mrf_produto_matriz_matriz[0][3] = 14;
+    mrf_produto_matriz_matriz[0][4] = 14;
+
+    mrf_produto_matriz_matriz[1][3] = 1;
+    mrf_produto_matriz_matriz[1][4] = 13;
+
+    mrf_produto_matriz_matriz[2][3] = 7;
+    mrf_produto_matriz_matriz[2][4] = 13;
+
+    mrf_produto_matriz_matriz[3][0] = 14;
+    mrf_produto_matriz_matriz[3][1] = 8;
+    mrf_produto_matriz_matriz[3][2] = 5;
+    mrf_produto_matriz_matriz[3][3] = 11;
+    mrf_produto_matriz_matriz[3][4] = 13;
+
+    mrf_produto_matriz_matriz[4][0] = 14;
+    mrf_produto_matriz_matriz[4][1] = 13;
+    mrf_produto_matriz_matriz[4][2] = 13;
+    mrf_produto_matriz_matriz[4][3] = 13;
+    mrf_produto_matriz_matriz[4][4] = 13;
+
+
+
+    mrm_produto_matriz_matriz[0][0][0] = 14;
+    mrm_produto_matriz_matriz[0][0][1] = 14;
+    mrm_produto_matriz_matriz[0][0][2] = 14;
+
+    mrm_produto_matriz_matriz[0][1][0] = 14;
+    mrm_produto_matriz_matriz[0][1][1] = 1;
+    mrm_produto_matriz_matriz[0][1][2] = 1;
+
+    mrm_produto_matriz_matriz[0][2][0] = 14;
+    mrm_produto_matriz_matriz[0][2][1] = 7;
+    mrm_produto_matriz_matriz[0][2][2] = 7;
+
+
+    mrm_produto_matriz_matriz[1][0][0] = 14;
+    mrm_produto_matriz_matriz[1][0][1] = 14;
+    mrm_produto_matriz_matriz[1][0][2] = 14;
+
+    mrm_produto_matriz_matriz[1][1][0] = 14;
+    mrm_produto_matriz_matriz[1][1][1] = 1;
+    mrm_produto_matriz_matriz[1][1][2] = 1;
+
+    mrm_produto_matriz_matriz[1][2][0] = 14;
+    mrm_produto_matriz_matriz[1][2][1] = 6;
+    mrm_produto_matriz_matriz[1][2][2] = 7;
+
+
+    mrm_produto_matriz_matriz[2][0][0] = 14;
+    mrm_produto_matriz_matriz[2][0][1] = 14;
+    mrm_produto_matriz_matriz[2][0][2] = 14;
+
+    mrm_produto_matriz_matriz[2][1][0] = 14;
+    mrm_produto_matriz_matriz[2][1][1] = 8;
+    mrm_produto_matriz_matriz[2][1][2] = 5;
+
+    mrm_produto_matriz_matriz[2][2][0] = 14;
+    mrm_produto_matriz_matriz[2][2][1] = 8;
+    mrm_produto_matriz_matriz[2][2][2] = 5;
 }
 
 void finaliza_structs_globais()
 {
+    iQ++;
+    iI++;
+    iF++;
+    mem += sizeof(QDD) + 2*sizeof(no);
     libera_no(Qred->n);
     libera_QDD_no(Qred);
     libera_no(nzero);
-    mem -= sizeof(QDD) + 2*sizeof(no);
 }
 
 
@@ -2564,7 +2826,7 @@ void monta_apply(apply *a, Short regra)
     a->a2 = a2;
 }
 
-Short regra_apply(apply *a)
+Short regra_apply(apply *a, Short mrf[5][5], Short mrm[3][3][3])
 {
     no *n1, *n2;
     n1 = a->n1;
@@ -2595,12 +2857,15 @@ Short regra_apply(apply *a)
                                 switch(n2->at.m.nivel)
                                 {
                                     case V:
+                                        return mrm[0][0][0];
                                         break;
 
                                     case R:
+                                        return mrm[0][0][1];
                                         break;
 
                                     case C:
+                                        return mrm[0][0][2];
                                         break;
                                 }
                                 break;
@@ -2609,12 +2874,15 @@ Short regra_apply(apply *a)
                                 switch(n2->at.m.nivel)
                                 {
                                     case V:
+                                        return mrm[0][1][0];
                                         break;
 
                                     case R:
+                                        return mrm[0][1][1];
                                         break;
 
                                     case C:
+                                        return mrm[0][1][2];
                                         break;
                                 }
                                 break;
@@ -2623,12 +2891,15 @@ Short regra_apply(apply *a)
                                 switch(n2->at.m.nivel)
                                 {
                                     case V:
+                                        return mrm[0][2][0];
                                         break;
 
                                     case R:
+                                        return mrm[0][2][1];
                                         break;
 
                                     case C:
+                                        return mrm[0][2][2];
                                         break;
                                 }
                                 break;
@@ -2642,12 +2913,15 @@ Short regra_apply(apply *a)
                                 switch(n2->at.m.nivel)
                                 {
                                     case V:
+                                        return mrm[1][0][0];
                                         break;
 
                                     case R:
+                                        return mrm[1][0][1];
                                         break;
 
                                     case C:
+                                        return mrm[1][0][2];
                                         break;
                                 }
                                 break;
@@ -2656,12 +2930,15 @@ Short regra_apply(apply *a)
                                 switch(n2->at.m.nivel)
                                 {
                                     case V:
+                                        return mrm[1][1][0];
                                         break;
 
                                     case R:
+                                        return mrm[1][1][1];
                                         break;
 
                                     case C:
+                                        return mrm[1][1][2];
                                         break;
                                 }
                                 break;
@@ -2670,12 +2947,15 @@ Short regra_apply(apply *a)
                                 switch(n2->at.m.nivel)
                                 {
                                     case V:
+                                        return mrm[1][2][0];
                                         break;
 
                                     case R:
+                                        return mrm[1][2][1];
                                         break;
 
                                     case C:
+                                        return mrm[1][2][2];
                                         break;
                                 }
                                 break;
@@ -2689,12 +2969,15 @@ Short regra_apply(apply *a)
                                 switch(n2->at.m.nivel)
                                 {
                                     case V:
+                                        return mrm[2][0][0];
                                         break;
 
                                     case R:
+                                        return mrm[2][0][1];
                                         break;
 
                                     case C:
+                                        return mrm[2][0][2];
                                         break;
                                 }
                                 break;
@@ -2703,12 +2986,15 @@ Short regra_apply(apply *a)
                                 switch(n2->at.m.nivel)
                                 {
                                     case V:
+                                        return mrm[2][1][0];
                                         break;
 
                                     case R:
+                                        return mrm[2][1][2];
                                         break;
 
                                     case C:
+                                        return mrm[2][1][3];
                                         break;
                                 }
                                 break;
@@ -2717,12 +3003,15 @@ Short regra_apply(apply *a)
                                 switch(n2->at.m.nivel)
                                 {
                                     case V:
+                                        return mrm[2][2][0];
                                         break;
 
                                     case R:
+                                        return mrm[2][2][1];
                                         break;
 
                                     case C:
+                                        return mrm[2][2][2];
                                         break;
                                 }
                                 break;
@@ -2736,12 +3025,15 @@ Short regra_apply(apply *a)
                         switch(n1->at.m.classe)
                         {
                             case V:
+                                return mrf[0][4];
                                 break;
 
                             case R:
+                                return mrf[1][4];
                                 break;
 
                             case C:
+                                return mrf[2][4];
                                 break;
                         }
                     }
@@ -2750,12 +3042,15 @@ Short regra_apply(apply *a)
                         switch(n1->at.m.classe)
                         {
                             case V:
+                                return mrf[0][3];
                                 break;
 
                             case R:
+                                return mrf[1][3];
                                 break;
 
                             case C:
+                                return mrf[2][3];
                                 break;
                         }
                     }
@@ -2776,25 +3071,24 @@ Short regra_apply(apply *a)
                         switch(n2->at.m.classe)
                         {
                             case V:
+                                return mrf[0][4];
                                 break;
 
                             case R:
+                                return mrf[1][4];
                                 break;
 
                             case C:
+                                return mrf[2][4];
                                 break;
                         }
                         break;
 
                     case Fim:
                         if(compara_no_fim_zero(n2,1))
-                        {
-
-                        }
+                            return mrf[4][4];
                         else
-                        {
-
-                        }
+                            return mrf[3][4];
                         break;
                 }
             }
@@ -2810,25 +3104,24 @@ Short regra_apply(apply *a)
                         switch(n2->at.m.classe)
                         {
                             case V:
+                                return mrf[3][0];
                                 break;
 
                             case R:
+                                return mrf[3][1];
                                 break;
 
                             case C:
+                                return mrf[3][2];
                                 break;
                         }
                         break;
 
                     case Fim:
                         if(compara_no_fim_zero(n2,1))
-                        {
-
-                        }
+                            return mrf[3][4];
                         else
-                        {
-
-                        }
+                            return mrf[3][3];
                         break;
                 }
             }
@@ -2837,7 +3130,7 @@ Short regra_apply(apply *a)
     return 0;
 }
 
-no* apply_base(no *n1, no *n2)
+no* apply_base(no *n1, no *n2, Short mrf[5][5], Short mrm[3][3][3])
 {
     apply *a;
     a = cria_apply();
@@ -2850,7 +3143,7 @@ no* apply_base(no *n1, no *n2)
     ac = a;
     for(ac = a; ac != NULL; ac = ac->a)
     {
-        regra = regra_apply(ac);
+        regra = regra_apply(ac,mrf,mrm);
         monta_apply(ac,regra);
 
         n = ac->n;
@@ -2905,28 +3198,28 @@ no* apply_base(no *n1, no *n2)
 no* apply_soma(no *n1, no *n2)
 {
     no *n;
-    n = apply_base(n1,n2);
+    n = apply_base(n1,n2,mrf_soma,mrm_soma);
     return n;
 }
 
 no* apply_produto_matriz_matriz(no *n1, no *n2)
 {
     no *n;
-    n = apply_base(n1,n2);
+    n = apply_base(n1,n2,mrf_produto_matriz_matriz,mrm_produto_matriz_matriz);
     return n;
 }
 
 no* apply_produto_matriz_vetor(no *n1, no *n2)
 {
     no *n;
-    n = apply_base(n1,n2);
+    n = apply_base(n1,n2,mrf_produto_matriz_vetor,mrm_produto_matriz_vetor);
     return n;
 }
 
 no* apply_produto_vetor_vetor(no *n1, no *n2)
 {
     no *n;
-    n = apply_base(n1,n2);
+    n = apply_base(n1,n2,mrf_produto_vetor_vetor,mrm_produto_vetor_vetor);
     return n;
 }
 
@@ -3570,6 +3863,14 @@ double teste_velocidade_unico(char *nome, QDD* (*le)(char*), FILE *fp, FILE *fr,
         printf("\t\tTotal: %.3e",tempoT);
         fprintf(fr,"\t\tTotal: %.3e",tempoT);
 
+        time_t rawtime;
+        struct tm *timeinfo;
+        time(&rawtime);
+        timeinfo = localtime(&rawtime);
+
+        printf("\t%02d:%02d  %02d/%02d",timeinfo->tm_hour,timeinfo->tm_min,timeinfo->tm_mday,timeinfo->tm_mon+1);
+        fprintf(fr,"\t%02d:%02d  %02d/%02d",timeinfo->tm_hour,timeinfo->tm_min,timeinfo->tm_mday,timeinfo->tm_mon+1);
+
         return precisao;
     }
 
@@ -3623,8 +3924,8 @@ double teste_velocidade_unico(char *nome, QDD* (*le)(char*), FILE *fp, FILE *fr,
     time(&rawtime);
     timeinfo = localtime(&rawtime);
 
-    printf("\t%d:%d  %2d/%02d",timeinfo->tm_hour,timeinfo->tm_min,timeinfo->tm_mday,timeinfo->tm_mon+1);
-    fprintf(fr,"\t%d:%d  %2d/%02d",timeinfo->tm_hour,timeinfo->tm_min,timeinfo->tm_mday,timeinfo->tm_mon+1);
+    printf("\t%02d:%02d  %2d/%02d",timeinfo->tm_hour,timeinfo->tm_min,timeinfo->tm_mday,timeinfo->tm_mon+1);
+    fprintf(fr,"\t%02d:%02d  %02d/%02d",timeinfo->tm_hour,timeinfo->tm_min,timeinfo->tm_mday,timeinfo->tm_mon+1);
 
     return precisao;
 }
@@ -3720,9 +4021,12 @@ void teste_curto(Short amostras, Short arquivo, FILE *fr)
     double tempo;
     time_t antes, depois, delta;
     Short ri = 0;
+    char nome[5];
+    nome[0] = '\0';
     if(fr == NULL)
     {
-        fr = fopen("RelatorioTesteCurto.txt","w");
+        sprintf(nome,"RelatorioTesteCurto%d.txt",arquivo);
+        fr = fopen(nome,"w");
         ri = 1;
     }
 
@@ -3741,22 +4045,54 @@ void teste_curto(Short amostras, Short arquivo, FILE *fr)
         fclose(fr);
 }
 
+void teste_medio(Short amostras, Short arquivo, FILE *fr)
+{
+    double tempo;
+    time_t antes, depois, delta;
+    Short ri = 0;
+    char nome[50];
+    nome[0] = '\0';
+    if(fr == NULL)
+    {
+        sprintf(nome,"RelatorioTesteMedio%d.txt",arquivo);
+        fr = fopen(nome,"w");
+        ri = 1;
+    }
+
+    antes = clock();
+    teste_velocidade_matriz("H",10,10,amostras,arquivo,fr);
+    teste_velocidade_matriz("I",10,10,amostras,arquivo,fr);
+    teste_velocidade_matriz("QFT",11,11,amostras,arquivo,fr);
+    teste_velocidade_vetor("V",23,23,amostras,arquivo,fr);
+    depois = clock();
+
+    delta = depois-antes;
+    tempo = (double)delta/CLOCKS_PER_SEC;
+    printf("\n\nTempo teste longo: %.3e",tempo);
+    fprintf(fr,"\n\nTempo teste longo: %.3e",tempo);
+    if(ri)
+        fclose(fr);
+}
+
 void teste_longo(Short amostras, Short arquivo, FILE *fr)
 {
     double tempo;
     time_t antes, depois, delta;
     Short ri = 0;
+    char nome[50];
+    nome[0] = '\0';
     if(fr == NULL)
     {
-        fr = fopen("RelatorioTesteLongo.txt","w");
+        sprintf(nome,"RelatorioTesteLongo%d.txt",arquivo);
+        fr = fopen(nome,"w");
         ri = 1;
     }
 
     antes = clock();
-    teste_velocidade_matriz("H",10,11,amostras,arquivo,fr);
-    teste_velocidade_matriz("I",10,11,amostras,arquivo,fr);
-    teste_velocidade_matriz("QFT",11,12,amostras,arquivo,fr);
-    teste_velocidade_vetor("V",23,24,amostras,arquivo,fr);
+    teste_velocidade_matriz("H",11,11,amostras,arquivo,fr);
+    teste_velocidade_matriz("I",11,11,amostras,arquivo,fr);
+    teste_velocidade_matriz("QFT",12,12,amostras,arquivo,fr);
+    teste_velocidade_vetor("V",24,24,amostras,arquivo,fr);
     depois = clock();
 
     delta = depois-antes;
@@ -3776,7 +4112,8 @@ void teste_completo(Short amostras, Short arquivo)
 
     antes = clock();
     teste_curto(amostras,arquivo,fr);
-    teste_longo(amostras,arquivo,fr);
+    teste_medio(amostras,arquivo+1,fr);
+    teste_longo(amostras,arquivo+2,fr);
     depois = clock();
 
     delta = depois-antes;
@@ -3811,7 +4148,7 @@ int main()
     setlocale(LC_ALL, "Portuguese");
     /***********************************/
 
-    teste_curto(2,1,NULL);
+    teste_velocidade_matriz("H",1,9,30,2,NULL);
 
     /***********************************/
     finaliza_structs_globais();
