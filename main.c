@@ -90,10 +90,6 @@ struct suporte
     struct suporte *s;
 };
 
-struct complexo
-{
-    float re, im;
-};
 
 
 /** Typedefs e definitions  **/
@@ -105,8 +101,6 @@ typedef struct lista lista;
 typedef struct apply   apply;
 typedef struct conta   conta;
 typedef struct suporte suporte;
-
-typedef struct complexo complexo;
 
 typedef unsigned short Short;
 typedef unsigned long long Long;
@@ -340,29 +334,6 @@ suporte* cria_suporte(Short nivel)
 }
 
 
-complexo** cria_matriz_complexo(Short N)
-{
-    Long ex;
-    ex = pow(2,N);
-
-    complexo **m;
-    m = malloc(ex*sizeof(complexo*));
-    if(m == NULL)
-        ERRO("LE MATRIZ NORMAL| ALOCA M");
-    aumenta_memoria_fora(ex*sizeof(complexo*));
-
-    Long i;
-    for(i=0; i<ex; i++)
-    {
-        m[i] = malloc(ex*sizeof(complexo));
-        if(m[i] == NULL)
-            ERRO("LE MATRIZ NORMAL| ALOCA M[]");
-        aumenta_memoria_fora(ex*sizeof(complexo));
-    }
-    return m;
-}
-
-
 
 /** Destrutores  **/
 
@@ -499,32 +470,15 @@ void libera_suporte_lista(suporte *s)
 }
 
 
-void libera_matriz_complexo(complexo **m, Short N)
-{
-    Long ex;
-    ex = pow(2,N);
-
-    Long i;
-    for(i=0; i<ex; i++)
-    {
-        free(m[i]);
-        diminui_memoria_fora(ex*sizeof(complexo));
-    }
-    free(m);
-    diminui_memoria_fora(ex*sizeof(complexo*));
-}
-
-
 
 /**  structs globais  **/
 
 QDD *Qred;
 no  *nzero;
 Short mrf_soma[5][5], mrm_soma[3][3][3];
-Short mrf_produto_vetor_vetor[5][5], mrm_produto_vetor_vetor[3][3][3];
-Short mrf_produto_matriz_vetor[5][5], mrm_produto_matriz_vetor[3][3][3];
 Short mrf_produto_matriz_matriz[5][5], mrm_produto_matriz_matriz[3][3][3];
-
+Short mrf_produto_matriz_vetor[5][5], mrm_produto_matriz_vetor[3][3][3];
+Short mrf_produto_vetor_vetor[5][5], mrm_produto_vetor_vetor[3][3][3];
 
 void inicia_structs_globais()
 {
@@ -537,12 +491,21 @@ void inicia_structs_globais()
     iF--;
 
 
+    mrf_soma[0][0] = 15;
+    mrf_soma[0][1] = 15;
+    mrf_soma[0][2] = 15;
     mrf_soma[0][3] = 7;
     mrf_soma[0][4] = 7;
 
+    mrf_soma[1][0] = 15;
+    mrf_soma[1][1] = 15;
+    mrf_soma[1][2] = 15;
     mrf_soma[1][3] = 1;
     mrf_soma[1][4] = 1;
 
+    mrf_soma[2][0] = 15;
+    mrf_soma[2][1] = 15;
+    mrf_soma[2][2] = 15;
     mrf_soma[2][3] = 4;
     mrf_soma[2][4] = 4;
 
@@ -557,7 +520,6 @@ void inicia_structs_globais()
     mrf_soma[4][2] = 5;
     mrf_soma[4][3] = 9;
     mrf_soma[4][4] = 9;
-
 
 
     mrm_soma[0][0][0] = 7;
@@ -600,75 +562,94 @@ void inicia_structs_globais()
 
 
 
-    mrf_produto_vetor_vetor[0][3] = 7;
-    mrf_produto_vetor_vetor[0][4] = 13;
 
-    mrf_produto_vetor_vetor[1][3] = 14;
-    mrf_produto_vetor_vetor[1][4] = 14;
+    mrf_produto_matriz_matriz[0][0] = 15;
+    mrf_produto_matriz_matriz[0][1] = 15;
+    mrf_produto_matriz_matriz[0][2] = 15;
+    mrf_produto_matriz_matriz[0][3] = 14;
+    mrf_produto_matriz_matriz[0][4] = 14;
 
-    mrf_produto_vetor_vetor[2][3] = 14;
-    mrf_produto_vetor_vetor[2][4] = 14;
+    mrf_produto_matriz_matriz[1][0] = 15;
+    mrf_produto_matriz_matriz[1][1] = 15;
+    mrf_produto_matriz_matriz[1][2] = 15;
+    mrf_produto_matriz_matriz[1][3] = 1;
+    mrf_produto_matriz_matriz[1][4] = 13;
 
-    mrf_produto_vetor_vetor[3][0] = 8;
-    mrf_produto_vetor_vetor[3][1] = 14;
-    mrf_produto_vetor_vetor[3][2] = 14;
-    mrf_produto_vetor_vetor[3][3] = 12;
-    mrf_produto_vetor_vetor[3][4] = 13;
+    mrf_produto_matriz_matriz[2][0] = 15;
+    mrf_produto_matriz_matriz[2][1] = 15;
+    mrf_produto_matriz_matriz[2][2] = 15;
+    mrf_produto_matriz_matriz[2][3] = 7;
+    mrf_produto_matriz_matriz[2][4] = 13;
 
-    mrf_produto_vetor_vetor[4][0] = 13;
-    mrf_produto_vetor_vetor[4][1] = 14;
-    mrf_produto_vetor_vetor[4][2] = 14;
-    mrf_produto_vetor_vetor[4][3] = 13;
-    mrf_produto_vetor_vetor[4][4] = 13;
+    mrf_produto_matriz_matriz[3][0] = 14;
+    mrf_produto_matriz_matriz[3][1] = 8;
+    mrf_produto_matriz_matriz[3][2] = 5;
+    mrf_produto_matriz_matriz[3][3] = 11;
+    mrf_produto_matriz_matriz[3][4] = 13;
 
-
-
-    mrm_produto_vetor_vetor[0][0][0] = 7;
-    mrm_produto_vetor_vetor[0][0][1] = 14;
-    mrm_produto_vetor_vetor[0][0][2] = 14;
-
-    mrm_produto_vetor_vetor[0][1][0] = 14;
-    mrm_produto_vetor_vetor[0][1][1] = 14;
-    mrm_produto_vetor_vetor[0][1][2] = 14;
-
-    mrm_produto_vetor_vetor[0][2][0] = 14;
-    mrm_produto_vetor_vetor[0][2][1] = 14;
-    mrm_produto_vetor_vetor[0][2][2] = 14;
+    mrf_produto_matriz_matriz[4][0] = 14;
+    mrf_produto_matriz_matriz[4][1] = 13;
+    mrf_produto_matriz_matriz[4][2] = 13;
+    mrf_produto_matriz_matriz[4][3] = 13;
+    mrf_produto_matriz_matriz[4][4] = 13;
 
 
-    mrm_produto_vetor_vetor[1][0][0] = 9;
-    mrm_produto_vetor_vetor[1][0][1] = 14;
-    mrm_produto_vetor_vetor[1][0][2] = 14;
+    mrm_produto_matriz_matriz[0][0][0] = 14;
+    mrm_produto_matriz_matriz[0][0][1] = 14;
+    mrm_produto_matriz_matriz[0][0][2] = 14;
 
-    mrm_produto_vetor_vetor[1][1][0] = 14;
-    mrm_produto_vetor_vetor[1][1][1] = 14;
-    mrm_produto_vetor_vetor[1][1][2] = 14;
+    mrm_produto_matriz_matriz[0][1][0] = 14;
+    mrm_produto_matriz_matriz[0][1][1] = 1;
+    mrm_produto_matriz_matriz[0][1][2] = 1;
 
-    mrm_produto_vetor_vetor[1][2][0] = 14;
-    mrm_produto_vetor_vetor[1][2][1] = 14;
-    mrm_produto_vetor_vetor[1][2][2] = 14;
-
-
-    mrm_produto_vetor_vetor[2][0][0] = 8;
-    mrm_produto_vetor_vetor[2][0][1] = 14;
-    mrm_produto_vetor_vetor[2][0][2] = 14;
-
-    mrm_produto_vetor_vetor[2][1][0] = 14;
-    mrm_produto_vetor_vetor[2][1][1] = 14;
-    mrm_produto_vetor_vetor[2][1][2] = 14;
-
-    mrm_produto_vetor_vetor[2][2][0] = 14;
-    mrm_produto_vetor_vetor[2][2][1] = 14;
-    mrm_produto_vetor_vetor[2][2][2] = 14;
+    mrm_produto_matriz_matriz[0][2][0] = 14;
+    mrm_produto_matriz_matriz[0][2][1] = 7;
+    mrm_produto_matriz_matriz[0][2][2] = 7;
 
 
+    mrm_produto_matriz_matriz[1][0][0] = 14;
+    mrm_produto_matriz_matriz[1][0][1] = 14;
+    mrm_produto_matriz_matriz[1][0][2] = 14;
 
+    mrm_produto_matriz_matriz[1][1][0] = 14;
+    mrm_produto_matriz_matriz[1][1][1] = 1;
+    mrm_produto_matriz_matriz[1][1][2] = 1;
+
+    mrm_produto_matriz_matriz[1][2][0] = 14;
+    mrm_produto_matriz_matriz[1][2][1] = 6;
+    mrm_produto_matriz_matriz[1][2][2] = 7;
+
+
+    mrm_produto_matriz_matriz[2][0][0] = 14;
+    mrm_produto_matriz_matriz[2][0][1] = 14;
+    mrm_produto_matriz_matriz[2][0][2] = 14;
+
+    mrm_produto_matriz_matriz[2][1][0] = 14;
+    mrm_produto_matriz_matriz[2][1][1] = 8;
+    mrm_produto_matriz_matriz[2][1][2] = 5;
+
+    mrm_produto_matriz_matriz[2][2][0] = 14;
+    mrm_produto_matriz_matriz[2][2][1] = 8;
+    mrm_produto_matriz_matriz[2][2][2] = 5;
+
+
+
+
+    mrf_produto_matriz_vetor[0][0] = 15;
+    mrf_produto_matriz_vetor[0][1] = 15;
+    mrf_produto_matriz_vetor[0][2] = 15;
     mrf_produto_matriz_vetor[0][3] = 14;
     mrf_produto_matriz_vetor[0][4] = 14;
 
+    mrf_produto_matriz_vetor[1][0] = 15;
+    mrf_produto_matriz_vetor[1][1] = 15;
+    mrf_produto_matriz_vetor[1][2] = 15;
     mrf_produto_matriz_vetor[1][3] = 7;
     mrf_produto_matriz_vetor[1][4] = 13;
 
+    mrf_produto_matriz_vetor[2][0] = 15;
+    mrf_produto_matriz_vetor[2][1] = 15;
+    mrf_produto_matriz_vetor[2][2] = 15;
     mrf_produto_matriz_vetor[2][3] = 4;
     mrf_produto_matriz_vetor[2][4] = 13;
 
@@ -683,7 +664,6 @@ void inicia_structs_globais()
     mrf_produto_matriz_vetor[4][2] = 14;
     mrf_produto_matriz_vetor[4][3] = 13;
     mrf_produto_matriz_vetor[4][4] = 13;
-
 
 
     mrm_produto_matriz_vetor[0][0][0] = 14;
@@ -726,66 +706,75 @@ void inicia_structs_globais()
 
 
 
-    mrf_produto_matriz_matriz[0][3] = 14;
-    mrf_produto_matriz_matriz[0][4] = 14;
 
-    mrf_produto_matriz_matriz[1][3] = 1;
-    mrf_produto_matriz_matriz[1][4] = 13;
+    mrf_produto_vetor_vetor[0][0] = 15;
+    mrf_produto_vetor_vetor[0][1] = 15;
+    mrf_produto_vetor_vetor[0][2] = 15;
+    mrf_produto_vetor_vetor[0][3] = 7;
+    mrf_produto_vetor_vetor[0][4] = 13;
 
-    mrf_produto_matriz_matriz[2][3] = 7;
-    mrf_produto_matriz_matriz[2][4] = 13;
+    mrf_produto_vetor_vetor[1][0] = 15;
+    mrf_produto_vetor_vetor[1][1] = 15;
+    mrf_produto_vetor_vetor[1][2] = 15;
+    mrf_produto_vetor_vetor[1][3] = 14;
+    mrf_produto_vetor_vetor[1][4] = 14;
 
-    mrf_produto_matriz_matriz[3][0] = 14;
-    mrf_produto_matriz_matriz[3][1] = 8;
-    mrf_produto_matriz_matriz[3][2] = 5;
-    mrf_produto_matriz_matriz[3][3] = 11;
-    mrf_produto_matriz_matriz[3][4] = 13;
+    mrf_produto_vetor_vetor[2][0] = 15;
+    mrf_produto_vetor_vetor[2][1] = 15;
+    mrf_produto_vetor_vetor[2][2] = 15;
+    mrf_produto_vetor_vetor[2][3] = 14;
+    mrf_produto_vetor_vetor[2][4] = 14;
 
-    mrf_produto_matriz_matriz[4][0] = 14;
-    mrf_produto_matriz_matriz[4][1] = 13;
-    mrf_produto_matriz_matriz[4][2] = 13;
-    mrf_produto_matriz_matriz[4][3] = 13;
-    mrf_produto_matriz_matriz[4][4] = 13;
+    mrf_produto_vetor_vetor[3][0] = 8;
+    mrf_produto_vetor_vetor[3][1] = 14;
+    mrf_produto_vetor_vetor[3][2] = 14;
+    mrf_produto_vetor_vetor[3][3] = 12;
+    mrf_produto_vetor_vetor[3][4] = 13;
 
-
-
-    mrm_produto_matriz_matriz[0][0][0] = 14;
-    mrm_produto_matriz_matriz[0][0][1] = 14;
-    mrm_produto_matriz_matriz[0][0][2] = 14;
-
-    mrm_produto_matriz_matriz[0][1][0] = 14;
-    mrm_produto_matriz_matriz[0][1][1] = 1;
-    mrm_produto_matriz_matriz[0][1][2] = 1;
-
-    mrm_produto_matriz_matriz[0][2][0] = 14;
-    mrm_produto_matriz_matriz[0][2][1] = 7;
-    mrm_produto_matriz_matriz[0][2][2] = 7;
+    mrf_produto_vetor_vetor[4][0] = 13;
+    mrf_produto_vetor_vetor[4][1] = 14;
+    mrf_produto_vetor_vetor[4][2] = 14;
+    mrf_produto_vetor_vetor[4][3] = 13;
+    mrf_produto_vetor_vetor[4][4] = 13;
 
 
-    mrm_produto_matriz_matriz[1][0][0] = 14;
-    mrm_produto_matriz_matriz[1][0][1] = 14;
-    mrm_produto_matriz_matriz[1][0][2] = 14;
+    mrm_produto_vetor_vetor[0][0][0] = 7;
+    mrm_produto_vetor_vetor[0][0][1] = 14;
+    mrm_produto_vetor_vetor[0][0][2] = 14;
 
-    mrm_produto_matriz_matriz[1][1][0] = 14;
-    mrm_produto_matriz_matriz[1][1][1] = 1;
-    mrm_produto_matriz_matriz[1][1][2] = 1;
+    mrm_produto_vetor_vetor[0][1][0] = 14;
+    mrm_produto_vetor_vetor[0][1][1] = 14;
+    mrm_produto_vetor_vetor[0][1][2] = 14;
 
-    mrm_produto_matriz_matriz[1][2][0] = 14;
-    mrm_produto_matriz_matriz[1][2][1] = 6;
-    mrm_produto_matriz_matriz[1][2][2] = 7;
+    mrm_produto_vetor_vetor[0][2][0] = 14;
+    mrm_produto_vetor_vetor[0][2][1] = 14;
+    mrm_produto_vetor_vetor[0][2][2] = 14;
 
 
-    mrm_produto_matriz_matriz[2][0][0] = 14;
-    mrm_produto_matriz_matriz[2][0][1] = 14;
-    mrm_produto_matriz_matriz[2][0][2] = 14;
+    mrm_produto_vetor_vetor[1][0][0] = 9;
+    mrm_produto_vetor_vetor[1][0][1] = 14;
+    mrm_produto_vetor_vetor[1][0][2] = 14;
 
-    mrm_produto_matriz_matriz[2][1][0] = 14;
-    mrm_produto_matriz_matriz[2][1][1] = 8;
-    mrm_produto_matriz_matriz[2][1][2] = 5;
+    mrm_produto_vetor_vetor[1][1][0] = 14;
+    mrm_produto_vetor_vetor[1][1][1] = 14;
+    mrm_produto_vetor_vetor[1][1][2] = 14;
 
-    mrm_produto_matriz_matriz[2][2][0] = 14;
-    mrm_produto_matriz_matriz[2][2][1] = 8;
-    mrm_produto_matriz_matriz[2][2][2] = 5;
+    mrm_produto_vetor_vetor[1][2][0] = 14;
+    mrm_produto_vetor_vetor[1][2][1] = 14;
+    mrm_produto_vetor_vetor[1][2][2] = 14;
+
+
+    mrm_produto_vetor_vetor[2][0][0] = 8;
+    mrm_produto_vetor_vetor[2][0][1] = 14;
+    mrm_produto_vetor_vetor[2][0][2] = 14;
+
+    mrm_produto_vetor_vetor[2][1][0] = 14;
+    mrm_produto_vetor_vetor[2][1][1] = 14;
+    mrm_produto_vetor_vetor[2][1][2] = 14;
+
+    mrm_produto_vetor_vetor[2][2][0] = 14;
+    mrm_produto_vetor_vetor[2][2][1] = 14;
+    mrm_produto_vetor_vetor[2][2][2] = 14;
 }
 
 void finaliza_structs_globais()
@@ -1087,6 +1076,40 @@ void mostra_suporte_lista_com_conta(suporte *s)
     }
 }
 
+void mostra_mrf(Short mrf[5][5])
+{
+    Short i, j;
+    for(i=0; i<5; i++)
+    {
+        printf("\n");
+        for(j=0; j<5; j++)
+            printf("%2d ",mrf[i][j]);
+    }
+}
+
+void mostra_mrm(Short mrm[3][3][3])
+{
+    int i, j, k;
+
+    for(i=0; i<3; i++)
+    {
+        printf("\n");
+        for(j=0; j<3; j++)
+        {
+            printf("\n");
+            for(k=0; k<3; k++)
+                printf("%2d ",mrm[i][j][k]);
+        }
+    }
+}
+
+void mostra_mr(Short mrf[5][5], Short mrm[3][3][3])
+{
+    mostra_mrf(mrf);
+    printf("\n");
+    mostra_mrm(mrm);
+}
+
 void mostra_quantidades()
 {
     Short vazio = 1;
@@ -1165,31 +1188,6 @@ void mostra_configuracao()
     printf("\neps: %.3e",eps);
 }
 
-
-void mostra_matriz(double **m, Long r, Long c)
-{
-    Long i, j;
-    for(i = 0; i < r; i++)
-    {
-        for(j = 0; j < c; j++)
-            printf("%f ",m[i][j]);
-        printf("\n");
-    }
-}
-
-void mostra_matriz_complexo(complexo **m, Short N)
-{
-    Long ex;
-    ex = pow(2,N);
-
-    Long i, j;
-    for(i=0; i<ex; i++)
-    {
-        printf("\n");
-        for(j=0; j<ex; j++)
-            printf("%f %f ",m[i][j].re,m[i][j].im);
-    }
-}
 
 
 
@@ -1490,17 +1488,6 @@ void fmostra_configuracao(FILE *fp)
     fprintf(fp,"\nNqbit: %hu",Nqbit);
     fprintf(fp,"\nMax: %lld",MAX);
     fprintf(fp,"\neps: %.3e",eps);
-}
-
-void fmostra_matriz(FILE *fp, double **m, Long r, Long c)
-{
-    Long i, j;
-    for(i = 0; i < r; i++)
-    {
-        for(j = 0; j < c; j++)
-            fprintf(fp,"%f ",m[i][j]);
-        fprintf(fp,"\n");
-    }
 }
 
 
@@ -2064,74 +2051,6 @@ void produto_arvore_real(no *n, double re)
 
 
 
-/** Operações algebricas com complexos  **/
-
-complexo zero()
-{
-    complexo c;
-    c.re = 0;
-    c.im = 0;
-    return c;
-}
-
-complexo soma_complexo(complexo c1, complexo c2)
-{
-    complexo c;
-    c.re = c1.re + c2.re;
-    c.im = c1.im + c2.im;
-    return c;
-}
-
-complexo produto_complexo_real(complexo c, float re)
-{
-    c.re *= re;
-    c.im *= re;
-    return c;
-}
-
-complexo produto_complexo_complexo(complexo c1, complexo c2)
-{
-    complexo c;
-    c.re = (c1.re)*(c2.re) - (c1.im)*(c2.im);
-    c.im = (c1.re)*(c2.im) + (c1.im)*(c2.re);
-    return c;
-}
-
-complexo produto_complexo_conjugado_complexo(complexo c1, complexo c2)
-{
-    complexo c;
-    c.re = (c1.re)*(c2.re) + (c1.im)*(c2.im);
-    c.im = (c1.re)*(c2.im) - (c1.im)*(c2.re);
-    return c;
-}
-
-complexo** produto_matriz_matriz_complexo(complexo **m1, complexo **m2, Short N)
-{
-    Long ex;
-    ex = pow(2,N);
-
-    complexo **m;
-    m = cria_matriz_complexo(N);
-
-    complexo c, cp;
-    Long i, j, k;
-    for(i=0; i<ex; i++)
-    {
-        for(j=0; j<ex; j++)
-        {
-            c = zero();
-            for(k=0; k<ex; k++)
-            {
-                cp = produto_complexo_complexo(m1[i][k],m2[k][j]);
-                c = soma_complexo(c,cp);
-            }
-            m[i][j] = c;
-        }
-    }
-    return m;
-}
-
-
 /**  Le txt  **/
 
 void completa_QDD_matriz(no *n, no ***nf, int r, int c, int exp)
@@ -2377,113 +2296,8 @@ QDD* le_vetor(char *nome)
 }
 
 
-complexo** le_matriz_normal(char *nome)
-{
-    FILE *fp;
-    fp = fopen(nome,"r");
-
-    Short N;
-    Long ex;
-    fscanf(fp,"%hu",&N);
-    ex = pow(2,N);
-
-    complexo **m;
-    Long i, j;
-    m = cria_matriz_complexo(N);
-    for(i=0; i<ex; i++)
-    {
-
-        for(j=0; j<ex; j++)
-        {
-            fscanf(fp,"%f",&m[i][j].re);
-            fscanf(fp,"%f",&m[i][j].im);
-        }
-    }
-    return m;
-}
-
-
 
 /**  Operações QDD estruturais   **/
-
-void completa_conversao_QDD_matriz(no *n, no *nesp, Long i, Long j, Long exp, double **m)
-{
-    no *naux;
-    if(exp == 0)
-    {
-        m[i][2*j]   = n->at.f.re;
-        m[i][2*j+1] = n->at.f.im;
-    }
-    else
-    {
-        if(compara_no_meio_parcial(n,nesp))
-        {
-            switch(n->at.m.classe)
-            {
-                case R:
-                    naux = cria_no_meio(C,n->at.m.nivel);
-                    completa_conversao_QDD_matriz(n->at.m.el,naux,i    ,j,exp,m);
-                    completa_conversao_QDD_matriz(n->at.m.th,naux,i+exp,j,exp,m);
-                    libera_no(naux);
-                    break;
-
-                case C:
-                    naux = cria_no_meio(R,1+n->at.m.nivel);
-                    completa_conversao_QDD_matriz(n->at.m.el,naux,i,j    ,exp/2,m);
-                    completa_conversao_QDD_matriz(n->at.m.th,naux,i,j+exp,exp/2,m);
-                    libera_no(naux);
-                    break;
-            }
-        }
-        else
-        {
-            switch(nesp->at.m.classe)
-            {
-                case R:
-                    naux = cria_no_meio(C,n->at.m.nivel);
-                    completa_conversao_QDD_matriz(n,naux,i    ,j,exp,m);
-                    completa_conversao_QDD_matriz(n,naux,i+exp,j,exp,m);
-                    libera_no(naux);
-                    break;
-
-                case C:
-                    naux = cria_no_meio(R,1+n->at.m.nivel);
-                    completa_conversao_QDD_matriz(n,naux,i,j    ,exp/2,m);
-                    completa_conversao_QDD_matriz(n,naux,i,j+exp,exp/2,m);
-                    libera_no(naux);
-                    break;
-            }
-        }
-    }
-}
-
-double** converte_QDD_matriz(QDD *Q)
-{
-    Long i;
-
-    Long exp;
-    exp = (Long)pow(2,Q->nqbit);
-
-    double **m;
-    m = malloc(exp*sizeof(double*));
-    if(m == NULL)
-        ERRO("CONVERTE QDD MATRIZ M");
-    aumenta_memoria(exp*sizeof(double*));
-    for(i = 0; i < exp; i++)
-    {
-        m[i] = malloc(2*exp*sizeof(double));
-        if(m[i] == NULL)
-            ERRO("CONVERTE QDD MATRIZ M[]");
-        aumenta_memoria(2*exp*sizeof(double));
-    }
-
-    no *naux;
-    naux = cria_no_meio(R,0);
-    completa_conversao_QDD_matriz(Q->n->at.i.n,naux,0,0,exp/2,m);
-    libera_no(naux);
-
-    return m;
-}
 
 void reduz_QDD(QDD *Q, Short ex)
 {
@@ -2699,8 +2513,18 @@ void monta_apply(apply *a, Short regra)
     n1 = a->n1;
     n2 = a->n2;
 
+    Short i, j;
+    i = 0;
+    j = 0;
+    if(n1->tipo == Meio)
+        i = n1->at.m.nivel;
+    if(n2->tipo == Meio)
+        j = n2->at.m.nivel;
+
     no *n;
     Short avanco;
+    char erro[100];
+    erro[0] = '\0';
     n = NULL;
     avanco = 4;
     switch(regra)
@@ -2711,47 +2535,47 @@ void monta_apply(apply *a, Short regra)
             break;
 
         case 1:
-            n = cria_no_meio(R,n1->at.m.nivel);
+            n = cria_no_meio(R,i);
             avanco = 1;
             break;
 
         case 2:
-            n = cria_no_meio(R,n2->at.m.nivel);
+            n = cria_no_meio(R,j);
             avanco = 2;
             break;
 
         case 3:
-            n = cria_no_meio(R,n1->at.m.nivel);
+            n = cria_no_meio(R,i);
             avanco = 3;
             break;
 
         case 4:
-            n = cria_no_meio(C,n1->at.m.nivel);
+            n = cria_no_meio(C,i);
             avanco = 1;
             break;
 
         case 5:
-            n = cria_no_meio(C,n2->at.m.nivel);
-            avanco =  2;
+            n = cria_no_meio(C,j);
+            avanco = 2;
             break;
 
         case 6:
-            n = cria_no_meio(C,n1->at.m.nivel);
+            n = cria_no_meio(C,i);
             avanco = 3;
             break;
 
         case 7:
-            n = cria_no_meio(V,n1->at.m.nivel);
+            n = cria_no_meio(V,i);
             avanco = 1;
             break;
 
         case 8:
-            n = cria_no_meio(V,n2->at.m.nivel);
+            n = cria_no_meio(V,j);
             avanco = 2;
             break;
 
         case 9:
-            n = cria_no_meio(V,n1->at.m.nivel);
+            n = cria_no_meio(V,i);
             avanco = 3;
             break;
 
@@ -2775,8 +2599,13 @@ void monta_apply(apply *a, Short regra)
             ERRO("MONTA APPLY| NO INDEVIDO");
             break;
 
+        case 15:
+            ERRO("MONTA APPLY| ACESSO EM MRF INDEVIDO");
+            break;
+
         default:
-            ERRO("MONTA PPLY| REGRA NAO DEFINIDA");
+            sprintf(erro,"MONTA PPLY| REGRA %hu NAO DEFINIDA",regra);
+            ERRO(erro);
             break;
     }
     a->n = n;
@@ -2832,11 +2661,13 @@ Short regra_apply(apply *a, Short mrf[5][5], Short mrm[3][3][3])
     n1 = a->n1;
     n2 = a->n2;
 
+    mostra_mrf(mrf);
+
     switch(n1->tipo)
     {
         case Inicio:
             if(n2->tipo != Inicio)
-                ERRO("REGRA APPLY| N1 INICIO N2 NAO");
+                ERRO("REGRA APPLY| N1 E INICIO N2 NAO");
 
             return 0;
             break;
@@ -2854,7 +2685,7 @@ Short regra_apply(apply *a, Short mrf[5][5], Short mrm[3][3][3])
                         switch(n1->at.m.classe)
                         {
                             case V:
-                                switch(n2->at.m.nivel)
+                                switch(n2->at.m.classe)
                                 {
                                     case V:
                                         return mrm[0][0][0];
@@ -2871,7 +2702,7 @@ Short regra_apply(apply *a, Short mrf[5][5], Short mrm[3][3][3])
                                 break;
 
                             case R:
-                                switch(n2->at.m.nivel)
+                                switch(n2->at.m.classe)
                                 {
                                     case V:
                                         return mrm[0][1][0];
@@ -2888,7 +2719,7 @@ Short regra_apply(apply *a, Short mrf[5][5], Short mrm[3][3][3])
                                 break;
 
                             case C:
-                                switch(n2->at.m.nivel)
+                                switch(n2->at.m.classe)
                                 {
                                     case V:
                                         return mrm[0][2][0];
@@ -2905,12 +2736,13 @@ Short regra_apply(apply *a, Short mrf[5][5], Short mrm[3][3][3])
                                 break;
                         }
                     }
+
                     if(n1->at.m.nivel == n2->at.m.nivel)
                     {
                         switch(n1->at.m.classe)
                         {
                             case V:
-                                switch(n2->at.m.nivel)
+                                switch(n2->at.m.classe)
                                 {
                                     case V:
                                         return mrm[1][0][0];
@@ -2927,7 +2759,7 @@ Short regra_apply(apply *a, Short mrf[5][5], Short mrm[3][3][3])
                                 break;
 
                             case R:
-                                switch(n2->at.m.nivel)
+                                switch(n2->at.m.classe)
                                 {
                                     case V:
                                         return mrm[1][1][0];
@@ -2944,7 +2776,7 @@ Short regra_apply(apply *a, Short mrf[5][5], Short mrm[3][3][3])
                                 break;
 
                             case C:
-                                switch(n2->at.m.nivel)
+                                switch(n2->at.m.classe)
                                 {
                                     case V:
                                         return mrm[1][2][0];
@@ -2961,12 +2793,13 @@ Short regra_apply(apply *a, Short mrf[5][5], Short mrm[3][3][3])
                                 break;
                         }
                     }
+
                     if(n1->at.m.nivel > n2->at.m.nivel)
                     {
                         switch(n1->at.m.classe)
                         {
                             case V:
-                                switch(n2->at.m.nivel)
+                                switch(n2->at.m.classe)
                                 {
                                     case V:
                                         return mrm[2][0][0];
@@ -2983,24 +2816,24 @@ Short regra_apply(apply *a, Short mrf[5][5], Short mrm[3][3][3])
                                 break;
 
                             case R:
-                                switch(n2->at.m.nivel)
+                                switch(n2->at.m.classe)
                                 {
                                     case V:
                                         return mrm[2][1][0];
                                         break;
 
                                     case R:
-                                        return mrm[2][1][2];
+                                        return mrm[2][1][1];
                                         break;
 
                                     case C:
-                                        return mrm[2][1][3];
+                                        return mrm[2][1][2];
                                         break;
                                 }
                                 break;
 
                             case C:
-                                switch(n2->at.m.nivel)
+                                switch(n2->at.m.classe)
                                 {
                                     case V:
                                         return mrm[2][2][0];
@@ -3064,22 +2897,22 @@ Short regra_apply(apply *a, Short mrf[5][5], Short mrm[3][3][3])
                 switch(n2->tipo)
                 {
                     case Inicio:
-                        ERRO("REGRA APPLY| N1 E FIM N2 INICIO 1");
+                        ERRO("REGRA APPLY| N1 E FIM N2 E INICIO");
                         break;
 
                     case Meio:
                         switch(n2->at.m.classe)
                         {
                             case V:
-                                return mrf[0][4];
+                                return mrf[4][0];
                                 break;
 
                             case R:
-                                return mrf[1][4];
+                                return mrf[4][1];
                                 break;
 
                             case C:
-                                return mrf[2][4];
+                                return mrf[4][2];
                                 break;
                         }
                         break;
@@ -3088,7 +2921,7 @@ Short regra_apply(apply *a, Short mrf[5][5], Short mrm[3][3][3])
                         if(compara_no_fim_zero(n2,1))
                             return mrf[4][4];
                         else
-                            return mrf[3][4];
+                            return mrf[4][3];
                         break;
                 }
             }
@@ -3097,7 +2930,7 @@ Short regra_apply(apply *a, Short mrf[5][5], Short mrm[3][3][3])
                 switch(n2->tipo)
                 {
                     case Inicio:
-                        ERRO("REGRA APPLY| N1 E FIM N2 INICIO 2");
+                        ERRO("REGRA APPLY| N1 E FIM N2 E INICIO");
                         break;
 
                     case Meio:
@@ -3127,7 +2960,8 @@ Short regra_apply(apply *a, Short mrf[5][5], Short mrm[3][3][3])
             }
             break;
     }
-    return 0;
+
+    return 14;
 }
 
 no* apply_base(no *n1, no *n2, Short mrf[5][5], Short mrm[3][3][3])
@@ -3144,6 +2978,8 @@ no* apply_base(no *n1, no *n2, Short mrf[5][5], Short mrm[3][3][3])
     for(ac = a; ac != NULL; ac = ac->a)
     {
         regra = regra_apply(ac,mrf,mrm);
+        printf("\n\nREGRA: %d");
+        mostra_apply_no(ac);
         monta_apply(ac,regra);
 
         n = ac->n;
@@ -4148,7 +3984,19 @@ int main()
     setlocale(LC_ALL, "Portuguese");
     /***********************************/
 
-    teste_velocidade_matriz("H",1,9,30,2,NULL);
+    /*QDD *Q1, *Q2;
+    Q2 = H();
+    Q1 = potencia_tensorial(Q2,20);
+    libera_QDD(Q2);
+    Q2 = copia_QDD(Q1);
+
+    QDD *Q;
+    Q = soma_QDD(Q1,Q2);
+
+    libera_QDD(Q1);
+    libera_QDD(Q2);*/
+
+    mostra_mr(mrf_produto_vetor_vetor,mrm_produto_vetor_vetor);
 
     /***********************************/
     finaliza_structs_globais();
