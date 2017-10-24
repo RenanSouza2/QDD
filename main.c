@@ -24,6 +24,7 @@
 FILE *fm;
 unsigned long long mem = 0, memMax = 0, memF = 0;
 unsigned long long iQ = 0, iI = 0, iM = 0, iF = 0, iL = 0, iA = 0, iC = 0, iS = 0;
+unsigned short tQ, tN, tL, tA, tC, tS;
 unsigned long long MAX;
 unsigned short print, Nqbit;
 float eps;
@@ -197,10 +198,10 @@ void diminui_memoria_fora(Long m)
 QDD* cria_QDD(Short nqbit)
 {
     QDD *Q;
-    Q = malloc(sizeof(QDD));
+    Q = malloc(tQ);
     if(Q == NULL)
         ERRO("CRIA QDD");
-    aumenta_memoria(sizeof(QDD));
+    aumenta_memoria(tQ);
     iQ++;
 
     Q->n = NULL;
@@ -212,10 +213,10 @@ QDD* cria_QDD(Short nqbit)
 no* cria_no_inicio()
 {
     no *n;
-    n = malloc(sizeof(no));
+    n = malloc(tN);
     if(n == NULL)
         ERRO("CRIA INICIO");
-    aumenta_memoria(sizeof(no));
+    aumenta_memoria(tN);
     iI++;
 
     n->tipo = Inicio;
@@ -229,10 +230,10 @@ no* cria_no_inicio()
 no* cria_no_meio(Short classe, Short nivel)
 {
     no *n;
-    n = malloc(sizeof(no));
+    n = malloc(tN);
     if(n == NULL)
         ERRO("CRIA MEIO");
-    aumenta_memoria(sizeof(no));
+    aumenta_memoria(tN);
     iM++;
 
     n->tipo = Meio;
@@ -249,10 +250,10 @@ no* cria_no_meio(Short classe, Short nivel)
 no* cria_no_fim(float re,float im)
 {
     no *n;
-    n = malloc(sizeof(no));
+    n = malloc(tN);
     if(n == NULL)
         ERRO("CRIA FIM");
-    aumenta_memoria(sizeof(no));
+    aumenta_memoria(tN);
     iF++;
 
     n->tipo = Fim;
@@ -267,10 +268,10 @@ no* cria_no_fim(float re,float im)
 lista* cria_lista()
 {
     lista *l;
-    l = malloc(sizeof(lista));
+    l = malloc(tL);
     if(l == NULL)
         ERRO("CRIA LISTA");
-    aumenta_memoria(sizeof(lista));
+    aumenta_memoria(tL);
     iL++;
 
     l->l = NULL;
@@ -281,10 +282,10 @@ lista* cria_lista()
 apply* cria_apply()
 {
     apply *a;
-    a = malloc(sizeof(apply));
+    a = malloc(tA);
     if(a == NULL)
         ERRO("CRIA APPLY");
-    aumenta_memoria(sizeof(apply));
+    aumenta_memoria(tA);
     iA++;
 
     a->n  = NULL;
@@ -301,10 +302,10 @@ apply* cria_apply()
 conta* cria_conta(Short nivel)
 {
     conta *c;
-    c = malloc(sizeof(conta));
+    c = malloc(tC);
     if(c == NULL)
         ERRO("CRIA CONTA");
-    aumenta_memoria(sizeof(conta));
+    aumenta_memoria(tC);
     iC++;
 
     c->n = NULL;
@@ -317,10 +318,10 @@ conta* cria_conta(Short nivel)
 suporte* cria_suporte(Short nivel)
 {
     suporte *s;
-    s = malloc(sizeof(suporte));
+    s = malloc(tS);
     if(s == NULL)
         ERRO("CRIA SUPORTE");
-    aumenta_memoria(sizeof(suporte));
+    aumenta_memoria(tS);
     iS++;
 
     s->c[C] = NULL;
@@ -339,7 +340,7 @@ suporte* cria_suporte(Short nivel)
 
 void libera_QDD_no(QDD *Q)
 {
-    diminui_memoria(sizeof(QDD));
+    diminui_memoria(tQ);
     if(iQ == 0)
         ERRO("LIBERA QDD");
     iQ--;
@@ -365,7 +366,7 @@ void libera_no(no *n)
             break;
     }
 
-    diminui_memoria(sizeof(no));
+    diminui_memoria(tN);
     switch(n->tipo)
     {
         case Inicio:
@@ -391,7 +392,7 @@ void libera_no(no *n)
 
 void libera_lista_no(lista *l)
 {
-    diminui_memoria(sizeof(lista));
+    diminui_memoria(tL);
     if(iL == 0)
         ERRO("LIBERA LISTA");
     iL--;
@@ -411,7 +412,7 @@ void libera_lista_lista(lista *l)
 
 void libera_apply_no(apply *a)
 {
-    diminui_memoria(sizeof(apply));
+    diminui_memoria(tA);
     if(iA == 0)
         ERRO("LIBERA APPLY");
     iA--;
@@ -431,7 +432,7 @@ void libera_apply_lista(apply *a)
 
 void libera_conta_no(conta *c)
 {
-    diminui_memoria(sizeof(conta));
+    diminui_memoria(tC);
     if(iC == 0)
         ERRO("LIBERA APPLY");
     iC--;
@@ -451,7 +452,7 @@ void libera_conta_lista(conta *c)
 
 void libera_suporte_no(suporte *s)
 {
-    diminui_memoria(sizeof(suporte));
+    diminui_memoria(tS);
     if(iS == 0)
         ERRO("LIBERA APPLY");
     iS--;
@@ -478,10 +479,17 @@ no  *nzero;
 
 void inicia_structs_globais()
 {
+    tQ = sizeof(QDD);
+    tN = sizeof(no);
+    tL = sizeof(lista);
+    tA = sizeof(apply);
+    tC = sizeof(conta);
+    tS = sizeof(suporte);
+
     Qred  = cria_QDD(1);
     Qred->n = cria_no_inicio();
     nzero = cria_no_fim(0,0);
-    mem -= sizeof(QDD) + 2*sizeof(no);
+    mem -= tQ + 2*tN;
     iQ--;
     iI--;
     iF--;
@@ -492,7 +500,7 @@ void finaliza_structs_globais()
     iQ++;
     iI++;
     iF++;
-    mem += sizeof(QDD) + 2*sizeof(no);
+    mem += tQ + 2*tN;
     libera_no(Qred->n);
     libera_QDD_no(Qred);
     libera_no(nzero);
@@ -847,12 +855,12 @@ void mostra_quantidades()
 void mostra_tamanhos()
 {
     printf("\nTAMANHOS");
-    printf("\nQDD: %d",sizeof(QDD));
-    printf("\nn:   %d",sizeof(no));
-    printf("\nl:   %d",sizeof(lista));
-    printf("\na:   %d",sizeof(apply));
-    printf("\nc:   %d",sizeof(conta));
-    printf("\ns:   %d",sizeof(suporte));
+    printf("\nQDD: %d",tQ);
+    printf("\nn:   %d",tN);
+    printf("\nl:   %d",tL);
+    printf("\na:   %d",tA);
+    printf("\nc:   %d",tC);
+    printf("\ns:   %d",tS);
     printf("\n");
 }
 
@@ -1162,12 +1170,12 @@ void fmostra_quantidades(FILE *fp)
 void fmostra_tamanhos(FILE *fp)
 {
     fprintf(fp,"\nTAMANHOS");
-    fprintf(fp,"\nQDD: %d",sizeof(QDD));
-    fprintf(fp,"\nn:   %d",sizeof(no));
-    fprintf(fp,"\nl:   %d",sizeof(lista));
-    fprintf(fp,"\na:   %d",sizeof(apply));
-    fprintf(fp,"\nc:   %d",sizeof(conta));
-    fprintf(fp,"\ns:   %d",sizeof(suporte));
+    fprintf(fp,"\nQDD: %d",tQ);
+    fprintf(fp,"\nn:   %d",tN);
+    fprintf(fp,"\nl:   %d",tL);
+    fprintf(fp,"\na:   %d",tA);
+    fprintf(fp,"\nc:   %d",tC);
+    fprintf(fp,"\ns:   %d",tS);
     fprintf(fp,"\n");
 }
 
@@ -3370,7 +3378,7 @@ void teste_completo(Short amostras, Short arquivo)
 Short teste_memoria()
 {
     Long memt;
-    memt = memF + iQ*sizeof(QDD) + (iI+iM+iF)*sizeof(no) + iL*sizeof(lista) + iA*sizeof(apply) + iC*sizeof(conta) + iS*sizeof(suporte);
+    memt = memF + iQ*tQ + (iI+iM+iF)*tN + iL*tL + iA*tA + iC*tC + iS*tS;
     if(memt == mem)
     {
         printf("\nRegistro de memoria correto");
