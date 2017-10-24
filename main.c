@@ -667,11 +667,11 @@ void mostra_QDD(QDD *Q)
     lista *l;
     l = enlista_QDD(Q);
 
-    printf("\nEndereco (QDD): %d",Q);
+    printf("\nEndereco (QDD): %d\n",Q);
     if(Q == NULL)
         return;
 
-    printf("\nNQBIT: %d\n",Q->nqbit);
+    printf("NQBIT: %d\n",Q->nqbit);
     mostra_lista_com_no(l);
     printf("\n\nAMPLITUDES");
     mostra_lista_com_no(Q->l);
@@ -681,11 +681,11 @@ void mostra_QDD(QDD *Q)
 
 void mostra_apply_no(apply *a)
 {
-    printf("\nEndereco (apply): %d",a);
+    printf("\nEndereco (apply): %d\n",a);
     if(a == NULL)
         return;
 
-    printf("\n\nNo 1:");
+    printf("nNo 1:");
     mostra_no(a->n1);
     printf("\nNo 2:");
     mostra_no(a->n2);
@@ -711,11 +711,11 @@ void mostra_apply_lista(apply *a)
 
 void mostra_conta_no(conta *c)
 {
-    printf("\nEndereco (conta): %d",c);
-    if(c== NULL)
+    printf("\nEndereco (conta): %d\n",c);
+    if(c == NULL)
         return;
 
-    printf("\nnivel: %d",c->nivel);
+    printf("nivel: %d",c->nivel);
     printf("\n\nno: ");
     mostra_no(c->n);
     printf("\nc: %d",c->c);
@@ -735,11 +735,11 @@ void mostra_conta_lista(conta *c)
 
 void mostra_suporte_no(suporte *s)
 {
-    printf("\nEndereco (suporte): %d",s);
+    printf("\nEndereco (suporte): %d\n",s);
     if(s == NULL)
         return;
 
-    printf("\nnivel: %d",s->nivel);
+    printf("nivel: %d",s->nivel);
     printf("\n\ncc: %d",s->c[C]);
     printf("\ncv: %d",s->c[V]);
     printf("\ncr: %d",s->c[R]);
@@ -784,40 +784,6 @@ void mostra_suporte_lista_com_conta(suporte *s)
         mostra_suporte_no_com_conta(sc);
         ligacao++;
     }
-}
-
-void mostra_mrf(Short mrf[5][5])
-{
-    Short i, j;
-    for(i=0; i<5; i++)
-    {
-        printf("\n");
-        for(j=0; j<5; j++)
-            printf("%2d ",mrf[i][j]);
-    }
-}
-
-void mostra_mrm(Short mrm[3][3][3])
-{
-    int i, j, k;
-
-    for(i=0; i<3; i++)
-    {
-        printf("\n");
-        for(j=0; j<3; j++)
-        {
-            printf("\n");
-            for(k=0; k<3; k++)
-                printf("%2d ",mrm[i][j][k]);
-        }
-    }
-}
-
-void mostra_mr(Short mrf[5][5], Short mrm[3][3][3])
-{
-    mostra_mrf(mrf);
-    printf("\n");
-    mostra_mrm(mrm);
 }
 
 void mostra_quantidades()
@@ -897,7 +863,6 @@ void mostra_configuracao()
     printf("\nMax: %lld",MAX);
     printf("\neps: %.3e",eps);
 }
-
 
 
 
@@ -1016,6 +981,9 @@ void fmostra_QDD_sozinho(QDD *Q, char *arquivo)
 {
     FILE *fp;
     fp = fopen(arquivo,"w");
+    if(fp == NULL)
+        ERRO("FMOSTRA QDD SOZINHO| NAO ABRIU ARQUIVO");
+
     fmostra_QDD(fp,Q);
     fclose(fp);
 }
@@ -1048,6 +1016,17 @@ void fmostra_apply_lista(FILE *fp, apply *a)
         fmostra_apply_no(fp,ac);
         ligacao++;
     }
+}
+
+void fmostra_apply_lista_sozinho(apply *a, char *arquivo)
+{
+    FILE *fp;
+    fp = fopen(arquivo,"w");
+    if(fp == NULL)
+        ERRO("FMOSTRA APPLY LISTA SOZINHO| NAO ABRIU ARQUIVO");
+
+    fmostra_apply_lista(fp,a);
+    fclose(fp);
 }
 
 void fmostra_conta_no(FILE *fp, conta *c)
@@ -1206,6 +1185,14 @@ void fmostra_configuracao(FILE *fp)
 
 void conecta_UM(no *n1, no *n2, Short lado)
 {
+    if(n1 == NULL)
+        ERRO("CONECTA UM| N1 INVALIDO 1");
+    if(n1<0)
+        ERRO("CONECTA UM| N1 INVALIDO 2");
+    if(n2 == NULL)
+        ERRO("CONECTA UM| N2 INVALIDO 1");
+    if(n2<0)
+        ERRO("CONECTA UM| N2 INVALIDO 2");
     if(n1->tipo == Fim)
         ERRO("CONECTA UM| FIM NAO TEM SUCESSORES");
     if(n2->tipo == Inicio)
@@ -2026,7 +2013,7 @@ void reduz_QDD(QDD *Q, Short ex)
     lf = acha_fim_lista(l);
 
     no *nc, *n1, *n2;
-    lista *lnc1, *lnc2, *lr, *lrc;
+    lista *lnc1, *lnc2, *lnc3, *lnc4, *lr, *lrc;
     Short mudou;
     while(l != NULL)
     {
@@ -2039,6 +2026,8 @@ void reduz_QDD(QDD *Q, Short ex)
 
             n1 = nc->l->n;
 
+            lnc3 = NULL;
+            lnc4 = NULL;
             while(n1->at.m.el == n1->at.m.th)
             {
                 if(n1->tipo == Inicio)
@@ -2054,6 +2043,7 @@ void reduz_QDD(QDD *Q, Short ex)
 
             lnc2 = nc->l;
             lnc1 = lnc2->l;
+            lnc4 = lnc2;
 
             while(lnc1 != NULL)
             {
@@ -2071,7 +2061,10 @@ void reduz_QDD(QDD *Q, Short ex)
                     lnc2 = lnc1;
                     lnc1 = lnc1->l;
                 }
+                if(lnc1 == lnc3)
+                    break;
             }
+            lnc3 = lnc4;
         }
         while(mudou);
 
@@ -2202,7 +2195,7 @@ void encaixa_apply(apply *a, apply *ac, Short lado)
             break;
 
         default:
-            ERRO("ENCAIXA APPLY| LADO INVALIDO");
+            ERRO("ENCAIXA APPLY| LADO INVALIDO 1");
             break;
     }
 
@@ -2221,11 +2214,15 @@ void encaixa_apply(apply *a, apply *ac, Short lado)
         switch(lado)
         {
             case Else:
-                ae->a1 = aaux;
+                ac->a1 = aaux;
                 break;
 
             case Then:
-                ae->a2 = aaux;
+                ac->a2 = aaux;
+                break;
+
+            default:
+                ERRO("ENCAIXA APPLY| LADO INVALIDO 1");
                 break;
         }
         libera_apply_no(ae);
@@ -2242,9 +2239,9 @@ void monta_apply(apply *a, Short regra)
     i=0;
     j=0;
     if(n1->tipo == Meio)
-        i = n1->at.m.classe;
+        i = n1->at.m.nivel;
     if(n2->tipo == Meio)
-        j = n2->at.m.classe;
+        j = n2->at.m.nivel;
 
     no *n;
     Short avanco;
@@ -2258,6 +2255,7 @@ void monta_apply(apply *a, Short regra)
 
         case 1:
             n = cria_no_meio(R,i);
+            mostra_no(n);
             avanco = 1;
             break;
 
@@ -2407,6 +2405,13 @@ no* apply_base(no *n1, no *n2, Short(*regra_apply)(apply*))
         a2 = ac->a2;
 
         n = ac->n;
+
+        /*printf("\n\n\n\n\n\nA:");
+        mostra_apply_no(ac);
+        printf("\nA1:");
+        mostra_apply_no(a1);
+        printf("\nA2:");
+        mostra_apply_no(a2);*/
         switch(n->tipo)
         {
             case Inicio:
@@ -2434,10 +2439,8 @@ no* apply_base(no *n1, no *n2, Short(*regra_apply)(apply*))
 
 /**  regra apply  **/
 
-/*Short regra_apply_soma(apply *a)
+Short regra_apply_soma(apply *a)
 {
-    mostra_apply_no(a);
-
     no *n1, *n2;
     n1 = a->n1;
     n2 = a->n2;
@@ -2445,93 +2448,116 @@ no* apply_base(no *n1, no *n2, Short(*regra_apply)(apply*))
     switch(n1->tipo)
     {
         case Inicio:
+            /* N1 e inicio */
             if(n2->tipo != Inicio)
-                ERRO("REGRA APPLY SOMA|N1 E INICIO N2 NAO");
+                ERRO("RGRA APPLY SOMA| N1 E INICIO N2 NAO");
 
             return 0;
             break;
 
         case Meio:
+            /* n1 e meio */
             switch(n2->tipo)
             {
                 case Inicio:
-                    ERRO("REGRA APPLY SOMA|N1 E MEIO N2 E INICIO");
+                    /* n2 e inicio */
+                    ERRO("REGRA APPLY SOMA| N1 E MEIO N2 E FIM");
                     break;
 
                 case Meio:
+                    /* n1 e meio n2 e meio */
                     if(n1->at.m.nivel < n2->at.m.nivel)
                     {
+                        /* i < j */
                         switch(n1->at.m.classe)
                         {
                             case V:
+                                /* n1 e v */
                                 return 7;
                                 break;
 
                             case R:
+                                /* n1 e r */
                                 return 1;
                                 break;
 
                             case C:
+                                /* n1 e c */
                                 return 4;
                                 break;
                         }
                     }
                     if(n1->at.m.nivel == n2->at.m.nivel)
                     {
+                        /* i == j */
                         switch(n1->at.m.classe)
                         {
                             case V:
+                                /* n1 e v */
                                 return 9;
                                 break;
 
                             case R:
+                                /* n1 e r */
                                 switch(n2->at.m.classe)
                                 {
                                     case V:
-                                        ERRO("REGRA APPLY SOMA| Q1 E MATRIZ Q2 E VETOR 1");
+                                        /* n1 e r n2 e v */
+                                        ERRO("REGRA APPLY SOMA| QDD 1 E MATRIZ QDD 2 E VETOR 1");
                                         break;
 
                                     case R:
+                                        /* n1 e r n2 e r */
                                         return 3;
                                         break;
 
                                     case C:
+                                        /* n1 e r n2 e c */
                                         return 1;
                                         break;
                                 }
                                 break;
 
                             case C:
+                                /* n1 e c */
                                 switch(n2->at.m.classe)
                                 {
                                     case V:
-                                        ERRO("REGRA APPLY SOMA| Q1 E MATRIZ Q2 E VETOR 2");
+                                        /* n1 e c n2 e v */
+                                        ERRO("REGRA APPLY SOMA| QDD 1 E MATRIZ QDD 2 E VETOR 2");
                                         break;
 
                                     case R:
+                                        /* n1 e c n2 e r */
                                         return 2;
                                         break;
 
                                     case C:
+                                        /* n1 e c n2 e c */
                                         return 6;
                                         break;
                                 }
                                 break;
                         }
+
                     }
                     if(n1->at.m.nivel > n2->at.m.nivel)
                     {
+                        /* i > j */
                         switch(n2->at.m.classe)
                         {
                             case V:
+                                /* n1 e v */
                                 return 8;
                                 break;
 
                             case R:
+                                /* n1 e r */
                                 return 2;
                                 break;
 
                             case C:
+                                /* n1 e c */
                                 return 5;
                                 break;
                         }
@@ -2539,17 +2565,21 @@ no* apply_base(no *n1, no *n2, Short(*regra_apply)(apply*))
                     break;
 
                 case Fim:
+                    /* n1 e meio n2 e fim */
                     switch(n1->at.m.classe)
                     {
                         case V:
+                            /* n1 e v */
                             return 7;
                             break;
 
                         case R:
+                            /* n1 e r */
                             return 1;
                             break;
 
                         case C:
+                            /* n1 e c */
                             return 4;
                             break;
                     }
@@ -2558,162 +2588,65 @@ no* apply_base(no *n1, no *n2, Short(*regra_apply)(apply*))
             break;
 
         case Fim:
+            /* n1 e fim */
             switch(n2->tipo)
             {
                 case Inicio:
-                    ERRO("REGRA SOMA APPLY| N1 E FIM N2 INICIO");
+                    /*n1 e fim n2 e inicio */
+                    ERRO("REGRA APPLY SOMA| N1 E FIM N2 E INICIO");
                     break;
 
                 case Meio:
+                    /*n1 e fim n2 e meio */
                     switch(n2->at.m.classe)
                     {
                         case V:
+                            /* n1 e v */
                             return 8;
                             break;
 
                         case R:
+                            /* n1 e r */
                             return 2;
                             break;
 
                         case C:
+                            /* n1 e c */
                             return 5;
                             break;
                     }
                     break;
 
                 case Fim:
-                    return 9;
+                    /*n1 e fim n2 e fim */
+                    return 10;
                     break;
             }
             break;
+
     }
     ERRO("REGRA APPLY SOMA| NAO ATIVOU NENHUMA REGRA");
     return 0;
 }
 
-Short regra_apply_produto_matriz_matriz(apply *a)
-{
-    no *n1, *n2;
-    n1 = a->n1;
-    n2 = a->n2;
-
-    switch(n1->tipo)
-    {
-        case Inicio:
-            if(n2->tipo != Inicio)
-                ERRO("REGRA APPLY |N1 E INICIO N2 NAO");
-
-            return 0;
-            break;
-
-        case Meio:
-            switch(n2->tipo)
-            {
-                case Inicio:
-                    break;
-
-                case Meio:
-                    break;
-
-                case Fim:
-                    break;
-            }
-            break;
-
-        case Fim:
-
-            break;
-    }
-    ERRO("REGRA APPLY PRODUTO MATRIZ MATRIZ| NAO ACIOONOU NENHUMA REGRA");
-    return 0;
-}
+/*Short regra_apply_produto_matriz_matriz(apply *a)
 
 Short regra_apply_produto_matriz_vetor(apply *a)
-{
-    no *n1, *n2;
-    n1 = a->n1;
-    n2 = a->n2;
 
-    switch(n1->tipo)
-    {
-        case Inicio:
-            if(n2->tipo != Inicio)
-                ERRO("REGRA APPLY |N1 E INICIO N2 NAO");
+Short regra_apply_produto_vetor_vetor(apply *a)*/
 
-            return 0;
-            break;
-
-        case Meio:
-            switch(n2->tipo)
-            {
-                case Inicio:
-                    break;
-
-                case Meio:
-                    break;
-
-                case Fim:
-                    break;
-            }
-            break;
-
-        case Fim:
-
-            break;
-    }
-    ERRO("REGRA APPLY PRODUTO MATRIZ VETOR| NAO ATIVOU NENHUMA REGRA");
-    return 0;
-}
-
-Short regra_apply_produto_vetor_vetor(apply *a)
-{
-    no *n1, *n2;
-    n1 = a->n1;
-    n2 = a->n2;
-
-    switch(n1->tipo)
-    {
-        case Inicio:
-            if(n2->tipo != Inicio)
-                ERRO("REGRA APPLY |N1 E INICIO N2 NAO");
-
-            return 0;
-            break;
-
-        case Meio:
-            switch(n2->tipo)
-            {
-                case Inicio:
-                    break;
-
-                case Meio:
-                    break;
-
-                case Fim:
-                    break;
-            }
-            break;
-
-        case Fim:
-
-            break;
-    }
-    ERRO("REGRA APPLY PRODUTO VETOR VETOR| NAO ACIONOU NENHUMA REGRA");
-    return 0;
-}
-*/
 
 
 /**  apply pronto  **/
 
-/*no* apply_soma(no *n1, no *n2)
+no* apply_soma(no *n1, no *n2)
 {
     no *n;
     n = apply_base(n1,n2,regra_apply_soma);
     return n;
 }
 
-no* apply_produto_matriz_matriz(no *n1, no *n2)
+/*no* apply_produto_matriz_matriz(no *n1, no *n2)
 {
     no *n;
     n = apply_base(n1,n2,regra_apply_produto_matriz_matriz);
@@ -2872,7 +2805,7 @@ QDD* potencia_tensorial(QDD *Q, Short n)
     return Qf;
 }
 
-/*QDD* soma_QDD(QDD *Q1, QDD *Q2)
+QDD* soma_QDD(QDD *Q1, QDD *Q2)
 {
     if(Q1->nqbit != Q2->nqbit)
         ERRO("SOMA QDD| QDDs COM QUANTIDADES DIFERENTES DE QBITS");
@@ -2887,7 +2820,7 @@ QDD* potencia_tensorial(QDD *Q, Short n)
     return Q;
 }
 
-QDD* produto_matriz_matriz(QDD *Q1, QDD *Q2)
+/*QDD* produto_matriz_matriz(QDD *Q1, QDD *Q2)
 {
     QDD *Q;
     Q = produto_QDD_QDD(Q1,Q2,apply_produto_matriz_matriz,V);
@@ -3459,23 +3392,17 @@ int main()
     setlocale(LC_ALL, "Portuguese");
     /***********************************/
 
-    time_t antes, depois;
-    double tempo;
-    Long vezes;
-    vezes = 10000;
+    QDD *QI, *QH;
+    QI = I();
+    QH = H();
 
-    antes = clock();
-    for(int i=0; i<vezes; i++)
-    {
-        QDD *QH, *Q;
-        QH = H();
-        Q = potencia_tensorial(QH,20);
-    }
-    depois = clock();
+    QDD *Q;
+    Q = soma_QDD(QH,QI);
+    mostra_QDD(Q);
 
-    tempo = (double)(depois-antes)/CLOCKS_PER_SEC;
-    tempo /= vezes;
-    printf("%.3e",tempo);
+    libera_QDD(QI);
+    libera_QDD(QH);
+    libera_QDD(Q);
 
     /***********************************/
     finaliza_structs_globais();
