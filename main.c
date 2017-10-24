@@ -2181,18 +2181,24 @@ void reduz_arvore(no **n, Short ex)
 
 /**  apply esqueleto  **/
 
-/*void encaixa_apply(apply *a, apply *ac, Short lado)
+void encaixa_apply(apply *a, apply *ac, Short lado)
 {
-    apply *aa;
-    aa = NULL;
+    apply *ae;
+    ae = NULL;
     switch(lado)
     {
+        case Inicio:
+            ae = ac->a1;
+            ac->a = ae;
+            return;
+            break;
+
         case Else:
-            aa = ac->a1;
+            ae = ac->a1;
             break;
 
         case Then:
-            aa = ac->a2;
+            ae = ac->a2;
             break;
 
         default:
@@ -2200,29 +2206,29 @@ void reduz_arvore(no **n, Short ex)
             break;
     }
 
-    apply *ae;
-    for(ae = a; ae != NULL; ae = ae->a)
-        if(compara_apply(aa,ae))
+    apply *aaux;
+    for(aaux = a; aaux != NULL; aaux = aaux->a)
+        if(compara_apply(aaux,ae))
             break;
 
-    if(ae == NULL)
+    if(aaux == NULL)
     {
-        aa->a = ac->a;
-        ac->a = aa;
+        ae->a = ac->a;
+        ac->a = ae;
     }
     else
     {
         switch(lado)
         {
             case Else:
-                ac->a1 = ae;
+                ae->a1 = aaux;
                 break;
 
             case Then:
-                ac->a2 = ae;
+                ae->a2 = aaux;
                 break;
         }
-        libera_apply_no(aa);
+        libera_apply_no(ae);
     }
 }
 
@@ -2233,18 +2239,15 @@ void monta_apply(apply *a, Short regra)
     n2 = a->n2;
 
     Short i, j;
-    i = 0;
-    j = 0;
+    i=0;
+    j=0;
     if(n1->tipo == Meio)
-        i = n1->at.m.nivel;
+        i = n1->at.m.classe;
     if(n2->tipo == Meio)
-        j = n2->at.m.nivel;
+        j = n2->at.m.classe;
 
     no *n;
     Short avanco;
-    char erro[100];
-    erro[0] = '\0';
-    n = NULL;
     avanco = 4;
     switch(regra)
     {
@@ -2284,17 +2287,17 @@ void monta_apply(apply *a, Short regra)
             break;
 
         case 7:
-            n = cria_no_meio(V,i);
+            n = cria_no_meio(R,i);
             avanco = 1;
             break;
 
         case 8:
-            n = cria_no_meio(V,j);
+            n = cria_no_meio(R,j);
             avanco = 2;
             break;
 
         case 9:
-            n = cria_no_meio(V,i);
+            n = cria_no_meio(R,i);
             avanco = 3;
             break;
 
@@ -2314,17 +2317,8 @@ void monta_apply(apply *a, Short regra)
             n = cria_no_fim(0,0);
             break;
 
-        case 14:
-            ERRO("MONTA APPLY| NO INDEVIDO");
-            break;
-
-        case 15:
-            ERRO("MONTA APPLY| ACESSO EM MRF INDEVIDO");
-            break;
-
         default:
-            sprintf(erro,"MONTA PPLY| REGRA %hu NAO DEFINIDA",regra);
-            ERRO(erro);
+            ERRO("MONTA APPLY| REGRA INDEFINIDA");
             break;
     }
     a->n = n;
@@ -2369,6 +2363,7 @@ void monta_apply(apply *a, Short regra)
             a2->n1 = n1->at.m.th;
             a2->n2 = n2->at.m.th;
             break;
+
     }
     a->a1 = a1;
     a->a2 = a2;
@@ -2385,18 +2380,16 @@ no* apply_base(no *n1, no *n2, Short(*regra_apply)(apply*))
     apply *ac;
     Short regra;
     ac = a;
-    for(ac = a; ac != NULL; ac = ac->a)
+    while(ac != NULL)
     {
         regra = regra_apply(ac);
-        printf("\n\nREGRA: %d");
-        mostra_apply_no(ac);
         monta_apply(ac,regra);
 
         n = ac->n;
         switch(n->tipo)
         {
             case Inicio:
-                ac->a = ac->a1;
+                encaixa_apply(a,ac,Inicio);
                 break;
 
             case Meio:
@@ -2404,25 +2397,25 @@ no* apply_base(no *n1, no *n2, Short(*regra_apply)(apply*))
                 encaixa_apply(a,ac,Else);
                 break;
         }
+        ac = ac->a;
     }
 
     apply *a1, *a2;
     for(ac = a; ac != NULL; ac = ac->a)
     {
+        a1 = ac->a1;
+        a2 = ac->a2;
+
         n = ac->n;
         switch(n->tipo)
         {
             case Inicio:
-                a1 = ac->a1;
                 n1 = a1->n;
 
                 conecta_UM(n,n1,Inicio);
                 break;
 
             case Meio:
-                a1 = ac->a1;
-                a2 = ac->a2;
-
                 n1 = a1->n;
                 n2 = a2->n;
 
@@ -2430,13 +2423,13 @@ no* apply_base(no *n1, no *n2, Short(*regra_apply)(apply*))
                 break;
         }
     }
-
     n = a->n;
     libera_apply_lista(a);
 
     return n;
+
 }
-*/
+
 
 
 /**  regra apply  **/
@@ -3466,10 +3459,23 @@ int main()
     setlocale(LC_ALL, "Portuguese");
     /***********************************/
 
-    QDD *QH, *Q;
-    QH = H();
-    Q = potencia_tensorial(QH,20);
-    mostra_QDD(Q);
+    time_t antes, depois;
+    double tempo;
+    Long vezes;
+    vezes = 10000;
+
+    antes = clock();
+    for(int i=0; i<vezes; i++)
+    {
+        QDD *QH, *Q;
+        QH = H();
+        Q = potencia_tensorial(QH,20);
+    }
+    depois = clock();
+
+    tempo = (double)(depois-antes)/CLOCKS_PER_SEC;
+    tempo /= vezes;
+    printf("%.3e",tempo);
 
     /***********************************/
     finaliza_structs_globais();
