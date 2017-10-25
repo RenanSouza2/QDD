@@ -3222,7 +3222,6 @@ void teste_velocidade_base(char *nomeI, Short limiteinf, Short limitesup, Short 
         antesi = clock();
 
         nome[0] = '\0';
-        strcpy(nome,nomeI);
         sprintf(nome,"%s%d.txt",nomeI,i);
         printf("\n\n\nTestando: %s\n",nome);
         fprintf(fr,"\n\n\nTestando: %s\n",nome);
@@ -3285,7 +3284,7 @@ void teste_curto(Short amostras, Short arquivo, FILE *fr)
     antes = clock();
     teste_velocidade_matriz("H",1,9,amostras,arquivo,fr);
     teste_velocidade_matriz("I",1,9,amostras,arquivo,fr);
-    teste_velocidade_matriz("QFT",1,10,amostras,arquivo,fr);
+    teste_velocidade_matriz("QFT",1,11,amostras,arquivo,fr);
     teste_velocidade_vetor("V",1,22,amostras,arquivo,fr);
     depois = clock();
 
@@ -3400,17 +3399,7 @@ int main()
     setlocale(LC_ALL, "Portuguese");
     /***********************************/
 
-    QDD *QI, *QH;
-    QI = I();
-    QH = H();
-
-    QDD *Q;
-    Q = soma_QDD(QH,QI);
-    mostra_QDD(Q);
-
-    libera_QDD(QI);
-    libera_QDD(QH);
-    libera_QDD(Q);
+    teste_medio(30,2,NULL);
 
     /***********************************/
     finaliza_structs_globais();
