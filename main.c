@@ -1194,17 +1194,15 @@ void fmostra_configuracao(FILE *fp)
 void conecta_UM(no *n1, no *n2, Short lado)
 {
     if(n1 == NULL)
-        ERRO("CONECTA UM| N1 INVALIDO 1");
-    if(n1<0)
-        ERRO("CONECTA UM| N1 INVALIDO 2");
+        ERRO("CONECTA UM| N1 INVALIDO");
     if(n2 == NULL)
-        ERRO("CONECTA UM| N2 INVALIDO 1");
-    if(n2<0)
-        ERRO("CONECTA UM| N2 INVALIDO 2");
+        ERRO("CONECTA UM| N2 INVALIDO");
     if(n1->tipo == Fim)
         ERRO("CONECTA UM| FIM NAO TEM SUCESSORES");
     if(n2->tipo == Inicio)
         ERRO("CONECTA UM| INICIO NAO TEM ANTECESSORES");
+    if(n1 == n2)
+        ERRO("CONECTA UM| N1 E N2 SAO IGUAIS");
 
     switch(lado)
     {
@@ -2263,7 +2261,6 @@ void monta_apply(apply *a, Short regra)
 
         case 1:
             n = cria_no_meio(R,i);
-            mostra_no(n);
             avanco = 1;
             break;
 
@@ -2891,6 +2888,40 @@ QDD* matriz_cruzada(no *nf1, no *nf2)
     return Q;
 }
 
+QDD* matriz_delta_kronecker(Short r, Short c)
+{
+    no *ni;
+    ni = cria_no_inicio();
+
+    no *nmr, *nmc;
+    nmr = cria_no_meio(R,0);
+    nmc = cria_no_meio(C,0);
+
+    no *nf0, *nf1;
+    nf0 = cria_no_fim(0,0);
+    nf1 = cria_no_fim(1,0);
+
+    conecta_UM(ni,nmr,Inicio);
+    if(r == 0)
+        conecta_DOIS(nmr,nmc,nf0);
+    else
+        conecta_DOIS(nmr,nf0,nmc);
+
+    if(c == 0)
+        conecta_DOIS(nmc,nf1,nf0);
+    else
+        conecta_DOIS(nmc,nf0,nf1);
+
+    lista *l;
+    l = lista_fim_2(nf0,nf1);
+
+    QDD *Q;
+    Q = cria_QDD(1);
+    Q->n = ni;
+    Q->l = l;
+    return Q;
+}
+
 
 
 /** QDDs usuais  **/
@@ -3055,6 +3086,75 @@ QDD* W(Short N)
     Q = cria_QDD(N);
     Q->n = ni;
     Q->l = l;
+
+    return Q;
+}
+
+QDD* CNOT(Short N, Short control)
+{
+    if(N < 2)
+        ERRO("CNOT| CNOT TEM PELO MENOS 2 QBITS");
+
+    QDD *Q00, *Q11;
+    Q00 = matriz_delta_kronecker(0,0);
+    Q11 = matriz_delta_kronecker(1,1);
+
+    QDD *QI, *QX;
+    QI = I();
+    QX = X();
+
+    QDD *Q1, *Q2;
+    if(N == 2)
+    {
+        if(control == 0)
+        {
+            Q1 = produto_tensorial(Q00,QI);
+            Q2 = produto_tensorial(Q11,QX);
+        }
+        else
+        {
+            Q1 = produto_tensorial(QI,Q00);
+            Q2 = produto_tensorial(QX,Q11);
+        }
+    }
+    if(N > 2)
+    {
+        QDD *QIn;
+        Short n;
+        n = N-2;
+        QIn = potencia_tensorial(QI,n);
+
+        QDD *Q1t, *Q2t;
+        if(control == 0)
+        {
+            Q1t = produto_tensorial(QIn,QI);
+            Q2t = produto_tensorial(QIn,QX);
+
+            Q1 = produto_tensorial(Q00,Q1t);
+            Q2 = produto_tensorial(Q11,Q1t);
+        }
+        else
+        {
+            Q1t = produto_tensorial(QIn,Q00);
+            Q2t = produto_tensorial(QIn,Q11);
+
+            Q1 = produto_tensorial(QI,Q1t);
+            Q2 = produto_tensorial(QX,Q1t);
+        }
+        libera_QDD(QIn);
+        libera_QDD(Q1t);
+        libera_QDD(Q2t);
+    }
+
+    QDD *Q;
+    Q = soma_QDD(Q1,Q2);
+
+    libera_QDD(Q00);
+    libera_QDD(Q11);
+    libera_QDD(QI);
+    libera_QDD(QX);
+    libera_QDD(Q1);
+    libera_QDD(Q2);
 
     return Q;
 }
@@ -3319,8 +3419,8 @@ void teste_medio(Short amostras, Short arquivo, FILE *fr)
 
     delta = depois-antes;
     tempo = (double)delta/CLOCKS_PER_SEC;
-    printf("\n\nTempo teste longo: %.3e",tempo);
-    fprintf(fr,"\n\nTempo teste longo: %.3e",tempo);
+    printf("\n\nTempo teste medio: %.3e",tempo);
+    fprintf(fr,"\n\nTempo teste medio: %.3e",tempo);
     if(ri)
         fclose(fr);
 }
@@ -3399,7 +3499,10 @@ int main()
     setlocale(LC_ALL, "Portuguese");
     /***********************************/
 
-    teste_medio(30,2,NULL);
+    QDD *Q;
+    Q = CNOT(5,0);
+    fmostra_QDD_sozinho(Q,"CNOT2.txt");
+    libera_QDD(Q);
 
     /***********************************/
     finaliza_structs_globais();
