@@ -472,42 +472,6 @@ void libera_suporte_lista(suporte *s)
 
 
 
-/**  structs globais  **/
-
-QDD *Qred;
-no  *nzero;
-
-void inicia_structs_globais()
-{
-    tQ = sizeof(QDD);
-    tN = sizeof(no);
-    tL = sizeof(lista);
-    tA = sizeof(apply);
-    tC = sizeof(conta);
-    tS = sizeof(suporte);
-
-    Qred  = cria_QDD(1);
-    Qred->n = cria_no_inicio();
-    nzero = cria_no_fim(0,0);
-    mem -= tQ + 2*tN;
-    iQ--;
-    iI--;
-    iF--;
-}
-
-void finaliza_structs_globais()
-{
-    iQ++;
-    iI++;
-    iF++;
-    mem += tQ + 2*tN;
-    libera_no(Qred->n);
-    libera_QDD_no(Qred);
-    libera_no(nzero);
-}
-
-
-
 /** Enlistadores  **/
 
 lista* enlista_arvore(no *n)
@@ -1414,6 +1378,202 @@ void libera_QDD(QDD *Q)
     libera_arvore(Q->n);
     libera_lista_lista(Q->l);
     libera_QDD_no(Q);
+}
+
+
+
+/**  auxiliar QDDs usuais  **/
+
+lista* lista_fim_2(no *nf1, no *nf2)
+{
+    lista *l1, *l2;
+    l1 = cria_lista();
+    l2 = cria_lista();
+
+    l1->l = l2;
+    l1->n = nf1;
+    l2->n = nf2;
+
+    return l1;
+}
+
+QDD* matriz_cruzada(no *nf1, no *nf2)
+{
+    no *ni, *n1, *n2, *n3;
+    ni = cria_no_inicio();
+    n1 = cria_no_meio(R,0);
+    n2 = cria_no_meio(C,0);
+    n3 = cria_no_meio(C,0);
+
+    conecta_UM(ni,n1,Inicio);
+    conecta_DOIS(n1,n2,n3);
+    conecta_DOIS(n2,nf1,nf2);
+    conecta_DOIS(n3,nf2,nf1);
+
+    QDD *Q;
+    Q = cria_QDD(1);
+    Q->n = ni;
+    Q->l = lista_fim_2(nf1,nf2);
+    return Q;
+}
+
+QDD* matriz_delta_kronecker(Short r, Short c)
+{
+    no *ni;
+    ni = cria_no_inicio();
+
+    no *nmr, *nmc;
+    nmr = cria_no_meio(R,0);
+    nmc = cria_no_meio(C,0);
+
+    no *nf0, *nf1;
+    nf0 = cria_no_fim(0,0);
+    nf1 = cria_no_fim(1,0);
+
+    conecta_UM(ni,nmr,Inicio);
+    if(r == 0)
+        conecta_DOIS(nmr,nmc,nf0);
+    else
+        conecta_DOIS(nmr,nf0,nmc);
+
+    if(c == 0)
+        conecta_DOIS(nmc,nf1,nf0);
+    else
+        conecta_DOIS(nmc,nf0,nf1);
+
+    lista *l;
+    l = lista_fim_2(nf0,nf1);
+
+    QDD *Q;
+    Q = cria_QDD(1);
+    Q->n = ni;
+    Q->l = l;
+    return Q;
+}
+
+
+
+/** QDDs usuais  **/
+
+QDD* I()
+{
+    no *nf1, *nf2;
+    nf1 = cria_no_fim(1,0);
+    nf2 = cria_no_fim(0,0);
+
+    QDD *Q;
+    Q = matriz_cruzada(nf1,nf2);
+    return Q;
+}
+
+QDD* X()
+{
+    no *nf1, *nf2;
+    nf1 = cria_no_fim(0,0);
+    nf2 = cria_no_fim(1,0);
+
+    QDD *Q;
+    Q = matriz_cruzada(nf1,nf2);
+    return Q;
+}
+
+QDD* S()
+{
+    no *nf1, *nf2;
+    nf1 = cria_no_fim(0.5,0.5);
+    nf2 = cria_no_fim(0.5,-0.5);
+
+    QDD *Q;
+    Q = matriz_cruzada(nf1,nf2);
+    return Q;
+}
+
+QDD* H()
+{
+    no *ni, *n1, *n2;
+    ni = cria_no_inicio();
+    n1 = cria_no_meio(R,0);
+    n2 = cria_no_meio(C,0);
+
+    no *nf1, *nf2;
+    double re;
+    re = pow(2,-0.5);
+    nf1 = cria_no_fim( re,0);
+    nf2 = cria_no_fim(-re,0);
+
+    conecta_UM(ni,n1,Inicio);
+    conecta_DOIS(n1,nf1,n2);
+    conecta_DOIS(n2,nf1,nf2);
+
+    QDD *Q;
+    Q = cria_QDD(1);
+    Q->n = ni;
+    Q->l = lista_fim_2(nf1,nf2);
+
+    return Q;
+}
+
+
+
+/**  estruturas globais  **/
+
+QDD *QH, *QI, *QX, *QS, *Q00, *Q01, *Q10, *Q11;
+QDD *Qred;
+no  *nzero;
+
+void inicia_structs_globais()
+{
+    tQ = sizeof(QDD);
+    tN = sizeof(no);
+    tL = sizeof(lista);
+    tA = sizeof(apply);
+    tC = sizeof(conta);
+    tS = sizeof(suporte);
+
+    Qred  = cria_QDD(1);
+    Qred->n = cria_no_inicio();
+    nzero = cria_no_fim(0,0);
+
+    QH = H();
+    QI = I();
+    QX = X();
+    QS = S();
+
+    Q00 = matriz_delta_kronecker(0,0);
+    Q01 = matriz_delta_kronecker(0,1);
+    Q10 = matriz_delta_kronecker(1,0);
+    Q11 = matriz_delta_kronecker(1,1);
+
+    mem -= 9*tQ+45*tN+62*tL;
+    iQ -= 9;
+    iI -= 9;
+    iM -= 19;
+    iF -= 17;
+    iL -= 62;
+}
+
+void finaliza_structs_globais()
+{
+    mem += 9*tQ+45*tN+62*tL;
+    iQ += 9;
+    iI += 9;
+    iM += 19;
+    iF += 17;
+    iL += 62;
+
+    libera_no(Qred->n);
+    libera_QDD_no(Qred);
+    libera_no(nzero);
+
+    libera_QDD(QH);
+    libera_QDD(QI);
+    libera_QDD(QX);
+    libera_QDD(QS);
+
+    libera_QDD(Q00);
+    libera_QDD(Q01);
+    libera_QDD(Q10);
+    libera_QDD(Q11);
 }
 
 
@@ -2634,9 +2794,126 @@ Short regra_apply_soma(apply *a)
     return 0;
 }
 
-/*Short regra_apply_produto_matriz_matriz(apply *a)
+Short regra_apply_produto_matriz_matriz(apply *a)
+{
+    no *n1, *n2;
+    n1 = a->n1;
+    n2 = a->n2;
 
-Short regra_apply_produto_matriz_vetor(apply *a)
+    switch(n1->tipo)
+    {
+        case Inicio:
+            /* N1 e inicio */
+            if(n2->tipo != Inicio)
+                ERRO("RGRA APPLY PRODUTO MATRIZ MATRIZ| N1 E INICIO N2 NAO");
+
+            return 0;
+            break;
+
+        case Meio:
+            /* n1 e meio */
+            switch(n2->tipo)
+            {
+                case Inicio:
+                    /* n2 e inicio */
+                    ERRO("REGRA APPLY PRODUTO MATRIZ MATRIZ| N1 E MEIO N2 E FIM");
+                    break;
+
+                case Meio:
+                    /* n1 e meio n2 e meio */
+                    if(n1->at.m.nivel < n2->at.m.nivel)
+                    {
+                        /* i < j */
+                        switch(n1->at.m.tipo)
+                        {
+                            case V:
+                                /* i < j n1 e v */
+                                ERRO("REGRA APPLY PRODUTO MATRIZ MATRIZ| Q1 E VETOR");
+                                break;
+
+                            case R:
+                                /* i < j n1 e r */
+                                return 1;
+                                break;
+
+                            case C:
+                                /* i < j n1 e c */
+                                return 7;
+                                break;
+                        }
+                    }
+                    if(n1->at.m.nivel <== n2->at.m.nivel)
+                    {
+                        /* i == j */
+                        switch(n1->at.m.tipo)
+                        {
+                            case V:
+                                /* i == j n1 e v */
+                                ERRO("REGRA APPLY PRODUTO MATRIZ MATRIZ| Q1 E VETOR");
+                                break;
+
+                            case R:
+                                /* i == j n1 e r */
+                                return 1;
+                                break;
+
+                            case C:
+                                /* i == j n1 e c */
+                                switch(n2->at.m.tipo)
+                                {
+                                    case V:
+                                        /* i == j n1 e r n2 e v */
+                                        ERRO("REGRA APPLY PRODUTO MATRIZ MATRIZ| Q2 E VETOR");
+                                        break;
+
+                                    case R:
+                                        /* i == j n1 e r n2 e r */
+                                        return 6;
+                                        break;
+
+                                    case C:
+                                        /* i == j n1 e r n2 e c */
+                                        return 7;
+                                        break;
+                                }
+                                break;
+                        }
+                    }
+                    if(n1->at.m.nivel > n2->at.m.nivel)
+                    {
+                        /* i > j */
+                    }
+                    break;
+
+                case Fim:
+                    /* n1 e meio n2 e fim */
+                    break;
+            }
+            break;
+
+        case Fim:
+            /* n1 e fim */
+            switch(n2->tipo)
+            {
+                case Inicio:
+                    /*n1 e fim n2 e inicio */
+                    ERRO("REGRA APPLY PRODUTO MATRIZ MATRIZ| N1 E FIM N2 E INICIO");
+                    break;
+
+                case Meio:
+                    /*n1 e fim n2 e meio */
+                    break;
+
+                case Fim:
+                    /*n1 e fim n2 e fim */
+                    break;
+            }
+            break;
+
+    }
+}
+
+/*Short regra_apply_produto_matriz_vetor(apply *a)
 
 Short regra_apply_produto_vetor_vetor(apply *a)*/
 
@@ -2797,17 +3074,30 @@ QDD* produto_tensorial(QDD *Q1, QDD *Q2)
 
 QDD* potencia_tensorial(QDD *Q, Short n)
 {
-    QDD *Qf, *Qaux;
-    Qf = copia_QDD(Q);
+    Short ex;
+    for(ex = 1; 2*ex < n; ex *= 2);
+    n -= ex;
 
-    Short j;
-    for(j=1; j<n; j++)
+    QDD *Qp;
+    Qp = copia_QDD(Q);
+
+    QDD *Qt;
+    for(ex /= 2; ex > 0; ex /= 2)
     {
-        Qaux = produto_tensorial(Qf,Q);
-        libera_QDD(Qf);
-        Qf = Qaux;
+        Qt = produto_tensorial(Qp,Qp);
+        libera_QDD(Qp);
+        Qp = Qt;
+
+        if(ex <= n)
+        {
+            Qt = produto_tensorial(Qp,Q);
+            libera_QDD(Qp);
+            Qp = Qt;
+
+            n -= ex;
+        }
     }
-    return Qf;
+    return Qp;
 }
 
 QDD* soma_QDD(QDD *Q1, QDD *Q2)
@@ -2853,136 +3143,8 @@ no* produto_vetor_vetor(QDD *Q1, QDD *Q2)
 */
 
 
-/**  auxiliar QDDs usuais  **/
-
-lista* lista_fim_2(no *nf1, no *nf2)
-{
-    lista *l1, *l2;
-    l1 = cria_lista();
-    l2 = cria_lista();
-
-    l1->l = l2;
-    l1->n = nf1;
-    l2->n = nf2;
-
-    return l1;
-}
-
-QDD* matriz_cruzada(no *nf1, no *nf2)
-{
-    no *ni, *n1, *n2, *n3;
-    ni = cria_no_inicio();
-    n1 = cria_no_meio(R,0);
-    n2 = cria_no_meio(C,0);
-    n3 = cria_no_meio(C,0);
-
-    conecta_UM(ni,n1,Inicio);
-    conecta_DOIS(n1,n2,n3);
-    conecta_DOIS(n2,nf1,nf2);
-    conecta_DOIS(n3,nf2,nf1);
-
-    QDD *Q;
-    Q = cria_QDD(1);
-    Q->n = ni;
-    Q->l = lista_fim_2(nf1,nf2);
-    return Q;
-}
-
-QDD* matriz_delta_kronecker(Short r, Short c)
-{
-    no *ni;
-    ni = cria_no_inicio();
-
-    no *nmr, *nmc;
-    nmr = cria_no_meio(R,0);
-    nmc = cria_no_meio(C,0);
-
-    no *nf0, *nf1;
-    nf0 = cria_no_fim(0,0);
-    nf1 = cria_no_fim(1,0);
-
-    conecta_UM(ni,nmr,Inicio);
-    if(r == 0)
-        conecta_DOIS(nmr,nmc,nf0);
-    else
-        conecta_DOIS(nmr,nf0,nmc);
-
-    if(c == 0)
-        conecta_DOIS(nmc,nf1,nf0);
-    else
-        conecta_DOIS(nmc,nf0,nf1);
-
-    lista *l;
-    l = lista_fim_2(nf0,nf1);
-
-    QDD *Q;
-    Q = cria_QDD(1);
-    Q->n = ni;
-    Q->l = l;
-    return Q;
-}
-
-
 
 /** QDDs usuais  **/
-
-QDD* I()
-{
-    no *nf1, *nf2;
-    nf1 = cria_no_fim(1,0);
-    nf2 = cria_no_fim(0,0);
-
-    QDD *Q;
-    Q = matriz_cruzada(nf1,nf2);
-    return Q;
-}
-
-QDD* X()
-{
-    no *nf1, *nf2;
-    nf1 = cria_no_fim(0,0);
-    nf2 = cria_no_fim(1,0);
-
-    QDD *Q;
-    Q = matriz_cruzada(nf1,nf2);
-    return Q;
-}
-
-QDD* S()
-{
-    no *nf1, *nf2;
-    nf1 = cria_no_fim(0.5,0.5);
-    nf2 = cria_no_fim(0.5,-0.5);
-
-    QDD *Q;
-    Q = matriz_cruzada(nf1,nf2);
-    return Q;
-}
-
-QDD* H()
-{
-    no *ni, *n1, *n2;
-    ni = cria_no_inicio();
-    n1 = cria_no_meio(R,0);
-    n2 = cria_no_meio(C,0);
-
-    no *nf1, *nf2;
-    double re;
-    re = pow(2,-0.5);
-    nf1 = cria_no_fim( re,0);
-    nf2 = cria_no_fim(-re,0);
-
-    conecta_UM(ni,n1,Inicio);
-    conecta_DOIS(n1,nf1,n2);
-    conecta_DOIS(n2,nf1,nf2);
-
-    QDD *Q;
-    Q = cria_QDD(1);
-    Q->n = ni;
-    Q->l = lista_fim_2(nf1,nf2);
-
-    return Q;
-}
 
 QDD* Ro(double theta)
 {
@@ -3090,31 +3252,42 @@ QDD* W(Short N)
     return Q;
 }
 
-QDD* CNOT(Short N, Short control)
+QDD* controle(Short N, Short controle, Short ativa, QDD *Q0)
 {
     if(N < 2)
-        ERRO("CNOT| CNOT TEM PELO MENOS 2 QBITS");
-
-    QDD *Q00, *Q11;
-    Q00 = matriz_delta_kronecker(0,0);
-    Q11 = matriz_delta_kronecker(1,1);
-
-    QDD *QI, *QX;
-    QI = I();
-    QX = X();
+        ERRO("CONTROL| TEM PELO MENOS 2 QBITS");
 
     QDD *Q1, *Q2;
+    QDD *QIn0;
+    QIn0 = potencia_tensorial(QI,Q0->nqbit);
+
     if(N == 2)
     {
-        if(control == 0)
+        if(ativa == 0)
         {
-            Q1 = produto_tensorial(Q00,QI);
-            Q2 = produto_tensorial(Q11,QX);
+            if(controle == 0)
+            {
+                Q1 = produto_tensorial(Q11,QIn0);
+                Q2 = produto_tensorial(Q00,Q0);
+            }
+            else
+            {
+                Q1 = produto_tensorial(QIn0,Q11);
+                Q2 = produto_tensorial(Q0,Q00);
+            }
         }
         else
         {
-            Q1 = produto_tensorial(QI,Q00);
-            Q2 = produto_tensorial(QX,Q11);
+            if(controle == 0)
+            {
+                Q1 = produto_tensorial(Q00,QIn0);
+                Q2 = produto_tensorial(Q11,Q0);
+            }
+            else
+            {
+                Q1 = produto_tensorial(QIn0,Q00);
+                Q2 = produto_tensorial(Q0,Q11);
+            }
         }
     }
     if(N > 2)
@@ -3125,21 +3298,43 @@ QDD* CNOT(Short N, Short control)
         QIn = potencia_tensorial(QI,n);
 
         QDD *Q1t, *Q2t;
-        if(control == 0)
+        if(ativa == 0)
         {
-            Q1t = produto_tensorial(QIn,QI);
-            Q2t = produto_tensorial(QIn,QX);
+            if(controle == 0)
+            {
+                Q1t = produto_tensorial(QIn,QIn0);
+                Q2t = produto_tensorial(QIn,Q0);
 
-            Q1 = produto_tensorial(Q00,Q1t);
-            Q2 = produto_tensorial(Q11,Q1t);
+                Q1 = produto_tensorial(Q11,Q1t);
+                Q2 = produto_tensorial(Q00,Q1t);
+            }
+            else
+            {
+                Q1t = produto_tensorial(QIn,Q11);
+                Q2t = produto_tensorial(QIn,Q00);
+
+                Q1 = produto_tensorial(QIn0,Q1t);
+                Q2 = produto_tensorial(Q0,Q1t);
+            }
         }
         else
         {
-            Q1t = produto_tensorial(QIn,Q00);
-            Q2t = produto_tensorial(QIn,Q11);
+            if(controle == 0)
+            {
+                Q1t = produto_tensorial(QIn,QIn0);
+                Q2t = produto_tensorial(QIn,Q0);
 
-            Q1 = produto_tensorial(QI,Q1t);
-            Q2 = produto_tensorial(QX,Q1t);
+                Q1 = produto_tensorial(Q00,Q1t);
+                Q2 = produto_tensorial(Q11,Q1t);
+            }
+            else
+            {
+                Q1t = produto_tensorial(QIn,Q00);
+                Q2t = produto_tensorial(QIn,Q11);
+
+                Q1 = produto_tensorial(QIn0,Q1t);
+                Q2 = produto_tensorial(Q0,Q1t);
+            }
         }
         libera_QDD(QIn);
         libera_QDD(Q1t);
@@ -3149,10 +3344,6 @@ QDD* CNOT(Short N, Short control)
     QDD *Q;
     Q = soma_QDD(Q1,Q2);
 
-    libera_QDD(Q00);
-    libera_QDD(Q11);
-    libera_QDD(QI);
-    libera_QDD(QX);
     libera_QDD(Q1);
     libera_QDD(Q2);
 
@@ -3499,9 +3690,10 @@ int main()
     setlocale(LC_ALL, "Portuguese");
     /***********************************/
 
+    configuracao(60);
     QDD *Q;
-    Q = CNOT(5,0);
-    fmostra_QDD_sozinho(Q,"CNOT2.txt");
+    Q = potencia_tensorial(QI,60);
+    fmostra_QDD_sozinho(Q,"POTNCIA.txt");
     libera_QDD(Q);
 
     /***********************************/

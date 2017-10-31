@@ -1,0 +1,93 @@
+
+        case Inicio:
+            break;
+
+        case Meio:
+            break;
+
+        case Fim:
+            break;
+
+
+
+
+                            case V:
+                                /* n1 e v */
+                                break;
+                                
+                            case R:
+                                /* n1 e r */
+                                break;
+                                
+                            case C:
+                                /* n1 e c */
+                                break;
+
+
+
+
+    no *n1, *n2;
+    n1 = a->n1;
+    n2 = a->n2;
+
+    switch(n1->tipo)
+    {
+        case Inicio:
+            /* N1 e inicio */
+            if(n2->tipo != Inicio)
+                ERRO("RGRA APPLY | N1 E INICIO N2 NAO");
+                
+            return 0;
+            break;
+
+        case Meio:
+            /* n1 e meio */
+            switch(n2->tipo)
+            {
+                case Inicio:
+                    /* n2 e inicio */
+                    ERRO("REGRA APPLY | N1 E MEIO N2 E FIM");
+                    break;
+
+                case Meio:
+                    /* n1 e meio n2 e meio */
+                    if(n1->at.m.nivel < n2->at.m.nivel)
+                    {
+                        /* i < j */
+                    }
+                    if(n1->at.m.nivel <== n2->at.m.nivel)
+                    {
+                        /* i == j */
+                    }
+                    if(n1->at.m.nivel > n2->at.m.nivel)
+                    {
+                        /* i > j */
+                    }
+                    break;
+
+                case Fim:
+                    /* n1 e meio n2 e fim */
+                    break;
+            }
+            break;
+            
+        case Fim:
+            /* n1 e fim */
+            switch(n2->tipo)
+            {
+                case Inicio:
+                    /*n1 e fim n2 e inicio */
+                    ERRO("REGRA APPLY | N1 E FIM N2 E INICIO");
+                    break;
+
+                case Meio:
+                    /*n1 e fim n2 e meio */
+                    break;
+
+                case Fim:
+                    /*n1 e fim n2 e fim */
+                    break;
+            }
+            break;
+            
+    }
