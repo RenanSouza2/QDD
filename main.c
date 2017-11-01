@@ -2450,17 +2450,17 @@ void monta_apply(apply *a, Short regra)
             break;
 
         case 7:
-            n = cria_no_meio(R,i);
+            n = cria_no_meio(V,i);
             avanco = 1;
             break;
 
         case 8:
-            n = cria_no_meio(R,j);
+            n = cria_no_meio(V,j);
             avanco = 2;
             break;
 
         case 9:
-            n = cria_no_meio(R,i);
+            n = cria_no_meio(V,i);
             avanco = 3;
             break;
 
@@ -2570,13 +2570,6 @@ no* apply_base(no *n1, no *n2, Short(*regra_apply)(apply*))
         a2 = ac->a2;
 
         n = ac->n;
-
-        /*printf("\n\n\n\n\n\nA:");
-        mostra_apply_no(ac);
-        printf("\nA1:");
-        mostra_apply_no(a1);
-        printf("\nA2:");
-        mostra_apply_no(a2);*/
         switch(n->tipo)
         {
             case Inicio:
@@ -2594,6 +2587,7 @@ no* apply_base(no *n1, no *n2, Short(*regra_apply)(apply*))
         }
     }
     n = a->n;
+                                    fmostra_apply_lista_sozinho(a,"APPLY.txt");
     libera_apply_lista(a);
 
     return n;
@@ -2615,7 +2609,7 @@ Short regra_apply_soma(apply *a)
         case Inicio:
             /* N1 e inicio */
             if(n2->tipo != Inicio)
-                ERRO("RGRA APPLY SOMA| N1 E INICIO N2 NAO");
+                ERRO("REGRA APPLY SOMA| N1 E INICIO N2 NAO");
 
             return 0;
             break;
@@ -2805,7 +2799,7 @@ Short regra_apply_produto_matriz_matriz(apply *a)
         case Inicio:
             /* N1 e inicio */
             if(n2->tipo != Inicio)
-                ERRO("RGRA APPLY PRODUTO MATRIZ MATRIZ| N1 E INICIO N2 NAO");
+                ERRO("REGRA APPLY PRODUTO MATRIZ MATRIZ| N1 E INICIO N2 NAO");
 
             return 0;
             break;
@@ -2824,11 +2818,11 @@ Short regra_apply_produto_matriz_matriz(apply *a)
                     if(n1->at.m.nivel < n2->at.m.nivel)
                     {
                         /* i < j */
-                        switch(n1->at.m.tipo)
+                        switch(n1->at.m.classe)
                         {
                             case V:
                                 /* i < j n1 e v */
-                                ERRO("REGRA APPLY PRODUTO MATRIZ MATRIZ| Q1 E VETOR");
+                                ERRO("REGRA APPLY PRODUTO MATRIZ MATRIZ| Q1 E VETOR 1");
                                 break;
 
                             case R:
@@ -2842,14 +2836,14 @@ Short regra_apply_produto_matriz_matriz(apply *a)
                                 break;
                         }
                     }
-                    if(n1->at.m.nivel <== n2->at.m.nivel)
+                    if(n1->at.m.nivel == n2->at.m.nivel)
                     {
                         /* i == j */
-                        switch(n1->at.m.tipo)
+                        switch(n1->at.m.classe)
                         {
                             case V:
                                 /* i == j n1 e v */
-                                ERRO("REGRA APPLY PRODUTO MATRIZ MATRIZ| Q1 E VETOR");
+                                ERRO("REGRA APPLY PRODUTO MATRIZ MATRIZ| Q1 E VETOR 2");
                                 break;
 
                             case R:
@@ -2859,20 +2853,20 @@ Short regra_apply_produto_matriz_matriz(apply *a)
 
                             case C:
                                 /* i == j n1 e c */
-                                switch(n2->at.m.tipo)
+                                switch(n2->at.m.classe)
                                 {
                                     case V:
-                                        /* i == j n1 e r n2 e v */
-                                        ERRO("REGRA APPLY PRODUTO MATRIZ MATRIZ| Q2 E VETOR");
+                                        /* i == j n1 e c n2 e v */
+                                        ERRO("REGRA APPLY PRODUTO MATRIZ MATRIZ| Q2 E VETOR 1");
                                         break;
 
                                     case R:
-                                        /* i == j n1 e r n2 e r */
-                                        return 6;
+                                        /* i == j n1 e c n2 e r */
+                                        return 9;
                                         break;
 
                                     case C:
-                                        /* i == j n1 e r n2 e c */
+                                        /* i == j n1 e c n2 e c */
                                         return 7;
                                         break;
                                 }
@@ -2882,35 +2876,117 @@ Short regra_apply_produto_matriz_matriz(apply *a)
                     if(n1->at.m.nivel > n2->at.m.nivel)
                     {
                         /* i > j */
+                        switch(n2->at.m.classe)
+                        {
+                            case V:
+                                /* i > j n1 e c n2 e v */
+                                ERRO("REGRA APPLY PRODUTO MATRIZ MATRIZ| Q2 E VETOR 2");
+                                break;
+
+                            case R:
+                                /* i > j n1 e c n2 e r */
+                                return 8;
+                                break;
+
+                            case C:
+                                /* i > j n1 e c n2 e c */
+                                return 5;
+                                break;
+                        }
                     }
                     break;
 
                 case Fim:
                     /* n1 e meio n2 e fim */
+                    if(compara_no_fim_zero(n2,1))
+                    {
+                        /* n1 e meio n2 e zero */
+                        return 13;
+                    }
+                    else
+                    {
+                        /* n1 e meio n2 e diferente de zero */
+                        switch(n1->at.m.classe)
+                        {
+                            case V:
+                                /* n1 e v */
+                                ERRO("REGRA APPLY PRODUTO MATRIZ MATRIZ| Q1 E VETOR");
+                                break;
+
+                            case R:
+                                /* n1 e r */
+                                return 1;
+                                break;
+
+                            case C:
+                                /* n1 e c */
+                                return 7;
+                                break;
+                        }
+                    }
                     break;
             }
             break;
 
         case Fim:
             /* n1 e fim */
-            switch(n2->tipo)
+            if(compara_no_fim_zero(n1,1))
             {
-                case Inicio:
-                    /*n1 e fim n2 e inicio */
-                    ERRO("REGRA APPLY PRODUTO MATRIZ MATRIZ| N1 E FIM N2 E INICIO");
-                    break;
+                /* n1 e xero */
+                return 13;
+            }
+            else
+            {
+                /*n1 e diferente de zero */
+                switch(n2->tipo)
+                {
+                    case Inicio:
+                        /*n1 e fim n2 e inicio */
+                        ERRO("REGRA APPLY PRODUTO MATRIZ MATRIZ| N1 E FIM N2 E INICIO");
+                        break;
 
-                case Meio:
-                    /*n1 e fim n2 e meio */
-                    break;
+                    case Meio:
+                        /*n1 e fim n2 e meio */
+                        switch(n2->at.m.classe)
+                        {
+                            case V:
+                                /* n1 e fim n2 e v */
+                                ERRO("REGRA APPLY PRODUTO MATRIZ MATRIZ| Q2 E VETOR 2");
+                                break;
 
-                case Fim:
-                    /*n1 e fim n2 e fim */
-                    break;
+                            case R:
+                                /* n1 e c n2 e r */
+                                return 8;
+                                break;
+
+                            case C:
+                                /* n1 e c n2 e c */
+                                return 5;
+                                break;
+                        }
+                        break;
+
+                    case Fim:
+                        /*n1 e fim n2 e fim */
+                        if(compara_no_fim_zero(n1,1))
+                        {
+                            return 13;
+                        }
+                        else
+                        {
+                            if(compara_no_fim_zero(n2,1))
+                                return 13;
+                            else
+                                return 11;
+                        }
+                        break;
+                }
             }
             break;
 
     }
+    ERRO("REGRA APPLY PRODUTO MATRIZ MATRIZ|NAO ATIVOU NENHUMA REGRA");
+    return 0;
 }
 
 /*Short regra_apply_produto_matriz_vetor(apply *a)
@@ -2928,14 +3004,14 @@ no* apply_soma(no *n1, no *n2)
     return n;
 }
 
-/*no* apply_produto_matriz_matriz(no *n1, no *n2)
+no* apply_produto_matriz_matriz(no *n1, no *n2)
 {
     no *n;
     n = apply_base(n1,n2,regra_apply_produto_matriz_matriz);
     return n;
 }
 
-no* apply_produto_matriz_vetor(no *n1, no *n2)
+/*no* apply_produto_matriz_vetor(no *n1, no *n2)
 {
     no *n;
     n = apply_base(n1,n2,regra_apply_produto_matriz_vetor);
@@ -2952,17 +3028,113 @@ no* apply_produto_vetor_vetor(no *n1, no *n2)
 
 
 /**  produto QDD QDD base  **/
-/*
+
 Short espalha(suporte *s, Short classe)
+{
 
-void contrai_conta(conta *c)
+}
 
-conta* tratamento(suporte *s, Short classe, Short classeT)
+void contracao_conta(conta *c)
+{
+    conta *cc;
+    for(cc = c; cc != NULL; cc = cc->c)
+    {
+        no *na, *nd;
+        na = cc->n;
+        nd = apply_soma(na->at.m.el,na->at.m.th);
+        transfere_conexao(nd,na);
+        libera_arvore(nd);
 
-void contrai(QDD *Q, Short classe)
+        (cc->nivel)--;
+    }
+}
 
-QDD* produto_QDD_QDD(QDD *Q1, QDD *Q2, no* (*apply)(no *n1, no *n2), Short classe)
-*/
+conta* tratamento(suporte *s, Short classe, Short classeRef)
+{
+    if(classe == classeRef)
+        contracao_conta(s->c[classe]);
+
+    Short inicio;
+    inicio = espalha(s,classe);
+    if(inicio)
+        return s->c[classe];
+    else
+        return NULL;
+}
+
+void contracao_QDD(QDD *Q, Short classe)
+{
+    Short nqbit;
+    nqbit = Q->nqbit;
+
+    lista *lc;
+    conta *c, *cc;
+    c = cria_conta(nqbit);
+    cc = c;
+    for(lc = Q->l; lc != NULL; lc = lc->l)
+    {
+        cc->c = cria_conta(nqbit);
+        cc = cc->c;
+        cc->n = lc->n;
+    }
+    cc = c->c;
+    libera_conta_no(c);
+    c = cc;
+
+    suporte *s;
+    s = cria_suporte(nqbit);
+    if(classe == R)
+        s->c[C] = c;
+    else
+        s->c[R] = c;
+    mostra_suporte_lista_com_conta(s);
+
+    conta *ci;
+    ci = NULL;
+    while(s != NULL)
+    {
+        ci = tratamento(s,C,classe);
+        if(ci != NULL)
+            break;
+
+        ci = tratamento(s,V,classe);
+        if(ci != NULL)
+            break;
+
+        ci = tratamento(s,R,classe);
+        if(ci != NULL)
+            break;
+    }
+    if(ci != NULL)
+        ERRO("CONTRACAO QDD| NAO DETECTOU NO INICIO");
+
+
+}
+
+QDD* produto_QDD_QDD(QDD *Q1, QDD *Q2, no* (*apply_operacao)(no *n1, no *n2), Short classe)
+{
+    if(Q1->nqbit != Q2->nqbit)
+        ERRO("PRODUTO QDD QDD| Q1 E Q2 TEM QUANTIDADES DIFERENTES DE QBITS");
+
+    no *n;
+    n = apply_operacao(Q1->n,Q2->n);
+
+    lista *l;
+    l = acha_lista_fim_arvore(n);
+
+    QDD *Q;
+    Q = cria_QDD(Q1->nqbit);
+    Q->n = n;
+    Q->l = l;
+    reduz_QDD(Q,2);
+
+    contracao_QDD(Q,classe);
+    libera_lista_lista(Q->l);
+    Q->l = acha_lista_fim_QDD(Q);
+    reduz_QDD(Q,1);
+    return Q;
+}
+
 
 
 /**  Operações QDD algebricas  **/
@@ -3115,14 +3287,14 @@ QDD* soma_QDD(QDD *Q1, QDD *Q2)
     return Q;
 }
 
-/*QDD* produto_matriz_matriz(QDD *Q1, QDD *Q2)
+QDD* produto_matriz_matriz(QDD *Q1, QDD *Q2)
 {
     QDD *Q;
     Q = produto_QDD_QDD(Q1,Q2,apply_produto_matriz_matriz,V);
     return Q;
 }
 
-QDD* produto_matriz_vetor(QDD *Q1, QDD *Q2)
+/*QDD* produto_matriz_vetor(QDD *Q1, QDD *Q2)
 {
     QDD *Q;
     Q = produto_QDD_QDD(Q1,Q2,apply_produto_matriz_vetor,C);
@@ -3690,10 +3862,8 @@ int main()
     setlocale(LC_ALL, "Portuguese");
     /***********************************/
 
-    configuracao(60);
     QDD *Q;
-    Q = potencia_tensorial(QI,60);
-    fmostra_QDD_sozinho(Q,"POTNCIA.txt");
+    Q = produto_matriz_matriz(QH,QH);
     libera_QDD(Q);
 
     /***********************************/

@@ -35,7 +35,7 @@
         case Inicio:
             /* N1 e inicio */
             if(n2->tipo != Inicio)
-                ERRO("RGRA APPLY | N1 E INICIO N2 NAO");
+                ERRO("REGRA APPLY | N1 E INICIO N2 NAO");
                 
             return 0;
             break;
@@ -55,7 +55,7 @@
                     {
                         /* i < j */
                     }
-                    if(n1->at.m.nivel <== n2->at.m.nivel)
+                    if(n1->at.m.nivel == n2->at.m.nivel)
                     {
                         /* i == j */
                     }
@@ -91,3 +91,5 @@
             break;
             
     }
+    ERRO("REGRA APPLY |NAO ATIVOU NENHUMA REGRA");
+    return 0; 

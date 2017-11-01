@@ -1,0 +1,375 @@
+
+
+
+
+
+Ligacao apply 0
+Endereco (apply): 5469408
+
+No 1:
+Endereco (no): 5448104
+
+Tipo: Inicio
+Ligacoes posteriores
+	n: 5448136
+
+
+No 2:
+Endereco (no): 5448104
+
+Tipo: Inicio
+Ligacoes posteriores
+	n: 5448136
+
+
+No:
+Endereco (no): 5469216
+
+Tipo: Inicio
+Ligacoes posteriores
+	n: 5469344
+
+
+
+a1: 5469536
+a2: 0
+
+a:  5469536
+
+
+
+
+
+Ligacao apply 1
+Endereco (apply): 5469536
+
+No 1:
+Endereco (no): 5448136
+Ligacoes anteriores:
+	Ligacao 0: 5448104
+Tipo/nivel: R0
+Ligacoes posteriores
+	else: 5448200
+	Then: 5448168
+
+No 2:
+Endereco (no): 5448136
+Ligacoes anteriores:
+	Ligacao 0: 5448104
+Tipo/nivel: R0
+Ligacoes posteriores
+	else: 5448200
+	Then: 5448168
+
+No:
+Endereco (no): 5469344
+Ligacoes anteriores:
+	Ligacao 0: 5469216
+Tipo/nivel: R0
+Ligacoes posteriores
+	else: 5469504
+	Then: 5469248
+
+
+a1: 5469440
+a2: 5469472
+
+a:  5469440
+
+
+
+
+
+Ligacao apply 2
+Endereco (apply): 5469440
+
+No 1:
+Endereco (no): 5448200
+Ligacoes anteriores:
+	Ligacao 0: 5448168
+	Ligacao 1: 5448136
+Tipo: Numero
+7,071e-001 0,000e+000
+
+No 2:
+Endereco (no): 5448136
+Ligacoes anteriores:
+	Ligacao 0: 5448104
+Tipo/nivel: R0
+Ligacoes posteriores
+	else: 5448200
+	Then: 5448168
+
+No:
+Endereco (no): 5469504
+Ligacoes anteriores:
+	Ligacao 0: 5469344
+Tipo/nivel: V0
+Ligacoes posteriores
+	else: 5469728
+	Then: 5469184
+
+
+a1: 5468896
+a2: 5469152
+
+a:  5468896
+
+
+
+
+
+Ligacao apply 3
+Endereco (apply): 5468896
+
+No 1:
+Endereco (no): 5448200
+Ligacoes anteriores:
+	Ligacao 0: 5448168
+	Ligacao 1: 5448136
+Tipo: Numero
+7,071e-001 0,000e+000
+
+No 2:
+Endereco (no): 5448200
+Ligacoes anteriores:
+	Ligacao 0: 5448168
+	Ligacao 1: 5448136
+Tipo: Numero
+7,071e-001 0,000e+000
+
+No:
+Endereco (no): 5469728
+Ligacoes anteriores:
+	Ligacao 0: 5469248
+	Ligacao 1: 5469184
+	Ligacao 2: 5469504
+Tipo: Numero
+5,000e-001 0,000e+000
+
+
+a1: 0
+a2: 0
+
+a:  5469152
+
+
+
+
+
+Ligacao apply 4
+Endereco (apply): 5469152
+
+No 1:
+Endereco (no): 5448200
+Ligacoes anteriores:
+	Ligacao 0: 5448168
+	Ligacao 1: 5448136
+Tipo: Numero
+7,071e-001 0,000e+000
+
+No 2:
+Endereco (no): 5448168
+Ligacoes anteriores:
+	Ligacao 0: 5448136
+Tipo/nivel: C0
+Ligacoes posteriores
+	else: 5448200
+	Then: 5448232
+
+No:
+Endereco (no): 5469184
+Ligacoes anteriores:
+	Ligacao 0: 5469504
+Tipo/nivel: C0
+Ligacoes posteriores
+	else: 5469728
+	Then: 5468960
+
+
+a1: 5468896
+a2: 5469664
+
+a:  5469664
+
+
+
+
+
+Ligacao apply 5
+Endereco (apply): 5469664
+
+No 1:
+Endereco (no): 5448200
+Ligacoes anteriores:
+	Ligacao 0: 5448168
+	Ligacao 1: 5448136
+Tipo: Numero
+7,071e-001 0,000e+000
+
+No 2:
+Endereco (no): 5448232
+Ligacoes anteriores:
+	Ligacao 0: 5448168
+Tipo: Numero
+-7,071e-001 0,000e+000
+
+No:
+Endereco (no): 5468960
+Ligacoes anteriores:
+	Ligacao 0: 5469184
+Tipo: Numero
+-5,000e-001 0,000e+000
+
+
+a1: 0
+a2: 0
+
+a:  5469472
+
+
+
+
+
+Ligacao apply 6
+Endereco (apply): 5469472
+
+No 1:
+Endereco (no): 5448168
+Ligacoes anteriores:
+	Ligacao 0: 5448136
+Tipo/nivel: C0
+Ligacoes posteriores
+	else: 5448200
+	Then: 5448232
+
+No 2:
+Endereco (no): 5448136
+Ligacoes anteriores:
+	Ligacao 0: 5448104
+Tipo/nivel: R0
+Ligacoes posteriores
+	else: 5448200
+	Then: 5448168
+
+No:
+Endereco (no): 5469248
+Ligacoes anteriores:
+	Ligacao 0: 5469344
+Tipo/nivel: V0
+Ligacoes posteriores
+	else: 5469728
+	Then: 5468832
+
+
+a1: 5468896
+a2: 5469088
+
+a:  5469088
+
+
+
+
+
+Ligacao apply 7
+Endereco (apply): 5469088
+
+No 1:
+Endereco (no): 5448232
+Ligacoes anteriores:
+	Ligacao 0: 5448168
+Tipo: Numero
+-7,071e-001 0,000e+000
+
+No 2:
+Endereco (no): 5448168
+Ligacoes anteriores:
+	Ligacao 0: 5448136
+Tipo/nivel: C0
+Ligacoes posteriores
+	else: 5448200
+	Then: 5448232
+
+No:
+Endereco (no): 5468832
+Ligacoes anteriores:
+	Ligacao 0: 5469248
+Tipo/nivel: C0
+Ligacoes posteriores
+	else: 5468992
+	Then: 5469760
+
+
+a1: 5469696
+a2: 5469568
+
+a:  5469696
+
+
+
+
+
+Ligacao apply 8
+Endereco (apply): 5469696
+
+No 1:
+Endereco (no): 5448232
+Ligacoes anteriores:
+	Ligacao 0: 5448168
+Tipo: Numero
+-7,071e-001 0,000e+000
+
+No 2:
+Endereco (no): 5448200
+Ligacoes anteriores:
+	Ligacao 0: 5448168
+	Ligacao 1: 5448136
+Tipo: Numero
+7,071e-001 0,000e+000
+
+No:
+Endereco (no): 5468992
+Ligacoes anteriores:
+	Ligacao 0: 5468832
+Tipo: Numero
+-5,000e-001 0,000e+000
+
+
+a1: 0
+a2: 0
+
+a:  5469568
+
+
+
+
+
+Ligacao apply 9
+Endereco (apply): 5469568
+
+No 1:
+Endereco (no): 5448232
+Ligacoes anteriores:
+	Ligacao 0: 5448168
+Tipo: Numero
+-7,071e-001 0,000e+000
+
+No 2:
+Endereco (no): 5448232
+Ligacoes anteriores:
+	Ligacao 0: 5448168
+Tipo: Numero
+-7,071e-001 0,000e+000
+
+No:
+Endereco (no): 5469760
+Ligacoes anteriores:
+	Ligacao 0: 5468832
+Tipo: Numero
+5,000e-001 -0,000e+000
+
+
+a1: 0
+a2: 0
+
+a:  0
