@@ -501,13 +501,13 @@ lista* enlista_arvore(no *n)
                 case Inicio:
                     la->n = n->at.i.n;
                     if(la->n == NULL)
-                            ERRO("ENISTA ARVORE| ARVORE DESCONEXA 1");
+                            ERRO("ENLISTA ARVORE| ARVORE DESCONEXA 1");
                     break;
 
                 case Meio:
                     la->n = n->at.m.th;
                     if(la->n == NULL)
-                            ERRO("ENISTA ARVORE| ARVORE DESCONEXA 2");
+                            ERRO("ENLISTA ARVORE| ARVORE DESCONEXA 2");
 
                     laux = cria_lista();
                     laux->n = n->at.m.el;
@@ -666,7 +666,7 @@ void mostra_apply_no(apply *a)
     printf("\n");
     printf("\na1: %d",a->a1);
     printf("\na2: %d",a->a2);
-    printf("\n\na:  %d\n",a->a);
+    printf("\n\na proximo:  %d\n",a->a);
 }
 
 void mostra_apply_lista(apply *a)
@@ -690,7 +690,7 @@ void mostra_conta_no(conta *c)
     printf("nivel: %d",c->nivel);
     printf("\n\nno: ");
     mostra_no(c->n);
-    printf("\nc: %d",c->c);
+    printf("\nc proximo: %d",c->c);
 }
 
 void mostra_conta_lista(conta *c)
@@ -715,7 +715,7 @@ void mostra_suporte_no(suporte *s)
     printf("\n\ncc: %d",s->c[C]);
     printf("\ncv: %d",s->c[V]);
     printf("\ncr: %d",s->c[R]);
-    printf("\n\ns: %d",s->s);
+    printf("\n\ns proximo: %d",s->s);
 }
 
 void mostra_suporte_no_com_conta(suporte *s)
@@ -1520,6 +1520,7 @@ QDD* H()
 QDD *QH, *QI, *QX, *QS, *Q00, *Q01, *Q10, *Q11;
 QDD *Qred;
 no  *nzero;
+lista *lzero;
 
 void inicia_structs_globais()
 {
@@ -1544,22 +1545,24 @@ void inicia_structs_globais()
     Q10 = matriz_delta_kronecker(1,0);
     Q11 = matriz_delta_kronecker(1,1);
 
-    mem -= 9*tQ+45*tN+62*tL;
+    lzero = cria_lista();
+
+    mem -= 9*tQ+45*tN+63*tL;
     iQ -= 9;
     iI -= 9;
     iM -= 19;
     iF -= 17;
-    iL -= 62;
+    iL -= 63;
 }
 
 void finaliza_structs_globais()
 {
-    mem += 9*tQ+45*tN+62*tL;
+    mem += 9*tQ+45*tN+63*tL;
     iQ += 9;
     iI += 9;
     iM += 19;
     iF += 17;
-    iL += 62;
+    iL += 63;
 
     libera_no(Qred->n);
     libera_QDD_no(Qred);
@@ -1574,6 +1577,8 @@ void finaliza_structs_globais()
     libera_QDD(Q01);
     libera_QDD(Q10);
     libera_QDD(Q11);
+
+    libera_lista_no(lzero);
 }
 
 
@@ -3029,22 +3034,152 @@ no* apply_produto_vetor_vetor(no *n1, no *n2)
 
 /**  produto QDD QDD base  **/
 
-Short espalha(suporte *s, Short classe)
+conta* espalha(suporte *s, Short classe)
 {
+    no *n0, *na, *nO, *naux;
+    lista *lc;
+    conta *c, *cc, *cp, *cpc, *caux;
+    suporte *sc, *saux;
+    Short delta, lado;
+    nO = NULL;
+    while(s->c[classe] != NULL)
+    {
+        c = s->c[classe];
+        n0 = c->n;
+        printf("\n\nCONTA");
+        mostra_conta_no(c);
 
+        cp = cria_conta(0);
+        cp->n = n0;
+
+        for(lc = n0->l; lc != NULL; lc = lc->l)
+        {
+            na = lc->n;
+            printf("\n\nNO ANTERIOR");
+            mostra_no(na);
+            if(na->tipo == Inicio)
+            {
+                printf("\nDETECTOU INICIO");
+                libera_suporte_no(s);
+                c->n = na;
+                return c;
+            }
+
+            for(sc = s; sc->s != NULL; sc = sc->s)
+                if(sc->s->nivel < na->at.m.nivel)
+                    break;
+
+            if(sc->nivel == na->at.m.nivel)
+            {
+                /* tem suporte */
+                printf("\nTEM SUPORTE");
+                for(cc = sc->c[na->at.m.classe]; cc != NULL; cc = cc->c)
+                    if(cc->n == na)
+                        break;
+
+                if(cc == NULL)
+                {
+                    /* nao tem conta */
+                    printf("\nNAO TEM CONTA");
+                    cc = cria_conta(c->nivel);
+                    cc->n = na;
+
+                    cc->c = sc->c[na->at.m.classe];
+                    sc->c[na->at.m.classe] = cc;
+                }
+                else
+                {
+                    /* tem conta */
+                    printf("\nTEM CONTA");
+                    if(cc->nivel > c->nivel)
+                    {
+                        /* original maior */
+                        printf("ORIGINAL MAIOR");
+                        if(n0 == na->at.m.el)
+                            nO = na->at.m.th;
+                        if(n0 == na->at.m.th)
+                            nO = na->at.m.el;
+
+                        delta  = cc->nivel - c->nivel;
+                        delta = pow(2,delta);
+
+                        naux = copia_arvore(nO);
+                        produto_arvore_real(naux,delta);
+                        lado = desconecta_UM(na,nO);
+                        conecta_UM(na,naux,lado);
+                        libera_arvore(nO);
+
+                        cc->nivel = c->nivel;
+                    }
+                    if(cc->nivel < c->nivel)
+                    {
+                        /* atual maior */
+                        printf("\nATUAL MAIOR");
+                        delta  = c->nivel - cc->nivel;
+
+                        for(cpc = cp; cpc->c != NULL; cpc = cpc->c)
+                            if(cpc->c->nivel > delta)
+                                break;
+
+                        if(cpc->nivel == delta)
+                        {
+                            naux = cpc->n;
+                        }
+                        else
+                        {
+                            caux = cria_conta(delta);
+
+                            naux = copia_arvore(n0);
+                            delta = pow(2,delta);
+                            produto_arvore_real(naux,delta);
+
+                            caux->n = naux;
+
+                            caux->c = cpc->c;
+                            cpc->c = caux;
+                        }
+                        lzero->l = lc->l;
+                        lado = desconecta_UM(na,n0);
+                        conecta_UM(na,naux,lado);
+                        lc = lzero;
+                    }
+                }
+            }
+            else
+            {
+                /* não tem suporte */
+                printf("\nNAO TEM SUPORTE");
+                cc = cria_conta(c->nivel);
+                cc->n = na;
+
+                saux = cria_suporte(na->at.m.nivel);
+                saux->c[na->at.m.classe] = cc;
+
+                saux->s = s->s;
+                s->s = saux;
+            }
+        }
+        libera_arvore(n0);
+        libera_conta_lista(cp);
+
+        s->c[classe] = c->c;
+        libera_conta_no(c);
+    }
+    return NULL;
 }
 
 void contracao_conta(conta *c)
 {
+    no *na, *nd;
     conta *cc;
     for(cc = c; cc != NULL; cc = cc->c)
     {
-        no *na, *nd;
         na = cc->n;
         nd = apply_soma(na->at.m.el,na->at.m.th);
         transfere_conexao(nd,na);
-        libera_arvore(nd);
+        libera_arvore(na);
 
+        cc->n = nd;
         (cc->nivel)--;
     }
 }
@@ -3054,12 +3189,14 @@ conta* tratamento(suporte *s, Short classe, Short classeRef)
     if(classe == classeRef)
         contracao_conta(s->c[classe]);
 
-    Short inicio;
-    inicio = espalha(s,classe);
-    if(inicio)
-        return s->c[classe];
-    else
-        return NULL;
+    conta *ci;
+    ci = espalha(s,classe);
+    if(ci != NULL)
+    {
+        printf("\nTRATAMENTO| DETECTOU INICIO");
+        mostra_conta_no(ci);
+    }
+    return ci;
 }
 
 void contracao_QDD(QDD *Q, Short classe)
@@ -3069,6 +3206,7 @@ void contracao_QDD(QDD *Q, Short classe)
 
     lista *lc;
     conta *c, *cc;
+    suporte *saux;
     c = cria_conta(nqbit);
     cc = c;
     for(lc = Q->l; lc != NULL; lc = lc->l)
@@ -3087,28 +3225,44 @@ void contracao_QDD(QDD *Q, Short classe)
         s->c[C] = c;
     else
         s->c[R] = c;
-    mostra_suporte_lista_com_conta(s);
 
     conta *ci;
     ci = NULL;
     while(s != NULL)
     {
+        printf("\n\n\nSuporte %d",s->nivel);
+
+        printf("\n\nTaratamento C");
         ci = tratamento(s,C,classe);
         if(ci != NULL)
             break;
 
+        printf("\nTaratamento V");
         ci = tratamento(s,V,classe);
         if(ci != NULL)
             break;
 
+        printf("\nTaratamento R");
         ci = tratamento(s,R,classe);
+        printf("\nFINAL TRATAMENTO R");
+        mostra_conta_no(ci);
+        if(ci != NULL)
+            printf("\nDETECTOU ESSA MERDA");
         if(ci != NULL)
             break;
+
+        saux = s->s;
+        libera_suporte_no(s);
+        s = saux;
     }
-    if(ci != NULL)
+    if(ci == NULL)
         ERRO("CONTRACAO QDD| NAO DETECTOU NO INICIO");
 
+    Short ex;
+    ex = pow(2,ci->nivel);
+    produto_arvore_real(ci->n,ex);
 
+    libera_conta_no(ci);
 }
 
 QDD* produto_QDD_QDD(QDD *Q1, QDD *Q2, no* (*apply_operacao)(no *n1, no *n2), Short classe)
@@ -3862,9 +4016,18 @@ int main()
     setlocale(LC_ALL, "Portuguese");
     /***********************************/
 
+    QDD *Q1, *Q2;
+    Q1 = produto_tensorial(QH,QH);
+    Q2 = produto_tensorial(QH,QX);
+
     QDD *Q;
-    Q = produto_matriz_matriz(QH,QH);
+    Q = produto_matriz_matriz(Q1,Q2);
+
+    libera_QDD(Q1);
+    libera_QDD(Q2);
     libera_QDD(Q);
+
+    mostra_quantidades();
 
     /***********************************/
     finaliza_structs_globais();
