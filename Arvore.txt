@@ -1,0 +1,28 @@
+
+
+	Ligacao 0:
+Endereco (no): 8183736
+Ligacoes anteriores:
+	Ligacao 0: 8176120
+Tipo/nivel: C19
+Ligacoes posteriores
+	else: 8184664
+	Then: 8184984
+
+
+	Ligacao 1:
+Endereco (no): 8184664
+Ligacoes anteriores:
+	Ligacao 0: 8183736
+Tipo: Numero
+9,766e-004 0,000e+000
+
+
+	Ligacao 2:
+Endereco (no): 8184984
+Ligacoes anteriores:
+	Ligacao 0: 8183736
+Tipo: Numero
+-9,766e-004 0,000e+000
+
+
