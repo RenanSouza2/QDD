@@ -1,2670 +1,2670 @@
 
-Endereco (QDD): 7565104
+Endereco (QDD): 5861376
 NQBIT: 60
 Itens: 241
 
 
 	Ligacao 0:
-Endereco (no): 7573048
+Endereco (no): 5869832
 
 Tipo: Inicio
 Ligacoes posteriores
-	n: 7573080
+	n: 5869928
 
 
 
 	Ligacao 1:
-Endereco (no): 7573080
+Endereco (no): 5869928
 Ligacoes anteriores:
-	Ligacao 0: 7573048
+	Ligacao 0: 5869832
 Tipo/nivel: R0
 Ligacoes posteriores
-	else: 12498032
-	Then: 12623248
+	else: 7251216
+	Then: 7379216
 
 
 	Ligacao 2:
-Endereco (no): 12498032
+Endereco (no): 7251216
 Ligacoes anteriores:
-	Ligacao 0: 7573080
-	Ligacao 1: 12623248
+	Ligacao 0: 5869928
+	Ligacao 1: 7379216
 Tipo/nivel: R1
 Ligacoes posteriores
-	else: 12517216
-	Then: 12592960
+	else: 7277600
+	Then: 7344096
 
 
 	Ligacao 3:
-Endereco (no): 12517216
+Endereco (no): 7277600
 Ligacoes anteriores:
-	Ligacao 0: 12592960
-	Ligacao 1: 12498032
-	Ligacao 2: 12517472
+	Ligacao 0: 7344096
+	Ligacao 1: 7251216
+	Ligacao 2: 7276896
 Tipo/nivel: R2
 Ligacoes posteriores
-	else: 12498384
-	Then: 12497552
+	else: 7250352
+	Then: 7250576
 
 
 	Ligacao 4:
-Endereco (no): 12498384
+Endereco (no): 7250352
 Ligacoes anteriores:
-	Ligacao 0: 12497552
-	Ligacao 1: 12517216
-	Ligacao 2: 12517696
+	Ligacao 0: 7250576
+	Ligacao 1: 7277600
+	Ligacao 2: 7277632
 Tipo/nivel: R3
 Ligacoes posteriores
-	else: 12517344
-	Then: 12427592
+	else: 7277056
+	Then: 7186344
 
 
 	Ligacao 5:
-Endereco (no): 12517344
+Endereco (no): 7277056
 Ligacoes anteriores:
-	Ligacao 0: 12498384
-	Ligacao 1: 12428488
-	Ligacao 2: 12427592
+	Ligacao 0: 7250352
+	Ligacao 1: 7185832
+	Ligacao 2: 7186344
 Tipo/nivel: R4
 Ligacoes posteriores
-	else: 12427688
-	Then: 12497776
+	else: 7185704
+	Then: 7251024
 
 
 	Ligacao 6:
-Endereco (no): 12427688
+Endereco (no): 7185704
 Ligacoes anteriores:
-	Ligacao 0: 12497776
-	Ligacao 1: 12497936
-	Ligacao 2: 12517344
+	Ligacao 0: 7251024
+	Ligacao 1: 7249264
+	Ligacao 2: 7277056
 Tipo/nivel: R5
 Ligacoes posteriores
-	else: 12498224
-	Then: 12553488
+	else: 7249232
+	Then: 7305584
 
 
 	Ligacao 7:
-Endereco (no): 12498224
+Endereco (no): 7249232
 Ligacoes anteriores:
-	Ligacao 0: 12552912
-	Ligacao 1: 12553488
-	Ligacao 2: 12427688
+	Ligacao 0: 7306224
+	Ligacao 1: 7305584
+	Ligacao 2: 7185704
 Tipo/nivel: R6
 Ligacoes posteriores
-	else: 12435592
-	Then: 12516320
+	else: 7185032
+	Then: 7276800
 
 
 	Ligacao 8:
-Endereco (no): 12435592
+Endereco (no): 7185032
 Ligacoes anteriores:
-	Ligacao 0: 12498224
-	Ligacao 1: 12516224
-	Ligacao 2: 12516320
+	Ligacao 0: 7249232
+	Ligacao 1: 7275936
+	Ligacao 2: 7276800
 Tipo/nivel: R7
 Ligacoes posteriores
-	else: 12516480
-	Then: 12622736
+	else: 7276448
+	Then: 7378288
 
 
 	Ligacao 9:
-Endereco (no): 12516480
+Endereco (no): 7276448
 Ligacoes anteriores:
-	Ligacao 0: 12622736
-	Ligacao 1: 12623120
-	Ligacao 2: 12435592
+	Ligacao 0: 7378288
+	Ligacao 1: 7377904
+	Ligacao 2: 7185032
 Tipo/nivel: R8
 Ligacoes posteriores
-	else: 12622256
-	Then: 12592384
+	else: 7377968
+	Then: 7342944
 
 
 	Ligacao 10:
-Endereco (no): 12622256
+Endereco (no): 7377968
 Ligacoes anteriores:
-	Ligacao 0: 12591680
-	Ligacao 1: 12592384
-	Ligacao 2: 12516480
+	Ligacao 0: 7342752
+	Ligacao 1: 7342944
+	Ligacao 2: 7276448
 Tipo/nivel: R9
 Ligacoes posteriores
-	else: 12515616
-	Then: 12551952
+	else: 7275584
+	Then: 7304880
 
 
 	Ligacao 11:
-Endereco (no): 12515616
+Endereco (no): 7275584
 Ligacoes anteriores:
-	Ligacao 0: 12622256
-	Ligacao 1: 12551952
-	Ligacao 2: 12551888
+	Ligacao 0: 7377968
+	Ligacao 1: 7304880
+	Ligacao 2: 7305552
 Tipo/nivel: R10
 Ligacoes posteriores
-	else: 12434024
-	Then: 12522176
+	else: 7191880
+	Then: 7282400
 
 
 	Ligacao 12:
-Endereco (no): 12434024
+Endereco (no): 7191880
 Ligacoes anteriores:
-	Ligacao 0: 12522080
-	Ligacao 1: 12522176
-	Ligacao 2: 12515616
+	Ligacao 0: 7282624
+	Ligacao 1: 7282400
+	Ligacao 2: 7275584
 Tipo/nivel: R11
 Ligacoes posteriores
-	else: 12434248
-	Then: 12434152
+	else: 7192392
+	Then: 7184904
 
 
 	Ligacao 13:
-Endereco (no): 12434248
+Endereco (no): 7192392
 Ligacoes anteriores:
-	Ligacao 0: 12434152
-	Ligacao 1: 12434024
-	Ligacao 2: 12433672
+	Ligacao 0: 7184904
+	Ligacao 1: 7191880
+	Ligacao 2: 7192488
 Tipo/nivel: R12
 Ligacoes posteriores
-	else: 12434088
-	Then: 12590528
+	else: 7192552
+	Then: 7342272
 
 
 	Ligacao 14:
-Endereco (no): 12434088
+Endereco (no): 7192552
 Ligacoes anteriores:
-	Ligacao 0: 12434248
-	Ligacao 1: 12590528
-	Ligacao 2: 12590688
+	Ligacao 0: 7192392
+	Ligacao 1: 7342272
+	Ligacao 2: 7342368
 Tipo/nivel: R13
 Ligacoes posteriores
-	else: 12514272
-	Then: 12590912
+	else: 7274464
+	Then: 7341920
 
 
 	Ligacao 15:
-Endereco (no): 12514272
+Endereco (no): 7274464
 Ligacoes anteriores:
-	Ligacao 0: 12591168
-	Ligacao 1: 12590912
-	Ligacao 2: 12434088
+	Ligacao 0: 7341888
+	Ligacao 1: 7341920
+	Ligacao 2: 7192552
 Tipo/nivel: R14
 Ligacoes posteriores
-	else: 12500272
-	Then: 12514624
+	else: 7252528
+	Then: 7274112
 
 
 	Ligacao 16:
-Endereco (no): 12500272
+Endereco (no): 7252528
 Ligacoes anteriores:
-	Ligacao 0: 12514624
-	Ligacao 1: 12514272
-	Ligacao 2: 12514496
+	Ligacao 0: 7274112
+	Ligacao 1: 7274464
+	Ligacao 2: 7274656
 Tipo/nivel: R15
 Ligacoes posteriores
-	else: 12513728
-	Then: 12434312
+	else: 7274528
+	Then: 7192328
 
 
 	Ligacao 17:
-Endereco (no): 12513728
+Endereco (no): 7274528
 Ligacoes anteriores:
-	Ligacao 0: 12500272
-	Ligacao 1: 12434440
-	Ligacao 2: 12434312
+	Ligacao 0: 7252528
+	Ligacao 1: 7191848
+	Ligacao 2: 7192328
 Tipo/nivel: R16
 Ligacoes posteriores
-	else: 12433416
-	Then: 12495600
+	else: 7191080
+	Then: 7247504
 
 
 	Ligacao 18:
-Endereco (no): 12433416
+Endereco (no): 7191080
 Ligacoes anteriores:
-	Ligacao 0: 12495600
-	Ligacao 1: 12494192
-	Ligacao 2: 12513728
+	Ligacao 0: 7247504
+	Ligacao 1: 7247952
+	Ligacao 2: 7274528
 Tipo/nivel: R17
 Ligacoes posteriores
-	else: 12495120
-	Then: 12550096
+	else: 7248176
+	Then: 7319504
 
 
 	Ligacao 19:
-Endereco (no): 12495120
+Endereco (no): 7248176
 Ligacoes anteriores:
-	Ligacao 0: 12549488
-	Ligacao 1: 12550096
-	Ligacao 2: 12433416
+	Ligacao 0: 7319312
+	Ligacao 1: 7319504
+	Ligacao 2: 7191080
 Tipo/nivel: R18
 Ligacoes posteriores
-	else: 12432968
-	Then: 12529536
+	else: 7190824
+	Then: 7273280
 
 
 	Ligacao 20:
-Endereco (no): 12432968
+Endereco (no): 7190824
 Ligacoes anteriores:
-	Ligacao 0: 12495120
-	Ligacao 1: 12529440
-	Ligacao 2: 12529536
+	Ligacao 0: 7248176
+	Ligacao 1: 7273600
+	Ligacao 2: 7273280
 Tipo/nivel: R19
 Ligacoes posteriores
-	else: 12529888
-	Then: 12620144
+	else: 7273568
+	Then: 7374864
 
 
 	Ligacao 21:
-Endereco (no): 12529888
+Endereco (no): 7273568
 Ligacoes anteriores:
-	Ligacao 0: 12620144
-	Ligacao 1: 12619472
-	Ligacao 2: 12432968
+	Ligacao 0: 7374864
+	Ligacao 1: 7374704
+	Ligacao 2: 7190824
 Tipo/nivel: R20
 Ligacoes posteriores
-	else: 12618960
-	Then: 12588672
+	else: 7373776
+	Then: 7340256
 
 
 	Ligacao 22:
-Endereco (no): 12618960
+Endereco (no): 7373776
 Ligacoes anteriores:
-	Ligacao 0: 12588544
-	Ligacao 1: 12588672
-	Ligacao 2: 12529888
+	Ligacao 0: 7339904
+	Ligacao 1: 7340256
+	Ligacao 2: 7273568
 Tipo/nivel: R21
 Ligacoes posteriores
-	else: 12528704
-	Then: 12549264
+	else: 7272704
+	Then: 7318192
 
 
 	Ligacao 23:
-Endereco (no): 12528704
+Endereco (no): 7272704
 Ligacoes anteriores:
-	Ligacao 0: 12618960
-	Ligacao 1: 12549264
-	Ligacao 2: 12549456
+	Ligacao 0: 7373776
+	Ligacao 1: 7318192
+	Ligacao 2: 7318320
 Tipo/nivel: R22
 Ligacoes posteriores
-	else: 12449752
-	Then: 12518944
+	else: 7201240
+	Then: 7279456
 
 
 	Ligacao 24:
-Endereco (no): 12449752
+Endereco (no): 7201240
 Ligacoes anteriores:
-	Ligacao 0: 12519840
-	Ligacao 1: 12518944
-	Ligacao 2: 12528704
+	Ligacao 0: 7280832
+	Ligacao 1: 7279456
+	Ligacao 2: 7272704
 Tipo/nivel: R23
 Ligacoes posteriores
-	else: 12434760
-	Then: 12449784
+	else: 7184712
+	Then: 7201560
 
 
 	Ligacao 25:
-Endereco (no): 12434760
+Endereco (no): 7184712
 Ligacoes anteriores:
-	Ligacao 0: 12449784
-	Ligacao 1: 12449752
-	Ligacao 2: 12449432
+	Ligacao 0: 7201560
+	Ligacao 1: 7201240
+	Ligacao 2: 7201080
 Tipo/nivel: R24
 Ligacoes posteriores
-	else: 12449272
-	Then: 12587552
+	else: 7201656
+	Then: 7338144
 
 
 	Ligacao 26:
-Endereco (no): 12449272
+Endereco (no): 7201656
 Ligacoes anteriores:
-	Ligacao 0: 12434760
-	Ligacao 1: 12587552
-	Ligacao 2: 12587488
+	Ligacao 0: 7184712
+	Ligacao 1: 7338144
+	Ligacao 2: 7339200
 Tipo/nivel: R25
 Ligacoes posteriores
-	else: 12527008
-	Then: 12560400
+	else: 7271584
+	Then: 7312880
 
 
 	Ligacao 27:
-Endereco (no): 12527008
+Endereco (no): 7271584
 Ligacoes anteriores:
-	Ligacao 0: 12560016
-	Ligacao 1: 12560400
-	Ligacao 2: 12449272
+	Ligacao 0: 7314480
+	Ligacao 1: 7312880
+	Ligacao 2: 7201656
 Tipo/nivel: R26
 Ligacoes posteriores
-	else: 12547824
-	Then: 12527552
+	else: 7317200
+	Then: 7271680
 
 
 	Ligacao 28:
-Endereco (no): 12547824
+Endereco (no): 7317200
 Ligacoes anteriores:
-	Ligacao 0: 12527552
-	Ligacao 1: 12527008
-	Ligacao 2: 12527648
+	Ligacao 0: 7271680
+	Ligacao 1: 7271584
+	Ligacao 2: 7271200
 Tipo/nivel: R27
 Ligacoes posteriores
-	else: 12527936
-	Then: 12448248
+	else: 7271168
+	Then: 7208824
 
 
 	Ligacao 29:
-Endereco (no): 12527936
+Endereco (no): 7271168
 Ligacoes anteriores:
-	Ligacao 0: 12547824
-	Ligacao 1: 12448504
-	Ligacao 2: 12448248
+	Ligacao 0: 7317200
+	Ligacao 1: 7209080
+	Ligacao 2: 7208824
 Tipo/nivel: R28
 Ligacoes posteriores
-	else: 12448472
-	Then: 12492240
+	else: 7208184
+	Then: 7261968
 
 
 	Ligacao 30:
-Endereco (no): 12448472
+Endereco (no): 7208184
 Ligacoes anteriores:
-	Ligacao 0: 12492240
-	Ligacao 1: 12492176
-	Ligacao 2: 12527936
+	Ligacao 0: 7261968
+	Ligacao 1: 7262192
+	Ligacao 2: 7271168
 Tipo/nivel: R29
 Ligacoes posteriores
-	else: 12492400
-	Then: 12547312
+	else: 7261200
+	Then: 7316528
 
 
 	Ligacao 31:
-Endereco (no): 12492400
+Endereco (no): 7261200
 Ligacoes anteriores:
-	Ligacao 0: 12546640
-	Ligacao 1: 12547312
-	Ligacao 2: 12448472
+	Ligacao 0: 7316144
+	Ligacao 1: 7316528
+	Ligacao 2: 7208184
 Tipo/nivel: R30
 Ligacoes posteriores
-	else: 12448792
-	Then: 12526752
+	else: 7209016
+	Then: 7286720
 
 
 	Ligacao 32:
-Endereco (no): 12448792
+Endereco (no): 7209016
 Ligacoes anteriores:
-	Ligacao 0: 12492400
-	Ligacao 1: 12526208
-	Ligacao 2: 12526752
+	Ligacao 0: 7261200
+	Ligacao 1: 7286432
+	Ligacao 2: 7286720
 Tipo/nivel: R31
 Ligacoes posteriores
-	else: 12526688
-	Then: 12616656
+	else: 7286656
+	Then: 7371696
 
 
 	Ligacao 33:
-Endereco (no): 12526688
+Endereco (no): 7286656
 Ligacoes anteriores:
-	Ligacao 0: 12616656
-	Ligacao 1: 12616272
-	Ligacao 2: 12448792
+	Ligacao 0: 7371696
+	Ligacao 1: 7371792
+	Ligacao 2: 7209016
 Tipo/nivel: R32
 Ligacoes posteriores
-	else: 12590208
-	Then: 12584576
+	else: 7340416
+	Then: 7351680
 
 
 	Ligacao 34:
-Endereco (no): 12590208
+Endereco (no): 7340416
 Ligacoes anteriores:
-	Ligacao 0: 12585728
-	Ligacao 1: 12584576
-	Ligacao 2: 12526688
+	Ligacao 0: 7336640
+	Ligacao 1: 7351680
+	Ligacao 2: 7286656
 Tipo/nivel: R33
 Ligacoes posteriores
-	else: 12524896
-	Then: 12561872
+	else: 7285184
+	Then: 7315696
 
 
 	Ligacao 35:
-Endereco (no): 12524896
+Endereco (no): 7285184
 Ligacoes anteriores:
-	Ligacao 0: 12590208
-	Ligacao 1: 12561872
-	Ligacao 2: 12562320
+	Ligacao 0: 7340416
+	Ligacao 1: 7315696
+	Ligacao 2: 7315728
 Tipo/nivel: R34
 Ligacoes posteriores
-	else: 12447384
-	Then: 12517280
+	else: 7207896
+	Then: 7277472
 
 
 	Ligacao 36:
-Endereco (no): 12447384
+Endereco (no): 7207896
 Ligacoes anteriores:
-	Ligacao 0: 12517568
-	Ligacao 1: 12517280
-	Ligacao 2: 12524896
+	Ligacao 0: 7277024
+	Ligacao 1: 7277472
+	Ligacao 2: 7285184
 Tipo/nivel: R35
 Ligacoes posteriores
-	else: 12428328
-	Then: 12446968
+	else: 7185768
+	Then: 7207544
 
 
 	Ligacao 37:
-Endereco (no): 12428328
+Endereco (no): 7185768
 Ligacoes anteriores:
-	Ligacao 0: 12446968
-	Ligacao 1: 12447384
-	Ligacao 2: 12447768
+	Ligacao 0: 7207544
+	Ligacao 1: 7207896
+	Ligacao 2: 7207160
 Tipo/nivel: R36
 Ligacoes posteriores
-	else: 12447928
-	Then: 12584160
+	else: 7207224
+	Then: 7351552
 
 
 	Ligacao 38:
-Endereco (no): 12447928
+Endereco (no): 7207224
 Ligacoes anteriores:
-	Ligacao 0: 12428328
-	Ligacao 1: 12584160
-	Ligacao 2: 12585216
+	Ligacao 0: 7185768
+	Ligacao 1: 7351552
+	Ligacao 2: 7352448
 Tipo/nivel: R37
 Ligacoes posteriores
-	else: 12525664
-	Then: 12556720
+	else: 7285472
+	Then: 7310512
 
 
 	Ligacao 39:
-Endereco (no): 12525664
+Endereco (no): 7285472
 Ligacoes anteriores:
-	Ligacao 0: 12557072
-	Ligacao 1: 12556720
-	Ligacao 2: 12447928
+	Ligacao 0: 7310960
+	Ligacao 1: 7310512
+	Ligacao 2: 7207224
 Tipo/nivel: R38
 Ligacoes posteriores
-	else: 12548752
-	Then: 12525216
+	else: 7318000
+	Then: 7285312
 
 
 	Ligacao 40:
-Endereco (no): 12548752
+Endereco (no): 7318000
 Ligacoes anteriores:
-	Ligacao 0: 12525216
-	Ligacao 1: 12525664
-	Ligacao 2: 12524000
+	Ligacao 0: 7285312
+	Ligacao 1: 7285472
+	Ligacao 2: 7284064
 Tipo/nivel: R39
 Ligacoes posteriores
-	else: 12524704
-	Then: 12446200
+	else: 7284160
+	Then: 7206808
 
 
 	Ligacao 41:
-Endereco (no): 12524704
+Endereco (no): 7284160
 Ligacoes anteriores:
-	Ligacao 0: 12548752
-	Ligacao 1: 12445944
-	Ligacao 2: 12446200
+	Ligacao 0: 7318000
+	Ligacao 1: 7206584
+	Ligacao 2: 7206808
 Tipo/nivel: R40
 Ligacoes posteriores
-	else: 12446904
-	Then: 12490704
+	else: 7206456
+	Then: 7259440
 
 
 	Ligacao 42:
-Endereco (no): 12446904
+Endereco (no): 7206456
 Ligacoes anteriores:
-	Ligacao 0: 12490704
-	Ligacao 1: 12489872
-	Ligacao 2: 12524704
+	Ligacao 0: 7259440
+	Ligacao 1: 7259088
+	Ligacao 2: 7284160
 Tipo/nivel: R41
 Ligacoes posteriores
-	else: 12489104
-	Then: 12495440
+	else: 7259312
+	Then: 7249104
 
 
 	Ligacao 43:
-Endereco (no): 12489104
+Endereco (no): 7259312
 Ligacoes anteriores:
-	Ligacao 0: 12495344
-	Ligacao 1: 12495440
-	Ligacao 2: 12446904
+	Ligacao 0: 7248784
+	Ligacao 1: 7249104
+	Ligacao 2: 7206456
 Tipo/nivel: R42
 Ligacoes posteriores
-	else: 12446296
-	Then: 12523936
+	else: 7207064
+	Then: 7284800
 
 
 	Ligacao 44:
-Endereco (no): 12446296
+Endereco (no): 7207064
 Ligacoes anteriores:
-	Ligacao 0: 12489104
-	Ligacao 1: 12622992
-	Ligacao 2: 12523936
+	Ligacao 0: 7259312
+	Ligacao 1: 7377584
+	Ligacao 2: 7284800
 Tipo/nivel: R43
 Ligacoes posteriores
-	else: 12622960
-	Then: 12588320
+	else: 7378192
+	Then: 7338496
 
 
 	Ligacao 45:
-Endereco (no): 12622960
+Endereco (no): 7378192
 Ligacoes anteriores:
-	Ligacao 0: 12588320
-	Ligacao 1: 12587456
-	Ligacao 2: 12446296
+	Ligacao 0: 7338496
+	Ligacao 1: 7338368
+	Ligacao 2: 7207064
 Tipo/nivel: R44
 Ligacoes posteriores
-	else: 12587776
-	Then: 12581888
+	else: 7339072
+	Then: 7348736
 
 
 	Ligacao 46:
-Endereco (no): 12587776
+Endereco (no): 7339072
 Ligacoes anteriores:
-	Ligacao 0: 12581504
-	Ligacao 1: 12581888
-	Ligacao 2: 12622960
+	Ligacao 0: 7348640
+	Ligacao 1: 7348736
+	Ligacao 2: 7378192
 Tipo/nivel: R45
 Ligacoes posteriores
-	else: 12622896
-	Then: 12494576
+	else: 7377456
+	Then: 7247792
 
 
 	Ligacao 47:
-Endereco (no): 12622896
+Endereco (no): 7377456
 Ligacoes anteriores:
-	Ligacao 0: 12587776
-	Ligacao 1: 12494576
-	Ligacao 2: 12494672
+	Ligacao 0: 7339072
+	Ligacao 1: 7247792
+	Ligacao 2: 7247696
 Tipo/nivel: R46
 Ligacoes posteriores
-	else: 12445912
-	Then: 12431912
+	else: 7205144
+	Then: 7190280
 
 
 	Ligacao 48:
-Endereco (no): 12445912
+Endereco (no): 7205144
 Ligacoes anteriores:
-	Ligacao 0: 12515008
-	Ligacao 1: 12431912
-	Ligacao 2: 12622896
+	Ligacao 0: 7275040
+	Ligacao 1: 7190280
+	Ligacao 2: 7377456
 Tipo/nivel: R47
 Ligacoes posteriores
-	else: 12429288
-	Then: 12445048
+	else: 7187080
+	Then: 7206104
 
 
 	Ligacao 49:
-Endereco (no): 12429288
+Endereco (no): 7187080
 Ligacoes anteriores:
-	Ligacao 0: 12445048
-	Ligacao 1: 12445912
-	Ligacao 2: 12445752
+	Ligacao 0: 7206104
+	Ligacao 1: 7205144
+	Ligacao 2: 7206008
 Tipo/nivel: R48
 Ligacoes posteriores
-	else: 12444504
-	Then: 12580704
+	else: 7204824
+	Then: 7347904
 
 
 	Ligacao 50:
-Endereco (no): 12444504
+Endereco (no): 7204824
 Ligacoes anteriores:
-	Ligacao 0: 12429288
-	Ligacao 1: 12580704
-	Ligacao 2: 12581088
+	Ligacao 0: 7187080
+	Ligacao 1: 7347904
+	Ligacao 2: 7348128
 Tipo/nivel: R49
 Ligacoes posteriores
-	else: 12621296
-	Then: 12553680
+	else: 7376624
+	Then: 7307376
 
 
 	Ligacao 51:
-Endereco (no): 12621296
+Endereco (no): 7376624
 Ligacoes anteriores:
-	Ligacao 0: 12555568
-	Ligacao 1: 12553680
-	Ligacao 2: 12444504
+	Ligacao 0: 7308016
+	Ligacao 1: 7307376
+	Ligacao 2: 7204824
 Tipo/nivel: R50
 Ligacoes posteriores
-	else: 12550800
-	Then: 12621232
+	else: 7304496
+	Then: 7377232
 
 
 	Ligacao 52:
-Endereco (no): 12550800
+Endereco (no): 7304496
 Ligacoes anteriores:
-	Ligacao 0: 12621232
-	Ligacao 1: 12621296
-	Ligacao 2: 12620720
+	Ligacao 0: 7377232
+	Ligacao 1: 7376624
+	Ligacao 2: 7375440
 Tipo/nivel: R51
 Ligacoes posteriores
-	else: 12620688
-	Then: 12443992
+	else: 7376176
+	Then: 7204600
 
 
 	Ligacao 53:
-Endereco (no): 12620688
+Endereco (no): 7376176
 Ligacoes anteriores:
-	Ligacao 0: 12550800
-	Ligacao 1: 12444824
-	Ligacao 2: 12443992
+	Ligacao 0: 7304496
+	Ligacao 1: 7204376
+	Ligacao 2: 7204600
 Tipo/nivel: R52
 Ligacoes posteriores
-	else: 12444088
-	Then: 12504144
+	else: 7205016
+	Then: 7256944
 
 
 	Ligacao 54:
-Endereco (no): 12444088
+Endereco (no): 7205016
 Ligacoes anteriores:
-	Ligacao 0: 12504144
-	Ligacao 1: 12502640
-	Ligacao 2: 12620688
+	Ligacao 0: 7256944
+	Ligacao 1: 7256176
+	Ligacao 2: 7376176
 Tipo/nivel: R53
 Ligacoes posteriores
-	else: 12502768
-	Then: 12492464
+	else: 7255440
+	Then: 7262352
 
 
 	Ligacao 55:
-Endereco (no): 12502768
+Endereco (no): 7255440
 Ligacoes anteriores:
-	Ligacao 0: 12493488
-	Ligacao 1: 12492464
-	Ligacao 2: 12444088
+	Ligacao 0: 7261616
+	Ligacao 1: 7262352
+	Ligacao 2: 7205016
 Tipo/nivel: R54
 Ligacoes posteriores
-	else: 12451288
-	Then: 12619728
+	else: 7203736
+	Then: 7374256
 
 
 	Ligacao 56:
-Endereco (no): 12451288
+Endereco (no): 7203736
 Ligacoes anteriores:
-	Ligacao 0: 12502768
-	Ligacao 1: 12619632
-	Ligacao 2: 12619728
+	Ligacao 0: 7255440
+	Ligacao 1: 7374960
+	Ligacao 2: 7374256
 Tipo/nivel: R55
 Ligacoes posteriores
-	else: 12619888
-	Then: 12585984
+	else: 7374544
+	Then: 7336448
 
 
 	Ligacao 57:
-Endereco (no): 12619888
+Endereco (no): 7374544
 Ligacoes anteriores:
-	Ligacao 0: 12585984
-	Ligacao 1: 12584992
-	Ligacao 2: 12451288
+	Ligacao 0: 7336448
+	Ligacao 1: 7351936
+	Ligacao 2: 7203736
 Tipo/nivel: R56
 Ligacoes posteriores
-	else: 12584704
-	Then: 12594944
+	else: 7352160
+	Then: 7346240
 
 
 	Ligacao 58:
-Endereco (no): 12584704
+Endereco (no): 7352160
 Ligacoes anteriores:
-	Ligacao 0: 12579360
-	Ligacao 1: 12594944
-	Ligacao 2: 12619888
+	Ligacao 0: 7345632
+	Ligacao 1: 7346240
+	Ligacao 2: 7374544
 Tipo/nivel: R57
 Ligacoes posteriores
-	else: 12618256
-	Then: 12491984
+	else: 7373712
+	Then: 7260816
 
 
 	Ligacao 59:
-Endereco (no): 12618256
+Endereco (no): 7373712
 Ligacoes anteriores:
-	Ligacao 0: 12584704
-	Ligacao 1: 12491984
-	Ligacao 2: 12491504
+	Ligacao 0: 7352160
+	Ligacao 1: 7260816
+	Ligacao 2: 7260528
 Tipo/nivel: R58
 Ligacoes posteriores
-	else: 12451960
-	Then: 12430696
+	else: 7203384
+	Then: 7189512
 
 
 	Ligacao 60:
-Endereco (no): 12451960
+Endereco (no): 7203384
 Ligacoes anteriores:
-	Ligacao 0: 12430824
-	Ligacao 1: 12430696
-	Ligacao 2: 12618256
+	Ligacao 0: 7189480
+	Ligacao 1: 7189512
+	Ligacao 2: 7373712
 Tipo/nivel: R59
 Ligacoes posteriores
-	else: 12430312
-	Then: 12451608
+	else: 7188456
+	Then: 7203672
 
 
 	Ligacao 61:
-Endereco (no): 12430312
+Endereco (no): 7188456
 Ligacoes anteriores:
-	Ligacao 0: 12451608
-	Ligacao 1: 12451960
-	Ligacao 2: 12451384
+	Ligacao 0: 7203672
+	Ligacao 1: 7203384
+	Ligacao 2: 7203544
 Tipo: Numero
 9,313e-010 0,000e+000
 
 
 	Ligacao 62:
-Endereco (no): 12451608
+Endereco (no): 7203672
 Ligacoes anteriores:
-	Ligacao 0: 12451960
+	Ligacao 0: 7203384
 Tipo/nivel: C59
 Ligacoes posteriores
-	else: 12429928
-	Then: 12430312
+	else: 7188200
+	Then: 7188456
 
 
 	Ligacao 63:
-Endereco (no): 12429928
+Endereco (no): 7188200
 Ligacoes anteriores:
-	Ligacao 0: 12491472
-	Ligacao 1: 12451608
-	Ligacao 2: 12451384
+	Ligacao 0: 7261008
+	Ligacao 1: 7203672
+	Ligacao 2: 7203544
 Tipo: Numero
 -9,313e-010 0,000e+000
 
 
 	Ligacao 64:
-Endereco (no): 12430696
+Endereco (no): 7189512
 Ligacoes anteriores:
-	Ligacao 0: 12618256
+	Ligacao 0: 7373712
 Tipo/nivel: C58
 Ligacoes posteriores
-	else: 12491472
-	Then: 12451960
+	else: 7261008
+	Then: 7203384
 
 
 	Ligacao 65:
-Endereco (no): 12491472
+Endereco (no): 7261008
 Ligacoes anteriores:
-	Ligacao 0: 12430824
-	Ligacao 1: 12430952
-	Ligacao 2: 12430696
+	Ligacao 0: 7189480
+	Ligacao 1: 7189064
+	Ligacao 2: 7189512
 Tipo/nivel: R59
 Ligacoes posteriores
-	else: 12429928
-	Then: 12451384
+	else: 7188200
+	Then: 7203544
 
 
 	Ligacao 66:
-Endereco (no): 12451384
+Endereco (no): 7203544
 Ligacoes anteriores:
-	Ligacao 0: 12491472
+	Ligacao 0: 7261008
 Tipo/nivel: C59
 Ligacoes posteriores
-	else: 12430312
-	Then: 12429928
+	else: 7188456
+	Then: 7188200
 
 
 	Ligacao 67:
-Endereco (no): 12491984
+Endereco (no): 7260816
 Ligacoes anteriores:
-	Ligacao 0: 12584704
+	Ligacao 0: 7352160
 Tipo/nivel: C57
 Ligacoes posteriores
-	else: 12430952
-	Then: 12618256
+	else: 7189064
+	Then: 7373712
 
 
 	Ligacao 68:
-Endereco (no): 12430952
+Endereco (no): 7189064
 Ligacoes anteriores:
-	Ligacao 0: 12491504
-	Ligacao 1: 12491984
-	Ligacao 2: 12584000
+	Ligacao 0: 7260528
+	Ligacao 1: 7260816
+	Ligacao 2: 7350880
 Tipo/nivel: R58
 Ligacoes posteriores
-	else: 12491472
-	Then: 12430824
+	else: 7261008
+	Then: 7189480
 
 
 	Ligacao 69:
-Endereco (no): 12430824
+Endereco (no): 7189480
 Ligacoes anteriores:
-	Ligacao 0: 12430952
+	Ligacao 0: 7189064
 Tipo/nivel: C58
 Ligacoes posteriores
-	else: 12451960
-	Then: 12491472
+	else: 7203384
+	Then: 7261008
 
 
 	Ligacao 70:
-Endereco (no): 12594944
+Endereco (no): 7346240
 Ligacoes anteriores:
-	Ligacao 0: 12619888
+	Ligacao 0: 7374544
 Tipo/nivel: C56
 Ligacoes posteriores
-	else: 12584000
-	Then: 12584704
+	else: 7350880
+	Then: 7352160
 
 
 	Ligacao 71:
-Endereco (no): 12584000
+Endereco (no): 7350880
 Ligacoes anteriores:
-	Ligacao 0: 12617808
-	Ligacao 1: 12579360
-	Ligacao 2: 12594944
+	Ligacao 0: 7372496
+	Ligacao 1: 7345632
+	Ligacao 2: 7346240
 Tipo/nivel: R57
 Ligacoes posteriores
-	else: 12430952
-	Then: 12491504
+	else: 7189064
+	Then: 7260528
 
 
 	Ligacao 72:
-Endereco (no): 12491504
+Endereco (no): 7260528
 Ligacoes anteriores:
-	Ligacao 0: 12584000
+	Ligacao 0: 7350880
 Tipo/nivel: C57
 Ligacoes posteriores
-	else: 12618256
-	Then: 12430952
+	else: 7373712
+	Then: 7189064
 
 
 	Ligacao 73:
-Endereco (no): 12585984
+Endereco (no): 7336448
 Ligacoes anteriores:
-	Ligacao 0: 12451288
+	Ligacao 0: 7203736
 Tipo/nivel: C55
 Ligacoes posteriores
-	else: 12617808
-	Then: 12619888
+	else: 7372496
+	Then: 7374544
 
 
 	Ligacao 74:
-Endereco (no): 12617808
+Endereco (no): 7372496
 Ligacoes anteriores:
-	Ligacao 0: 12585984
-	Ligacao 1: 12584992
-	Ligacao 2: 12583328
+	Ligacao 0: 7336448
+	Ligacao 1: 7351936
+	Ligacao 2: 7351168
 Tipo/nivel: R56
 Ligacoes posteriores
-	else: 12584000
-	Then: 12579360
+	else: 7350880
+	Then: 7345632
 
 
 	Ligacao 75:
-Endereco (no): 12579360
+Endereco (no): 7345632
 Ligacoes anteriores:
-	Ligacao 0: 12617808
+	Ligacao 0: 7372496
 Tipo/nivel: C56
 Ligacoes posteriores
-	else: 12584704
-	Then: 12584000
+	else: 7352160
+	Then: 7350880
 
 
 	Ligacao 76:
-Endereco (no): 12619728
+Endereco (no): 7374256
 Ligacoes anteriores:
-	Ligacao 0: 12502768
+	Ligacao 0: 7255440
 Tipo/nivel: C54
 Ligacoes posteriores
-	else: 12583328
-	Then: 12451288
+	else: 7351168
+	Then: 7203736
 
 
 	Ligacao 77:
-Endereco (no): 12583328
+Endereco (no): 7351168
 Ligacoes anteriores:
-	Ligacao 0: 12619728
-	Ligacao 1: 12619632
-	Ligacao 2: 12431528
+	Ligacao 0: 7374256
+	Ligacao 1: 7374960
+	Ligacao 2: 7188808
 Tipo/nivel: R55
 Ligacoes posteriores
-	else: 12617808
-	Then: 12584992
+	else: 7372496
+	Then: 7351936
 
 
 	Ligacao 78:
-Endereco (no): 12584992
+Endereco (no): 7351936
 Ligacoes anteriores:
-	Ligacao 0: 12583328
+	Ligacao 0: 7351168
 Tipo/nivel: C55
 Ligacoes posteriores
-	else: 12619888
-	Then: 12617808
+	else: 7374544
+	Then: 7372496
 
 
 	Ligacao 79:
-Endereco (no): 12492464
+Endereco (no): 7262352
 Ligacoes anteriores:
-	Ligacao 0: 12444088
+	Ligacao 0: 7205016
 Tipo/nivel: C53
 Ligacoes posteriores
-	else: 12431528
-	Then: 12502768
+	else: 7188808
+	Then: 7255440
 
 
 	Ligacao 80:
-Endereco (no): 12431528
+Endereco (no): 7188808
 Ligacoes anteriores:
-	Ligacao 0: 12450456
-	Ligacao 1: 12493488
-	Ligacao 2: 12492464
+	Ligacao 0: 7202328
+	Ligacao 1: 7261616
+	Ligacao 2: 7262352
 Tipo/nivel: R54
 Ligacoes posteriores
-	else: 12583328
-	Then: 12619632
+	else: 7351168
+	Then: 7374960
 
 
 	Ligacao 81:
-Endereco (no): 12619632
+Endereco (no): 7374960
 Ligacoes anteriores:
-	Ligacao 0: 12431528
+	Ligacao 0: 7188808
 Tipo/nivel: C54
 Ligacoes posteriores
-	else: 12451288
-	Then: 12583328
+	else: 7203736
+	Then: 7351168
 
 
 	Ligacao 82:
-Endereco (no): 12504144
+Endereco (no): 7256944
 Ligacoes anteriores:
-	Ligacao 0: 12620688
+	Ligacao 0: 7376176
 Tipo/nivel: C52
 Ligacoes posteriores
-	else: 12450456
-	Then: 12444088
+	else: 7202328
+	Then: 7205016
 
 
 	Ligacao 83:
-Endereco (no): 12450456
+Endereco (no): 7202328
 Ligacoes anteriores:
-	Ligacao 0: 12504144
-	Ligacao 1: 12502640
-	Ligacao 2: 12432104
+	Ligacao 0: 7256944
+	Ligacao 1: 7256176
+	Ligacao 2: 7189928
 Tipo/nivel: R53
 Ligacoes posteriores
-	else: 12431528
-	Then: 12493488
+	else: 7188808
+	Then: 7261616
 
 
 	Ligacao 84:
-Endereco (no): 12493488
+Endereco (no): 7261616
 Ligacoes anteriores:
-	Ligacao 0: 12450456
+	Ligacao 0: 7202328
 Tipo/nivel: C53
 Ligacoes posteriores
-	else: 12502768
-	Then: 12431528
+	else: 7255440
+	Then: 7188808
 
 
 	Ligacao 85:
-Endereco (no): 12443992
+Endereco (no): 7204600
 Ligacoes anteriores:
-	Ligacao 0: 12550800
+	Ligacao 0: 7304496
 Tipo/nivel: C51
 Ligacoes posteriores
-	else: 12432104
-	Then: 12620688
+	else: 7189928
+	Then: 7376176
 
 
 	Ligacao 86:
-Endereco (no): 12432104
+Endereco (no): 7189928
 Ligacoes anteriores:
-	Ligacao 0: 12443992
-	Ligacao 1: 12444824
-	Ligacao 2: 12582560
+	Ligacao 0: 7204600
+	Ligacao 1: 7204376
+	Ligacao 2: 7350592
 Tipo/nivel: R52
 Ligacoes posteriores
-	else: 12450456
-	Then: 12502640
+	else: 7202328
+	Then: 7256176
 
 
 	Ligacao 87:
-Endereco (no): 12502640
+Endereco (no): 7256176
 Ligacoes anteriores:
-	Ligacao 0: 12432104
+	Ligacao 0: 7189928
 Tipo/nivel: C52
 Ligacoes posteriores
-	else: 12444088
-	Then: 12450456
+	else: 7205016
+	Then: 7202328
 
 
 	Ligacao 88:
-Endereco (no): 12621232
+Endereco (no): 7377232
 Ligacoes anteriores:
-	Ligacao 0: 12621296
+	Ligacao 0: 7376624
 Tipo/nivel: C50
 Ligacoes posteriores
-	else: 12582560
-	Then: 12550800
+	else: 7350592
+	Then: 7304496
 
 
 	Ligacao 89:
-Endereco (no): 12582560
+Endereco (no): 7350592
 Ligacoes anteriores:
-	Ligacao 0: 12580768
-	Ligacao 1: 12621232
-	Ligacao 2: 12620720
+	Ligacao 0: 7348480
+	Ligacao 1: 7377232
+	Ligacao 2: 7375440
 Tipo/nivel: R51
 Ligacoes posteriores
-	else: 12432104
-	Then: 12444824
+	else: 7189928
+	Then: 7204376
 
 
 	Ligacao 90:
-Endereco (no): 12444824
+Endereco (no): 7204376
 Ligacoes anteriores:
-	Ligacao 0: 12582560
+	Ligacao 0: 7350592
 Tipo/nivel: C51
 Ligacoes posteriores
-	else: 12620688
-	Then: 12432104
+	else: 7376176
+	Then: 7189928
 
 
 	Ligacao 91:
-Endereco (no): 12553680
+Endereco (no): 7307376
 Ligacoes anteriores:
-	Ligacao 0: 12444504
+	Ligacao 0: 7204824
 Tipo/nivel: C49
 Ligacoes posteriores
-	else: 12580768
-	Then: 12621296
+	else: 7348480
+	Then: 7376624
 
 
 	Ligacao 92:
-Endereco (no): 12580768
+Endereco (no): 7348480
 Ligacoes anteriores:
-	Ligacao 0: 12555568
-	Ligacao 1: 12553680
-	Ligacao 2: 12582752
+	Ligacao 0: 7308016
+	Ligacao 1: 7307376
+	Ligacao 2: 7350048
 Tipo/nivel: R50
 Ligacoes posteriores
-	else: 12582560
-	Then: 12620720
+	else: 7350592
+	Then: 7375440
 
 
 	Ligacao 93:
-Endereco (no): 12620720
+Endereco (no): 7375440
 Ligacoes anteriores:
-	Ligacao 0: 12580768
+	Ligacao 0: 7348480
 Tipo/nivel: C50
 Ligacoes posteriores
-	else: 12550800
-	Then: 12582560
+	else: 7304496
+	Then: 7350592
 
 
 	Ligacao 94:
-Endereco (no): 12580704
+Endereco (no): 7347904
 Ligacoes anteriores:
-	Ligacao 0: 12429288
+	Ligacao 0: 7187080
 Tipo/nivel: C48
 Ligacoes posteriores
-	else: 12582752
-	Then: 12444504
+	else: 7350048
+	Then: 7204824
 
 
 	Ligacao 95:
-Endereco (no): 12582752
+Endereco (no): 7350048
 Ligacoes anteriores:
-	Ligacao 0: 12581088
-	Ligacao 1: 12580704
-	Ligacao 2: 12431880
+	Ligacao 0: 7348128
+	Ligacao 1: 7347904
+	Ligacao 2: 7190184
 Tipo/nivel: R49
 Ligacoes posteriores
-	else: 12580768
-	Then: 12555568
+	else: 7348480
+	Then: 7308016
 
 
 	Ligacao 96:
-Endereco (no): 12555568
+Endereco (no): 7308016
 Ligacoes anteriores:
-	Ligacao 0: 12582752
+	Ligacao 0: 7350048
 Tipo/nivel: C49
 Ligacoes posteriores
-	else: 12621296
-	Then: 12580768
+	else: 7376624
+	Then: 7348480
 
 
 	Ligacao 97:
-Endereco (no): 12445048
+Endereco (no): 7206104
 Ligacoes anteriores:
-	Ligacao 0: 12445912
+	Ligacao 0: 7205144
 Tipo/nivel: C47
 Ligacoes posteriores
-	else: 12431880
-	Then: 12429288
+	else: 7190184
+	Then: 7187080
 
 
 	Ligacao 98:
-Endereco (no): 12431880
+Endereco (no): 7190184
 Ligacoes anteriores:
-	Ligacao 0: 12494800
-	Ligacao 1: 12445048
-	Ligacao 2: 12445752
+	Ligacao 0: 7248080
+	Ligacao 1: 7206104
+	Ligacao 2: 7206008
 Tipo/nivel: R48
 Ligacoes posteriores
-	else: 12582752
-	Then: 12581088
+	else: 7350048
+	Then: 7348128
 
 
 	Ligacao 99:
-Endereco (no): 12581088
+Endereco (no): 7348128
 Ligacoes anteriores:
-	Ligacao 0: 12431880
+	Ligacao 0: 7190184
 Tipo/nivel: C48
 Ligacoes posteriores
-	else: 12444504
-	Then: 12582752
+	else: 7204824
+	Then: 7350048
 
 
 	Ligacao 100:
-Endereco (no): 12431912
+Endereco (no): 7190280
 Ligacoes anteriores:
-	Ligacao 0: 12622896
+	Ligacao 0: 7377456
 Tipo/nivel: C46
 Ligacoes posteriores
-	else: 12494800
-	Then: 12445912
+	else: 7248080
+	Then: 7205144
 
 
 	Ligacao 101:
-Endereco (no): 12494800
+Endereco (no): 7248080
 Ligacoes anteriores:
-	Ligacao 0: 12515008
-	Ligacao 1: 12514752
-	Ligacao 2: 12431912
+	Ligacao 0: 7275040
+	Ligacao 1: 7275264
+	Ligacao 2: 7190280
 Tipo/nivel: R47
 Ligacoes posteriores
-	else: 12431880
-	Then: 12445752
+	else: 7190184
+	Then: 7206008
 
 
 	Ligacao 102:
-Endereco (no): 12445752
+Endereco (no): 7206008
 Ligacoes anteriores:
-	Ligacao 0: 12494800
+	Ligacao 0: 7248080
 Tipo/nivel: C47
 Ligacoes posteriores
-	else: 12429288
-	Then: 12431880
+	else: 7187080
+	Then: 7190184
 
 
 	Ligacao 103:
-Endereco (no): 12494576
+Endereco (no): 7247792
 Ligacoes anteriores:
-	Ligacao 0: 12587776
+	Ligacao 0: 7339072
 Tipo/nivel: C45
 Ligacoes posteriores
-	else: 12514752
-	Then: 12622896
+	else: 7275264
+	Then: 7377456
 
 
 	Ligacao 104:
-Endereco (no): 12514752
+Endereco (no): 7275264
 Ligacoes anteriores:
-	Ligacao 0: 12494672
-	Ligacao 1: 12494576
-	Ligacao 2: 12581536
+	Ligacao 0: 7247696
+	Ligacao 1: 7247792
+	Ligacao 2: 7348672
 Tipo/nivel: R46
 Ligacoes posteriores
-	else: 12494800
-	Then: 12515008
+	else: 7248080
+	Then: 7275040
 
 
 	Ligacao 105:
-Endereco (no): 12515008
+Endereco (no): 7275040
 Ligacoes anteriores:
-	Ligacao 0: 12514752
+	Ligacao 0: 7275264
 Tipo/nivel: C46
 Ligacoes posteriores
-	else: 12445912
-	Then: 12494800
+	else: 7205144
+	Then: 7248080
 
 
 	Ligacao 106:
-Endereco (no): 12581888
+Endereco (no): 7348736
 Ligacoes anteriores:
-	Ligacao 0: 12622960
+	Ligacao 0: 7378192
 Tipo/nivel: C44
 Ligacoes posteriores
-	else: 12581536
-	Then: 12587776
+	else: 7348672
+	Then: 7339072
 
 
 	Ligacao 107:
-Endereco (no): 12581536
+Endereco (no): 7348672
 Ligacoes anteriores:
-	Ligacao 0: 12615792
-	Ligacao 1: 12581504
-	Ligacao 2: 12581888
+	Ligacao 0: 7371120
+	Ligacao 1: 7348640
+	Ligacao 2: 7348736
 Tipo/nivel: R45
 Ligacoes posteriores
-	else: 12514752
-	Then: 12494672
+	else: 7275264
+	Then: 7247696
 
 
 	Ligacao 108:
-Endereco (no): 12494672
+Endereco (no): 7247696
 Ligacoes anteriores:
-	Ligacao 0: 12581536
+	Ligacao 0: 7348672
 Tipo/nivel: C45
 Ligacoes posteriores
-	else: 12622896
-	Then: 12514752
+	else: 7377456
+	Then: 7275264
 
 
 	Ligacao 109:
-Endereco (no): 12588320
+Endereco (no): 7338496
 Ligacoes anteriores:
-	Ligacao 0: 12446296
+	Ligacao 0: 7207064
 Tipo/nivel: C43
 Ligacoes posteriores
-	else: 12615792
-	Then: 12622960
+	else: 7371120
+	Then: 7378192
 
 
 	Ligacao 110:
-Endereco (no): 12615792
+Endereco (no): 7371120
 Ligacoes anteriores:
-	Ligacao 0: 12588320
-	Ligacao 1: 12587456
-	Ligacao 2: 12581696
+	Ligacao 0: 7338496
+	Ligacao 1: 7338368
+	Ligacao 2: 7349248
 Tipo/nivel: R44
 Ligacoes posteriores
-	else: 12581536
-	Then: 12581504
+	else: 7348672
+	Then: 7348640
 
 
 	Ligacao 111:
-Endereco (no): 12581504
+Endereco (no): 7348640
 Ligacoes anteriores:
-	Ligacao 0: 12615792
+	Ligacao 0: 7371120
 Tipo/nivel: C44
 Ligacoes posteriores
-	else: 12587776
-	Then: 12581536
+	else: 7339072
+	Then: 7348672
 
 
 	Ligacao 112:
-Endereco (no): 12523936
+Endereco (no): 7284800
 Ligacoes anteriores:
-	Ligacao 0: 12489104
+	Ligacao 0: 7259312
 Tipo/nivel: C42
 Ligacoes posteriores
-	else: 12581696
-	Then: 12446296
+	else: 7349248
+	Then: 7207064
 
 
 	Ligacao 113:
-Endereco (no): 12581696
+Endereco (no): 7349248
 Ligacoes anteriores:
-	Ligacao 0: 12523936
-	Ligacao 1: 12622992
-	Ligacao 2: 12515968
+	Ligacao 0: 7284800
+	Ligacao 1: 7377584
+	Ligacao 2: 7276608
 Tipo/nivel: R43
 Ligacoes posteriores
-	else: 12615792
-	Then: 12587456
+	else: 7371120
+	Then: 7338368
 
 
 	Ligacao 114:
-Endereco (no): 12587456
+Endereco (no): 7338368
 Ligacoes anteriores:
-	Ligacao 0: 12581696
+	Ligacao 0: 7349248
 Tipo/nivel: C43
 Ligacoes posteriores
-	else: 12622960
-	Then: 12615792
+	else: 7378192
+	Then: 7371120
 
 
 	Ligacao 115:
-Endereco (no): 12495440
+Endereco (no): 7249104
 Ligacoes anteriores:
-	Ligacao 0: 12446904
+	Ligacao 0: 7206456
 Tipo/nivel: C41
 Ligacoes posteriores
-	else: 12515968
-	Then: 12489104
+	else: 7276608
+	Then: 7259312
 
 
 	Ligacao 116:
-Endereco (no): 12515968
+Endereco (no): 7276608
 Ligacoes anteriores:
-	Ligacao 0: 12559920
-	Ligacao 1: 12495344
-	Ligacao 2: 12495440
+	Ligacao 0: 7312976
+	Ligacao 1: 7248784
+	Ligacao 2: 7249104
 Tipo/nivel: R42
 Ligacoes posteriores
-	else: 12581696
-	Then: 12622992
+	else: 7349248
+	Then: 7377584
 
 
 	Ligacao 117:
-Endereco (no): 12622992
+Endereco (no): 7377584
 Ligacoes anteriores:
-	Ligacao 0: 12515968
+	Ligacao 0: 7276608
 Tipo/nivel: C42
 Ligacoes posteriores
-	else: 12446296
-	Then: 12581696
+	else: 7207064
+	Then: 7349248
 
 
 	Ligacao 118:
-Endereco (no): 12490704
+Endereco (no): 7259440
 Ligacoes anteriores:
-	Ligacao 0: 12524704
+	Ligacao 0: 7284160
 Tipo/nivel: C40
 Ligacoes posteriores
-	else: 12559920
-	Then: 12446904
+	else: 7312976
+	Then: 7206456
 
 
 	Ligacao 119:
-Endereco (no): 12559920
+Endereco (no): 7312976
 Ligacoes anteriores:
-	Ligacao 0: 12490704
-	Ligacao 1: 12489872
-	Ligacao 2: 12516352
+	Ligacao 0: 7259440
+	Ligacao 1: 7259088
+	Ligacao 2: 7276320
 Tipo/nivel: R41
 Ligacoes posteriores
-	else: 12515968
-	Then: 12495344
+	else: 7276608
+	Then: 7248784
 
 
 	Ligacao 120:
-Endereco (no): 12495344
+Endereco (no): 7248784
 Ligacoes anteriores:
-	Ligacao 0: 12559920
+	Ligacao 0: 7312976
 Tipo/nivel: C41
 Ligacoes posteriores
-	else: 12489104
-	Then: 12515968
+	else: 7259312
+	Then: 7276608
 
 
 	Ligacao 121:
-Endereco (no): 12446200
+Endereco (no): 7206808
 Ligacoes anteriores:
-	Ligacao 0: 12548752
+	Ligacao 0: 7318000
 Tipo/nivel: C39
 Ligacoes posteriores
-	else: 12516352
-	Then: 12524704
+	else: 7276320
+	Then: 7284160
 
 
 	Ligacao 122:
-Endereco (no): 12516352
+Endereco (no): 7276320
 Ligacoes anteriores:
-	Ligacao 0: 12446200
-	Ligacao 1: 12445944
-	Ligacao 2: 12580640
+	Ligacao 0: 7206808
+	Ligacao 1: 7206584
+	Ligacao 2: 7348512
 Tipo/nivel: R40
 Ligacoes posteriores
-	else: 12559920
-	Then: 12489872
+	else: 7312976
+	Then: 7259088
 
 
 	Ligacao 123:
-Endereco (no): 12489872
+Endereco (no): 7259088
 Ligacoes anteriores:
-	Ligacao 0: 12516352
+	Ligacao 0: 7276320
 Tipo/nivel: C40
 Ligacoes posteriores
-	else: 12446904
-	Then: 12559920
+	else: 7206456
+	Then: 7312976
 
 
 	Ligacao 124:
-Endereco (no): 12525216
+Endereco (no): 7285312
 Ligacoes anteriores:
-	Ligacao 0: 12525664
+	Ligacao 0: 7285472
 Tipo/nivel: C38
 Ligacoes posteriores
-	else: 12580640
-	Then: 12548752
+	else: 7348512
+	Then: 7318000
 
 
 	Ligacao 125:
-Endereco (no): 12580640
+Endereco (no): 7348512
 Ligacoes anteriores:
-	Ligacao 0: 12583648
-	Ligacao 1: 12525216
-	Ligacao 2: 12524000
+	Ligacao 0: 7351328
+	Ligacao 1: 7285312
+	Ligacao 2: 7284064
 Tipo/nivel: R39
 Ligacoes posteriores
-	else: 12516352
-	Then: 12445944
+	else: 7276320
+	Then: 7206584
 
 
 	Ligacao 126:
-Endereco (no): 12445944
+Endereco (no): 7206584
 Ligacoes anteriores:
-	Ligacao 0: 12580640
+	Ligacao 0: 7348512
 Tipo/nivel: C39
 Ligacoes posteriores
-	else: 12524704
-	Then: 12516352
+	else: 7284160
+	Then: 7276320
 
 
 	Ligacao 127:
-Endereco (no): 12556720
+Endereco (no): 7310512
 Ligacoes anteriores:
-	Ligacao 0: 12447928
+	Ligacao 0: 7207224
 Tipo/nivel: C37
 Ligacoes posteriores
-	else: 12583648
-	Then: 12525664
+	else: 7351328
+	Then: 7285472
 
 
 	Ligacao 128:
-Endereco (no): 12583648
+Endereco (no): 7351328
 Ligacoes anteriores:
-	Ligacao 0: 12557072
-	Ligacao 1: 12556720
-	Ligacao 2: 12580320
+	Ligacao 0: 7310960
+	Ligacao 1: 7310512
+	Ligacao 2: 7348288
 Tipo/nivel: R38
 Ligacoes posteriores
-	else: 12580640
-	Then: 12524000
+	else: 7348512
+	Then: 7284064
 
 
 	Ligacao 129:
-Endereco (no): 12524000
+Endereco (no): 7284064
 Ligacoes anteriores:
-	Ligacao 0: 12583648
+	Ligacao 0: 7351328
 Tipo/nivel: C38
 Ligacoes posteriores
-	else: 12548752
-	Then: 12580640
+	else: 7318000
+	Then: 7348512
 
 
 	Ligacao 130:
-Endereco (no): 12584160
+Endereco (no): 7351552
 Ligacoes anteriores:
-	Ligacao 0: 12428328
+	Ligacao 0: 7185768
 Tipo/nivel: C36
 Ligacoes posteriores
-	else: 12580320
-	Then: 12447928
+	else: 7348288
+	Then: 7207224
 
 
 	Ligacao 131:
-Endereco (no): 12580320
+Endereco (no): 7348288
 Ligacoes anteriores:
-	Ligacao 0: 12585216
-	Ligacao 1: 12584160
-	Ligacao 2: 12517408
+	Ligacao 0: 7352448
+	Ligacao 1: 7351552
+	Ligacao 2: 7277888
 Tipo/nivel: R37
 Ligacoes posteriores
-	else: 12583648
-	Then: 12557072
+	else: 7351328
+	Then: 7310960
 
 
 	Ligacao 132:
-Endereco (no): 12557072
+Endereco (no): 7310960
 Ligacoes anteriores:
-	Ligacao 0: 12580320
+	Ligacao 0: 7348288
 Tipo/nivel: C37
 Ligacoes posteriores
-	else: 12525664
-	Then: 12583648
+	else: 7285472
+	Then: 7351328
 
 
 	Ligacao 133:
-Endereco (no): 12446968
+Endereco (no): 7207544
 Ligacoes anteriores:
-	Ligacao 0: 12447384
+	Ligacao 0: 7207896
 Tipo/nivel: C35
 Ligacoes posteriores
-	else: 12517408
-	Then: 12428328
+	else: 7277888
+	Then: 7185768
 
 
 	Ligacao 134:
-Endereco (no): 12517408
+Endereco (no): 7277888
 Ligacoes anteriores:
-	Ligacao 0: 12561808
-	Ligacao 1: 12446968
-	Ligacao 2: 12447768
+	Ligacao 0: 7314800
+	Ligacao 1: 7207544
+	Ligacao 2: 7207160
 Tipo/nivel: R36
 Ligacoes posteriores
-	else: 12580320
-	Then: 12585216
+	else: 7348288
+	Then: 7352448
 
 
 	Ligacao 135:
-Endereco (no): 12585216
+Endereco (no): 7352448
 Ligacoes anteriores:
-	Ligacao 0: 12517408
+	Ligacao 0: 7277888
 Tipo/nivel: C36
 Ligacoes posteriores
-	else: 12447928
-	Then: 12580320
+	else: 7207224
+	Then: 7348288
 
 
 	Ligacao 136:
-Endereco (no): 12517280
+Endereco (no): 7277472
 Ligacoes anteriores:
-	Ligacao 0: 12524896
+	Ligacao 0: 7285184
 Tipo/nivel: C34
 Ligacoes posteriores
-	else: 12561808
-	Then: 12447384
+	else: 7314800
+	Then: 7207896
 
 
 	Ligacao 137:
-Endereco (no): 12561808
+Endereco (no): 7314800
 Ligacoes anteriores:
-	Ligacao 0: 12517568
-	Ligacao 1: 12516960
-	Ligacao 2: 12517280
+	Ligacao 0: 7277024
+	Ligacao 1: 7276928
+	Ligacao 2: 7277472
 Tipo/nivel: R35
 Ligacoes posteriores
-	else: 12517408
-	Then: 12447768
+	else: 7277888
+	Then: 7207160
 
 
 	Ligacao 138:
-Endereco (no): 12447768
+Endereco (no): 7207160
 Ligacoes anteriores:
-	Ligacao 0: 12561808
+	Ligacao 0: 7314800
 Tipo/nivel: C35
 Ligacoes posteriores
-	else: 12428328
-	Then: 12517408
+	else: 7185768
+	Then: 7277888
 
 
 	Ligacao 139:
-Endereco (no): 12561872
+Endereco (no): 7315696
 Ligacoes anteriores:
-	Ligacao 0: 12590208
+	Ligacao 0: 7340416
 Tipo/nivel: C33
 Ligacoes posteriores
-	else: 12516960
-	Then: 12524896
+	else: 7276928
+	Then: 7285184
 
 
 	Ligacao 140:
-Endereco (no): 12516960
+Endereco (no): 7276928
 Ligacoes anteriores:
-	Ligacao 0: 12562320
-	Ligacao 1: 12561872
-	Ligacao 2: 12580864
+	Ligacao 0: 7315728
+	Ligacao 1: 7315696
+	Ligacao 2: 7347744
 Tipo/nivel: R34
 Ligacoes posteriores
-	else: 12561808
-	Then: 12517568
+	else: 7314800
+	Then: 7277024
 
 
 	Ligacao 141:
-Endereco (no): 12517568
+Endereco (no): 7277024
 Ligacoes anteriores:
-	Ligacao 0: 12516960
+	Ligacao 0: 7276928
 Tipo/nivel: C34
 Ligacoes posteriores
-	else: 12447384
-	Then: 12561808
+	else: 7207896
+	Then: 7314800
 
 
 	Ligacao 142:
-Endereco (no): 12584576
+Endereco (no): 7351680
 Ligacoes anteriores:
-	Ligacao 0: 12526688
+	Ligacao 0: 7286656
 Tipo/nivel: C32
 Ligacoes posteriores
-	else: 12580864
-	Then: 12590208
+	else: 7347744
+	Then: 7340416
 
 
 	Ligacao 143:
-Endereco (no): 12580864
+Endereco (no): 7347744
 Ligacoes anteriores:
-	Ligacao 0: 12612912
-	Ligacao 1: 12585728
-	Ligacao 2: 12584576
+	Ligacao 0: 7383792
+	Ligacao 1: 7336640
+	Ligacao 2: 7351680
 Tipo/nivel: R33
 Ligacoes posteriores
-	else: 12516960
-	Then: 12562320
+	else: 7276928
+	Then: 7315728
 
 
 	Ligacao 144:
-Endereco (no): 12562320
+Endereco (no): 7315728
 Ligacoes anteriores:
-	Ligacao 0: 12580864
+	Ligacao 0: 7347744
 Tipo/nivel: C33
 Ligacoes posteriores
-	else: 12524896
-	Then: 12516960
+	else: 7285184
+	Then: 7276928
 
 
 	Ligacao 145:
-Endereco (no): 12616656
+Endereco (no): 7371696
 Ligacoes anteriores:
-	Ligacao 0: 12448792
+	Ligacao 0: 7209016
 Tipo/nivel: C31
 Ligacoes posteriores
-	else: 12612912
-	Then: 12526688
+	else: 7383792
+	Then: 7286656
 
 
 	Ligacao 146:
-Endereco (no): 12612912
+Endereco (no): 7383792
 Ligacoes anteriores:
-	Ligacao 0: 12616656
-	Ligacao 1: 12616272
-	Ligacao 2: 12580672
+	Ligacao 0: 7371696
+	Ligacao 1: 7371792
+	Ligacao 2: 7346816
 Tipo/nivel: R32
 Ligacoes posteriores
-	else: 12580864
-	Then: 12585728
+	else: 7347744
+	Then: 7336640
 
 
 	Ligacao 147:
-Endereco (no): 12585728
+Endereco (no): 7336640
 Ligacoes anteriores:
-	Ligacao 0: 12612912
+	Ligacao 0: 7383792
 Tipo/nivel: C32
 Ligacoes posteriores
-	else: 12590208
-	Then: 12580864
+	else: 7340416
+	Then: 7347744
 
 
 	Ligacao 148:
-Endereco (no): 12526752
+Endereco (no): 7286720
 Ligacoes anteriores:
-	Ligacao 0: 12492400
+	Ligacao 0: 7261200
 Tipo/nivel: C30
 Ligacoes posteriores
-	else: 12580672
-	Then: 12448792
+	else: 7346816
+	Then: 7209016
 
 
 	Ligacao 149:
-Endereco (no): 12580672
+Endereco (no): 7346816
 Ligacoes anteriores:
-	Ligacao 0: 12526752
-	Ligacao 1: 12526208
-	Ligacao 2: 12517728
+	Ligacao 0: 7286720
+	Ligacao 1: 7286432
+	Ligacao 2: 7278528
 Tipo/nivel: R31
 Ligacoes posteriores
-	else: 12612912
-	Then: 12616272
+	else: 7383792
+	Then: 7371792
 
 
 	Ligacao 150:
-Endereco (no): 12616272
+Endereco (no): 7371792
 Ligacoes anteriores:
-	Ligacao 0: 12580672
+	Ligacao 0: 7346816
 Tipo/nivel: C31
 Ligacoes posteriores
-	else: 12526688
-	Then: 12612912
+	else: 7286656
+	Then: 7383792
 
 
 	Ligacao 151:
-Endereco (no): 12547312
+Endereco (no): 7316528
 Ligacoes anteriores:
-	Ligacao 0: 12448472
+	Ligacao 0: 7208184
 Tipo/nivel: C29
 Ligacoes posteriores
-	else: 12517728
-	Then: 12492400
+	else: 7278528
+	Then: 7261200
 
 
 	Ligacao 152:
-Endereco (no): 12517728
+Endereco (no): 7278528
 Ligacoes anteriores:
-	Ligacao 0: 12557808
-	Ligacao 1: 12546640
-	Ligacao 2: 12547312
+	Ligacao 0: 7311216
+	Ligacao 1: 7316144
+	Ligacao 2: 7316528
 Tipo/nivel: R30
 Ligacoes posteriores
-	else: 12580672
-	Then: 12526208
+	else: 7346816
+	Then: 7286432
 
 
 	Ligacao 153:
-Endereco (no): 12526208
+Endereco (no): 7286432
 Ligacoes anteriores:
-	Ligacao 0: 12517728
+	Ligacao 0: 7278528
 Tipo/nivel: C30
 Ligacoes posteriores
-	else: 12448792
-	Then: 12580672
+	else: 7209016
+	Then: 7346816
 
 
 	Ligacao 154:
-Endereco (no): 12492240
+Endereco (no): 7261968
 Ligacoes anteriores:
-	Ligacao 0: 12527936
+	Ligacao 0: 7271168
 Tipo/nivel: C28
 Ligacoes posteriores
-	else: 12557808
-	Then: 12448472
+	else: 7311216
+	Then: 7208184
 
 
 	Ligacao 155:
-Endereco (no): 12557808
+Endereco (no): 7311216
 Ligacoes anteriores:
-	Ligacao 0: 12492240
-	Ligacao 1: 12492176
-	Ligacao 2: 12517920
+	Ligacao 0: 7261968
+	Ligacao 1: 7262192
+	Ligacao 2: 7278848
 Tipo/nivel: R29
 Ligacoes posteriores
-	else: 12517728
-	Then: 12546640
+	else: 7278528
+	Then: 7316144
 
 
 	Ligacao 156:
-Endereco (no): 12546640
+Endereco (no): 7316144
 Ligacoes anteriores:
-	Ligacao 0: 12557808
+	Ligacao 0: 7311216
 Tipo/nivel: C29
 Ligacoes posteriores
-	else: 12492400
-	Then: 12517728
+	else: 7261200
+	Then: 7278528
 
 
 	Ligacao 157:
-Endereco (no): 12448248
+Endereco (no): 7208824
 Ligacoes anteriores:
-	Ligacao 0: 12547824
+	Ligacao 0: 7317200
 Tipo/nivel: C27
 Ligacoes posteriores
-	else: 12517920
-	Then: 12527936
+	else: 7278848
+	Then: 7271168
 
 
 	Ligacao 158:
-Endereco (no): 12517920
+Endereco (no): 7278848
 Ligacoes anteriores:
-	Ligacao 0: 12448248
-	Ligacao 1: 12448504
-	Ligacao 2: 12579488
+	Ligacao 0: 7208824
+	Ligacao 1: 7209080
+	Ligacao 2: 7347200
 Tipo/nivel: R28
 Ligacoes posteriores
-	else: 12557808
-	Then: 12492176
+	else: 7311216
+	Then: 7262192
 
 
 	Ligacao 159:
-Endereco (no): 12492176
+Endereco (no): 7262192
 Ligacoes anteriores:
-	Ligacao 0: 12517920
+	Ligacao 0: 7278848
 Tipo/nivel: C28
 Ligacoes posteriores
-	else: 12448472
-	Then: 12557808
+	else: 7208184
+	Then: 7311216
 
 
 	Ligacao 160:
-Endereco (no): 12527552
+Endereco (no): 7271680
 Ligacoes anteriores:
-	Ligacao 0: 12527008
+	Ligacao 0: 7271584
 Tipo/nivel: C26
 Ligacoes posteriores
-	else: 12579488
-	Then: 12547824
+	else: 7347200
+	Then: 7317200
 
 
 	Ligacao 161:
-Endereco (no): 12579488
+Endereco (no): 7347200
 Ligacoes anteriores:
-	Ligacao 0: 12587072
-	Ligacao 1: 12527552
-	Ligacao 2: 12527648
+	Ligacao 0: 7337888
+	Ligacao 1: 7271680
+	Ligacao 2: 7271200
 Tipo/nivel: R27
 Ligacoes posteriores
-	else: 12517920
-	Then: 12448504
+	else: 7278848
+	Then: 7209080
 
 
 	Ligacao 162:
-Endereco (no): 12448504
+Endereco (no): 7209080
 Ligacoes anteriores:
-	Ligacao 0: 12579488
+	Ligacao 0: 7347200
 Tipo/nivel: C27
 Ligacoes posteriores
-	else: 12527936
-	Then: 12517920
+	else: 7271168
+	Then: 7278848
 
 
 	Ligacao 163:
-Endereco (no): 12560400
+Endereco (no): 7312880
 Ligacoes anteriores:
-	Ligacao 0: 12449272
+	Ligacao 0: 7201656
 Tipo/nivel: C25
 Ligacoes posteriores
-	else: 12587072
-	Then: 12527008
+	else: 7337888
+	Then: 7271584
 
 
 	Ligacao 164:
-Endereco (no): 12587072
+Endereco (no): 7337888
 Ligacoes anteriores:
-	Ligacao 0: 12560016
-	Ligacao 1: 12560400
-	Ligacao 2: 12579744
+	Ligacao 0: 7314480
+	Ligacao 1: 7312880
+	Ligacao 2: 7346656
 Tipo/nivel: R26
 Ligacoes posteriores
-	else: 12579488
-	Then: 12527648
+	else: 7347200
+	Then: 7271200
 
 
 	Ligacao 165:
-Endereco (no): 12527648
+Endereco (no): 7271200
 Ligacoes anteriores:
-	Ligacao 0: 12587072
+	Ligacao 0: 7337888
 Tipo/nivel: C26
 Ligacoes posteriores
-	else: 12547824
-	Then: 12579488
+	else: 7317200
+	Then: 7347200
 
 
 	Ligacao 166:
-Endereco (no): 12587552
+Endereco (no): 7338144
 Ligacoes anteriores:
-	Ligacao 0: 12434760
+	Ligacao 0: 7184712
 Tipo/nivel: C24
 Ligacoes posteriores
-	else: 12579744
-	Then: 12449272
+	else: 7346656
+	Then: 7201656
 
 
 	Ligacao 167:
-Endereco (no): 12579744
+Endereco (no): 7346656
 Ligacoes anteriores:
-	Ligacao 0: 12587488
-	Ligacao 1: 12587552
-	Ligacao 2: 12519680
+	Ligacao 0: 7339200
+	Ligacao 1: 7338144
+	Ligacao 2: 7279200
 Tipo/nivel: R25
 Ligacoes posteriores
-	else: 12587072
-	Then: 12560016
+	else: 7337888
+	Then: 7314480
 
 
 	Ligacao 168:
-Endereco (no): 12560016
+Endereco (no): 7314480
 Ligacoes anteriores:
-	Ligacao 0: 12579744
+	Ligacao 0: 7346656
 Tipo/nivel: C25
 Ligacoes posteriores
-	else: 12527008
-	Then: 12587072
+	else: 7271584
+	Then: 7337888
 
 
 	Ligacao 169:
-Endereco (no): 12449784
+Endereco (no): 7201560
 Ligacoes anteriores:
-	Ligacao 0: 12449752
+	Ligacao 0: 7201240
 Tipo/nivel: C23
 Ligacoes posteriores
-	else: 12519680
-	Then: 12434760
+	else: 7279200
+	Then: 7184712
 
 
 	Ligacao 170:
-Endereco (no): 12519680
+Endereco (no): 7279200
 Ligacoes anteriores:
-	Ligacao 0: 12548656
-	Ligacao 1: 12449784
-	Ligacao 2: 12449432
+	Ligacao 0: 7318480
+	Ligacao 1: 7201560
+	Ligacao 2: 7201080
 Tipo/nivel: R24
 Ligacoes posteriores
-	else: 12579744
-	Then: 12587488
+	else: 7346656
+	Then: 7339200
 
 
 	Ligacao 171:
-Endereco (no): 12587488
+Endereco (no): 7339200
 Ligacoes anteriores:
-	Ligacao 0: 12519680
+	Ligacao 0: 7279200
 Tipo/nivel: C24
 Ligacoes posteriores
-	else: 12449272
-	Then: 12579744
+	else: 7201656
+	Then: 7346656
 
 
 	Ligacao 172:
-Endereco (no): 12518944
+Endereco (no): 7279456
 Ligacoes anteriores:
-	Ligacao 0: 12528704
+	Ligacao 0: 7272704
 Tipo/nivel: C22
 Ligacoes posteriores
-	else: 12548656
-	Then: 12449752
+	else: 7318480
+	Then: 7201240
 
 
 	Ligacao 173:
-Endereco (no): 12548656
+Endereco (no): 7318480
 Ligacoes anteriores:
-	Ligacao 0: 12519840
-	Ligacao 1: 12519968
-	Ligacao 2: 12518944
+	Ligacao 0: 7280832
+	Ligacao 1: 7280128
+	Ligacao 2: 7279456
 Tipo/nivel: R23
 Ligacoes posteriores
-	else: 12519680
-	Then: 12449432
+	else: 7279200
+	Then: 7201080
 
 
 	Ligacao 174:
-Endereco (no): 12449432
+Endereco (no): 7201080
 Ligacoes anteriores:
-	Ligacao 0: 12548656
+	Ligacao 0: 7318480
 Tipo/nivel: C23
 Ligacoes posteriores
-	else: 12434760
-	Then: 12519680
+	else: 7184712
+	Then: 7279200
 
 
 	Ligacao 175:
-Endereco (no): 12549264
+Endereco (no): 7318192
 Ligacoes anteriores:
-	Ligacao 0: 12618960
+	Ligacao 0: 7373776
 Tipo/nivel: C21
 Ligacoes posteriores
-	else: 12519968
-	Then: 12528704
+	else: 7280128
+	Then: 7272704
 
 
 	Ligacao 176:
-Endereco (no): 12519968
+Endereco (no): 7280128
 Ligacoes anteriores:
-	Ligacao 0: 12549456
-	Ligacao 1: 12549264
-	Ligacao 2: 12594720
+	Ligacao 0: 7318320
+	Ligacao 1: 7318192
+	Ligacao 2: 7345760
 Tipo/nivel: R22
 Ligacoes posteriores
-	else: 12548656
-	Then: 12519840
+	else: 7318480
+	Then: 7280832
 
 
 	Ligacao 177:
-Endereco (no): 12519840
+Endereco (no): 7280832
 Ligacoes anteriores:
-	Ligacao 0: 12519968
+	Ligacao 0: 7280128
 Tipo/nivel: C22
 Ligacoes posteriores
-	else: 12449752
-	Then: 12548656
+	else: 7201240
+	Then: 7318480
 
 
 	Ligacao 178:
-Endereco (no): 12588672
+Endereco (no): 7340256
 Ligacoes anteriores:
-	Ligacao 0: 12529888
+	Ligacao 0: 7273568
 Tipo/nivel: C20
 Ligacoes posteriores
-	else: 12594720
-	Then: 12618960
+	else: 7345760
+	Then: 7373776
 
 
 	Ligacao 179:
-Endereco (no): 12594720
+Endereco (no): 7345760
 Ligacoes anteriores:
-	Ligacao 0: 12626672
-	Ligacao 1: 12588544
-	Ligacao 2: 12588672
+	Ligacao 0: 7381904
+	Ligacao 1: 7339904
+	Ligacao 2: 7340256
 Tipo/nivel: R21
 Ligacoes posteriores
-	else: 12519968
-	Then: 12549456
+	else: 7280128
+	Then: 7318320
 
 
 	Ligacao 180:
-Endereco (no): 12549456
+Endereco (no): 7318320
 Ligacoes anteriores:
-	Ligacao 0: 12594720
+	Ligacao 0: 7345760
 Tipo/nivel: C21
 Ligacoes posteriores
-	else: 12528704
-	Then: 12519968
+	else: 7272704
+	Then: 7280128
 
 
 	Ligacao 181:
-Endereco (no): 12620144
+Endereco (no): 7374864
 Ligacoes anteriores:
-	Ligacao 0: 12432968
+	Ligacao 0: 7190824
 Tipo/nivel: C19
 Ligacoes posteriores
-	else: 12626672
-	Then: 12529888
+	else: 7381904
+	Then: 7273568
 
 
 	Ligacao 182:
-Endereco (no): 12626672
+Endereco (no): 7381904
 Ligacoes anteriores:
-	Ligacao 0: 12620144
-	Ligacao 1: 12619472
-	Ligacao 2: 12595136
+	Ligacao 0: 7374864
+	Ligacao 1: 7374704
+	Ligacao 2: 7345728
 Tipo/nivel: R20
 Ligacoes posteriores
-	else: 12594720
-	Then: 12588544
+	else: 7345760
+	Then: 7339904
 
 
 	Ligacao 183:
-Endereco (no): 12588544
+Endereco (no): 7339904
 Ligacoes anteriores:
-	Ligacao 0: 12626672
+	Ligacao 0: 7381904
 Tipo/nivel: C20
 Ligacoes posteriores
-	else: 12618960
-	Then: 12594720
+	else: 7373776
+	Then: 7345760
 
 
 	Ligacao 184:
-Endereco (no): 12529536
+Endereco (no): 7273280
 Ligacoes anteriores:
-	Ligacao 0: 12495120
+	Ligacao 0: 7248176
 Tipo/nivel: C18
 Ligacoes posteriores
-	else: 12595136
-	Then: 12432968
+	else: 7345728
+	Then: 7190824
 
 
 	Ligacao 185:
-Endereco (no): 12595136
+Endereco (no): 7345728
 Ligacoes anteriores:
-	Ligacao 0: 12529536
-	Ligacao 1: 12529440
-	Ligacao 2: 12520224
+	Ligacao 0: 7273280
+	Ligacao 1: 7273600
+	Ligacao 2: 7280448
 Tipo/nivel: R19
 Ligacoes posteriores
-	else: 12626672
-	Then: 12619472
+	else: 7381904
+	Then: 7374704
 
 
 	Ligacao 186:
-Endereco (no): 12619472
+Endereco (no): 7374704
 Ligacoes anteriores:
-	Ligacao 0: 12595136
+	Ligacao 0: 7345728
 Tipo/nivel: C19
 Ligacoes posteriores
-	else: 12529888
-	Then: 12626672
+	else: 7273568
+	Then: 7381904
 
 
 	Ligacao 187:
-Endereco (no): 12550096
+Endereco (no): 7319504
 Ligacoes anteriores:
-	Ligacao 0: 12433416
+	Ligacao 0: 7191080
 Tipo/nivel: C17
 Ligacoes posteriores
-	else: 12520224
-	Then: 12495120
+	else: 7280448
+	Then: 7248176
 
 
 	Ligacao 188:
-Endereco (no): 12520224
+Endereco (no): 7280448
 Ligacoes anteriores:
-	Ligacao 0: 12555632
-	Ligacao 1: 12549488
-	Ligacao 2: 12550096
+	Ligacao 0: 7309584
+	Ligacao 1: 7319312
+	Ligacao 2: 7319504
 Tipo/nivel: R18
 Ligacoes posteriores
-	else: 12595136
-	Then: 12529440
+	else: 7345728
+	Then: 7273600
 
 
 	Ligacao 189:
-Endereco (no): 12529440
+Endereco (no): 7273600
 Ligacoes anteriores:
-	Ligacao 0: 12520224
+	Ligacao 0: 7280448
 Tipo/nivel: C18
 Ligacoes posteriores
-	else: 12432968
-	Then: 12595136
+	else: 7190824
+	Then: 7345728
 
 
 	Ligacao 190:
-Endereco (no): 12495600
+Endereco (no): 7247504
 Ligacoes anteriores:
-	Ligacao 0: 12513728
+	Ligacao 0: 7274528
 Tipo/nivel: C16
 Ligacoes posteriores
-	else: 12555632
-	Then: 12433416
+	else: 7309584
+	Then: 7191080
 
 
 	Ligacao 191:
-Endereco (no): 12555632
+Endereco (no): 7309584
 Ligacoes anteriores:
-	Ligacao 0: 12495600
-	Ligacao 1: 12494192
-	Ligacao 2: 12521600
+	Ligacao 0: 7247504
+	Ligacao 1: 7247952
+	Ligacao 2: 7281792
 Tipo/nivel: R17
 Ligacoes posteriores
-	else: 12520224
-	Then: 12549488
+	else: 7280448
+	Then: 7319312
 
 
 	Ligacao 192:
-Endereco (no): 12549488
+Endereco (no): 7319312
 Ligacoes anteriores:
-	Ligacao 0: 12555632
+	Ligacao 0: 7309584
 Tipo/nivel: C17
 Ligacoes posteriores
-	else: 12495120
-	Then: 12520224
+	else: 7248176
+	Then: 7280448
 
 
 	Ligacao 193:
-Endereco (no): 12434312
+Endereco (no): 7192328
 Ligacoes anteriores:
-	Ligacao 0: 12500272
+	Ligacao 0: 7252528
 Tipo/nivel: C15
 Ligacoes posteriores
-	else: 12521600
-	Then: 12513728
+	else: 7281792
+	Then: 7274528
 
 
 	Ligacao 194:
-Endereco (no): 12521600
+Endereco (no): 7281792
 Ligacoes anteriores:
-	Ligacao 0: 12434312
-	Ligacao 1: 12434440
-	Ligacao 2: 12594880
+	Ligacao 0: 7192328
+	Ligacao 1: 7191848
+	Ligacao 2: 7346528
 Tipo/nivel: R16
 Ligacoes posteriores
-	else: 12555632
-	Then: 12494192
+	else: 7309584
+	Then: 7247952
 
 
 	Ligacao 195:
-Endereco (no): 12494192
+Endereco (no): 7247952
 Ligacoes anteriores:
-	Ligacao 0: 12521600
+	Ligacao 0: 7281792
 Tipo/nivel: C16
 Ligacoes posteriores
-	else: 12433416
-	Then: 12555632
+	else: 7191080
+	Then: 7309584
 
 
 	Ligacao 196:
-Endereco (no): 12514624
+Endereco (no): 7274112
 Ligacoes anteriores:
-	Ligacao 0: 12514272
+	Ligacao 0: 7274464
 Tipo/nivel: C14
 Ligacoes posteriores
-	else: 12594880
-	Then: 12500272
+	else: 7346528
+	Then: 7252528
 
 
 	Ligacao 197:
-Endereco (no): 12594880
+Endereco (no): 7346528
 Ligacoes anteriores:
-	Ligacao 0: 12590464
-	Ligacao 1: 12514624
-	Ligacao 2: 12514496
+	Ligacao 0: 7341280
+	Ligacao 1: 7274112
+	Ligacao 2: 7274656
 Tipo/nivel: R15
 Ligacoes posteriores
-	else: 12521600
-	Then: 12434440
+	else: 7281792
+	Then: 7191848
 
 
 	Ligacao 198:
-Endereco (no): 12434440
+Endereco (no): 7191848
 Ligacoes anteriores:
-	Ligacao 0: 12594880
+	Ligacao 0: 7346528
 Tipo/nivel: C15
 Ligacoes posteriores
-	else: 12513728
-	Then: 12521600
+	else: 7274528
+	Then: 7281792
 
 
 	Ligacao 199:
-Endereco (no): 12590912
+Endereco (no): 7341920
 Ligacoes anteriores:
-	Ligacao 0: 12434088
+	Ligacao 0: 7192552
 Tipo/nivel: C13
 Ligacoes posteriores
-	else: 12590464
-	Then: 12514272
+	else: 7341280
+	Then: 7274464
 
 
 	Ligacao 200:
-Endereco (no): 12590464
+Endereco (no): 7341280
 Ligacoes anteriores:
-	Ligacao 0: 12591168
-	Ligacao 1: 12590912
-	Ligacao 2: 12595392
+	Ligacao 0: 7341888
+	Ligacao 1: 7341920
+	Ligacao 2: 7345888
 Tipo/nivel: R14
 Ligacoes posteriores
-	else: 12594880
-	Then: 12514496
+	else: 7346528
+	Then: 7274656
 
 
 	Ligacao 201:
-Endereco (no): 12514496
+Endereco (no): 7274656
 Ligacoes anteriores:
-	Ligacao 0: 12590464
+	Ligacao 0: 7341280
 Tipo/nivel: C14
 Ligacoes posteriores
-	else: 12500272
-	Then: 12594880
+	else: 7252528
+	Then: 7346528
 
 
 	Ligacao 202:
-Endereco (no): 12590528
+Endereco (no): 7342272
 Ligacoes anteriores:
-	Ligacao 0: 12434248
+	Ligacao 0: 7192392
 Tipo/nivel: C12
 Ligacoes posteriores
-	else: 12595392
-	Then: 12434088
+	else: 7345888
+	Then: 7192552
 
 
 	Ligacao 203:
-Endereco (no): 12595392
+Endereco (no): 7345888
 Ligacoes anteriores:
-	Ligacao 0: 12590688
-	Ligacao 1: 12590528
-	Ligacao 2: 12521856
+	Ligacao 0: 7342368
+	Ligacao 1: 7342272
+	Ligacao 2: 7282912
 Tipo/nivel: R13
 Ligacoes posteriores
-	else: 12590464
-	Then: 12591168
+	else: 7341280
+	Then: 7341888
 
 
 	Ligacao 204:
-Endereco (no): 12591168
+Endereco (no): 7341888
 Ligacoes anteriores:
-	Ligacao 0: 12595392
+	Ligacao 0: 7345888
 Tipo/nivel: C13
 Ligacoes posteriores
-	else: 12514272
-	Then: 12590464
+	else: 7274464
+	Then: 7341280
 
 
 	Ligacao 205:
-Endereco (no): 12434152
+Endereco (no): 7184904
 Ligacoes anteriores:
-	Ligacao 0: 12434024
+	Ligacao 0: 7191880
 Tipo/nivel: C11
 Ligacoes posteriores
-	else: 12521856
-	Then: 12434248
+	else: 7282912
+	Then: 7192392
 
 
 	Ligacao 206:
-Endereco (no): 12521856
+Endereco (no): 7282912
 Ligacoes anteriores:
-	Ligacao 0: 12551184
-	Ligacao 1: 12434152
-	Ligacao 2: 12433672
+	Ligacao 0: 7305040
+	Ligacao 1: 7184904
+	Ligacao 2: 7192488
 Tipo/nivel: R12
 Ligacoes posteriores
-	else: 12595392
-	Then: 12590688
+	else: 7345888
+	Then: 7342368
 
 
 	Ligacao 207:
-Endereco (no): 12590688
+Endereco (no): 7342368
 Ligacoes anteriores:
-	Ligacao 0: 12521856
+	Ligacao 0: 7282912
 Tipo/nivel: C12
 Ligacoes posteriores
-	else: 12434088
-	Then: 12595392
+	else: 7192552
+	Then: 7345888
 
 
 	Ligacao 208:
-Endereco (no): 12522176
+Endereco (no): 7282400
 Ligacoes anteriores:
-	Ligacao 0: 12515616
+	Ligacao 0: 7275584
 Tipo/nivel: C10
 Ligacoes posteriores
-	else: 12551184
-	Then: 12434024
+	else: 7305040
+	Then: 7191880
 
 
 	Ligacao 209:
-Endereco (no): 12551184
+Endereco (no): 7305040
 Ligacoes anteriores:
-	Ligacao 0: 12522080
-	Ligacao 1: 12522656
-	Ligacao 2: 12522176
+	Ligacao 0: 7282624
+	Ligacao 1: 7282368
+	Ligacao 2: 7282400
 Tipo/nivel: R11
 Ligacoes posteriores
-	else: 12521856
-	Then: 12433672
+	else: 7282912
+	Then: 7192488
 
 
 	Ligacao 210:
-Endereco (no): 12433672
+Endereco (no): 7192488
 Ligacoes anteriores:
-	Ligacao 0: 12551184
+	Ligacao 0: 7305040
 Tipo/nivel: C11
 Ligacoes posteriores
-	else: 12434248
-	Then: 12521856
+	else: 7192392
+	Then: 7282912
 
 
 	Ligacao 211:
-Endereco (no): 12551952
+Endereco (no): 7304880
 Ligacoes anteriores:
-	Ligacao 0: 12622256
+	Ligacao 0: 7377968
 Tipo/nivel: C9
 Ligacoes posteriores
-	else: 12522656
-	Then: 12515616
+	else: 7282368
+	Then: 7275584
 
 
 	Ligacao 212:
-Endereco (no): 12522656
+Endereco (no): 7282368
 Ligacoes anteriores:
-	Ligacao 0: 12551888
-	Ligacao 1: 12551952
-	Ligacao 2: 12594432
+	Ligacao 0: 7305552
+	Ligacao 1: 7304880
+	Ligacao 2: 7345408
 Tipo/nivel: R10
 Ligacoes posteriores
-	else: 12551184
-	Then: 12522080
+	else: 7305040
+	Then: 7282624
 
 
 	Ligacao 213:
-Endereco (no): 12522080
+Endereco (no): 7282624
 Ligacoes anteriores:
-	Ligacao 0: 12522656
+	Ligacao 0: 7282368
 Tipo/nivel: C10
 Ligacoes posteriores
-	else: 12434024
-	Then: 12551184
+	else: 7191880
+	Then: 7305040
 
 
 	Ligacao 214:
-Endereco (no): 12592384
+Endereco (no): 7342944
 Ligacoes anteriores:
-	Ligacao 0: 12516480
+	Ligacao 0: 7276448
 Tipo/nivel: C8
 Ligacoes posteriores
-	else: 12594432
-	Then: 12622256
+	else: 7345408
+	Then: 7377968
 
 
 	Ligacao 215:
-Endereco (no): 12594432
+Endereco (no): 7345408
 Ligacoes anteriores:
-	Ligacao 0: 12624400
-	Ligacao 1: 12591680
-	Ligacao 2: 12592384
+	Ligacao 0: 7379984
+	Ligacao 1: 7342752
+	Ligacao 2: 7342944
 Tipo/nivel: R9
 Ligacoes posteriores
-	else: 12522656
-	Then: 12551888
+	else: 7282368
+	Then: 7305552
 
 
 	Ligacao 216:
-Endereco (no): 12551888
+Endereco (no): 7305552
 Ligacoes anteriores:
-	Ligacao 0: 12594432
+	Ligacao 0: 7345408
 Tipo/nivel: C9
 Ligacoes posteriores
-	else: 12515616
-	Then: 12522656
+	else: 7275584
+	Then: 7282368
 
 
 	Ligacao 217:
-Endereco (no): 12622736
+Endereco (no): 7378288
 Ligacoes anteriores:
-	Ligacao 0: 12435592
+	Ligacao 0: 7185032
 Tipo/nivel: C7
 Ligacoes posteriores
-	else: 12624400
-	Then: 12516480
+	else: 7379984
+	Then: 7276448
 
 
 	Ligacao 218:
-Endereco (no): 12624400
+Endereco (no): 7379984
 Ligacoes anteriores:
-	Ligacao 0: 12622736
-	Ligacao 1: 12623120
-	Ligacao 2: 12593856
+	Ligacao 0: 7378288
+	Ligacao 1: 7377904
+	Ligacao 2: 7345280
 Tipo/nivel: R8
 Ligacoes posteriores
-	else: 12594432
-	Then: 12591680
+	else: 7345408
+	Then: 7342752
 
 
 	Ligacao 219:
-Endereco (no): 12591680
+Endereco (no): 7342752
 Ligacoes anteriores:
-	Ligacao 0: 12624400
+	Ligacao 0: 7379984
 Tipo/nivel: C8
 Ligacoes posteriores
-	else: 12622256
-	Then: 12594432
+	else: 7377968
+	Then: 7345408
 
 
 	Ligacao 220:
-Endereco (no): 12516320
+Endereco (no): 7276800
 Ligacoes anteriores:
-	Ligacao 0: 12498224
+	Ligacao 0: 7249232
 Tipo/nivel: C6
 Ligacoes posteriores
-	else: 12593856
-	Then: 12435592
+	else: 7345280
+	Then: 7185032
 
 
 	Ligacao 221:
-Endereco (no): 12593856
+Endereco (no): 7345280
 Ligacoes anteriores:
-	Ligacao 0: 12516320
-	Ligacao 1: 12516224
-	Ligacao 2: 12523392
+	Ligacao 0: 7276800
+	Ligacao 1: 7275936
+	Ligacao 2: 7283360
 Tipo/nivel: R7
 Ligacoes posteriores
-	else: 12624400
-	Then: 12623120
+	else: 7379984
+	Then: 7377904
 
 
 	Ligacao 222:
-Endereco (no): 12623120
+Endereco (no): 7377904
 Ligacoes anteriores:
-	Ligacao 0: 12593856
+	Ligacao 0: 7345280
 Tipo/nivel: C7
 Ligacoes posteriores
-	else: 12516480
-	Then: 12624400
+	else: 7276448
+	Then: 7379984
 
 
 	Ligacao 223:
-Endereco (no): 12553488
+Endereco (no): 7305584
 Ligacoes anteriores:
-	Ligacao 0: 12427688
+	Ligacao 0: 7185704
 Tipo/nivel: C5
 Ligacoes posteriores
-	else: 12523392
-	Then: 12498224
+	else: 7283360
+	Then: 7249232
 
 
 	Ligacao 224:
-Endereco (no): 12523392
+Endereco (no): 7283360
 Ligacoes anteriores:
-	Ligacao 0: 12553872
-	Ligacao 1: 12552912
-	Ligacao 2: 12553488
+	Ligacao 0: 7306608
+	Ligacao 1: 7306224
+	Ligacao 2: 7305584
 Tipo/nivel: R6
 Ligacoes posteriores
-	else: 12593856
-	Then: 12516224
+	else: 7345280
+	Then: 7275936
 
 
 	Ligacao 225:
-Endereco (no): 12516224
+Endereco (no): 7275936
 Ligacoes anteriores:
-	Ligacao 0: 12523392
+	Ligacao 0: 7283360
 Tipo/nivel: C6
 Ligacoes posteriores
-	else: 12435592
-	Then: 12593856
+	else: 7185032
+	Then: 7345280
 
 
 	Ligacao 226:
-Endereco (no): 12497776
+Endereco (no): 7251024
 Ligacoes anteriores:
-	Ligacao 0: 12517344
+	Ligacao 0: 7277056
 Tipo/nivel: C4
 Ligacoes posteriores
-	else: 12553872
-	Then: 12427688
+	else: 7306608
+	Then: 7185704
 
 
 	Ligacao 227:
-Endereco (no): 12553872
+Endereco (no): 7306608
 Ligacoes anteriores:
-	Ligacao 0: 12497776
-	Ligacao 1: 12497936
-	Ligacao 2: 12523072
+	Ligacao 0: 7251024
+	Ligacao 1: 7249264
+	Ligacao 2: 7283840
 Tipo/nivel: R5
 Ligacoes posteriores
-	else: 12523392
-	Then: 12552912
+	else: 7283360
+	Then: 7306224
 
 
 	Ligacao 228:
-Endereco (no): 12552912
+Endereco (no): 7306224
 Ligacoes anteriores:
-	Ligacao 0: 12553872
+	Ligacao 0: 7306608
 Tipo/nivel: C5
 Ligacoes posteriores
-	else: 12498224
-	Then: 12523392
+	else: 7249232
+	Then: 7283360
 
 
 	Ligacao 229:
-Endereco (no): 12427592
+Endereco (no): 7186344
 Ligacoes anteriores:
-	Ligacao 0: 12498384
+	Ligacao 0: 7250352
 Tipo/nivel: C3
 Ligacoes posteriores
-	else: 12523072
-	Then: 12517344
+	else: 7283840
+	Then: 7277056
 
 
 	Ligacao 230:
-Endereco (no): 12523072
+Endereco (no): 7283840
 Ligacoes anteriores:
-	Ligacao 0: 12427592
-	Ligacao 1: 12428488
-	Ligacao 2: 12593376
+	Ligacao 0: 7186344
+	Ligacao 1: 7185832
+	Ligacao 2: 7344480
 Tipo/nivel: R4
 Ligacoes posteriores
-	else: 12553872
-	Then: 12497936
+	else: 7306608
+	Then: 7249264
 
 
 	Ligacao 231:
-Endereco (no): 12497936
+Endereco (no): 7249264
 Ligacoes anteriores:
-	Ligacao 0: 12523072
+	Ligacao 0: 7283840
 Tipo/nivel: C4
 Ligacoes posteriores
-	else: 12427688
-	Then: 12553872
+	else: 7185704
+	Then: 7306608
 
 
 	Ligacao 232:
-Endereco (no): 12497552
+Endereco (no): 7250576
 Ligacoes anteriores:
-	Ligacao 0: 12517216
+	Ligacao 0: 7277600
 Tipo/nivel: C2
 Ligacoes posteriores
-	else: 12593376
-	Then: 12498384
+	else: 7344480
+	Then: 7250352
 
 
 	Ligacao 233:
-Endereco (no): 12593376
+Endereco (no): 7344480
 Ligacoes anteriores:
-	Ligacao 0: 12497872
-	Ligacao 1: 12497552
-	Ligacao 2: 12517696
+	Ligacao 0: 7251152
+	Ligacao 1: 7250576
+	Ligacao 2: 7277632
 Tipo/nivel: R3
 Ligacoes posteriores
-	else: 12523072
-	Then: 12428488
+	else: 7283840
+	Then: 7185832
 
 
 	Ligacao 234:
-Endereco (no): 12428488
+Endereco (no): 7185832
 Ligacoes anteriores:
-	Ligacao 0: 12593376
+	Ligacao 0: 7344480
 Tipo/nivel: C3
 Ligacoes posteriores
-	else: 12517344
-	Then: 12523072
+	else: 7277056
+	Then: 7283840
 
 
 	Ligacao 235:
-Endereco (no): 12592960
+Endereco (no): 7344096
 Ligacoes anteriores:
-	Ligacao 0: 12498032
+	Ligacao 0: 7251216
 Tipo/nivel: C1
 Ligacoes posteriores
-	else: 12497872
-	Then: 12517216
+	else: 7251152
+	Then: 7277600
 
 
 	Ligacao 236:
-Endereco (no): 12497872
+Endereco (no): 7251152
 Ligacoes anteriores:
-	Ligacao 0: 12592960
-	Ligacao 1: 12623888
-	Ligacao 2: 12517472
+	Ligacao 0: 7344096
+	Ligacao 1: 7378320
+	Ligacao 2: 7276896
 Tipo/nivel: R2
 Ligacoes posteriores
-	else: 12593376
-	Then: 12517696
+	else: 7344480
+	Then: 7277632
 
 
 	Ligacao 237:
-Endereco (no): 12517696
+Endereco (no): 7277632
 Ligacoes anteriores:
-	Ligacao 0: 12497872
+	Ligacao 0: 7251152
 Tipo/nivel: C2
 Ligacoes posteriores
-	else: 12498384
-	Then: 12593376
+	else: 7250352
+	Then: 7344480
 
 
 	Ligacao 238:
-Endereco (no): 12623248
+Endereco (no): 7379216
 Ligacoes anteriores:
-	Ligacao 0: 7573080
+	Ligacao 0: 5869928
 Tipo/nivel: C0
 Ligacoes posteriores
-	else: 12623888
-	Then: 12498032
+	else: 7378320
+	Then: 7251216
 
 
 	Ligacao 239:
-Endereco (no): 12623888
+Endereco (no): 7378320
 Ligacoes anteriores:
-	Ligacao 0: 12623248
+	Ligacao 0: 7379216
 Tipo/nivel: R1
 Ligacoes posteriores
-	else: 12497872
-	Then: 12517472
+	else: 7251152
+	Then: 7276896
 
 
 	Ligacao 240:
-Endereco (no): 12517472
+Endereco (no): 7276896
 Ligacoes anteriores:
-	Ligacao 0: 12623888
+	Ligacao 0: 7378320
 Tipo/nivel: C1
 Ligacoes posteriores
-	else: 12517216
-	Then: 12497872
+	else: 7277600
+	Then: 7251152
 
 
 
 AMPLITUDES
 
 	Ligacao 0:
-Endereco (no): 12430312
+Endereco (no): 7188456
 Ligacoes anteriores:
-	Ligacao 0: 12451608
-	Ligacao 1: 12451960
-	Ligacao 2: 12451384
+	Ligacao 0: 7203672
+	Ligacao 1: 7203384
+	Ligacao 2: 7203544
 Tipo: Numero
 9,313e-010 0,000e+000
 
 
 	Ligacao 1:
-Endereco (no): 12429928
+Endereco (no): 7188200
 Ligacoes anteriores:
-	Ligacao 0: 12491472
-	Ligacao 1: 12451608
-	Ligacao 2: 12451384
+	Ligacao 0: 7261008
+	Ligacao 1: 7203672
+	Ligacao 2: 7203544
 Tipo: Numero
 -9,313e-010 0,000e+000
 

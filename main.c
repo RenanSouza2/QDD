@@ -3836,8 +3836,7 @@ QDD* controle(Short N, Short controle, Short ativa, QDD *Q0)
 
 
 /**  Testes  **/
-
-double teste_velocidade_unico(char *nome, QDD* (*le)(char*), FILE *fp, FILE *fr, Short primeiro)
+double teste_velocidade_unico(char *nome, QDD* (*le)(char*), FILE *fp, FILE *fr, Short primeiro, Long *Quantidade)
 {
     time_t antesT, depoisT, deltaT;
     double tempoT;
@@ -3953,6 +3952,8 @@ double teste_velocidade_unico(char *nome, QDD* (*le)(char*), FILE *fp, FILE *fr,
     printf("\t%02d:%02d  %2d/%02d",timeinfo->tm_hour,timeinfo->tm_min,timeinfo->tm_mday,timeinfo->tm_mon+1);
     fprintf(fr,"\t%02d:%02d  %02d/%02d",timeinfo->tm_hour,timeinfo->tm_min,timeinfo->tm_mday,timeinfo->tm_mon+1);
 
+    *Quantidade = quantidade;
+
     return precisao;
 }
 
@@ -3982,11 +3983,12 @@ void teste_velocidade_base(char *nomeI, Short limiteinf, Short limitesup, Short 
     fprintf(fp,"|mem|iM|iF|iL|mem|iM|iF|iL");
     for(i=1; i<=amostras; i++)
         fprintf(fp,"|%hu",i);
-    fprintf(fp,"|implicita\n");
+    fprintf(fp,"|implicita|quantidade\n");
 
 
 
     Short j;
+    Long quantidade;
     float precisao;
     char nome[10];
     time_t antesi, depoisi, deltai;
@@ -4002,15 +4004,15 @@ void teste_velocidade_base(char *nomeI, Short limiteinf, Short limitesup, Short 
         configuracao(i);
         fprintf(fp,"%hu|",i);
 
-        precisao = teste_velocidade_unico(nome,le,fp,fr,1);
+        precisao = teste_velocidade_unico(nome,le,fp,fr,1,&quantidade);
         for(j=2; j<=amostras; j++)
         {
             printf("\nTempo %3d:",j);
             fprintf(fr,"\nTempo %3d:",j);
-            teste_velocidade_unico(nome,le,fp,fr,0);
+            teste_velocidade_unico(nome,le,fp,fr,0,&quantidade);
         }
 
-        fprintf(fp,"=%E\n",precisao);
+        fprintf(fp,"%e|%llu\n",precisao,quantidade);
         printf("\n\nPrecisao: %.3e\n\n",precisao);
         fprintf(fr,"\n\nPrecisao: %.3e\n\n",precisao);
         depoisi = clock();
@@ -4173,25 +4175,8 @@ int main()
     setlocale(LC_ALL, "Portuguese");
     /***********************************/
 
-    /*QDD *Q, *Q1;
-    Q = potencia_tensorial(QH,20);
-    Q1 = produto_matriz_matriz(Q,Q);*/
-
-    Short tam;
-    tam = 60;
-    configuracao(tam);
-
-    QDD *Q1, *Q2;
-    Q1 = potencia_tensorial(QH,tam);
-    Q2 = potencia_tensorial(QX,tam);
-
-    QDD *Q;
-    Q = produto_matriz_matriz(Q1,Q2);
-    fmostra_QDD_sozinho(Q,"RESULTADO.txt");
-
-    libera_QDD(Q1);
-    libera_QDD(Q2);
-    libera_QDD(Q);
+    teste_curto(10,1,NULL);
+    teste_medio(10,2,NULL);
 
     /***********************************/
     finaliza_structs_globais();

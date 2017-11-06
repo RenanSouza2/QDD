@@ -1,0 +1,23 @@
+
+
+
+Testando: H1.txt
+
+Mem: 260
+QDD: 1
+i:   1
+m:   3
+f:   4
+l:   11
+
+Mem: 168
+QDD: 1
+i:   1
+m:   2
+f:   2
+l:   7
+
+Tempo   1: 1,094E-006	Total: 3,532e+001	07:34  06/11
+Tempo   2: 1,110E-006	Total: 3,527e+001	07:34  06/11
+Tempo   3: 1,094E-006	Total: 3,522e+001	07:35  06/11
+Tempo   4:
