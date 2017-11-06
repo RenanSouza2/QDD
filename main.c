@@ -1180,9 +1180,9 @@ void fmostra_configuracao(FILE *fp)
 void conecta_UM(no *n1, no *n2, Short lado)
 {
     if(n1 == NULL)
-        ERRO("CONECTA UM| N1 INVALIDO");
+        ERRO("CONECTA UM| N1 E NULL");
     if(n2 == NULL)
-        ERRO("CONECTA UM| N2 INVALIDO");
+        ERRO("CONECTA UM| N2 E NULL");
     if(n1->tipo == Fim)
         ERRO("CONECTA UM| FIM NAO TEM SUCESSORES");
     if(n2->tipo == Inicio)
@@ -1198,11 +1198,7 @@ void conecta_UM(no *n1, no *n2, Short lado)
             if(n1->at.i.n != NULL)
                 ERRO("CONCETA UM| NO JA CONECTADO 1");
             if(n2->l != NULL)
-            {
-                mostra_no(n1);
-                mostra_no(n2);
                 ERRO("CONCETA UM| N1 E INICIO E N2 JA TEM CONEXAO ANTERIOR");
-            }
 
             n1->at.i.n = n2;
             break;
@@ -1236,6 +1232,8 @@ void conecta_UM(no *n1, no *n2, Short lado)
 
 void conecta_DOIS(no *n, no *el, no *th)
 {
+    if(n == NULL)
+        ERRO("CONECTA DOIS| N E VAZIO");
     if(n->tipo == Inicio)
         ERRO("INICIO NAO CONECTA DOIS");
 
@@ -1245,6 +1243,10 @@ void conecta_DOIS(no *n, no *el, no *th)
 
 Short desconecta_UM(no *n1, no *n2)
 {
+    if(n1 == NULL)
+        ERRO("DESCONECTA UM| N1 E NULL");
+    if(n2 == NULL)
+        ERRO("DESCONECTA UM| N2 E NULL");
     if(n1->tipo == Fim)
         ERRO("DESCONECTA UM| FIM NAO TEM SUCESSORES");
 
@@ -1292,6 +1294,8 @@ Short desconecta_UM(no *n1, no *n2)
 
 void desconecta_DOIS(no *n)
 {
+    if(n == NULL)
+        ERRO("DESCONECTA DOIS| N E VAZIO");
     if(n->tipo == Fim)
         ERRO("DESCONECTA DOIS| FIM NAO TEM SUCESSORES");
 
@@ -1310,6 +1314,10 @@ void desconecta_DOIS(no *n)
 
 void transfere_conexao(no *n1, no *n2)
 {
+    if(n1 == NULL)
+        ERRO("TRANSFERE CONEXAO| N1 E VAZIO");
+    if(n2 == NULL)
+        ERRO("TRANSFERE CONEXAO| N2 E VAZIO");
     if(n1 == n2)
         ERRO("TRANSFERE CONEXAO| NOS IGUAIS");
 
@@ -2120,8 +2128,6 @@ void reduz_QDD(QDD *Q, Short ex, Short classe)
     while(l != NULL)
     {
         nc = l->n;
-        //printf("\n\t\t\tNovo no nc");
-        //mostra_no(nc);
 
         /* Regra 1 */
         do
@@ -2269,17 +2275,12 @@ void reduz_arvore(no **n, Short ex)
 
         case Meio:
             transfere_conexao(nzero,n0);
-            //mostra_arvore(n0);
 
             conecta_UM(Qred->n,n0,Inicio);
             Qred->l = acha_lista_fim_arvore(n0);
-            //printf("\n\t\t\tAntes de reduzir");
-            //mostra_no(n0);
             reduz_QDD(Qred,ex,4);
-            //printf("\n\t\t\tDepois de reduzir");
 
             n0 = Qred->n->at.i.n;
-            //mostra_no(n0);
             desconecta_DOIS(Qred->n);
             transfere_conexao(n0,nzero);
             *n = n0;
@@ -2938,9 +2939,151 @@ Short regra_apply_produto_matriz_matriz(apply *a)
     return 0;
 }
 
-/*Short regra_apply_produto_matriz_vetor(apply *a)
+Short regra_apply_produto_matriz_vetor(apply *a)
+{
+    no *n1, *n2;
+    n1 = a->n1;
+    n2 = a->n2;
 
-Short regra_apply_produto_vetor_vetor(apply *a)*/
+    switch(n1->tipo)
+    {
+        case Inicio:
+            /* N1 e inicio */
+            if(n2->tipo != Inicio)
+                ERRO("REGRA APPLY PRODUTO MATRIZ VETOR| N1 E INICIO N2 NAO");
+
+            return 0;
+            break;
+
+        case Meio:
+            /* n1 e meio */
+            switch(n2->tipo)
+            {
+                case Inicio:
+                    /* n2 e inicio */
+                    ERRO("REGRA APPLY PRODUTO MATRIZ VETOR| N1 E MEIO N2 E FIM");
+                    break;
+
+                case Meio:
+                    /* n1 e meio n2 e meio */
+                    if(n2->at.m.classe != V)
+                        ERRO("REGRA APPLY PRODUTO MATRIZ VETOR| N2 NAO E VETOR 1");
+
+                    if(n1->at.m.nivel < n2->at.m.nivel)
+                    {
+                        /* i < j */
+                        switch(n1->at.m.classe)
+                        {
+                            case V:
+                                /* n1 e v */
+                                ERRO("REGRA APPLY PRODUTO MATRIZ VETOR| N1 NAO E MATRIZ 1");
+                                break;
+
+                            case R:
+                                /* n1 e r */
+                                return 7;
+                                break;
+
+                            case C:
+                                /* n1 e c */
+                                return 4;
+                                break;
+                        }
+                    }
+                    if(n1->at.m.nivel == n2->at.m.nivel)
+                    {
+                        /* i == j */
+                        switch(n1->at.m.classe)
+                        {
+                            case V:
+                                /* n1 e v */
+                                ERRO("REGRA APPLY PRODUTO MATRIZ VETOR| N1 NAO E MATRIZ 2");
+                                break;
+
+                            case R:
+                                /* n1 e r */
+                                return 7;
+                                break;
+
+                            case C:
+                                /* n1 e c */
+                                return 6;
+                                break;
+                        }
+                    }
+                    if(n1->at.m.nivel > n2->at.m.nivel)
+                    {
+                        /* i > j */
+                       if(n1->at.m.classe == V)
+                            ERRO("REGRA APPLY PRODUTO MATRIZ VETOR| N1 NAO E MATRIZ 3");
+
+                        return 5;
+                    }
+                    break;
+
+                case Fim:
+                    /* n1 e meio n2 e fim */
+                    switch(n1->at.m.classe)
+                    {
+                        case V:
+                            /* n1 e v */
+                            ERRO("REGRA APPLY PRODUTO MATRIZ VETOR| N1 NAO E MATRIZ 4");
+                            break;
+
+                        case R:
+                            /* n1 e r */
+                            return 7;
+                            break;
+
+                        case C:
+                            /* n1 e c */
+                            return 4;
+                            break;
+                    }
+                    break;
+            }
+            break;
+
+        case Fim:
+            /* n1 e fim */
+            switch(n2->tipo)
+            {
+                case Inicio:
+                    /*n1 e fim n2 e inicio */
+                    ERRO("REGRA APPLY PRODUTO MATRIZ VETOR| N1 E FIM N2 E INICIO");
+                    break;
+
+                case Meio:
+                    /*n1 e fim n2 e meio */
+                    if(n2->at.m.classe != V)
+                        ERRO("REGRA APPLY PRODUTO MATRIZ VETOR| N2 NAO E VETOR 2");
+
+                    return 5;
+                    break;
+
+                case Fim:
+                    /*n1 e fim n2 e fim */
+                    if(compara_no_fim_zero(n1,1))
+                    {
+                        return 13;
+                    }
+                    else
+                    {
+                        if(compara_no_fim_zero(n2,1))
+                            return 13;
+                        else
+                            return 11;
+                    }
+                    break;
+            }
+            break;
+
+    }
+    ERRO("REGRA APPLY PRODUTO MATRIZ VETOR| NAO ATIVOU NENHUMA REGRA");
+    return 0;
+}
+
+/*Short regra_apply_produto_vetor_vetor(apply *a)*/
 
 
 
@@ -2960,14 +3103,14 @@ no* apply_produto_matriz_matriz(no *n1, no *n2)
     return n;
 }
 
-/*no* apply_produto_matriz_vetor(no *n1, no *n2)
+no* apply_produto_matriz_vetor(no *n1, no *n2)
 {
     no *n;
     n = apply_base(n1,n2,regra_apply_produto_matriz_vetor);
     return n;
 }
 
-no* apply_produto_vetor_vetor(no *n1, no *n2)
+/*no* apply_produto_vetor_vetor(no *n1, no *n2)
 {
     no *n;
     n = apply_base(n1,n2,regra_apply_produto_vetor_vetor);
@@ -3069,8 +3212,6 @@ conta* espalha(suporte *s, Short classe)
     {
         c = s->c[classe];
         n0 = c->n;
-        //printf("\n\nCONTA");
-        //mostra_conta_no(c);
 
         cp = cria_conta(0);
         cp->n = n0;
@@ -3078,11 +3219,8 @@ conta* espalha(suporte *s, Short classe)
         for(lc = n0->l; lc != NULL; lc = lc->l)
         {
             na = lc->n;
-            //printf("\n\nNO ANTERIOR");
-            //mostra_no(na);
             if(na->tipo == Inicio)
             {
-                //printf("\nDETECTOU INICIO");
                 libera_suporte_no(s);
                 c->n = na;
                 return c;
@@ -3095,7 +3233,6 @@ conta* espalha(suporte *s, Short classe)
             if(sc->nivel == na->at.m.nivel)
             {
                 /* tem suporte */
-                //printf("\nTEM SUPORTE");
                 for(cc = sc->c[na->at.m.classe]; cc != NULL; cc = cc->c)
                     if(cc->n == na)
                         break;
@@ -3103,7 +3240,6 @@ conta* espalha(suporte *s, Short classe)
                 if(cc == NULL)
                 {
                     /* nao tem conta */
-                    //printf("\nNAO TEM CONTA");
                     cc = cria_conta(c->nivel);
                     cc->n = na;
 
@@ -3113,11 +3249,9 @@ conta* espalha(suporte *s, Short classe)
                 else
                 {
                     /* tem conta */
-                    //printf("\nTEM CONTA");
                     if(cc->nivel > c->nivel)
                     {
                         /* original maior */
-                        //printf("ORIGINAL MAIOR");
                         if(n0 == na->at.m.el)
                             nO = na->at.m.th;
                         if(n0 == na->at.m.th)
@@ -3137,7 +3271,6 @@ conta* espalha(suporte *s, Short classe)
                     if(cc->nivel < c->nivel)
                     {
                         /* atual maior */
-                        //printf("\nATUAL MAIOR");
                         delta  = c->nivel - cc->nivel;
 
                         for(cpc = cp; cpc->c != NULL; cpc = cpc->c)
@@ -3171,7 +3304,6 @@ conta* espalha(suporte *s, Short classe)
             else
             {
                 /* não tem suporte */
-                //printf("\nNAO TEM SUPORTE");
                 cc = cria_conta(c->nivel);
                 cc->n = na;
 
@@ -3197,21 +3329,11 @@ void contracao_conta(conta *c)
     conta *cc;
     for(cc = c; cc != NULL; cc = cc->c)
     {
-        //printf("\n\t\t\tDestruindo novo V");
         na = cc->n;
         nd = apply_soma(na->at.m.el,na->at.m.th);
-        //printf("\n\t\t\tTerminou apply");
         transfere_conexao(nd,na);
-        //printf("\n\t\t\tTransferiu conexao");
         libera_arvore(na);
-        //printf("\n\t\t\tLiberou arvore");
-        /*FILE *fp;
-        fp = fopen("Arvore.txt","w");
-        fmostra_arvore(fp,nd);
-        fclose(fp);*/
-        //printf("\n\t\t\tImprimiu arvore");
         reduz_arvore(&nd,2);
-        //printf("\n\t\t\tReduziu arvore");
 
         cc->n = nd;
         (cc->nivel)--;
@@ -3225,11 +3347,6 @@ conta* tratamento(suporte *s, Short classe, Short classeRef)
 
     conta *ci;
     ci = espalha(s,classe);
-    /*if(ci != NULL)
-    {
-        printf("\nTRATAMENTO| DETECTOU INICIO");
-        mostra_conta_no(ci);
-    }*/
     return ci;
 }
 
@@ -3264,24 +3381,15 @@ void contracao_QDD(QDD *Q, Short classe)
     ci = NULL;
     while(s != NULL)
     {
-        //printf("\n\n\nSuporte %d",s->nivel);
-
-        //printf("\n\nTaratamento C");
         ci = tratamento(s,C,classe);
         if(ci != NULL)
             break;
 
-        //printf("\nTaratamento V");
         ci = tratamento(s,V,classe);
         if(ci != NULL)
             break;
 
-        //printf("\nTaratamento R");
         ci = tratamento(s,R,classe);
-        //printf("\nFINAL TRATAMENTO R");
-        //mostra_conta_no(ci);
-        /*if(ci != NULL)
-            printf("\nDETECTOU ESSA MERDA");*/
         if(ci != NULL)
             break;
 
@@ -3306,7 +3414,6 @@ QDD* produto_QDD_QDD(QDD *Q1, QDD *Q2, no* (*apply_operacao)(no *n1, no *n2), Sh
 
     no *n;
     n = apply_operacao(Q1->n,Q2->n);
-    //printf("\n\t\t\tFez apply");
 
     lista *l;
     l = acha_lista_fim_arvore(n);
@@ -3316,10 +3423,8 @@ QDD* produto_QDD_QDD(QDD *Q1, QDD *Q2, no* (*apply_operacao)(no *n1, no *n2), Sh
     Q->n = n;
     Q->l = l;
     reduz_QDD(Q,2,classe);
-    //printf("\n\t\t\tFez redução");
 
     contracao_QDD(Q,classe);
-    //printf("\n\t\t\tContraiu QDD");
     libera_lista_lista(Q->l);
     Q->l = acha_lista_fim_QDD(Q);
     reduz_QDD(Q,1,4);
@@ -3485,14 +3590,29 @@ QDD* produto_matriz_matriz(QDD *Q1, QDD *Q2)
     return Q;
 }
 
-/*QDD* produto_matriz_vetor(QDD *Q1, QDD *Q2)
+QDD* produto_matriz_vetor(QDD *Q1, QDD *Q2)
 {
     QDD *Q;
     Q = produto_QDD_QDD(Q1,Q2,apply_produto_matriz_vetor,C);
     return Q;
 }
 
-no* produto_vetor_vetor(QDD *Q1, QDD *Q2)
+QDD* produto_vetor_matriz(QDD *Q1, QDD *Q2)
+{
+    QDD *Qaux;
+    lista *l;
+    Qaux = copia_QDD(Q2);
+    for(l = Qaux->l; l != NULL; l = l->l)
+        (l->n->at.f.im) *= -1;
+
+    QDD *Q;
+    Q = produto_matriz_vetor(Qaux,Q1);
+
+    libera_QDD(Qaux);
+    return Q;
+}
+
+/*no* produto_vetor_vetor(QDD *Q1, QDD *Q2)
 {
     QDD *Q;
     Q = produto_QDD_QDD(Q1,Q2,apply_produto_vetor_vetor,V);
