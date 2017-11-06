@@ -3838,20 +3838,27 @@ QDD* controle(QDD *Q, Short controle, Short ativa)
     printf("\nA");
     if(controle > 0)
     {
+        printf("\nH");
         QIn = potencia_tensorial(QI,controle);
         Q1 = produto_tensorial(QIn,Q1);
         Q2 = produto_tensorial(QIn,Q2);
         libera_QDD(QIn);
     }
+    printf("\nQ1");
+    mostra_QDD(Q1);
+    printf("\nQ2");
+    mostra_QDD(Q2);
     printf("\nB");
     if(Q->nqbit - controle > 1)
     {
+        printf("\nI");
         QIn = potencia_tensorial(QI,Q->nqbit - controle-1);
         Q1aux = produto_tensorial(Q1,QIn);
         Q2aux = produto_tensorial(Q2,QIn);
         libera_QDD(QIn);
         if(Q1->nqbit > 1)
         {
+            printf("\nJ");
             libera_QDD(Q1);
             libera_QDD(Q2);
         }
@@ -3859,6 +3866,10 @@ QDD* controle(QDD *Q, Short controle, Short ativa)
         Q2 = Q2aux;
     }
     printf("\nC");
+        printf("\nQ1 total");
+        mostra_QDD(Q1);
+        printf("\nQ2 total");
+        mostra_QDD(Q2);
     if(ativa == 0)
     {
     printf("\nE");
@@ -3880,6 +3891,7 @@ QDD* controle(QDD *Q, Short controle, Short ativa)
 
     printf("\nG");
     libera_QDD(Q1);
+    printf("\nH");
     libera_QDD(Q2);
 
     return Qc;
@@ -3888,6 +3900,7 @@ QDD* controle(QDD *Q, Short controle, Short ativa)
 
 
 /**  Testes  **/
+
 double teste_velocidade_unico(char *nome, QDD* (*le)(char*), FILE *fp, FILE *fr, Short primeiro, Long *Quantidade)
 {
     time_t antesT, depoisT, deltaT;
