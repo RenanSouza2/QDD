@@ -2918,17 +2918,10 @@ Short regra_apply_produto_matriz_matriz(apply *a)
 
                     case Fim:
                         /*n1 e fim n2 e fim */
-                        if(compara_no_fim_zero(n1,1))
-                        {
+                        if(compara_no_fim_zero(n2,1))
                             return 13;
-                        }
                         else
-                        {
-                            if(compara_no_fim_zero(n2,1))
-                                return 13;
-                            else
-                                return 11;
-                        }
+                            return 11;
                         break;
                 }
             }
@@ -3023,22 +3016,29 @@ Short regra_apply_produto_matriz_vetor(apply *a)
 
                 case Fim:
                     /* n1 e meio n2 e fim */
-                    switch(n1->at.m.classe)
+                    if(compara_no_fim_zero(n2,1))
                     {
-                        case V:
-                            /* n1 e v */
-                            ERRO("REGRA APPLY PRODUTO MATRIZ VETOR| N1 NAO E MATRIZ 4");
-                            break;
+                        return 13;
+                    }
+                    else
+                    {
+                        switch(n1->at.m.classe)
+                        {
+                            case V:
+                                /* n1 e v */
+                                ERRO("REGRA APPLY PRODUTO MATRIZ VETOR| N1 NAO E MATRIZ 4");
+                                break;
 
-                        case R:
-                            /* n1 e r */
-                            return 7;
-                            break;
+                            case R:
+                                /* n1 e r */
+                                return 7;
+                                break;
 
-                        case C:
-                            /* n1 e c */
-                            return 4;
-                            break;
+                            case C:
+                                /* n1 e c */
+                                return 4;
+                                break;
+                        }
                     }
                     break;
             }
@@ -3046,35 +3046,35 @@ Short regra_apply_produto_matriz_vetor(apply *a)
 
         case Fim:
             /* n1 e fim */
-            switch(n2->tipo)
+            if(compara_no_fim_zero(n1,1))
             {
-                case Inicio:
-                    /*n1 e fim n2 e inicio */
-                    ERRO("REGRA APPLY PRODUTO MATRIZ VETOR| N1 E FIM N2 E INICIO");
-                    break;
+                return 13;
+            }
+            else
+            {
+                switch(n2->tipo)
+                {
+                    case Inicio:
+                        /*n1 e fim n2 e inicio */
+                        ERRO("REGRA APPLY PRODUTO MATRIZ VETOR| N1 E FIM N2 E INICIO");
+                        break;
 
-                case Meio:
-                    /*n1 e fim n2 e meio */
-                    if(n2->at.m.classe != V)
-                        ERRO("REGRA APPLY PRODUTO MATRIZ VETOR| N2 NAO E VETOR 2");
+                    case Meio:
+                        /*n1 e fim n2 e meio */
+                        if(n2->at.m.classe != V)
+                            ERRO("REGRA APPLY PRODUTO MATRIZ VETOR| N2 NAO E VETOR 2");
 
-                    return 5;
-                    break;
+                        return 5;
+                        break;
 
-                case Fim:
-                    /*n1 e fim n2 e fim */
-                    if(compara_no_fim_zero(n1,1))
-                    {
-                        return 13;
-                    }
-                    else
-                    {
+                    case Fim:
+                        /*n1 e fim n2 e fim */
                         if(compara_no_fim_zero(n2,1))
                             return 13;
                         else
                             return 11;
-                    }
-                    break;
+                        break;
+                }
             }
             break;
 
@@ -3083,7 +3083,95 @@ Short regra_apply_produto_matriz_vetor(apply *a)
     return 0;
 }
 
-/*Short regra_apply_produto_vetor_vetor(apply *a)*/
+Short regra_apply_produto_vetor_vetor(apply *a)
+{
+        no *n1, *n2;
+    n1 = a->n1;
+    n2 = a->n2;
+
+    switch(n1->tipo)
+    {
+        case Inicio:
+            /* N1 e inicio */
+            if(n2->tipo != Inicio)
+                ERRO("REGRA APPLY PRODUTO VETOR VETOR| N1 E INICIO N2 NAO");
+
+            return 0;
+            break;
+
+        case Meio:
+            /* n1 e meio */
+            if(n1->at.m.classe != V)
+                ERRO("REGRA APPLY PRODUTO VETOR VETOR| N1 NAO E VETOR");
+
+            switch(n2->tipo)
+            {
+                case Inicio:
+                    /* n2 e inicio */
+                    ERRO("REGRA APPLY PRODUTO VETOR VETOR| N1 E MEIO N2 E FIM");
+                    break;
+
+                case Meio:
+                if(n2->at.m.classe != V)
+                    ERRO("REGRA APPLY PRODUTO VETOR VETOR| N2 NAO E VETOR 1");
+
+                    /* n1 e meio n2 e meio */
+                    if(n1->at.m.nivel < n2->at.m.nivel)
+                        return 7;
+                    if(n1->at.m.nivel == n2->at.m.nivel)
+                        return 9;
+                    if(n1->at.m.nivel > n2->at.m.nivel)
+                        return 8;
+                    break;
+
+                case Fim:
+                    /* n1 e meio n2 e fim */
+                    if(compara_no_fim_zero(n2,1))
+                        return 13;
+                    else
+                        return 7;
+                    break;
+            }
+            break;
+
+        case Fim:
+            /* n1 e fim */
+            if(compara_no_fim_zero(n1,1))
+            {
+                return 13;
+            }
+            else
+            {
+                switch(n2->tipo)
+                {
+                    case Inicio:
+                        /*n1 e fim n2 e inicio */
+                        ERRO("REGRA APPLY PRODUTO VETOR VETOR| N1 E FIM N2 E INICIO");
+                        break;
+
+                    case Meio:
+                        /*n1 e fim n2 e meio */
+                        if(n2->at.m.classe != V)
+                            ERRO("REGRA APPLY PRODUTO VETOR VETOR| N2 NAO E VETOR 2");
+
+                        return 8;
+                        break;
+
+                    case Fim:
+                        /*n1 e fim n2 e fim */
+                        if(compara_no_fim_zero(n2,1))
+                            return 13;
+                        else
+                            return 12;
+                        break;
+                }
+            }
+            break;
+
+    }
+    ERRO("REGRA APPLY PRODUTO VETOR VETOR| NAO ATIVOU NENHUMA REGRA");
+    return 0;
+}
 
 
 
@@ -3110,13 +3198,12 @@ no* apply_produto_matriz_vetor(no *n1, no *n2)
     return n;
 }
 
-/*no* apply_produto_vetor_vetor(no *n1, no *n2)
+no* apply_produto_vetor_vetor(no *n1, no *n2)
 {
     no *n;
     n = apply_base(n1,n2,regra_apply_produto_vetor_vetor);
     return n;
 }
-*/
 
 
 
@@ -3612,7 +3699,7 @@ QDD* produto_vetor_matriz(QDD *Q1, QDD *Q2)
     return Q;
 }
 
-/*no* produto_vetor_vetor(QDD *Q1, QDD *Q2)
+no* produto_vetor_vetor(QDD *Q1, QDD *Q2)
 {
     QDD *Q;
     Q = produto_QDD_QDD(Q1,Q2,apply_produto_vetor_vetor,V);
@@ -3623,7 +3710,6 @@ QDD* produto_vetor_matriz(QDD *Q1, QDD *Q2)
 
     return n;
 }
-*/
 
 
 
@@ -3735,102 +3821,68 @@ QDD* W(Short N)
     return Q;
 }
 
-QDD* controle(Short N, Short controle, Short ativa, QDD *Q0)
+QDD* controle(QDD *Q, Short controle, Short ativa)
 {
-    if(N < 2)
-        ERRO("CONTROL| TEM PELO MENOS 2 QBITS");
+    if(Q == NULL)
+        ERRO("CONTROLE| Q E NULL");
+    if(Q->nqbit < 2)
+        ERRO("CONTROLE| Q PRECISA TER MAIS QUE 1 QBIT");
 
-    QDD *Q1, *Q2;
-    QDD *QIn0;
-    QIn0 = potencia_tensorial(QI,Q0->nqbit);
+    QDD *QIn, *Q1, *Q2;
+    Q1 = Q00;
+    Q2 = Q11;
 
-    if(N == 2)
+    QDD *Q1aux, *Q2aux;
+    Q1aux = NULL;
+    Q2aux = NULL;
+    printf("\nA");
+    if(controle > 0)
     {
-        if(ativa == 0)
-        {
-            if(controle == 0)
-            {
-                Q1 = produto_tensorial(Q11,QIn0);
-                Q2 = produto_tensorial(Q00,Q0);
-            }
-            else
-            {
-                Q1 = produto_tensorial(QIn0,Q11);
-                Q2 = produto_tensorial(Q0,Q00);
-            }
-        }
-        else
-        {
-            if(controle == 0)
-            {
-                Q1 = produto_tensorial(Q00,QIn0);
-                Q2 = produto_tensorial(Q11,Q0);
-            }
-            else
-            {
-                Q1 = produto_tensorial(QIn0,Q00);
-                Q2 = produto_tensorial(Q0,Q11);
-            }
-        }
-    }
-    if(N > 2)
-    {
-        QDD *QIn;
-        Short n;
-        n = N-2;
-        QIn = potencia_tensorial(QI,n);
-
-        QDD *Q1t, *Q2t;
-        if(ativa == 0)
-        {
-            if(controle == 0)
-            {
-                Q1t = produto_tensorial(QIn,QIn0);
-                Q2t = produto_tensorial(QIn,Q0);
-
-                Q1 = produto_tensorial(Q11,Q1t);
-                Q2 = produto_tensorial(Q00,Q1t);
-            }
-            else
-            {
-                Q1t = produto_tensorial(QIn,Q11);
-                Q2t = produto_tensorial(QIn,Q00);
-
-                Q1 = produto_tensorial(QIn0,Q1t);
-                Q2 = produto_tensorial(Q0,Q1t);
-            }
-        }
-        else
-        {
-            if(controle == 0)
-            {
-                Q1t = produto_tensorial(QIn,QIn0);
-                Q2t = produto_tensorial(QIn,Q0);
-
-                Q1 = produto_tensorial(Q00,Q1t);
-                Q2 = produto_tensorial(Q11,Q1t);
-            }
-            else
-            {
-                Q1t = produto_tensorial(QIn,Q00);
-                Q2t = produto_tensorial(QIn,Q11);
-
-                Q1 = produto_tensorial(QIn0,Q1t);
-                Q2 = produto_tensorial(Q0,Q1t);
-            }
-        }
+        QIn = potencia_tensorial(QI,controle);
+        Q1 = produto_tensorial(QIn,Q1);
+        Q2 = produto_tensorial(QIn,Q2);
         libera_QDD(QIn);
-        libera_QDD(Q1t);
-        libera_QDD(Q2t);
     }
+    printf("\nB");
+    if(Q->nqbit - controle > 1)
+    {
+        QIn = potencia_tensorial(QI,Q->nqbit - controle-1);
+        Q1aux = produto_tensorial(Q1,QIn);
+        Q2aux = produto_tensorial(Q2,QIn);
+        libera_QDD(QIn);
+        if(Q1->nqbit > 1)
+        {
+            libera_QDD(Q1);
+            libera_QDD(Q2);
+        }
+        Q1 = Q1aux;
+        Q2 = Q2aux;
+    }
+    printf("\nC");
+    if(ativa == 0)
+    {
+    printf("\nE");
+        Q1aux = produto_matriz_matriz(Q1,Q);
+        libera_QDD(Q1);
+        Q1 = Q1aux;
+    }
+    else
+    {
+    printf("\nF");
+        Q2aux = produto_matriz_matriz(Q2,Q);
+        libera_QDD(Q2);
+        Q2 = Q1aux;
+    }
+    printf("\nD");
 
-    QDD *Q;
-    Q = soma_QDD(Q1,Q2);
+    QDD *Qc;
+    Qc = soma_QDD(Q1,Q2);
 
+    printf("\nG");
     libera_QDD(Q1);
     libera_QDD(Q2);
 
-    return Q;
+    return Qc;
 }
 
 
@@ -4013,8 +4065,10 @@ void teste_velocidade_base(char *nomeI, Short limiteinf, Short limitesup, Short 
         }
 
         fprintf(fp,"%e|%llu\n",precisao,quantidade);
-        printf("\n\nPrecisao: %.3e\n\n",precisao);
-        fprintf(fr,"\n\nPrecisao: %.3e\n\n",precisao);
+        printf("\n\nPrecisao: %.3e",precisao);
+        fprintf(fr,"\n\nPrecisao: %.3e",precisao);
+        printf("\nQuantidade: %llu\n\n",quantidade);
+        fprintf(fr,"\nQuantidade: %llu\n\n",quantidade);
         depoisi = clock();
 
         deltai = depoisi-antesi;
@@ -4089,7 +4143,6 @@ void teste_medio(Short amostras, Short arquivo, FILE *fr)
     antes = clock();
     teste_velocidade_matriz("H",10,10,amostras,arquivo,fr);
     teste_velocidade_matriz("I",10,10,amostras,arquivo,fr);
-    teste_velocidade_matriz("QFT",11,11,amostras,arquivo,fr);
     teste_velocidade_vetor("V",23,23,amostras,arquivo,fr);
     depois = clock();
 
@@ -4175,8 +4228,17 @@ int main()
     setlocale(LC_ALL, "Portuguese");
     /***********************************/
 
-    teste_curto(10,1,NULL);
-    teste_medio(10,2,NULL);
+    QDD *Q1;
+    Q1 = produto_tensorial(QI,QX);
+
+    QDD *Qc;
+    Qc = controle(Q1,0,1);
+    mostra_QDD(Qc);
+
+    libera_QDD(Q1);
+    libera_QDD(Qc);
+
+    mostra_quantidades();
 
     /***********************************/
     finaliza_structs_globais();
