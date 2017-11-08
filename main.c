@@ -3255,9 +3255,7 @@ Short regra_apply_produto_vetor_vetor(apply *a)
 no* apply_soma(no *n1, no *n2)
 {
     no *n;
-    printf("\nENTROU SOMA");
     n = apply_base(n1,n2,regra_apply_soma);
-    printf("\nSAIU SOMA");
     return n;
 }
 
@@ -3494,10 +3492,7 @@ void contracao_conta(conta *c)
     for(cc = c; cc != NULL; cc = cc->c)
     {
         na = cc->n;
-    printf("\n24");
-        mostra_conta_no(cc);
         nd = apply_soma(na->at.m.el,na->at.m.th);
-    printf("\n25");
         transfere_conexao(nd,na);
         libera_arvore(na);
         reduz_arvore(&nd,2);
@@ -3509,14 +3504,11 @@ void contracao_conta(conta *c)
 
 conta* tratamento(suporte *s, Short classe, Short classeRef)
 {
-    printf("\n21");
     if(classe == classeRef)
         contracao_conta(s->c[classe]);
 
-    printf("\n22");
     conta *ci;
     ci = espalha(s,classe);
-    printf("\n23");
     return ci;
 }
 
@@ -3525,7 +3517,8 @@ void contracao_QDD(QDD *Q, Short classe)
     Short nqbit;
     nqbit = Q->nqbit;
 
-    printf("\n9");
+    fmostra_QDD_sozinho(Q,"Contrai.txt");
+
     lista *lc;
     conta *c, *cc;
     suporte *saux;
@@ -3537,12 +3530,10 @@ void contracao_QDD(QDD *Q, Short classe)
         cc = cc->c;
         cc->n = lc->n;
     }
-    printf("\n10");
     cc = c->c;
     libera_conta_no(c);
     c = cc;
 
-    printf("\n11");
     suporte *s;
     s = cria_suporte(nqbit);
     if(classe == R)
@@ -3550,43 +3541,34 @@ void contracao_QDD(QDD *Q, Short classe)
     else
         s->c[R] = c;
 
-    printf("\n12");
     conta *ci;
     ci = NULL;
     while(s != NULL)
     {
-    printf("\n13");
         ci = tratamento(s,C,classe);
         if(ci != NULL)
             break;
 
-    printf("\n14");
         ci = tratamento(s,V,classe);
         if(ci != NULL)
             break;
 
-    printf("\n15");
         ci = tratamento(s,R,classe);
         if(ci != NULL)
             break;
 
-    printf("\n16");
         saux = s->s;
         libera_suporte_no(s);
         s = saux;
     }
-    printf("\n17");
     if(ci == NULL)
         ERRO("CONTRACAO QDD| NAO DETECTOU NO INICIO");
 
-    printf("\n10");
     Short ex;
     ex = pow(2,ci->nivel);
     produto_arvore_real(ci->n,ex);
 
-    printf("\n19");
     libera_conta_no(ci);
-    printf("\n20");
 }
 
 QDD* produto_QDD_QDD(QDD *Q1, QDD *Q2, no* (*apply_operacao)(no *n1, no *n2), Short classe)
@@ -3594,31 +3576,23 @@ QDD* produto_QDD_QDD(QDD *Q1, QDD *Q2, no* (*apply_operacao)(no *n1, no *n2), Sh
     if(Q1->nqbit != Q2->nqbit)
         ERRO("PRODUTO QDD QDD| Q1 E Q2 TEM QUANTIDADES DIFERENTES DE QBITS");
 
-    printf("\n1");
     no *n;
     n = apply_operacao(Q1->n,Q2->n);
 
-    printf("\n2");
     lista *l;
     l = acha_lista_fim_arvore(n);
 
-    printf("\n3");
     QDD *Q;
     Q = cria_QDD(Q1->nqbit);
     Q->n = n;
     Q->l = l;
     reduz_QDD(Q,2,classe);
 
-    printf("\n4");
     contracao_QDD(Q,classe);
 
-    printf("\n5");
     libera_lista_lista(Q->l);
-    printf("\n6");
     Q->l = acha_lista_fim_QDD(Q);
-    printf("\n7");
     reduz_QDD(Q,1,4);
-    printf("\n8");
     return Q;
 }
 
@@ -3941,60 +3915,46 @@ QDD* controle(QDD *Q, Short controle, Short ativa)
     QDD *Q1aux, *Q2aux;
     Q1aux = NULL;
     Q2aux = NULL;
-    printf("\nA");
     if(controle > 0)
     {
-    printf("\nB");
         QIn = potencia_tensorial(QI,controle);
         Q1 = produto_tensorial(QIn,Q1);
         Q2 = produto_tensorial(QIn,Q2);
         libera_QDD(QIn);
     }
 
-    printf("\nC");
     if(Q->nqbit - controle > 1)
     {
-    printf("\nD");
         QIn = potencia_tensorial(QI,Q->nqbit - controle-1);
         Q1aux = produto_tensorial(Q1,QIn);
         Q2aux = produto_tensorial(Q2,QIn);
         libera_QDD(QIn);
         if(Q1->nqbit > 1)
         {
-    printf("\nE");
             libera_QDD(Q1);
             libera_QDD(Q2);
         }
-    printf("\nF");
         Q1 = Q1aux;
         Q2 = Q2aux;
     }
-    printf("\nG");
 
     if(ativa == 0)
     {
-    printf("\nH");
         Q1aux = produto_matriz_matriz(Q1,Q);
         libera_QDD(Q1);
         Q1 = Q1aux;
     }
     else
     {
-        printf("\nI");
         Q2aux = produto_matriz_matriz(Q2,Q);
-    printf("\nM");
         libera_QDD(Q2);
-    printf("\nN");
         Q2 = Q2aux;
     }
-    printf("\nJ");
 
     QDD *Qc;
     Qc = soma_QDD(Q1,Q2);
 
-    printf("\nK");
     libera_QDD(Q1);
-    printf("\nL");
     libera_QDD(Q2);
 
     return Qc;
@@ -4345,22 +4305,18 @@ int main()
     setlocale(LC_ALL, "Portuguese");
     /***********************************/
 
-    configuracao(60);
-
     QDD *QIn, *Qaux;
-    QIn = potencia_tensorial(QI,39);
+    QIn = potencia_tensorial(QI,3);
     Qaux = produto_tensorial(QIn,QH);
     libera_QDD(QIn);
 
     QDD *Q0;
-    QIn = potencia_tensorial(QI,20);
-    Q0 = produto_tensorial(Qaux,QIn);
+    Q0 = produto_tensorial(Qaux,QI);
     libera_QDD(Qaux);
-    libera_QDD(QIn);
 
     QDD *Qc;
-    Qc = controle(Q0,20,1);
-    mostra_tamanhos();
+    Qc = controle(Q0,1,1);
+    mostra_QDD(Qc);
 
     /***********************************/
     finaliza_structs_globais();
