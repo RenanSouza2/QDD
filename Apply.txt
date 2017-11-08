@@ -1,0 +1,375 @@
+
+
+
+
+
+Ligacao apply 0
+Endereco (apply): 3896288
+
+No 1:
+Endereco (no): 3875240
+
+Tipo: Inicio
+Ligacoes posteriores
+	n: 3875272
+
+
+No 2:
+Endereco (no): 3875240
+
+Tipo: Inicio
+Ligacoes posteriores
+	n: 3875272
+
+
+No:
+Endereco (no): 3896736
+
+Tipo: Inicio
+Ligacoes posteriores
+	n: 3896224
+
+
+
+a1: 3896544
+a2: 0
+
+a proximo:  3896544
+
+
+
+
+
+Ligacao apply 1
+Endereco (apply): 3896544
+
+No 1:
+Endereco (no): 3875272
+Ligacoes anteriores:
+	Ligacao 0: 3875240
+Tipo/nivel: R0
+Ligacoes posteriores
+	else: 3875336
+	Then: 3875304
+
+No 2:
+Endereco (no): 3875272
+Ligacoes anteriores:
+	Ligacao 0: 3875240
+Tipo/nivel: R0
+Ligacoes posteriores
+	else: 3875336
+	Then: 3875304
+
+No:
+Endereco (no): 3896224
+Ligacoes anteriores:
+	Ligacao 0: 3896736
+Tipo/nivel: R0
+Ligacoes posteriores
+	else: 3896608
+	Then: 3895968
+
+
+a1: 3896352
+a2: 3896512
+
+a proximo:  3896352
+
+
+
+
+
+Ligacao apply 2
+Endereco (apply): 3896352
+
+No 1:
+Endereco (no): 3875336
+Ligacoes anteriores:
+	Ligacao 0: 3875304
+	Ligacao 1: 3875272
+Tipo: Numero
+7,071e-001 0,000e+000
+
+No 2:
+Endereco (no): 3875272
+Ligacoes anteriores:
+	Ligacao 0: 3875240
+Tipo/nivel: R0
+Ligacoes posteriores
+	else: 3875336
+	Then: 3875304
+
+No:
+Endereco (no): 3896608
+Ligacoes anteriores:
+	Ligacao 0: 3896224
+Tipo/nivel: V0
+Ligacoes posteriores
+	else: 3896064
+	Then: 3896256
+
+
+a1: 3895936
+a2: 3896800
+
+a proximo:  3895936
+
+
+
+
+
+Ligacao apply 3
+Endereco (apply): 3895936
+
+No 1:
+Endereco (no): 3875336
+Ligacoes anteriores:
+	Ligacao 0: 3875304
+	Ligacao 1: 3875272
+Tipo: Numero
+7,071e-001 0,000e+000
+
+No 2:
+Endereco (no): 3875336
+Ligacoes anteriores:
+	Ligacao 0: 3875304
+	Ligacao 1: 3875272
+Tipo: Numero
+7,071e-001 0,000e+000
+
+No:
+Endereco (no): 3896064
+Ligacoes anteriores:
+	Ligacao 0: 3895968
+	Ligacao 1: 3896256
+	Ligacao 2: 3896608
+Tipo: Numero
+5,000e-001 0,000e+000
+
+
+a1: 0
+a2: 0
+
+a proximo:  3896800
+
+
+
+
+
+Ligacao apply 4
+Endereco (apply): 3896800
+
+No 1:
+Endereco (no): 3875336
+Ligacoes anteriores:
+	Ligacao 0: 3875304
+	Ligacao 1: 3875272
+Tipo: Numero
+7,071e-001 0,000e+000
+
+No 2:
+Endereco (no): 3875304
+Ligacoes anteriores:
+	Ligacao 0: 3875272
+Tipo/nivel: C0
+Ligacoes posteriores
+	else: 3875336
+	Then: 3875368
+
+No:
+Endereco (no): 3896256
+Ligacoes anteriores:
+	Ligacao 0: 3896608
+Tipo/nivel: C0
+Ligacoes posteriores
+	else: 3896064
+	Then: 3896704
+
+
+a1: 3895936
+a2: 3896672
+
+a proximo:  3896672
+
+
+
+
+
+Ligacao apply 5
+Endereco (apply): 3896672
+
+No 1:
+Endereco (no): 3875336
+Ligacoes anteriores:
+	Ligacao 0: 3875304
+	Ligacao 1: 3875272
+Tipo: Numero
+7,071e-001 0,000e+000
+
+No 2:
+Endereco (no): 3875368
+Ligacoes anteriores:
+	Ligacao 0: 3875304
+Tipo: Numero
+-7,071e-001 0,000e+000
+
+No:
+Endereco (no): 3896704
+Ligacoes anteriores:
+	Ligacao 0: 3896256
+Tipo: Numero
+-5,000e-001 0,000e+000
+
+
+a1: 0
+a2: 0
+
+a proximo:  3896512
+
+
+
+
+
+Ligacao apply 6
+Endereco (apply): 3896512
+
+No 1:
+Endereco (no): 3875304
+Ligacoes anteriores:
+	Ligacao 0: 3875272
+Tipo/nivel: C0
+Ligacoes posteriores
+	else: 3875336
+	Then: 3875368
+
+No 2:
+Endereco (no): 3875272
+Ligacoes anteriores:
+	Ligacao 0: 3875240
+Tipo/nivel: R0
+Ligacoes posteriores
+	else: 3875336
+	Then: 3875304
+
+No:
+Endereco (no): 3895968
+Ligacoes anteriores:
+	Ligacao 0: 3896224
+Tipo/nivel: V0
+Ligacoes posteriores
+	else: 3896064
+	Then: 3896416
+
+
+a1: 3895936
+a2: 3896896
+
+a proximo:  3896896
+
+
+
+
+
+Ligacao apply 7
+Endereco (apply): 3896896
+
+No 1:
+Endereco (no): 3875368
+Ligacoes anteriores:
+	Ligacao 0: 3875304
+Tipo: Numero
+-7,071e-001 0,000e+000
+
+No 2:
+Endereco (no): 3875304
+Ligacoes anteriores:
+	Ligacao 0: 3875272
+Tipo/nivel: C0
+Ligacoes posteriores
+	else: 3875336
+	Then: 3875368
+
+No:
+Endereco (no): 3896416
+Ligacoes anteriores:
+	Ligacao 0: 3895968
+Tipo/nivel: C0
+Ligacoes posteriores
+	else: 3896480
+	Then: 3896832
+
+
+a1: 3896000
+a2: 3896768
+
+a proximo:  3896000
+
+
+
+
+
+Ligacao apply 8
+Endereco (apply): 3896000
+
+No 1:
+Endereco (no): 3875368
+Ligacoes anteriores:
+	Ligacao 0: 3875304
+Tipo: Numero
+-7,071e-001 0,000e+000
+
+No 2:
+Endereco (no): 3875336
+Ligacoes anteriores:
+	Ligacao 0: 3875304
+	Ligacao 1: 3875272
+Tipo: Numero
+7,071e-001 0,000e+000
+
+No:
+Endereco (no): 3896480
+Ligacoes anteriores:
+	Ligacao 0: 3896416
+Tipo: Numero
+-5,000e-001 0,000e+000
+
+
+a1: 0
+a2: 0
+
+a proximo:  3896768
+
+
+
+
+
+Ligacao apply 9
+Endereco (apply): 3896768
+
+No 1:
+Endereco (no): 3875368
+Ligacoes anteriores:
+	Ligacao 0: 3875304
+Tipo: Numero
+-7,071e-001 0,000e+000
+
+No 2:
+Endereco (no): 3875368
+Ligacoes anteriores:
+	Ligacao 0: 3875304
+Tipo: Numero
+-7,071e-001 0,000e+000
+
+No:
+Endereco (no): 3896832
+Ligacoes anteriores:
+	Ligacao 0: 3896416
+Tipo: Numero
+5,000e-001 -0,000e+000
+
+
+a1: 0
+a2: 0
+
+a proximo:  0

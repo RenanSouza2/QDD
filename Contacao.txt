@@ -1,0 +1,337 @@
+
+QDD Inicial: 
+Endereco (QDD): 6779240
+NQBIT: 4
+Itens: 21
+
+
+	Ligacao 0:
+Endereco (no): 6784536
+
+Tipo: Inicio
+Ligacoes posteriores
+	n: 6784120
+
+
+
+	Ligacao 1:
+Endereco (no): 6784120
+Ligacoes anteriores:
+	Ligacao 0: 6784536
+Tipo/nivel: R0
+Ligacoes posteriores
+	else: 6784152
+	Then: 6780256
+
+
+	Ligacao 2:
+Endereco (no): 6784152
+Ligacoes anteriores:
+	Ligacao 0: 6784120
+Tipo/nivel: V0
+Ligacoes posteriores
+	else: 6784472
+	Then: 6784600
+
+
+	Ligacao 3:
+Endereco (no): 6784472
+Ligacoes anteriores:
+	Ligacao 0: 6784152
+Tipo/nivel: C0
+Ligacoes posteriores
+	else: 6784216
+	Then: 6784600
+
+
+	Ligacao 4:
+Endereco (no): 6784216
+Ligacoes anteriores:
+	Ligacao 0: 6780416
+	Ligacao 1: 6784472
+Tipo/nivel: R1
+Ligacoes posteriores
+	else: 6784600
+	Then: 6784632
+
+
+	Ligacao 5:
+Endereco (no): 6784600
+Ligacoes anteriores:
+	Ligacao 0: 6780256
+	Ligacao 1: 6784152
+	Ligacao 2: 6784472
+	Ligacao 3: 6780416
+	Ligacao 4: 6780992
+	Ligacao 5: 6784792
+	Ligacao 6: 6785304
+	Ligacao 7: 6780864
+	Ligacao 8: 6781376
+	Ligacao 9: 6780576
+	Ligacao 10: 6785208
+	Ligacao 11: 6784632
+	Ligacao 12: 6784216
+Tipo: Numero
+0,000e+000 0,000e+000
+
+
+	Ligacao 6:
+Endereco (no): 6784632
+Ligacoes anteriores:
+	Ligacao 0: 6784216
+Tipo/nivel: V1
+Ligacoes posteriores
+	else: 6784600
+	Then: 6785208
+
+
+	Ligacao 7:
+Endereco (no): 6785208
+Ligacoes anteriores:
+	Ligacao 0: 6784632
+Tipo/nivel: C1
+Ligacoes posteriores
+	else: 6784600
+	Then: 6785624
+
+
+	Ligacao 8:
+Endereco (no): 6785624
+Ligacoes anteriores:
+	Ligacao 0: 6785208
+Tipo/nivel: R2
+Ligacoes posteriores
+	else: 6784792
+	Then: 6780992
+
+
+	Ligacao 9:
+Endereco (no): 6784792
+Ligacoes anteriores:
+	Ligacao 0: 6785624
+Tipo/nivel: V2
+Ligacoes posteriores
+	else: 6785304
+	Then: 6784600
+
+
+	Ligacao 10:
+Endereco (no): 6785304
+Ligacoes anteriores:
+	Ligacao 0: 6784792
+Tipo/nivel: C2
+Ligacoes posteriores
+	else: 6785496
+	Then: 6784600
+
+
+	Ligacao 11:
+Endereco (no): 6785496
+Ligacoes anteriores:
+	Ligacao 0: 6780864
+	Ligacao 1: 6785304
+Tipo/nivel: R3
+Ligacoes posteriores
+	else: 6780576
+	Then: 6781376
+
+
+	Ligacao 12:
+Endereco (no): 6780576
+Ligacoes anteriores:
+	Ligacao 0: 6785496
+Tipo/nivel: V3
+Ligacoes posteriores
+	else: 6781312
+	Then: 6784600
+
+
+	Ligacao 13:
+Endereco (no): 6781312
+Ligacoes anteriores:
+	Ligacao 0: 6781408
+	Ligacao 1: 6780576
+Tipo: Numero
+7,071e-001 0,000e+000
+
+
+	Ligacao 14:
+Endereco (no): 6781376
+Ligacoes anteriores:
+	Ligacao 0: 6785496
+Tipo/nivel: V3
+Ligacoes posteriores
+	else: 6784600
+	Then: 6781408
+
+
+	Ligacao 15:
+Endereco (no): 6781408
+Ligacoes anteriores:
+	Ligacao 0: 6781376
+Tipo/nivel: C3
+Ligacoes posteriores
+	else: 6781312
+	Then: 6781024
+
+
+	Ligacao 16:
+Endereco (no): 6781024
+Ligacoes anteriores:
+	Ligacao 0: 6781408
+Tipo: Numero
+-7,071e-001 0,000e+000
+
+
+	Ligacao 17:
+Endereco (no): 6780992
+Ligacoes anteriores:
+	Ligacao 0: 6785624
+Tipo/nivel: V2
+Ligacoes posteriores
+	else: 6784600
+	Then: 6780864
+
+
+	Ligacao 18:
+Endereco (no): 6780864
+Ligacoes anteriores:
+	Ligacao 0: 6780992
+Tipo/nivel: C2
+Ligacoes posteriores
+	else: 6784600
+	Then: 6785496
+
+
+	Ligacao 19:
+Endereco (no): 6780256
+Ligacoes anteriores:
+	Ligacao 0: 6784120
+Tipo/nivel: V0
+Ligacoes posteriores
+	else: 6784600
+	Then: 6780416
+
+
+	Ligacao 20:
+Endereco (no): 6780416
+Ligacoes anteriores:
+	Ligacao 0: 6780256
+Tipo/nivel: C0
+Ligacoes posteriores
+	else: 6784600
+	Then: 6784216
+
+
+
+AMPLITUDES
+
+	Ligacao 0:
+Endereco (no): 6784600
+Ligacoes anteriores:
+	Ligacao 0: 6780256
+	Ligacao 1: 6784152
+	Ligacao 2: 6784472
+	Ligacao 3: 6780416
+	Ligacao 4: 6780992
+	Ligacao 5: 6784792
+	Ligacao 6: 6785304
+	Ligacao 7: 6780864
+	Ligacao 8: 6781376
+	Ligacao 9: 6780576
+	Ligacao 10: 6785208
+	Ligacao 11: 6784632
+	Ligacao 12: 6784216
+Tipo: Numero
+0,000e+000 0,000e+000
+
+
+	Ligacao 1:
+Endereco (no): 6781312
+Ligacoes anteriores:
+	Ligacao 0: 6781408
+	Ligacao 1: 6780576
+Tipo: Numero
+7,071e-001 0,000e+000
+
+
+	Ligacao 2:
+Endereco (no): 6781024
+Ligacoes anteriores:
+	Ligacao 0: 6781408
+Tipo: Numero
+-7,071e-001 0,000e+000
+
+
+
+Suporte Inicial: 
+
+
+
+Ligacao suporte 0: 
+Endereco (suporte): 6780192
+nivel: 4
+
+cc: 0
+cv: 0
+cr: 6778904
+
+
+
+Ligacao conta 0: 
+Endereco (conta): 6778904
+nivel: 4
+
+no: 
+Endereco (no): 6784600
+Ligacoes anteriores:
+	Ligacao 0: 6780256
+	Ligacao 1: 6784152
+	Ligacao 2: 6784472
+	Ligacao 3: 6780416
+	Ligacao 4: 6780992
+	Ligacao 5: 6784792
+	Ligacao 6: 6785304
+	Ligacao 7: 6780864
+	Ligacao 8: 6781376
+	Ligacao 9: 6780576
+	Ligacao 10: 6785208
+	Ligacao 11: 6784632
+	Ligacao 12: 6784216
+Tipo: Numero
+0,000e+000 0,000e+000
+
+c proximo: 6783152
+
+
+
+Ligacao conta 1: 
+Endereco (conta): 6783152
+nivel: 4
+
+no: 
+Endereco (no): 6781312
+Ligacoes anteriores:
+	Ligacao 0: 6781408
+	Ligacao 1: 6780576
+Tipo: Numero
+7,071e-001 0,000e+000
+
+c proximo: 6783296
+
+
+
+Ligacao conta 2: 
+Endereco (conta): 6783296
+nivel: 4
+
+no: 
+Endereco (no): 6781024
+Ligacoes anteriores:
+	Ligacao 0: 6781408
+Tipo: Numero
+-7,071e-001 0,000e+000
+
+c proximo: 0
+
+s: 0

@@ -23,8 +23,8 @@
 
 FILE *fm;
 unsigned long long mem = 0, memMax = 0, memF = 0;
-unsigned long long iQ = 0, iI = 0, iM = 0, iF = 0, iL = 0, iA = 0, iC = 0, iS = 0, iP = 0;
-unsigned short tQ, tN, tL, tA, tC, tS, tP;
+unsigned long long iQ = 0, iI = 0, iM = 0, iF = 0, iL = 0, iA = 0, iC = 0, iS = 0;
+unsigned short tQ, tN, tL, tA, tC, tS;
 unsigned long long MAX;
 unsigned short print, Nqbit;
 float eps;
@@ -91,12 +91,6 @@ struct suporte
     struct suporte *s;
 };
 
-struct pilha
-{
-    char m[30];
-    struct pilha *p;
-};
-
 
 
 /** Typedefs e definitions  **/
@@ -108,8 +102,6 @@ typedef struct lista lista;
 typedef struct apply   apply;
 typedef struct conta   conta;
 typedef struct suporte suporte;
-
-typedef struct pilha pilha;
 
 typedef unsigned short Short;
 typedef unsigned long long Long;
@@ -342,21 +334,6 @@ suporte* cria_suporte(Short nivel)
     return s;
 }
 
-pilha* cria_pilha(char m[30])
-{
-    pilha *p;
-    p = malloc(tP);
-    if(p == NULL)
-            ERRO("CRIA PILHA");
-    aumenta_memoria(tP);
-    iP++;
-
-    sprintf(p->m,m);
-    p->p = NULL;
-
-    return p;
-}
-
 
 
 /** Destrutores  **/
@@ -491,14 +468,6 @@ void libera_suporte_lista(suporte *s)
         libera_suporte_no(s);
         s = sc;
     }
-}
-
-void libera_pilha(pilha *p)
-{
-    diminui_memoria(tP);
-    if(tP == 0)
-        ERRO("LIBERA PILHA");
-    iP--;
 }
 
 
@@ -855,11 +824,6 @@ void mostra_quantidades()
         vazio = 0;
         printf("\ns:   %llu",iS);
     }
-    if(iP != 0)
-    {
-        vazio = 0;
-        printf("\np:   %llu",iP);
-    }
     if(vazio)
         printf("\nTUDO ZERADO");
     printf("\n");
@@ -874,7 +838,6 @@ void mostra_tamanhos()
     printf("\na:   %d",tA);
     printf("\nc:   %d",tC);
     printf("\ns:   %d",tS);
-    printf("\np:   %d",tP);
     printf("\n");
 }
 
@@ -1601,7 +1564,6 @@ void inicia_structs_globais()
     tA = sizeof(apply);
     tC = sizeof(conta);
     tS = sizeof(suporte);
-    tP = sizeof(pilha);
 
     Qred  = cria_QDD(1);
     Qred->n = cria_no_inicio();
@@ -2582,6 +2544,7 @@ no* apply_base(no *n1, no *n2, Short(*regra_apply)(apply*))
     }
     n = a->n;
 
+    fmostra_apply_lista_sozinho(a,"Apply.txt");
     libera_apply_lista(a);
 
     return n;
@@ -2785,6 +2748,7 @@ Short regra_apply_soma(apply *a)
             break;
 
     }
+
     ERRO("REGRA APPLY SOMA| NAO ATIVOU NENHUMA REGRA");
     return 0;
 }
@@ -3364,217 +3328,32 @@ QDD* copia_QDD(QDD *Q1)
 
 conta* espalha(suporte *s, Short classe)
 {
-    no *n0, *na, *nO, *naux;
-    lista *lc;
-    conta *c, *cc, *cp, *cpc, *caux;
-    suporte *sc, *saux;
-    Short delta, lado;
-    nO = NULL;
-    while(s->c[classe] != NULL)
-    {
-        c = s->c[classe];
-        n0 = c->n;
 
-        cp = cria_conta(0);
-        cp->n = n0;
-
-        for(lc = n0->l; lc != NULL; lc = lc->l)
-        {
-            na = lc->n;
-            if(na->tipo == Inicio)
-            {
-                libera_suporte_no(s);
-                c->n = na;
-                return c;
-            }
-
-            for(sc = s; sc->s != NULL; sc = sc->s)
-                if(sc->s->nivel < na->at.m.nivel)
-                    break;
-
-            if(sc->nivel == na->at.m.nivel)
-            {
-                /* tem suporte */
-                for(cc = sc->c[na->at.m.classe]; cc != NULL; cc = cc->c)
-                    if(cc->n == na)
-                        break;
-
-                if(cc == NULL)
-                {
-                    /* nao tem conta */
-                    cc = cria_conta(c->nivel);
-                    cc->n = na;
-
-                    cc->c = sc->c[na->at.m.classe];
-                    sc->c[na->at.m.classe] = cc;
-                }
-                else
-                {
-                    /* tem conta */
-                    if(cc->nivel > c->nivel)
-                    {
-                        /* original maior */
-                        if(n0 == na->at.m.el)
-                            nO = na->at.m.th;
-                        if(n0 == na->at.m.th)
-                            nO = na->at.m.el;
-
-                        delta  = cc->nivel - c->nivel;
-                        delta = pow(2,delta);
-
-                        naux = copia_arvore(nO);
-                        produto_arvore_real(naux,delta);
-                        lado = desconecta_UM(na,nO);
-                        conecta_UM(na,naux,lado);
-                        libera_arvore(nO);
-
-                        cc->nivel = c->nivel;
-                    }
-                    if(cc->nivel < c->nivel)
-                    {
-                        /* atual maior */
-                        delta  = c->nivel - cc->nivel;
-
-                        for(cpc = cp; cpc->c != NULL; cpc = cpc->c)
-                            if(cpc->c->nivel > delta)
-                                break;
-
-                        if(cpc->nivel == delta)
-                        {
-                            naux = cpc->n;
-                        }
-                        else
-                        {
-                            caux = cria_conta(delta);
-
-                            naux = copia_arvore(n0);
-                            delta = pow(2,delta);
-                            produto_arvore_real(naux,delta);
-
-                            caux->n = naux;
-
-                            caux->c = cpc->c;
-                            cpc->c = caux;
-                        }
-                        lzero->l = lc->l;
-                        lado = desconecta_UM(na,n0);
-                        conecta_UM(na,naux,lado);
-                        lc = lzero;
-                    }
-                }
-            }
-            else
-            {
-                /* não tem suporte */
-                cc = cria_conta(c->nivel);
-                cc->n = na;
-
-                saux = cria_suporte(na->at.m.nivel);
-                saux->c[na->at.m.classe] = cc;
-
-                saux->s = s->s;
-                s->s = saux;
-            }
-        }
-        libera_arvore(n0);
-        libera_conta_lista(cp);
-
-        s->c[classe] = c->c;
-        libera_conta_no(c);
-    }
-    return NULL;
 }
 
 void contracao_conta(conta *c)
 {
-    no *na, *nd;
-    conta *cc;
-    for(cc = c; cc != NULL; cc = cc->c)
-    {
-        na = cc->n;
-        nd = apply_soma(na->at.m.el,na->at.m.th);
-        transfere_conexao(nd,na);
-        libera_arvore(na);
-        reduz_arvore(&nd,2);
 
-        cc->n = nd;
-        (cc->nivel)--;
-    }
 }
 
 conta* tratamento(suporte *s, Short classe, Short classeRef)
 {
-    if(classe == classeRef)
-        contracao_conta(s->c[classe]);
 
-    conta *ci;
-    ci = espalha(s,classe);
-    return ci;
 }
 
 void contracao_QDD(QDD *Q, Short classe)
 {
-    Short nqbit;
-    nqbit = Q->nqbit;
-
-    fmostra_QDD_sozinho(Q,"Contrai.txt");
-
-    lista *lc;
-    conta *c, *cc;
-    suporte *saux;
-    c = cria_conta(nqbit);
-    cc = c;
-    for(lc = Q->l; lc != NULL; lc = lc->l)
-    {
-        cc->c = cria_conta(nqbit);
-        cc = cc->c;
-        cc->n = lc->n;
-    }
-    cc = c->c;
-    libera_conta_no(c);
-    c = cc;
-
-    suporte *s;
-    s = cria_suporte(nqbit);
-    if(classe == R)
-        s->c[C] = c;
-    else
-        s->c[R] = c;
-
-    conta *ci;
-    ci = NULL;
-    while(s != NULL)
-    {
-        ci = tratamento(s,C,classe);
-        if(ci != NULL)
-            break;
-
-        ci = tratamento(s,V,classe);
-        if(ci != NULL)
-            break;
-
-        ci = tratamento(s,R,classe);
-        if(ci != NULL)
-            break;
-
-        saux = s->s;
-        libera_suporte_no(s);
-        s = saux;
-    }
-    if(ci == NULL)
-        ERRO("CONTRACAO QDD| NAO DETECTOU NO INICIO");
-
-    Short ex;
-    ex = pow(2,ci->nivel);
-    produto_arvore_real(ci->n,ex);
-
-    libera_conta_no(ci);
+    mostra_lista_com_no(Q->l);
 }
 
 QDD* produto_QDD_QDD(QDD *Q1, QDD *Q2, no* (*apply_operacao)(no *n1, no *n2), Short classe)
 {
+    if(Q1 == NULL)
+        ERRO("PRODUTO QDD QDD| Q1 E NULL");
+    if(Q2 == NULL)
+        ERRO("PRODUTO QDD QDD| Q2 E NULL");
     if(Q1->nqbit != Q2->nqbit)
-        ERRO("PRODUTO QDD QDD| Q1 E Q2 TEM QUANTIDADES DIFERENTES DE QBITS");
+        ERRO("PRODUTO QDD QDD| QDDS TEM QUANTIDADES DIFERENTES DE NQBITS");
 
     no *n;
     n = apply_operacao(Q1->n,Q2->n);
@@ -3588,12 +3367,9 @@ QDD* produto_QDD_QDD(QDD *Q1, QDD *Q2, no* (*apply_operacao)(no *n1, no *n2), Sh
     Q->l = l;
     reduz_QDD(Q,2,classe);
 
-    contracao_QDD(Q,classe);
-
-    libera_lista_lista(Q->l);
+    /*libera_lista_lista(Q->l);
     Q->l = acha_lista_fim_QDD(Q);
-    reduz_QDD(Q,1,4);
-    return Q;
+    contracao_QDD(Q,classe);*/
 }
 
 
@@ -3708,7 +3484,7 @@ QDD* produto_tensorial(QDD *Q1, QDD *Q2)
 QDD* potencia_tensorial(QDD *Q, Short n)
 {
     Short ex;
-    for(ex = 1; 2*ex < n; ex *= 2);
+    for(ex = 1; 2*ex <= n; ex *= 2);
     n -= ex;
 
     QDD *Qp;
@@ -3936,7 +3712,7 @@ QDD* controle(QDD *Q, Short controle, Short ativa)
         }
         Q1 = Q1aux;
         Q2 = Q2aux;
-    }
+    }\
 
     if(ativa == 0)
     {
@@ -4305,18 +4081,7 @@ int main()
     setlocale(LC_ALL, "Portuguese");
     /***********************************/
 
-    QDD *QIn, *Qaux;
-    QIn = potencia_tensorial(QI,3);
-    Qaux = produto_tensorial(QIn,QH);
-    libera_QDD(QIn);
-
-    QDD *Q0;
-    Q0 = produto_tensorial(Qaux,QI);
-    libera_QDD(Qaux);
-
-    QDD *Qc;
-    Qc = controle(Q0,1,1);
-    mostra_QDD(Qc);
+    produto_matriz_matriz(QH,QH);
 
     /***********************************/
     finaliza_structs_globais();
