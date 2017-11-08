@@ -23,8 +23,8 @@
 
 FILE *fm;
 unsigned long long mem = 0, memMax = 0, memF = 0;
-unsigned long long iQ = 0, iI = 0, iM = 0, iF = 0, iL = 0, iA = 0, iC = 0, iS = 0;
-unsigned short tQ, tN, tL, tA, tC, tS;
+unsigned long long iQ = 0, iI = 0, iM = 0, iF = 0, iL = 0, iA = 0, iC = 0, iS = 0, iP = 0;
+unsigned short tQ, tN, tL, tA, tC, tS, tP;
 unsigned long long MAX;
 unsigned short print, Nqbit;
 float eps;
@@ -91,6 +91,12 @@ struct suporte
     struct suporte *s;
 };
 
+struct pilha
+{
+    char m[30];
+    struct pilha *p;
+};
+
 
 
 /** Typedefs e definitions  **/
@@ -102,6 +108,8 @@ typedef struct lista lista;
 typedef struct apply   apply;
 typedef struct conta   conta;
 typedef struct suporte suporte;
+
+typedef struct pilha pilha;
 
 typedef unsigned short Short;
 typedef unsigned long long Long;
@@ -334,6 +342,21 @@ suporte* cria_suporte(Short nivel)
     return s;
 }
 
+pilha* cria_pilha(char m[30])
+{
+    pilha *p;
+    p = malloc(tP);
+    if(p == NULL)
+            ERRO("CRIA PILHA");
+    aumenta_memoria(tP);
+    iP++;
+
+    sprintf(p->m,m);
+    p->p = NULL;
+
+    return p;
+}
+
 
 
 /** Destrutores  **/
@@ -434,7 +457,7 @@ void libera_conta_no(conta *c)
 {
     diminui_memoria(tC);
     if(iC == 0)
-        ERRO("LIBERA APPLY");
+        ERRO("LIBERA CONTA");
     iC--;
     free(c);
 }
@@ -454,7 +477,7 @@ void libera_suporte_no(suporte *s)
 {
     diminui_memoria(tS);
     if(iS == 0)
-        ERRO("LIBERA APPLY");
+        ERRO("LIBERA SUPORTE");
     iS--;
     free(s);
 }
@@ -468,6 +491,14 @@ void libera_suporte_lista(suporte *s)
         libera_suporte_no(s);
         s = sc;
     }
+}
+
+void libera_pilha(pilha *p)
+{
+    diminui_memoria(tP);
+    if(tP == 0)
+        ERRO("LIBERA PILHA");
+    iP--;
 }
 
 
@@ -824,6 +855,11 @@ void mostra_quantidades()
         vazio = 0;
         printf("\ns:   %llu",iS);
     }
+    if(iP != 0)
+    {
+        vazio = 0;
+        printf("\np:   %llu",iP);
+    }
     if(vazio)
         printf("\nTUDO ZERADO");
     printf("\n");
@@ -838,6 +874,7 @@ void mostra_tamanhos()
     printf("\na:   %d",tA);
     printf("\nc:   %d",tC);
     printf("\ns:   %d",tS);
+    printf("\np:   %d",tP);
     printf("\n");
 }
 
@@ -1564,6 +1601,7 @@ void inicia_structs_globais()
     tA = sizeof(apply);
     tC = sizeof(conta);
     tS = sizeof(suporte);
+    tP = sizeof(pilha);
 
     Qred  = cria_QDD(1);
     Qred->n = cria_no_inicio();
@@ -2485,6 +2523,11 @@ void monta_apply(apply *a, Short regra)
 
 no* apply_base(no *n1, no *n2, Short(*regra_apply)(apply*))
 {
+    if(n1 == NULL)
+        ERRO("APPLY BASE| N1 E NULL");
+    if(n2 == NULL)
+        ERRO("APPLY BASE| N2 E NULL");
+
     apply *a;
     a = cria_apply();
     a->n1 = n1;
@@ -2550,9 +2593,17 @@ no* apply_base(no *n1, no *n2, Short(*regra_apply)(apply*))
 
 Short regra_apply_soma(apply *a)
 {
+    if(a == NULL)
+        ERRO("REGRA APPLY SOMA| A E NULL");
+
     no *n1, *n2;
     n1 = a->n1;
     n2 = a->n2;
+
+    if(n1 == NULL)
+        ERRO("REGRA APPLY SOMA| N1 E NULL");
+    if(n2 == NULL)
+        ERRO("REGRA APPLY SOMA| N2 E NULL");
 
     switch(n1->tipo)
     {
@@ -2740,9 +2791,17 @@ Short regra_apply_soma(apply *a)
 
 Short regra_apply_produto_matriz_matriz(apply *a)
 {
+    if(a == NULL)
+        ERRO("REGRA APPLY SOMA| A E NULL");
+
     no *n1, *n2;
     n1 = a->n1;
     n2 = a->n2;
+
+    if(n1 == NULL)
+        ERRO("REGRA APPLY SOMA| N1 E NULL");
+    if(n2 == NULL)
+        ERRO("REGRA APPLY SOMA| N2 E NULL");
 
     switch(n1->tipo)
     {
@@ -2934,9 +2993,17 @@ Short regra_apply_produto_matriz_matriz(apply *a)
 
 Short regra_apply_produto_matriz_vetor(apply *a)
 {
+    if(a == NULL)
+        ERRO("REGRA APPLY SOMA| A E NULL");
+
     no *n1, *n2;
     n1 = a->n1;
     n2 = a->n2;
+
+    if(n1 == NULL)
+        ERRO("REGRA APPLY SOMA| N1 E NULL");
+    if(n2 == NULL)
+        ERRO("REGRA APPLY SOMA| N2 E NULL");
 
     switch(n1->tipo)
     {
@@ -3085,9 +3152,17 @@ Short regra_apply_produto_matriz_vetor(apply *a)
 
 Short regra_apply_produto_vetor_vetor(apply *a)
 {
-        no *n1, *n2;
+    if(a == NULL)
+        ERRO("REGRA APPLY SOMA| A E NULL");
+
+    no *n1, *n2;
     n1 = a->n1;
     n2 = a->n2;
+
+    if(n1 == NULL)
+        ERRO("REGRA APPLY SOMA| N1 E NULL");
+    if(n2 == NULL)
+        ERRO("REGRA APPLY SOMA| N2 E NULL");
 
     switch(n1->tipo)
     {
@@ -3180,7 +3255,9 @@ Short regra_apply_produto_vetor_vetor(apply *a)
 no* apply_soma(no *n1, no *n2)
 {
     no *n;
+    printf("\nENTROU SOMA");
     n = apply_base(n1,n2,regra_apply_soma);
+    printf("\nSAIU SOMA");
     return n;
 }
 
@@ -3417,7 +3494,10 @@ void contracao_conta(conta *c)
     for(cc = c; cc != NULL; cc = cc->c)
     {
         na = cc->n;
+    printf("\n24");
+        mostra_conta_no(cc);
         nd = apply_soma(na->at.m.el,na->at.m.th);
+    printf("\n25");
         transfere_conexao(nd,na);
         libera_arvore(na);
         reduz_arvore(&nd,2);
@@ -3429,11 +3509,14 @@ void contracao_conta(conta *c)
 
 conta* tratamento(suporte *s, Short classe, Short classeRef)
 {
+    printf("\n21");
     if(classe == classeRef)
         contracao_conta(s->c[classe]);
 
+    printf("\n22");
     conta *ci;
     ci = espalha(s,classe);
+    printf("\n23");
     return ci;
 }
 
@@ -3442,6 +3525,7 @@ void contracao_QDD(QDD *Q, Short classe)
     Short nqbit;
     nqbit = Q->nqbit;
 
+    printf("\n9");
     lista *lc;
     conta *c, *cc;
     suporte *saux;
@@ -3453,10 +3537,12 @@ void contracao_QDD(QDD *Q, Short classe)
         cc = cc->c;
         cc->n = lc->n;
     }
+    printf("\n10");
     cc = c->c;
     libera_conta_no(c);
     c = cc;
 
+    printf("\n11");
     suporte *s;
     s = cria_suporte(nqbit);
     if(classe == R)
@@ -3464,34 +3550,43 @@ void contracao_QDD(QDD *Q, Short classe)
     else
         s->c[R] = c;
 
+    printf("\n12");
     conta *ci;
     ci = NULL;
     while(s != NULL)
     {
+    printf("\n13");
         ci = tratamento(s,C,classe);
         if(ci != NULL)
             break;
 
+    printf("\n14");
         ci = tratamento(s,V,classe);
         if(ci != NULL)
             break;
 
+    printf("\n15");
         ci = tratamento(s,R,classe);
         if(ci != NULL)
             break;
 
+    printf("\n16");
         saux = s->s;
         libera_suporte_no(s);
         s = saux;
     }
+    printf("\n17");
     if(ci == NULL)
         ERRO("CONTRACAO QDD| NAO DETECTOU NO INICIO");
 
+    printf("\n10");
     Short ex;
     ex = pow(2,ci->nivel);
     produto_arvore_real(ci->n,ex);
 
+    printf("\n19");
     libera_conta_no(ci);
+    printf("\n20");
 }
 
 QDD* produto_QDD_QDD(QDD *Q1, QDD *Q2, no* (*apply_operacao)(no *n1, no *n2), Short classe)
@@ -3499,22 +3594,31 @@ QDD* produto_QDD_QDD(QDD *Q1, QDD *Q2, no* (*apply_operacao)(no *n1, no *n2), Sh
     if(Q1->nqbit != Q2->nqbit)
         ERRO("PRODUTO QDD QDD| Q1 E Q2 TEM QUANTIDADES DIFERENTES DE QBITS");
 
+    printf("\n1");
     no *n;
     n = apply_operacao(Q1->n,Q2->n);
 
+    printf("\n2");
     lista *l;
     l = acha_lista_fim_arvore(n);
 
+    printf("\n3");
     QDD *Q;
     Q = cria_QDD(Q1->nqbit);
     Q->n = n;
     Q->l = l;
     reduz_QDD(Q,2,classe);
 
+    printf("\n4");
     contracao_QDD(Q,classe);
+
+    printf("\n5");
     libera_lista_lista(Q->l);
+    printf("\n6");
     Q->l = acha_lista_fim_QDD(Q);
+    printf("\n7");
     reduz_QDD(Q,1,4);
+    printf("\n8");
     return Q;
 }
 
@@ -3827,6 +3931,8 @@ QDD* controle(QDD *Q, Short controle, Short ativa)
         ERRO("CONTROLE| Q E NULL");
     if(Q->nqbit < 2)
         ERRO("CONTROLE| Q PRECISA TER MAIS QUE 1 QBIT");
+    if(Q->nqbit <= controle)
+        ERRO("CONTROLE| BIT DE CONTROLE ONTROLE PRECISA SER MENOR QUE NQBIT");
 
     QDD *QIn, *Q1, *Q2;
     Q1 = Q00;
@@ -3838,60 +3944,57 @@ QDD* controle(QDD *Q, Short controle, Short ativa)
     printf("\nA");
     if(controle > 0)
     {
-        printf("\nH");
+    printf("\nB");
         QIn = potencia_tensorial(QI,controle);
         Q1 = produto_tensorial(QIn,Q1);
         Q2 = produto_tensorial(QIn,Q2);
         libera_QDD(QIn);
     }
-    printf("\nQ1");
-    mostra_QDD(Q1);
-    printf("\nQ2");
-    mostra_QDD(Q2);
-    printf("\nB");
+
+    printf("\nC");
     if(Q->nqbit - controle > 1)
     {
-        printf("\nI");
+    printf("\nD");
         QIn = potencia_tensorial(QI,Q->nqbit - controle-1);
         Q1aux = produto_tensorial(Q1,QIn);
         Q2aux = produto_tensorial(Q2,QIn);
         libera_QDD(QIn);
         if(Q1->nqbit > 1)
         {
-            printf("\nJ");
+    printf("\nE");
             libera_QDD(Q1);
             libera_QDD(Q2);
         }
+    printf("\nF");
         Q1 = Q1aux;
         Q2 = Q2aux;
     }
-    printf("\nC");
-        printf("\nQ1 total");
-        mostra_QDD(Q1);
-        printf("\nQ2 total");
-        mostra_QDD(Q2);
+    printf("\nG");
+
     if(ativa == 0)
     {
-    printf("\nE");
+    printf("\nH");
         Q1aux = produto_matriz_matriz(Q1,Q);
         libera_QDD(Q1);
         Q1 = Q1aux;
     }
     else
     {
-    printf("\nF");
+        printf("\nI");
         Q2aux = produto_matriz_matriz(Q2,Q);
+    printf("\nM");
         libera_QDD(Q2);
-        Q2 = Q1aux;
+    printf("\nN");
+        Q2 = Q2aux;
     }
-    printf("\nD");
+    printf("\nJ");
 
     QDD *Qc;
     Qc = soma_QDD(Q1,Q2);
 
-    printf("\nG");
+    printf("\nK");
     libera_QDD(Q1);
-    printf("\nH");
+    printf("\nL");
     libera_QDD(Q2);
 
     return Qc;
@@ -3953,6 +4056,8 @@ double teste_velocidade_unico(char *nome, QDD* (*le)(char*), FILE *fp, FILE *fr,
         printf("\t\tTotal: %.3e",tempoT);
         fprintf(fr,"\t\tTotal: %.3e",tempoT);
 
+        *Quantidade = 1;
+
         time_t rawtime;
         struct tm *timeinfo;
         time(&rawtime);
@@ -4006,8 +4111,10 @@ double teste_velocidade_unico(char *nome, QDD* (*le)(char*), FILE *fp, FILE *fr,
     depoisT = clock();
     deltaT = depoisT-antesT;
     tempoT = deltaT/clk;
-    printf("\tTotal: %.3e",tempoT);
-    fprintf(fr,"\tTotal: %.3e",tempoT);
+    printf("\t\tTotal: %.3e",tempoT);
+    fprintf(fr,"\t\tTotal: %.3e",tempoT);
+
+    *Quantidade = quantidade;
 
     time_t rawtime;
     struct tm *timeinfo;
@@ -4016,8 +4123,6 @@ double teste_velocidade_unico(char *nome, QDD* (*le)(char*), FILE *fp, FILE *fr,
 
     printf("\t%02d:%02d  %2d/%02d",timeinfo->tm_hour,timeinfo->tm_min,timeinfo->tm_mday,timeinfo->tm_mon+1);
     fprintf(fr,"\t%02d:%02d  %02d/%02d",timeinfo->tm_hour,timeinfo->tm_min,timeinfo->tm_mday,timeinfo->tm_mon+1);
-
-    *Quantidade = quantidade;
 
     return precisao;
 }
@@ -4232,7 +4337,6 @@ Short teste_memoria()
 
 
 
-
 int main()
 {
     inicia_relatorio_memoria(0);
@@ -4241,17 +4345,22 @@ int main()
     setlocale(LC_ALL, "Portuguese");
     /***********************************/
 
-    QDD *Q1;
-    Q1 = produto_tensorial(QI,QX);
+    configuracao(60);
+
+    QDD *QIn, *Qaux;
+    QIn = potencia_tensorial(QI,39);
+    Qaux = produto_tensorial(QIn,QH);
+    libera_QDD(QIn);
+
+    QDD *Q0;
+    QIn = potencia_tensorial(QI,20);
+    Q0 = produto_tensorial(Qaux,QIn);
+    libera_QDD(Qaux);
+    libera_QDD(QIn);
 
     QDD *Qc;
-    Qc = controle(Q1,0,1);
-    mostra_QDD(Qc);
-
-    libera_QDD(Q1);
-    libera_QDD(Qc);
-
-    mostra_quantidades();
+    Qc = controle(Q0,20,1);
+    mostra_tamanhos();
 
     /***********************************/
     finaliza_structs_globais();
