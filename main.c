@@ -1465,6 +1465,7 @@ QDD* matriz_delta_kronecker(Short r, Short c)
     nf1 = cria_no_fim(1,0);
 
     conecta_UM(ni,nmr,Inicio);
+
     if(r == 0)
         conecta_DOIS(nmr,nmc,nf0);
     else
@@ -3967,9 +3968,47 @@ QDD* Switch(Short nqbit)
 
     libera_QDD(Q2);
     libera_QDD(Q3);
-    libera_QDD(Q4);
 
     return Q1;
+}
+
+QDD** mede(QDD *Q, Short nqbit, double p[2])
+{
+    QDD *Qsw, *Qm;
+    Qm = Q;
+    if(nqbit > 0)
+    {
+        Qsw = Switch(nqbit);
+        Qm = produto_matriz_vetor(Qsw,Q);
+    }
+
+    no *n;
+    n = Qm->n->at.i.n;
+
+    no *ni0, *nm0;
+    ni0 = cria_no_inicio();
+    nm0 = copia_arvore(n->at.m.el);
+    conecta_UM(ni0,nm0,Inicio);
+
+    no *ni1, *nm1;
+    ni1 = cria_no_inicio();
+    nm1 = copia_arvore(n->at.m.el);
+    conecta_UM(ni1,nm1,Inicio);
+
+    QDD *Q0, *Q1;
+    Q0 = cria_QDD(Q->nqbit-1);
+    Q1 = cria_QDD(Q->nqbit-1);
+    Q0->n = ni0;
+    Q1->n = ni0;
+
+    no *np0, *np1;
+    np0 = produto_vetor_vetor(Q0,Q0);
+    np1 = produto_vetor_vetor(Q1,Q1);
+    p[0] = np0->at.f.re;
+    p[1] = np1->at.f.re;
+
+    printf("\np[0] = %.3lf",p[0]);
+    printf("\np[1] = %.3lf",p[1]);
 }
 
 
@@ -4318,10 +4357,10 @@ int main()
     /***********************************/
 
     QDD *Q;
-    Q = Switch(6);
+    double p[2];
+    Q = le_vetor("V2.txt");
+    mede(Q,1,p);
     mostra_QDD(Q);
-
-    mostra_quantidades();
 
     /***********************************/
     finaliza_structs_globais();
