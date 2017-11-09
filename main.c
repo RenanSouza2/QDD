@@ -3328,22 +3328,160 @@ QDD* copia_QDD(QDD *Q1)
 
 conta* espalha(suporte *s, Short classe)
 {
+    no *n, *na, *naux, *nlixo;
+    lista *lc, *lp;
+    conta *c, *cc, *cp, *cpc;
+    suporte *sc;
+    while(s->c[classe] != NULL)
+    {
+        c = s->c[classe];
+        n = c->n;
 
+        cp = cria_conta(0);
+        cp->n = n;
+
+        lc = n->l;
+        while(lc != NULL)
+        {
+            lp = lc->l;
+
+            na = lc->n;
+            if(na->tipo == Inicio)
+            {
+                libera_conta_no(cp);
+                libera_suporte_no(s);
+                return c;
+            }
+
+            for(sc = s; sc->s != NULL; sc = sc->s)
+                if(sc->s->nivel < na->at.m.nivel)
+                    break;
+
+            if(sc->nivel == na->at.m.nivel)
+            {
+                /* Tem suporte */
+                for(cc = sc->c[na->at.m.classe]; cc != NULL; cc = cc->c)
+                    if(cc->n == na)
+                        break;
+
+                if(cc == NULL)
+                {
+                    /* Nao tem conta */
+                }
+                else
+                {
+                    /* Tem conta */
+                    if(cc->nivel > c->nivel)
+                    {
+                        /* Alterar original */
+                    }
+                    if(cc->nivel < c->nivel)
+                    {
+                        /* alterar atual */
+                    }
+                }
+            }
+            else
+            {
+                /* Não tem suporte */
+            }
+
+            lc = lp;
+        }
+        libera_conta_lista(cp);
+
+        libera_arvore(n);
+
+        cc = c->c;
+        libera_conta_no(c);
+        c = cc;
+
+        s->c[classe] = c;
+    }
+    return NULL;
 }
 
 void contracao_conta(conta *c)
 {
+    no *na, *nd;
+    conta *cc;
+    for(cc = c; cc != NULL; cc = cc->c)
+    {
+        na = cc->n;
+        nd = apply_soma(na->at.m.el,na->at.m.th);
+        reduz_arvore(&nd,2);
 
+        transfere_conexao(nd,na);
+        libera_arvore(na);
+
+        cc->n = nd;
+        (cc->nivel)--;
+    }
 }
 
 conta* tratamento(suporte *s, Short classe, Short classeRef)
 {
+    if(classe == classeRef)
+        contracao_conta(s->c[classe]);
 
+    conta *ci;
+    ci = espalha(s,classe);
+    return ci;
 }
 
 void contracao_QDD(QDD *Q, Short classe)
 {
-    mostra_lista_com_no(Q->l);
+    Short nqbit;
+    nqbit = Q->nqbit;
+
+    lista *lc;
+    conta *c, *cc;
+    c = cria_conta(nqbit);
+    cc = c;
+    for(lc = Q->l; lc != NULL; lc = lc->l)
+    {
+        cc->c = cria_conta(nqbit);
+        cc = cc->c;
+        cc->n = lc->n;
+    }
+    cc = c->c;
+    libera_conta_no(c);
+    c = cc;
+    libera_lista_lista(Q->l);
+    Q->l = NULL;
+
+    suporte *s;
+    s = cria_suporte(nqbit);
+    if(classe == R)
+        s->c[C] = c;
+    else
+        s->c[R] = c;
+
+    conta *ci;
+    while(s != NULL)
+    {
+        ci = tratamento(s,C,classe);
+        if(ci != NULL)
+            break;
+
+        ci = tratamento(s,V,classe);
+        if(ci != NULL)
+            break;
+
+        ci = tratamento(s,R,classe);
+        if(ci != NULL)
+            break;
+    }
+    if(ci == NULL)
+        ERRO("CONTACAO QDD| NAO DETECTOU INICIO");
+
+    Long ex;
+    ex = pow(2,ci->nivel);
+    produto_arvore_real(Q->n,ex);
+
+    libera_conta_no(ci);
+
+    Q->l = acha_lista_fim_QDD(Q);
 }
 
 QDD* produto_QDD_QDD(QDD *Q1, QDD *Q2, no* (*apply_operacao)(no *n1, no *n2), Short classe)
@@ -3367,28 +3505,15 @@ QDD* produto_QDD_QDD(QDD *Q1, QDD *Q2, no* (*apply_operacao)(no *n1, no *n2), Sh
     Q->l = l;
     reduz_QDD(Q,2,classe);
 
-    /*libera_lista_lista(Q->l);
+    contracao_QDD(Q,classe);
+    libera_lista_lista(Q->l);
     Q->l = acha_lista_fim_QDD(Q);
-    contracao_QDD(Q,classe);*/
+    return Q;
 }
 
 
 
 /**  Operações QDD algebricas  **/
-
-void produto_QDD_escalar(QDD *Q, no *n1)
-{
-    no *n2, *n3;
-    lista *l;
-    for(l = Q->l; l != NULL; l = l->l)
-    {
-        n2 = l->n;
-        n3 = produto_no_no(n1,n2);
-        transfere_conexao(n3,n2);
-        libera_no(n2);
-        l->n = n3;
-    }
-}
 
 void produto_QDD_no(QDD *Q, no *n1)
 {
