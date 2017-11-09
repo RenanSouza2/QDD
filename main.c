@@ -2544,7 +2544,6 @@ no* apply_base(no *n1, no *n2, Short(*regra_apply)(apply*))
     }
     n = a->n;
 
-    fmostra_apply_lista_sozinho(a,"Apply.txt");
     libera_apply_lista(a);
 
     return n;
@@ -3922,6 +3921,57 @@ QDD* controle(QDD *Q, Short controle, Short ativa)
     return Qc;
 }
 
+QDD* Switch(Short nqbit)
+{
+    QDD *Q1, *Q2, *Q3, *Q4;
+    Q1 = Q00;
+    Q2 = Q01;
+    Q3 = Q10;
+    Q4 = Q11;
+
+    QDD *QIn;
+    if(nqbit > 2)
+    {
+        QIn = potencia_tensorial(QI,nqbit-2);
+
+        Q1 = produto_tensorial(Q1,QIn);
+        Q2 = produto_tensorial(Q2,QIn);
+        Q3 = produto_tensorial(Q3,QIn);
+        Q4 = produto_tensorial(Q4,QIn);
+
+        libera_QDD(QIn);
+    }
+
+    QDD *Q1aux, *Q2aux, *Q3aux, *Q4aux;
+    Q1aux = produto_tensorial(Q1,Q00);
+    Q2aux = produto_tensorial(Q2,Q10);
+    Q3aux = produto_tensorial(Q3,Q01);
+    Q4aux = produto_tensorial(Q4,Q11);
+
+    if(nqbit > 2)
+    {
+        libera_QDD(Q1);
+        libera_QDD(Q2);
+        libera_QDD(Q3);
+        libera_QDD(Q4);
+    }
+
+    Q3 = soma_QDD(Q3aux,Q4aux);
+    Q2 = soma_QDD(Q2aux,Q3);
+    Q1 = soma_QDD(Q1aux,Q2);
+
+    libera_QDD(Q1aux);
+    libera_QDD(Q2aux);
+    libera_QDD(Q3aux);
+    libera_QDD(Q4aux);
+
+    libera_QDD(Q2);
+    libera_QDD(Q3);
+    libera_QDD(Q4);
+
+    return Q1;
+}
+
 
 
 /**  Testes  **/
@@ -4268,8 +4318,10 @@ int main()
     /***********************************/
 
     QDD *Q;
-    Q = produto_matriz_matriz(QH,QH);
+    Q = Switch(6);
     mostra_QDD(Q);
+
+    mostra_quantidades();
 
     /***********************************/
     finaliza_structs_globais();
