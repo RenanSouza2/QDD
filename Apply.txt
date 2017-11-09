@@ -4,369 +4,103 @@
 
 
 Ligacao apply 0
-Endereco (apply): 5797024
+Endereco (apply): 7305376
 
 No 1:
-Endereco (no): 5775784
-
-Tipo: Inicio
-Ligacoes posteriores
-	n: 5775816
-
+Endereco (no): 7305184
+Ligacoes anteriores:
+	Ligacao 0: 7305280
+	Ligacao 1: 7305216
+Tipo: Numero
+5,000e-001 0,000e+000
 
 No 2:
-Endereco (no): 5775784
-
-Tipo: Inicio
+Endereco (no): 7305280
+Ligacoes anteriores:
+	Ligacao 0: 7305216
+Tipo/nivel: C0
 Ligacoes posteriores
-	n: 5775816
-
+	else: 7304928
+	Then: 7305184
 
 No:
-Endereco (no): 5796544
+Endereco (no): 7305568
 
-Tipo: Inicio
+Tipo/nivel: C0
 Ligacoes posteriores
-	n: 5797088
+	else: 7305600
+	Then: 7305472
 
 
+a1: 7305120
+a2: 7305632
 
-a1: 5797216
-a2: 0
-
-a proximo:  5797216
+a proximo:  7305120
 
 
 
 
 
 Ligacao apply 1
-Endereco (apply): 5797216
+Endereco (apply): 7305120
 
 No 1:
-Endereco (no): 5775816
+Endereco (no): 7305184
 Ligacoes anteriores:
-	Ligacao 0: 5775784
-Tipo/nivel: R0
-Ligacoes posteriores
-	else: 5775880
-	Then: 5775848
+	Ligacao 0: 7305280
+	Ligacao 1: 7305216
+Tipo: Numero
+5,000e-001 0,000e+000
 
 No 2:
-Endereco (no): 5775816
+Endereco (no): 7304928
 Ligacoes anteriores:
-	Ligacao 0: 5775784
-Tipo/nivel: R0
-Ligacoes posteriores
-	else: 5775880
-	Then: 5775848
+	Ligacao 0: 7305280
+Tipo: Numero
+-5,000e-001 0,000e+000
 
 No:
-Endereco (no): 5797088
+Endereco (no): 7305600
 Ligacoes anteriores:
-	Ligacao 0: 5796544
-Tipo/nivel: R0
-Ligacoes posteriores
-	else: 5796608
-	Then: 5797472
+	Ligacao 0: 7305568
+Tipo: Numero
+0,000e+000 0,000e+000
 
 
-a1: 5796640
-a2: 5796896
+a1: 0
+a2: 0
 
-a proximo:  5796640
+a proximo:  7305632
 
 
 
 
 
 Ligacao apply 2
-Endereco (apply): 5796640
+Endereco (apply): 7305632
 
 No 1:
-Endereco (no): 5775880
+Endereco (no): 7305184
 Ligacoes anteriores:
-	Ligacao 0: 5775848
-	Ligacao 1: 5775816
-Tipo: Numero
-7,071e-001 0,000e+000
-
-No 2:
-Endereco (no): 5775816
-Ligacoes anteriores:
-	Ligacao 0: 5775784
-Tipo/nivel: R0
-Ligacoes posteriores
-	else: 5775880
-	Then: 5775848
-
-No:
-Endereco (no): 5796608
-Ligacoes anteriores:
-	Ligacao 0: 5797088
-Tipo/nivel: V0
-Ligacoes posteriores
-	else: 5796864
-	Then: 5797280
-
-
-a1: 5797056
-a2: 5796960
-
-a proximo:  5797056
-
-
-
-
-
-Ligacao apply 3
-Endereco (apply): 5797056
-
-No 1:
-Endereco (no): 5775880
-Ligacoes anteriores:
-	Ligacao 0: 5775848
-	Ligacao 1: 5775816
-Tipo: Numero
-7,071e-001 0,000e+000
-
-No 2:
-Endereco (no): 5775880
-Ligacoes anteriores:
-	Ligacao 0: 5775848
-	Ligacao 1: 5775816
-Tipo: Numero
-7,071e-001 0,000e+000
-
-No:
-Endereco (no): 5796864
-Ligacoes anteriores:
-	Ligacao 0: 5797472
-	Ligacao 1: 5797280
-	Ligacao 2: 5796608
+	Ligacao 0: 7305280
+	Ligacao 1: 7305216
 Tipo: Numero
 5,000e-001 0,000e+000
 
-
-a1: 0
-a2: 0
-
-a proximo:  5796960
-
-
-
-
-
-Ligacao apply 4
-Endereco (apply): 5796960
-
-No 1:
-Endereco (no): 5775880
-Ligacoes anteriores:
-	Ligacao 0: 5775848
-	Ligacao 1: 5775816
-Tipo: Numero
-7,071e-001 0,000e+000
-
 No 2:
-Endereco (no): 5775848
+Endereco (no): 7305184
 Ligacoes anteriores:
-	Ligacao 0: 5775816
-Tipo/nivel: C0
-Ligacoes posteriores
-	else: 5775880
-	Then: 5775912
+	Ligacao 0: 7305280
+	Ligacao 1: 7305216
+Tipo: Numero
+5,000e-001 0,000e+000
 
 No:
-Endereco (no): 5797280
+Endereco (no): 7305472
 Ligacoes anteriores:
-	Ligacao 0: 5796608
-Tipo/nivel: C0
-Ligacoes posteriores
-	else: 5796864
-	Then: 5797152
-
-
-a1: 5797056
-a2: 5797120
-
-a proximo:  5797120
-
-
-
-
-
-Ligacao apply 5
-Endereco (apply): 5797120
-
-No 1:
-Endereco (no): 5775880
-Ligacoes anteriores:
-	Ligacao 0: 5775848
-	Ligacao 1: 5775816
+	Ligacao 0: 7305568
 Tipo: Numero
-7,071e-001 0,000e+000
-
-No 2:
-Endereco (no): 5775912
-Ligacoes anteriores:
-	Ligacao 0: 5775848
-Tipo: Numero
--7,071e-001 0,000e+000
-
-No:
-Endereco (no): 5797152
-Ligacoes anteriores:
-	Ligacao 0: 5797280
-Tipo: Numero
--5,000e-001 0,000e+000
-
-
-a1: 0
-a2: 0
-
-a proximo:  5796896
-
-
-
-
-
-Ligacao apply 6
-Endereco (apply): 5796896
-
-No 1:
-Endereco (no): 5775848
-Ligacoes anteriores:
-	Ligacao 0: 5775816
-Tipo/nivel: C0
-Ligacoes posteriores
-	else: 5775880
-	Then: 5775912
-
-No 2:
-Endereco (no): 5775816
-Ligacoes anteriores:
-	Ligacao 0: 5775784
-Tipo/nivel: R0
-Ligacoes posteriores
-	else: 5775880
-	Then: 5775848
-
-No:
-Endereco (no): 5797472
-Ligacoes anteriores:
-	Ligacao 0: 5797088
-Tipo/nivel: V0
-Ligacoes posteriores
-	else: 5796864
-	Then: 5796480
-
-
-a1: 5797056
-a2: 5797344
-
-a proximo:  5797344
-
-
-
-
-
-Ligacao apply 7
-Endereco (apply): 5797344
-
-No 1:
-Endereco (no): 5775912
-Ligacoes anteriores:
-	Ligacao 0: 5775848
-Tipo: Numero
--7,071e-001 0,000e+000
-
-No 2:
-Endereco (no): 5775848
-Ligacoes anteriores:
-	Ligacao 0: 5775816
-Tipo/nivel: C0
-Ligacoes posteriores
-	else: 5775880
-	Then: 5775912
-
-No:
-Endereco (no): 5796480
-Ligacoes anteriores:
-	Ligacao 0: 5797472
-Tipo/nivel: C0
-Ligacoes posteriores
-	else: 5796512
-	Then: 5796576
-
-
-a1: 5797376
-a2: 5797408
-
-a proximo:  5797376
-
-
-
-
-
-Ligacao apply 8
-Endereco (apply): 5797376
-
-No 1:
-Endereco (no): 5775912
-Ligacoes anteriores:
-	Ligacao 0: 5775848
-Tipo: Numero
--7,071e-001 0,000e+000
-
-No 2:
-Endereco (no): 5775880
-Ligacoes anteriores:
-	Ligacao 0: 5775848
-	Ligacao 1: 5775816
-Tipo: Numero
-7,071e-001 0,000e+000
-
-No:
-Endereco (no): 5796512
-Ligacoes anteriores:
-	Ligacao 0: 5796480
-Tipo: Numero
--5,000e-001 0,000e+000
-
-
-a1: 0
-a2: 0
-
-a proximo:  5797408
-
-
-
-
-
-Ligacao apply 9
-Endereco (apply): 5797408
-
-No 1:
-Endereco (no): 5775912
-Ligacoes anteriores:
-	Ligacao 0: 5775848
-Tipo: Numero
--7,071e-001 0,000e+000
-
-No 2:
-Endereco (no): 5775912
-Ligacoes anteriores:
-	Ligacao 0: 5775848
-Tipo: Numero
--7,071e-001 0,000e+000
-
-No:
-Endereco (no): 5796576
-Ligacoes anteriores:
-	Ligacao 0: 5796480
-Tipo: Numero
-5,000e-001 -0,000e+000
+1,000e+000 0,000e+000
 
 
 a1: 0

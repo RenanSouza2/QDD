@@ -3330,8 +3330,9 @@ conta* espalha(suporte *s, Short classe)
 {
     no *n, *na, *naux, *nlixo;
     lista *lc, *lp;
-    conta *c, *cc, *cp, *cpc;
-    suporte *sc;
+    conta *c, *cc, *cp, *cpc, *caux;
+    suporte *sc, *saux;
+    Short lado, delta, ex;
     while(s->c[classe] != NULL)
     {
         c = s->c[classe];
@@ -3367,6 +3368,11 @@ conta* espalha(suporte *s, Short classe)
                 if(cc == NULL)
                 {
                     /* Nao tem conta */
+                    caux = cria_conta(c->nivel);
+                    caux->n = na;
+
+                    caux->c = sc->c[na->at.m.classe];
+                    sc->c[na->at.m.classe] = caux;
                 }
                 else
                 {
@@ -3374,16 +3380,64 @@ conta* espalha(suporte *s, Short classe)
                     if(cc->nivel > c->nivel)
                     {
                         /* Alterar original */
+                        if(n == na->at.m.el)
+                            nlixo = na->at.m.th;
+                        else
+                            nlixo = na->at.m.el;
+
+                        lado = desconecta_UM(na,nlixo);
+                        naux = copia_arvore(nlixo);
+
+                        delta = cc->nivel - c->nivel;
+                        ex = pow(2,delta);
+                        produto_arvore_real(naux,ex);
+
+                        conecta_UM(na,naux,lado);
+                        libera_arvore(nlixo);
+
+                        cc->nivel = c->nivel;
                     }
                     if(cc->nivel < c->nivel)
                     {
                         /* alterar atual */
+                        delta = c->nivel - cc->nivel;
+                        ex = pow(2,delta);
+
+                        for(cpc = cp; cpc->c != NULL; cpc = cpc->c)
+                            if(cpc->c->nivel > delta)
+                                break;
+
+                        if(cpc->nivel == delta)
+                        {
+                            naux = cpc->n;
+                        }
+                        else
+                        {
+                            naux = copia_arvore(n);
+                            produto_arvore_real(naux,ex);
+
+                            caux = cria_conta(delta);
+                            caux->n = naux;
+
+                            caux->c = cpc->c;
+                            cpc->c = caux;
+                        }
+                        lado = desconecta_UM(na,n);
+                        conecta_UM(na,naux,lado);
                     }
                 }
             }
             else
             {
                 /* Não tem suporte */
+                caux = cria_conta(c->nivel);
+                caux->n = na;
+
+                saux = cria_suporte(na->at.m.nivel);
+                saux->c[na->at.m.classe] = caux;
+
+                saux->s = sc->s;
+                sc->s = saux;
             }
 
             lc = lp;
@@ -3458,6 +3512,7 @@ void contracao_QDD(QDD *Q, Short classe)
         s->c[R] = c;
 
     conta *ci;
+    suporte *saux;
     while(s != NULL)
     {
         ci = tratamento(s,C,classe);
@@ -3471,6 +3526,10 @@ void contracao_QDD(QDD *Q, Short classe)
         ci = tratamento(s,R,classe);
         if(ci != NULL)
             break;
+
+        saux = s->s;
+        libera_suporte_no(s);
+        s = saux;
     }
     if(ci == NULL)
         ERRO("CONTACAO QDD| NAO DETECTOU INICIO");
@@ -3508,6 +3567,8 @@ QDD* produto_QDD_QDD(QDD *Q1, QDD *Q2, no* (*apply_operacao)(no *n1, no *n2), Sh
     contracao_QDD(Q,classe);
     libera_lista_lista(Q->l);
     Q->l = acha_lista_fim_QDD(Q);
+    reduz_QDD(Q,1,4);
+
     return Q;
 }
 
@@ -4206,7 +4267,9 @@ int main()
     setlocale(LC_ALL, "Portuguese");
     /***********************************/
 
-    produto_matriz_matriz(QH,QH);
+    QDD *Q;
+    Q = produto_matriz_matriz(QH,QH);
+    mostra_QDD(Q);
 
     /***********************************/
     finaliza_structs_globais();
