@@ -1,0 +1,33 @@
+
+
+
+
+
+Ligacao apply 0
+Endereco (apply): 24339976
+
+No 1:
+Endereco (no): 24339912
+Ligacoes anteriores:
+	Ligacao 0: 22524264
+Tipo: Numero
+2,189e-001 0,000e+000
+
+No 2:
+Endereco (no): 24340744
+Ligacoes anteriores:
+	Ligacao 0: 22524264
+Tipo: Numero
+2,189e-001 0,000e+000
+
+No:
+Endereco (no): 24340392
+
+Tipo: Numero
+4,377e-001 0,000e+000
+
+
+a1: 0
+a2: 0
+
+a proximo:  0

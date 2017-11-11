@@ -392,6 +392,9 @@ void libera_no(no *n)
 
 void libera_lista_no(lista *l)
 {
+    if(l == NULL)
+        return;
+
     diminui_memoria(tL);
     if(iL == 0)
         ERRO("LIBERA LISTA");
@@ -2119,16 +2122,18 @@ void reduz_lista_fim(lista *l, Short ex)
 void reduz_QDD(QDD *Q, Short ex, Short classe)
 {
     reduz_lista_fim(Q->l,ex);
-    lista *l, *lf;
+    lista *l;
     l = copia_lista_sem_cabeca(Q->l);
-    lf = acha_fim_lista(l);
 
     no *nc, *n1, *n2;
     lista *lnc1, *lnc2, *lnc3, *lnc4, *lr, *lrc;
+    lista *laux;
     Short mudou;
     while(l != NULL)
     {
         nc = l->n;
+        if(nc->l == NULL)
+            ERRO("REDUZ QDD| NC NAO TEM ANTERIORES");
 
         /* Regra 1 */
         do
@@ -2136,21 +2141,22 @@ void reduz_QDD(QDD *Q, Short ex, Short classe)
             mudou = 0;
 
             n1 = nc->l->n;
+            if(n1->tipo == Inicio)
+                break;
 
             lnc3 = NULL;
             lnc4 = NULL;
             while(n1->at.m.el == n1->at.m.th)
             {
-                if(n1->tipo == Inicio)
-                    break;
-
                 desconecta_DOIS(n1);
                 transfere_conexao(nc,n1);
+                laux = l;
                 libera_no(n1);
+
                 n1 = nc->l->n;
+                if(n1->tipo == Inicio)
+                    break;
             }
-            if(n1->tipo == Inicio)
-                break;
 
             lnc2 = nc->l;
             lnc1 = lnc2->l;
@@ -2178,6 +2184,8 @@ void reduz_QDD(QDD *Q, Short ex, Short classe)
             lnc3 = lnc4;
         }
         while(mudou);
+        if(nc->l->n->tipo == Inicio)
+            break;
 
         /* Regra 2 */
         lnc1 = nc->l;
@@ -2220,6 +2228,7 @@ void reduz_QDD(QDD *Q, Short ex, Short classe)
                         }
                     }
 
+                    laux = NULL;
                     while(lr->l != NULL)
                     {
                         lrc = lr->l;
@@ -2230,14 +2239,54 @@ void reduz_QDD(QDD *Q, Short ex, Short classe)
 
                         lr->l = lrc->l;
 
+                        if(laux == NULL)
+                        for(laux = l; laux != NULL; laux = laux->l)
+                            if(laux->n == n2)
+                                break;
                         libera_no(n2);
                         libera_lista_no(lrc);
                     }
                     libera_lista_no(lr);
 
-                    lf->l = cria_lista();
-                    lf = lf->l;
-                    lf->n = n1;
+                    if(laux == NULL)
+                    {
+
+                        for(laux = l; laux->l != NULL; laux = laux->l)
+                        {
+                            n2 = laux->l->n;
+                            if(n2->tipo != Meio)
+                                continue;
+                            if(n2->at.m.nivel > n1->at.m.nivel)
+                                continue;
+                            if(n2->at.m.nivel == n1->at.m.nivel)
+                            {
+                                switch(n1->at.m.classe)
+                                {
+                                    case R:
+                                        /* n1 e r */
+                                        if(n2->at.m.classe != R)
+                                            continue;
+                                        break;
+
+                                    case V:
+                                        /* n1 e v */
+                                        if(n2->at.m.classe == C)
+                                            continue;
+                                        break;
+                                }
+                            }
+
+                            lr = cria_lista();
+                            lr->n = n1;
+
+                            lr->l = laux->l;
+                            laux->l = lr;
+                        }
+                    }
+                    else
+                    {
+                        laux->n = n1;
+                    }
 
                     break;
                 }
@@ -2255,6 +2304,7 @@ void reduz_QDD(QDD *Q, Short ex, Short classe)
         libera_lista_no(l);
         l = lnc1;
     }
+    libera_lista_no(l);
 }
 
 void reduz_arvore(no **n, Short ex)
@@ -2545,6 +2595,7 @@ no* apply_base(no *n1, no *n2, Short(*regra_apply)(apply*))
     }
     n = a->n;
 
+    fmostra_apply_lista_sozinho(a,"APPLYcontracao.txt");
     libera_apply_lista(a);
 
     return n;
@@ -3562,6 +3613,10 @@ QDD* produto_QDD_QDD(QDD *Q1, QDD *Q2, no* (*apply_operacao)(no *n1, no *n2), Sh
     Q = cria_QDD(Q1->nqbit);
     Q->n = n;
     Q->l = l;
+    mostra_lista_com_no(l);
+    printf("\n\t\t\t\tAQUI PORRA");
+    reduz_lista_fim(l,2);
+    mostra_lista_com_no(l);
     reduz_QDD(Q,2,classe);
 
     contracao_QDD(Q,classe);
@@ -3974,41 +4029,7 @@ QDD* Switch(Short nqbit)
 
 QDD** mede(QDD *Q, Short nqbit, double p[2])
 {
-    QDD *Qsw, *Qm;
-    Qm = Q;
-    if(nqbit > 0)
-    {
-        Qsw = Switch(nqbit);
-        Qm = produto_matriz_vetor(Qsw,Q);
-    }
 
-    no *n;
-    n = Qm->n->at.i.n;
-
-    no *ni0, *nm0;
-    ni0 = cria_no_inicio();
-    nm0 = copia_arvore(n->at.m.el);
-    conecta_UM(ni0,nm0,Inicio);
-
-    no *ni1, *nm1;
-    ni1 = cria_no_inicio();
-    nm1 = copia_arvore(n->at.m.el);
-    conecta_UM(ni1,nm1,Inicio);
-
-    QDD *Q0, *Q1;
-    Q0 = cria_QDD(Q->nqbit-1);
-    Q1 = cria_QDD(Q->nqbit-1);
-    Q0->n = ni0;
-    Q1->n = ni0;
-
-    no *np0, *np1;
-    np0 = produto_vetor_vetor(Q0,Q0);
-    np1 = produto_vetor_vetor(Q1,Q1);
-    p[0] = np0->at.f.re;
-    p[1] = np1->at.f.re;
-
-    printf("\np[0] = %.3lf",p[0]);
-    printf("\np[1] = %.3lf",p[1]);
 }
 
 
@@ -4348,6 +4369,47 @@ Short teste_memoria()
 
 
 
+Short teste_epsilon(Short i, Short j)
+{
+    char nome[30];
+        sprintf(nome,"V%hu.txt",i);
+
+        QDD *Q;
+        Q = le_vetor(nome);
+        configuracao(j);
+        printf("\nVetor: %hu",i);
+        printf("\nConfiguracao: %hu",Nqbit);
+
+        Long memAntes, memDepois;
+        float red;
+        memAntes = mem;
+        reduz_QDD(Q,1,4);
+        memDepois = mem;
+        red = 1-((float)memDepois/memAntes);
+        printf("\nMemAntes : %llu",memAntes);
+        printf("\nMemDepois: %llu",memDepois);
+        printf("\nRed: %.3f",red);
+
+        no *n;
+        float m, e;
+        n = produto_vetor_vetor(Q,Q);
+        m = sqrt(n->at.f.re);
+        e = 1-m;
+        printf("\n|Q| = %f",m);
+        printf("\nE: %.0e\n",e);
+        libera_QDD(Q);
+        libera_no(n);
+
+        mostra_quantidades();
+        if(memDepois == 68)
+            return 1;
+        if(memAntes == memDepois)
+            return 1;
+        if(e > 0.95)
+            return 1;
+        return 0;
+}
+
 int main()
 {
     inicia_relatorio_memoria(0);
@@ -4356,11 +4418,82 @@ int main()
     setlocale(LC_ALL, "Portuguese");
     /***********************************/
 
-    QDD *Q;
-    double p[2];
-    Q = le_vetor("V2.txt");
-    mede(Q,1,p);
-    mostra_QDD(Q);
+    /*for(Short i=1; i<23; i ++)
+    {
+        Short para;
+        for(Short j=i; j>=1; j--)
+        {
+            para = teste_epsilon(i,j);
+            if(para)
+                break;
+        }
+        for(Short j=i+1; j<=30; j++)
+        {
+            para = teste_epsilon(i,j);
+            if(para)
+                break;
+        }
+    }*/
+
+    /*for(Short i=1; i<=23; i++)
+    {
+        configuracao(i);
+        char nome[30];
+        sprintf(nome,"V%hu.txt",i);
+        QDD *Q;
+        Q = le_vetor(nome);
+        reduz_QDD(Q,1,4);
+        no *n;
+        n = produto_vetor_vetor(Q,Q);
+        float m;
+        m = sqrt(n->at.f.re);
+        printf("\n\nVetor: %hu",i);
+        printf("\n|Q| = %f",m);
+        libera_QDD(Q);
+        libera_no(n);
+        Q = le_vetor(nome);
+        reduz_QDD(Q,1,4);
+        lista *l;
+        for(l = Q->l; l != NULL; l = l->l)
+        {
+            n = produto_no_conjugado_no(l->n,l->n);
+            transfere_conexao(n,l->n);
+            libera_no(l->n);
+            l->n = n;
+        }
+        contracao_QDD(Q,V);
+        m = sqrt(Q->l->n->at.f.re);
+        printf("\n|Q| = %f",m);
+        libera_QDD(Q);
+    }*/
+
+    /*QDD *Q;
+    Q = le_vetor("V21.txt");
+    configuracao(21);
+    printf("\nA");
+    reduz_QDD(Q,1,4);
+    printf("\nB");
+    no *n;
+    lista *l;
+    for(l = Q->l; l != NULL; l = l->l)
+    {
+        n = produto_no_conjugado_no(l->n,l->n);
+        transfere_conexao(n,l->n);
+        libera_no(l->n);
+        l->n = n;
+    }
+    printf("\nC");
+    reduz_lista_fim(Q->l,2);
+    printf("\nD");
+    libera_QDD(Q);
+    printf("\nE");*/
+
+    /*QDD *Q;
+    Q = le_vetor("V12.txt");
+    configuracao(19);
+    reduz_QDD(Q,1,4);
+
+    libera_QDD(Q);*/
 
     /***********************************/
     finaliza_structs_globais();
