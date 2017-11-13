@@ -4,24 +4,24 @@
 
 
 Ligacao apply 0
-Endereco (apply): 24339976
+Endereco (apply): 17822152
 
 No 1:
-Endereco (no): 24339912
+Endereco (no): 17822088
 Ligacoes anteriores:
-	Ligacao 0: 22524264
+	Ligacao 0: 15532864
 Tipo: Numero
 2,189e-001 0,000e+000
 
 No 2:
-Endereco (no): 24340744
+Endereco (no): 17822984
 Ligacoes anteriores:
-	Ligacao 0: 22524264
+	Ligacao 0: 15532864
 Tipo: Numero
 2,189e-001 0,000e+000
 
 No:
-Endereco (no): 24340392
+Endereco (no): 17822760
 
 Tipo: Numero
 4,377e-001 0,000e+000

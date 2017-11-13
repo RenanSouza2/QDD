@@ -1,0 +1,370 @@
+
+Endereco (QDD): 5730424
+NQBIT: 3
+Itens: 31
+
+
+	Ligacao 0:
+Endereco (no): 5733832
+
+Tipo: Inicio
+Ligacoes posteriores
+	n: 5738896
+
+
+
+	Ligacao 1:
+Endereco (no): 5738896
+Ligacoes anteriores:
+	Ligacao   0: 5733832
+Tipo/nivel: R0
+Ligacoes posteriores
+	else: 5738928
+	Then: 5739184
+
+
+	Ligacao 2:
+Endereco (no): 5738928
+Ligacoes anteriores:
+	Ligacao   0: 5738896
+Tipo/nivel: C0
+Ligacoes posteriores
+	else: 5739120
+	Then: 5738992
+
+
+	Ligacao 3:
+Endereco (no): 5739120
+Ligacoes anteriores:
+	Ligacao   0: 5738928
+Tipo/nivel: R1
+Ligacoes posteriores
+	else: 5739408
+	Then: 5738608
+
+
+	Ligacao 4:
+Endereco (no): 5739408
+Ligacoes anteriores:
+	Ligacao   0: 5739120
+Tipo/nivel: C1
+Ligacoes posteriores
+	else: 5739440
+	Then: 5738576
+
+
+	Ligacao 5:
+Endereco (no): 5739440
+Ligacoes anteriores:
+	Ligacao   0: 5739408
+Tipo/nivel: R2
+Ligacoes posteriores
+	else: 5732480
+	Then: 5733288
+
+
+	Ligacao 6:
+Endereco (no): 5732480
+Ligacoes anteriores:
+	Ligacao   0: 5739440
+	Ligacao   1: 5738576
+	Ligacao   2: 5738384
+	Ligacao   3: 5738416
+	Ligacao   4: 5739056
+	Ligacao   5: 5738288
+	Ligacao   6: 5738320
+	Ligacao   7: 5738448
+	Ligacao   8: 5737680
+	Ligacao   9: 5737904
+	Ligacao  10: 5733288
+	Ligacao  11: 5733064
+Tipo: Numero
+3,536e-001 0,000e+000
+
+
+	Ligacao 7:
+Endereco (no): 5733288
+Ligacoes anteriores:
+	Ligacao   0: 5739440
+	Ligacao   1: 5738576
+	Ligacao   2: 5738384
+	Ligacao   3: 5738416
+	Ligacao   4: 5739056
+	Ligacao   5: 5738288
+	Ligacao   6: 5738320
+	Ligacao   7: 5738448
+	Ligacao   8: 5737680
+	Ligacao   9: 5737904
+Tipo/nivel: C2
+Ligacoes posteriores
+	else: 5732480
+	Then: 5732576
+
+
+	Ligacao 8:
+Endereco (no): 5732576
+Ligacoes anteriores:
+	Ligacao   0: 5738512
+	Ligacao   1: 5733288
+	Ligacao   2: 5733064
+Tipo: Numero
+-3,536e-001 0,000e+000
+
+
+	Ligacao 9:
+Endereco (no): 5738576
+Ligacoes anteriores:
+	Ligacao   0: 5739408
+Tipo/nivel: R2
+Ligacoes posteriores
+	else: 5732480
+	Then: 5733288
+
+
+	Ligacao 10:
+Endereco (no): 5738608
+Ligacoes anteriores:
+	Ligacao   0: 5739120
+Tipo/nivel: C1
+Ligacoes posteriores
+	else: 5739056
+	Then: 5738512
+
+
+	Ligacao 11:
+Endereco (no): 5739056
+Ligacoes anteriores:
+	Ligacao   0: 5738608
+Tipo/nivel: R2
+Ligacoes posteriores
+	else: 5732480
+	Then: 5733288
+
+
+	Ligacao 12:
+Endereco (no): 5738512
+Ligacoes anteriores:
+	Ligacao   0: 5738800
+	Ligacao   1: 5738768
+	Ligacao   2: 5738960
+	Ligacao   3: 5738960
+	Ligacao   4: 5738864
+	Ligacao   5: 5738608
+Tipo/nivel: R2
+Ligacoes posteriores
+	else: 5732576
+	Then: 5733064
+
+
+	Ligacao 13:
+Endereco (no): 5733064
+Ligacoes anteriores:
+	Ligacao   0: 5738512
+Tipo/nivel: C2
+Ligacoes posteriores
+	else: 5732576
+	Then: 5732480
+
+
+	Ligacao 14:
+Endereco (no): 5738992
+Ligacoes anteriores:
+	Ligacao   0: 5738928
+Tipo/nivel: R1
+Ligacoes posteriores
+	else: 5739152
+	Then: 5738864
+
+
+	Ligacao 15:
+Endereco (no): 5739152
+Ligacoes anteriores:
+	Ligacao   0: 5738992
+Tipo/nivel: C1
+Ligacoes posteriores
+	else: 5738384
+	Then: 5738416
+
+
+	Ligacao 16:
+Endereco (no): 5738384
+Ligacoes anteriores:
+	Ligacao   0: 5739152
+Tipo/nivel: R2
+Ligacoes posteriores
+	else: 5732480
+	Then: 5733288
+
+
+	Ligacao 17:
+Endereco (no): 5738416
+Ligacoes anteriores:
+	Ligacao   0: 5739152
+Tipo/nivel: R2
+Ligacoes posteriores
+	else: 5732480
+	Then: 5733288
+
+
+	Ligacao 18:
+Endereco (no): 5738864
+Ligacoes anteriores:
+	Ligacao   0: 5738992
+Tipo/nivel: C1
+Ligacoes posteriores
+	else: 5738288
+	Then: 5738512
+
+
+	Ligacao 19:
+Endereco (no): 5738288
+Ligacoes anteriores:
+	Ligacao   0: 5738864
+Tipo/nivel: R2
+Ligacoes posteriores
+	else: 5732480
+	Then: 5733288
+
+
+	Ligacao 20:
+Endereco (no): 5739184
+Ligacoes anteriores:
+	Ligacao   0: 5738896
+Tipo/nivel: C0
+Ligacoes posteriores
+	else: 5739344
+	Then: 5739024
+
+
+	Ligacao 21:
+Endereco (no): 5739344
+Ligacoes anteriores:
+	Ligacao   0: 5739184
+Tipo/nivel: R1
+Ligacoes posteriores
+	else: 5738544
+	Then: 5738768
+
+
+	Ligacao 22:
+Endereco (no): 5738544
+Ligacoes anteriores:
+	Ligacao   0: 5739344
+Tipo/nivel: C1
+Ligacoes posteriores
+	else: 5738320
+	Then: 5738448
+
+
+	Ligacao 23:
+Endereco (no): 5738320
+Ligacoes anteriores:
+	Ligacao   0: 5738544
+Tipo/nivel: R2
+Ligacoes posteriores
+	else: 5732480
+	Then: 5733288
+
+
+	Ligacao 24:
+Endereco (no): 5738448
+Ligacoes anteriores:
+	Ligacao   0: 5738544
+Tipo/nivel: R2
+Ligacoes posteriores
+	else: 5732480
+	Then: 5733288
+
+
+	Ligacao 25:
+Endereco (no): 5738768
+Ligacoes anteriores:
+	Ligacao   0: 5739344
+Tipo/nivel: C1
+Ligacoes posteriores
+	else: 5737680
+	Then: 5738512
+
+
+	Ligacao 26:
+Endereco (no): 5737680
+Ligacoes anteriores:
+	Ligacao   0: 5738768
+Tipo/nivel: R2
+Ligacoes posteriores
+	else: 5732480
+	Then: 5733288
+
+
+	Ligacao 27:
+Endereco (no): 5739024
+Ligacoes anteriores:
+	Ligacao   0: 5739184
+Tipo/nivel: R1
+Ligacoes posteriores
+	else: 5738960
+	Then: 5738800
+
+
+	Ligacao 28:
+Endereco (no): 5738960
+Ligacoes anteriores:
+	Ligacao   0: 5739024
+Tipo/nivel: C1
+Ligacoes posteriores
+	else: 5738512
+	Then: 5738512
+
+
+	Ligacao 29:
+Endereco (no): 5738800
+Ligacoes anteriores:
+	Ligacao   0: 5739024
+Tipo/nivel: C1
+Ligacoes posteriores
+	else: 5738512
+	Then: 5737904
+
+
+	Ligacao 30:
+Endereco (no): 5737904
+Ligacoes anteriores:
+	Ligacao   0: 5738800
+Tipo/nivel: R2
+Ligacoes posteriores
+	else: 5732480
+	Then: 5733288
+
+
+
+AMPLITUDES
+
+	Ligacao 0:
+Endereco (no): 5732480
+Ligacoes anteriores:
+	Ligacao   0: 5739440
+	Ligacao   1: 5738576
+	Ligacao   2: 5738384
+	Ligacao   3: 5738416
+	Ligacao   4: 5739056
+	Ligacao   5: 5738288
+	Ligacao   6: 5738320
+	Ligacao   7: 5738448
+	Ligacao   8: 5737680
+	Ligacao   9: 5737904
+	Ligacao  10: 5733288
+	Ligacao  11: 5733064
+Tipo: Numero
+3,536e-001 0,000e+000
+
+
+	Ligacao 1:
+Endereco (no): 5732576
+Ligacoes anteriores:
+	Ligacao   0: 5738512
+	Ligacao   1: 5733288
+	Ligacao   2: 5733064
+Tipo: Numero
+-3,536e-001 0,000e+000
+
+

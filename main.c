@@ -564,7 +564,7 @@ void mostra_lista(lista *l)
     for(lc = l; lc != NULL; lc = lc->l)
     {
         n = lc->n;
-        printf("\n\tLigacao %d:",ligacao);
+        printf("\n\tLigacao %3d:",ligacao);
         printf(" %d",n);
         ligacao++;
     }
@@ -865,7 +865,7 @@ void fmostra_lista(FILE *fp, lista *l)
     for(lc = l; lc != NULL; lc = lc->l)
     {
         n = lc->n;
-        fprintf(fp,"\n\tLigacao %d:",ligacao);
+        fprintf(fp,"\n\tLigacao %3d:",ligacao);
         fprintf(fp," %d",n);
         ligacao++;
     }
@@ -2121,16 +2121,20 @@ void reduz_lista_fim(lista *l, Short ex)
 
 void reduz_QDD(QDD *Q, Short ex, Short classe)
 {
+    FILE *fr;
+    fr = fopen("Reducao.txt","w");
+
     reduz_lista_fim(Q->l,ex);
     lista *l;
     l = copia_lista_sem_cabeca(Q->l);
 
     no *nc, *n1, *n2;
-    lista *lnc1, *lnc2, *lnc3, *lnc4, *lr, *lrc;
-    lista *laux;
-    Short mudou;
+    lista *lnc1, *lnc2, *lnc3, *lnc4, *lp, *laux;
+    Short mudou, inicio;
+    inicio = 0;
     while(l != NULL)
     {
+        fprintf(fr,"\nNovo no nc");
         nc = l->n;
         if(nc->l == NULL)
             ERRO("REDUZ QDD| NC NAO TEM ANTERIORES");
@@ -2155,7 +2159,10 @@ void reduz_QDD(QDD *Q, Short ex, Short classe)
 
                 n1 = nc->l->n;
                 if(n1->tipo == Inicio)
+                {
+                    inicio = 1;
                     break;
+                }
             }
 
             lnc2 = nc->l;
@@ -2184,120 +2191,68 @@ void reduz_QDD(QDD *Q, Short ex, Short classe)
             lnc3 = lnc4;
         }
         while(mudou);
-        if(nc->l->n->tipo == Inicio)
+        if(inicio)
             break;
 
         /* Regra 2 */
-        lnc1 = nc->l;
-        while(lnc1->l != NULL)
+        for(lnc1 = nc->l; lnc1 != NULL; lnc1 = lnc1->l)
         {
             n1 = lnc1->n;
+            if(n1->at.m.el == n1->at.m.th)
+                ERRO("REDUZ QDD| REDUNDANCIA TIPO JA DEVERIA TER SIDO ELIMINADA");
 
-            lnc2 = nc->l;
-            while(lnc2 != NULL)
+            for(lnc2 = nc->l; lnc2 != NULL; lnc2 = lp)
             {
-                if(lnc2 == lnc1)
-                {
-                    lnc2 = lnc2->l;
+                lp = lnc2->l;
+
+                if(lnc1 == lnc2)
                     continue;
-                }
 
                 n2 = lnc2->n;
-                if(n1 == n2)
-                    ERRO("REDUZ QDD| REDUDANCIA TIPO 1 DEVERIA TER SIDO ELIMINADA");
-
                 if(compara_no_meio_completo(n1,n2,classe))
                 {
-                    lr = cria_lista();
-                    lrc = cria_lista();
+                    mudou = 1;
 
-                    lr->n = n1;
-                    lr->l = lrc;
-                    lrc->n = n2;
-
-                    while(lnc2->l != NULL)
-                    {
-                        lnc2 = lnc2->l;
-
-                        n2 = lnc2->n;
-                        if(compara_no_meio_completo(n1,n2,classe))
-                        {
-                            lrc->l = cria_lista();
-                            lrc = lrc->l;
-                            lrc->n = n2;
-                        }
-                    }
-
-                    laux = NULL;
-                    while(lr->l != NULL)
-                    {
-                        lrc = lr->l;
-                        n2 = lrc->n;
-
-                        desconecta_DOIS(n2);
-                        transfere_conexao(n1,n2);
-
-                        lr->l = lrc->l;
-
-                        if(laux == NULL)
+                    if(laux == NULL)
                         for(laux = l; laux != NULL; laux = laux->l)
                             if(laux->n == n2)
                                 break;
-                        libera_no(n2);
-                        libera_lista_no(lrc);
-                    }
-                    libera_lista_no(lr);
 
-                    if(laux == NULL)
+                    desconecta_DOIS(n2);
+                    transfere_conexao(n1,n2);
+                    libera_no(n2);
+                }
+            }
+
+            if(mudou)
+            {
+                if(laux == NULL)
+                {
+                    for(laux = l; laux->l != NULL; laux = laux->l)
                     {
+                        n2 = laux->l->n;
 
-                        for(laux = l; laux->l != NULL; laux = laux->l)
-                        {
-                            n2 = laux->l->n;
-                            if(n2->tipo != Meio)
-                                continue;
-                            if(n2->at.m.nivel > n1->at.m.nivel)
-                                continue;
-                            if(n2->at.m.nivel == n1->at.m.nivel)
-                            {
-                                switch(n1->at.m.classe)
-                                {
-                                    case R:
-                                        /* n1 e r */
-                                        if(n2->at.m.classe != R)
-                                            continue;
-                                        break;
+                        if(n2->tipo == Fim)
+                            continue;
+                        if(n2->at.m.nivel > n1->at.m.nivel)
+                            continue;
+                        if(n2->at.m.classe == C)
+                            continue;
+                        if(n1->at.m.classe == R)
+                            continue;
 
-                                    case V:
-                                        /* n1 e v */
-                                        if(n2->at.m.classe == C)
-                                            continue;
-                                        break;
-                                }
-                            }
+                        lp = cria_lista();
+                        lp->n = n1;
 
-                            lr = cria_lista();
-                            lr->n = n1;
-
-                            lr->l = laux->l;
-                            laux->l = lr;
-                        }
+                        lp->l = laux->l;
+                        laux->l = lp;
                     }
-                    else
-                    {
-                        laux->n = n1;
-                    }
-
-                    break;
                 }
                 else
                 {
-                    lnc2 = lnc2->l;
+                    laux->n = n1;
                 }
             }
-            if(lnc1->l == NULL)
-                break;
-            lnc1 = lnc1->l;
         }
 
         lnc1 = l->l;
@@ -2305,6 +2260,7 @@ void reduz_QDD(QDD *Q, Short ex, Short classe)
         l = lnc1;
     }
     libera_lista_no(l);
+    fclose(fr);
 }
 
 void reduz_arvore(no **n, Short ex)
@@ -4367,47 +4323,45 @@ Short teste_memoria()
 
 }
 
-
-
-Short teste_epsilon(Short i, Short j)
+Short teste_epsilon_unitario(Short vetor, Short Configuracao)
 {
     char nome[30];
-        sprintf(nome,"V%hu.txt",i);
+    sprintf(nome,"V%hu.txt",vetor);
 
-        QDD *Q;
-        Q = le_vetor(nome);
-        configuracao(j);
-        printf("\nVetor: %hu",i);
-        printf("\nConfiguracao: %hu",Nqbit);
+    QDD *Q;
+    Q = le_vetor(nome);
+    configuracao(Configuracao);
+    printf("\nVetor: %hu",vetor);
+    printf("\nConfiguracao: %hu",Nqbit);
 
-        Long memAntes, memDepois;
-        float red;
-        memAntes = mem;
-        reduz_QDD(Q,1,4);
-        memDepois = mem;
-        red = 1-((float)memDepois/memAntes);
-        printf("\nMemAntes : %llu",memAntes);
-        printf("\nMemDepois: %llu",memDepois);
-        printf("\nRed: %.3f",red);
+    Long memAntes, memDepois;
+    float red;
+    memAntes = mem;
+    reduz_QDD(Q,1,4);
+    memDepois = mem;
+    red = 1-((float)memDepois/memAntes);
+    printf("\nMemAntes : %llu",memAntes);
+    printf("\nMemDepois: %llu",memDepois);
+    printf("\nRed: %.3f",red);
 
-        no *n;
-        float m, e;
-        n = produto_vetor_vetor(Q,Q);
-        m = sqrt(n->at.f.re);
-        e = 1-m;
-        printf("\n|Q| = %f",m);
-        printf("\nE: %.0e\n",e);
-        libera_QDD(Q);
-        libera_no(n);
+    no *n;
+    float m, e;
+    n = produto_vetor_vetor(Q,Q);
+    m = sqrt(n->at.f.re);
+    e = 1-m;
+    printf("\n|Q| = %f",m);
+    printf("\nE: %.0e\n",e);
+    libera_QDD(Q);
+    libera_no(n);
 
-        mostra_quantidades();
-        if(memDepois == 68)
-            return 1;
-        if(memAntes == memDepois)
-            return 1;
-        if(e > 0.95)
-            return 1;
-        return 0;
+    mostra_quantidades();
+    if(memDepois == 68)
+        return 1;
+    if(memAntes == memDepois)
+        return 1;
+    if(e > 0.95)
+        return 1;
+    return 0;
 }
 
 int main()
@@ -4418,82 +4372,10 @@ int main()
     setlocale(LC_ALL, "Portuguese");
     /***********************************/
 
-    /*for(Short i=1; i<23; i ++)
-    {
-        Short para;
-        for(Short j=i; j>=1; j--)
-        {
-            para = teste_epsilon(i,j);
-            if(para)
-                break;
-        }
-        for(Short j=i+1; j<=30; j++)
-        {
-            para = teste_epsilon(i,j);
-            if(para)
-                break;
-        }
-    }*/
-
-    /*for(Short i=1; i<=23; i++)
-    {
-        configuracao(i);
-        char nome[30];
-        sprintf(nome,"V%hu.txt",i);
-        QDD *Q;
-        Q = le_vetor(nome);
-        reduz_QDD(Q,1,4);
-        no *n;
-        n = produto_vetor_vetor(Q,Q);
-        float m;
-        m = sqrt(n->at.f.re);
-        printf("\n\nVetor: %hu",i);
-        printf("\n|Q| = %f",m);
-        libera_QDD(Q);
-        libera_no(n);
-        Q = le_vetor(nome);
-        reduz_QDD(Q,1,4);
-        lista *l;
-        for(l = Q->l; l != NULL; l = l->l)
-        {
-            n = produto_no_conjugado_no(l->n,l->n);
-            transfere_conexao(n,l->n);
-            libera_no(l->n);
-            l->n = n;
-        }
-        contracao_QDD(Q,V);
-        m = sqrt(Q->l->n->at.f.re);
-        printf("\n|Q| = %f",m);
-        libera_QDD(Q);
-    }*/
-
-    /*QDD *Q;
-    Q = le_vetor("V21.txt");
-    configuracao(21);
-    printf("\nA");
+    QDD *Q;
+    Q = le_matriz("H3.txt");
     reduz_QDD(Q,1,4);
-    printf("\nB");
-    no *n;
-    lista *l;
-    for(l = Q->l; l != NULL; l = l->l)
-    {
-        n = produto_no_conjugado_no(l->n,l->n);
-        transfere_conexao(n,l->n);
-        libera_no(l->n);
-        l->n = n;
-    }
-    printf("\nC");
-    reduz_lista_fim(Q->l,2);
-    printf("\nD");
-    libera_QDD(Q);
-    printf("\nE");*/
-
-    /*QDD *Q;
-    Q = le_vetor("V12.txt");
-    configuracao(19);
-    reduz_QDD(Q,1,4);
-
-    libera_QDD(Q);*/
+    fmostra_QDD_sozinho(Q,"AGORAFOI.txt");
 
     /***********************************/
     finaliza_structs_globais();
