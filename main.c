@@ -2121,9 +2121,6 @@ void reduz_lista_fim(lista *l, Short ex)
 
 void reduz_QDD(QDD *Q, Short ex, Short classe)
 {
-    FILE *fr;
-    fr = fopen("Reducao.txt","w");
-
     reduz_lista_fim(Q->l,ex);
     lista *l;
     l = copia_lista_sem_cabeca(Q->l);
@@ -2134,7 +2131,6 @@ void reduz_QDD(QDD *Q, Short ex, Short classe)
     inicio = 0;
     while(l != NULL)
     {
-        fprintf(fr,"\nNovo no nc");
         nc = l->n;
         if(nc->l == NULL)
             ERRO("REDUZ QDD| NC NAO TEM ANTERIORES");
@@ -2146,7 +2142,10 @@ void reduz_QDD(QDD *Q, Short ex, Short classe)
 
             n1 = nc->l->n;
             if(n1->tipo == Inicio)
+            {
+                inicio = 1;
                 break;
+            }
 
             lnc3 = NULL;
             lnc4 = NULL;
@@ -2198,8 +2197,17 @@ void reduz_QDD(QDD *Q, Short ex, Short classe)
         for(lnc1 = nc->l; lnc1 != NULL; lnc1 = lnc1->l)
         {
             n1 = lnc1->n;
+            if(n1->tipo == Inicio)
+                ERRO("REDUZ QDD| NO INICIO NAO DEVERIA CHEGAR AQUI");
+            if(n1->at.m.el == NULL)
+                ERRO("REDUZ QDD| NO NAO CONEXAO EM EL");
+            if(n1->at.m.th == NULL)
+                ERRO("REDUZ QDD| NO NAO CONEXAO EM TH");
             if(n1->at.m.el == n1->at.m.th)
-                ERRO("REDUZ QDD| REDUNDANCIA TIPO JA DEVERIA TER SIDO ELIMINADA");
+                ERRO("REDUZ QDD| REDUNDANCIA TIPO 1 JA DEVERIA TER SIDO ELIMINADA");
+
+            mudou = 0;
+            laux = NULL;
 
             for(lnc2 = nc->l; lnc2 != NULL; lnc2 = lp)
             {
@@ -2241,12 +2249,13 @@ void reduz_QDD(QDD *Q, Short ex, Short classe)
                         if(n1->at.m.classe == R)
                             continue;
 
-                        lp = cria_lista();
-                        lp->n = n1;
-
-                        lp->l = laux->l;
-                        laux->l = lp;
+                        break;
                     }
+                    lp = cria_lista();
+                    lp->n = n1;
+
+                    lp->l = laux->l;
+                    laux->l = lp;
                 }
                 else
                 {
@@ -2260,7 +2269,6 @@ void reduz_QDD(QDD *Q, Short ex, Short classe)
         l = lnc1;
     }
     libera_lista_no(l);
-    fclose(fr);
 }
 
 void reduz_arvore(no **n, Short ex)
@@ -2551,7 +2559,6 @@ no* apply_base(no *n1, no *n2, Short(*regra_apply)(apply*))
     }
     n = a->n;
 
-    fmostra_apply_lista_sozinho(a,"APPLYcontracao.txt");
     libera_apply_lista(a);
 
     return n;
@@ -3123,6 +3130,8 @@ Short regra_apply_produto_matriz_vetor(apply *a)
 
 Short regra_apply_produto_vetor_vetor(apply *a)
 {
+    static Short i=0;
+    i++;
     if(a == NULL)
         ERRO("REGRA APPLY SOMA| A E NULL");
 
@@ -3569,8 +3578,6 @@ QDD* produto_QDD_QDD(QDD *Q1, QDD *Q2, no* (*apply_operacao)(no *n1, no *n2), Sh
     Q = cria_QDD(Q1->nqbit);
     Q->n = n;
     Q->l = l;
-    mostra_lista_com_no(l);
-    printf("\n\t\t\t\tAQUI PORRA");
     reduz_lista_fim(l,2);
     mostra_lista_com_no(l);
     reduz_QDD(Q,2,classe);
@@ -4364,6 +4371,8 @@ Short teste_epsilon_unitario(Short vetor, Short Configuracao)
     return 0;
 }
 
+
+
 int main()
 {
     inicia_relatorio_memoria(0);
@@ -4372,10 +4381,42 @@ int main()
     setlocale(LC_ALL, "Portuguese");
     /***********************************/
 
+    configuracao(21);
+
     QDD *Q;
-    Q = le_matriz("H3.txt");
+    Q = le_vetor("V21.txt");
     reduz_QDD(Q,1,4);
-    fmostra_QDD_sozinho(Q,"AGORAFOI.txt");
+
+    no *n;
+    n = produto_vetor_vetor(Q,Q);
+
+    float m;
+    m = sqrt(n->at.f.re);
+    printf("\n|Q| = %f",m);
+
+    libera_no(n);
+
+    lista *l;
+    for(l = Q->l; l != NULL; l = l->l)
+    {
+        n = produto_no_conjugado_no(l->n,l->n);
+        transfere_conexao(n,l->n);
+        libera_no(l->n);
+        l->n = n;
+    }
+    printf("\n\n\nLISTA");
+    printf("\neps: %e",eps*eps);
+    reduz_lista_fim(Q->l,2);
+    for(l = Q->l; l != NULL; l = l->l)
+    {
+        printf("\n%e %e",n->at.f.re,n->at.f.im);
+    }
+    l = Q->l;
+    no *n1, *n2;
+    n1=  l->n;
+    l = l->l;
+    n2 = l->n;
+    printf("\ndelta: %e",n1->at.f.re-n2->at.f.re);
 
     /***********************************/
     finaliza_structs_globais();

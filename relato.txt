@@ -1,0 +1,39 @@
+
+Endereco (no): 141322440
+
+Tipo: Numero
+4,377e-001 0,000e+000
+
+Endereco (QDD): 6647976
+NQBIT: 21
+Itens: 2
+
+
+	Ligacao 0:
+Endereco (no): 198122136
+
+Tipo: Inicio
+Ligacoes posteriores
+	n: 140454056
+
+
+
+	Ligacao 1:
+Endereco (no): 140454056
+Ligacoes anteriores:
+	Ligacao   0: 198122136
+Tipo: Numero
+4,377e-001 0,000e+000
+
+
+
+AMPLITUDES
+
+	Ligacao 0:
+Endereco (no): 140454056
+Ligacoes anteriores:
+	Ligacao   0: 198122136
+Tipo: Numero
+4,377e-001 0,000e+000
+
+

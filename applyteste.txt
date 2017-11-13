@@ -1,0 +1,293 @@
+
+
+
+
+
+Ligacao apply 0
+Endereco (apply): 141030952
+
+No 1:
+Endereco (no): 17396832
+Ligacoes anteriores:
+	Ligacao   0: 17396160
+	Ligacao   1: 17434048
+	Ligacao   2: 18056064
+	Ligacao   3: 18016704
+	Ligacao   4: 17424320
+	Ligacao   5: 17415136
+	Ligacao   6: 18007200
+	Ligacao   7: 18026816
+	Ligacao   8: 18026176
+	Ligacao   9: 18025856
+	Ligacao  10: 18050176
+	Ligacao  11: 17394016
+	Ligacao  12: 141041992
+	Ligacao  13: 17384096
+	Ligacao  14: 18045952
+	Ligacao  15: 141038344
+	Ligacao  16: 141033704
+	Ligacao  17: 18013696
+	Ligacao  18: 17424128
+	Ligacao  19: 17419520
+	Ligacao  20: 17422304
+	Ligacao  21: 18016960
+	Ligacao  22: 18011072
+	Ligacao  23: 17424288
+	Ligacao  24: 141044680
+	Ligacao  25: 141044648
+	Ligacao  26: 141044456
+	Ligacao  27: 141044232
+	Ligacao  28: 141045576
+	Ligacao  29: 141041512
+	Ligacao  30: 141041800
+	Ligacao  31: 141041864
+	Ligacao  32: 141041352
+	Ligacao  33: 141042440
+	Ligacao  34: 141042984
+	Ligacao  35: 141043080
+	Ligacao  36: 141043336
+	Ligacao  37: 141043400
+	Ligacao  38: 141043912
+	Ligacao  39: 141043528
+	Ligacao  40: 141043560
+	Ligacao  41: 141044040
+	Ligacao  42: 141040072
+	Ligacao  43: 141040648
+	Ligacao  44: 141040680
+	Ligacao  45: 141040744
+	Ligacao  46: 141041480
+	Ligacao  47: 141037288
+	Ligacao  48: 141038056
+	Ligacao  49: 141036712
+	Ligacao  50: 141036328
+	Ligacao  51: 141035944
+	Ligacao  52: 141036456
+	Ligacao  53: 141036488
+	Ligacao  54: 141036808
+	Ligacao  55: 141036072
+	Ligacao  56: 141031080
+	Ligacao  57: 141032168
+	Ligacao  58: 141032360
+	Ligacao  59: 141032072
+	Ligacao  60: 141031880
+	Ligacao  61: 141031784
+	Ligacao  62: 18046848
+	Ligacao  63: 18046304
+	Ligacao  64: 141031048
+	Ligacao  65: 141031400
+	Ligacao  66: 141031304
+	Ligacao  67: 18028480
+	Ligacao  68: 18028608
+	Ligacao  69: 18028960
+	Ligacao  70: 18029792
+	Ligacao  71: 18028928
+	Ligacao  72: 18028896
+	Ligacao  73: 18029088
+	Ligacao  74: 18027712
+	Ligacao  75: 18027936
+	Ligacao  76: 18019008
+	Ligacao  77: 18020352
+	Ligacao  78: 18020320
+	Ligacao  79: 18020192
+	Ligacao  80: 18020608
+	Ligacao  81: 18020480
+	Ligacao  82: 18019776
+	Ligacao  83: 18019936
+	Ligacao  84: 18017696
+	Ligacao  85: 18018272
+	Ligacao  86: 18017760
+	Ligacao  87: 18018720
+	Ligacao  88: 18018912
+	Ligacao  89: 18019456
+	Ligacao  90: 18018784
+	Ligacao  91: 18019136
+	Ligacao  92: 18014144
+	Ligacao  93: 18014336
+	Ligacao  94: 18015392
+	Ligacao  95: 18014912
+	Ligacao  96: 18015456
+	Ligacao  97: 18015520
+	Ligacao  98: 18015200
+	Ligacao  99: 18015232
+	Ligacao 100: 18013280
+	Ligacao 101: 18012576
+	Ligacao 102: 18013408
+	Ligacao 103: 18013024
+	Ligacao 104: 18013088
+	Ligacao 105: 18014048
+	Ligacao 106: 18052128
+	Ligacao 107: 18052192
+	Ligacao 108: 18052320
+	Ligacao 109: 18051648
+	Ligacao 110: 18052064
+	Ligacao 111: 18048576
+	Ligacao 112: 18048640
+	Ligacao 113: 18048672
+	Ligacao 114: 18048704
+	Ligacao 115: 18049344
+	Ligacao 116: 18050112
+	Ligacao 117: 18049472
+	Ligacao 118: 17393792
+	Ligacao 119: 17393088
+	Ligacao 120: 17393888
+	Ligacao 121: 17389312
+	Ligacao 122: 17389440
+	Ligacao 123: 17389216
+	Ligacao 124: 17388896
+	Ligacao 125: 17389248
+	Ligacao 126: 17390176
+	Ligacao 127: 17390240
+	Ligacao 128: 17390272
+	Ligacao 129: 17390368
+	Ligacao 130: 17386656
+	Ligacao 131: 17386592
+	Ligacao 132: 17386720
+	Ligacao 133: 17386240
+	Ligacao 134: 17385856
+	Ligacao 135: 17386336
+	Ligacao 136: 17387392
+	Ligacao 137: 17425248
+	Ligacao 138: 17425344
+	Ligacao 139: 17425632
+	Ligacao 140: 17425216
+	Ligacao 141: 17425056
+	Ligacao 142: 17424864
+	Ligacao 143: 17422688
+	Ligacao 144: 17423552
+	Ligacao 145: 17423264
+	Ligacao 146: 17423392
+	Ligacao 147: 17424096
+Tipo: Numero
+4,775e-007 0,000e+000
+
+No 2:
+Endereco (no): 17423904
+Ligacoes anteriores:
+	Ligacao   0: 18050048
+	Ligacao   1: 17391168
+	Ligacao   2: 17384256
+	Ligacao   3: 141043208
+	Ligacao   4: 141043304
+	Ligacao   5: 141043816
+	Ligacao   6: 141043112
+	Ligacao   7: 141043656
+	Ligacao   8: 141044040
+	Ligacao   9: 141044936
+	Ligacao  10: 141044488
+	Ligacao  11: 141044552
+	Ligacao  12: 141044296
+	Ligacao  13: 141044712
+	Ligacao  14: 141044072
+	Ligacao  15: 141045544
+	Ligacao  16: 141045576
+	Ligacao  17: 141040328
+	Ligacao  18: 141040936
+	Ligacao  19: 141040712
+	Ligacao  20: 141040136
+	Ligacao  21: 141040168
+	Ligacao  22: 141041960
+	Ligacao  23: 141041576
+	Ligacao  24: 141042888
+	Ligacao  25: 141042376
+	Ligacao  26: 141042984
+	Ligacao  27: 141036168
+	Ligacao  28: 141035976
+	Ligacao  29: 141036680
+	Ligacao  30: 141037064
+	Ligacao  31: 141037640
+	Ligacao  32: 141037800
+	Ligacao  33: 141037096
+	Ligacao  34: 141037864
+	Ligacao  35: 141036904
+	Ligacao  36: 141037544
+	Ligacao  37: 141038024
+	Ligacao  38: 141038760
+	Ligacao  39: 18046816
+	Ligacao  40: 18046944
+	Ligacao  41: 141031016
+	Ligacao  42: 141032200
+	Ligacao  43: 141032744
+	Ligacao  44: 141031816
+	Ligacao  45: 141032520
+	Ligacao  46: 18027680
+	Ligacao  47: 18027040
+	Ligacao  48: 18027200
+	Ligacao  49: 18027264
+	Ligacao  50: 18027456
+	Ligacao  51: 18027584
+	Ligacao  52: 18027808
+	Ligacao  53: 18027072
+	Ligacao  54: 18027904
+	Ligacao  55: 18028576
+	Ligacao  56: 18029408
+	Ligacao  57: 18028992
+	Ligacao  58: 18029088
+	Ligacao  59: 18019104
+	Ligacao  60: 18018624
+	Ligacao  61: 18020224
+	Ligacao  62: 18020064
+	Ligacao  63: 18012544
+	Ligacao  64: 18012512
+	Ligacao  65: 18013216
+	Ligacao  66: 18013472
+	Ligacao  67: 18012672
+	Ligacao  68: 18014016
+	Ligacao  69: 18013760
+	Ligacao  70: 18014368
+	Ligacao  71: 18015296
+	Ligacao  72: 18014720
+	Ligacao  73: 18051488
+	Ligacao  74: 18052032
+	Ligacao  75: 18053056
+	Ligacao  76: 18052992
+	Ligacao  77: 18053152
+	Ligacao  78: 18048448
+	Ligacao  79: 18048800
+	Ligacao  80: 18048864
+	Ligacao  81: 17393568
+	Ligacao  82: 17393408
+	Ligacao  83: 17393152
+	Ligacao  84: 17393536
+	Ligacao  85: 17393952
+	Ligacao  86: 17393120
+	Ligacao  87: 17394688
+	Ligacao  88: 17394848
+	Ligacao  89: 17390112
+	Ligacao  90: 17390208
+	Ligacao  91: 17390464
+	Ligacao  92: 17390944
+	Ligacao  93: 17391680
+	Ligacao  94: 17391040
+	Ligacao  95: 17390912
+	Ligacao  96: 17389824
+	Ligacao  97: 17389696
+	Ligacao  98: 17389760
+	Ligacao  99: 17389376
+	Ligacao 100: 17386144
+	Ligacao 101: 17386176
+	Ligacao 102: 17386528
+	Ligacao 103: 17386432
+	Ligacao 104: 17423488
+	Ligacao 105: 17423008
+	Ligacao 106: 17423168
+	Ligacao 107: 17422880
+	Ligacao 108: 17423456
+	Ligacao 109: 17425088
+	Ligacao 110: 17425664
+	Ligacao 111: 17425312
+	Ligacao 112: 17425472
+	Ligacao 113: 17425152
+Tipo: Numero
+4,762e-007 0,000e+000
+
+No:
+Endereco (no): 141030984
+
+Tipo: Numero
+9,536e-007 0,000e+000
+
+
+a1: 0
+a2: 0
+
+a proximo:  0
