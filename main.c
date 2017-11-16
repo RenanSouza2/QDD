@@ -621,6 +621,16 @@ void mostra_no(no *n)
     printf("\n");
 }
 
+void mostra_no_numero(no *n)
+{
+    if(n == NULL)
+        return;
+    if(n->tipo != Fim)
+        ERRO("MOSTRA NUMERO NO| NO TEM QUE SER TIPO FIM");
+
+    printf("\n%e\t%e",n->at.f.re,n->at.f.im);
+}
+
 void mostra_lista_com_no(lista *l)
 {
     lista *lc;
@@ -1347,7 +1357,7 @@ void libera_arvore(no *n)
     l = cria_lista();
     l->n = n;
 
-    no *naux1, *naux2;
+    no *n1, *n2;
 
     while(l != NULL)
     {
@@ -1355,40 +1365,41 @@ void libera_arvore(no *n)
         switch(n->tipo)
         {
             case Inicio:
-                naux1 = n->at.i.n;
+                n1 = n->at.i.n;
                 desconecta_DOIS(n);
                 libera_no(n);
 
-                if(naux1->l == NULL)
-                    l->n = naux1;
+                l->n = n1;
                 break;
 
             case Meio:
-                naux1 = n->at.m.el;
-                naux2 = n->at.m.th;
+                n1 = n->at.m.el;
+                n2 = n->at.m.th;
                 desconecta_DOIS(n);
                 libera_no(n);
 
-                if(naux1->l == NULL)
+                if(n1->l == NULL)
                 {
-                    if(naux2->l == NULL)
+                    if(n1 != n2 && n2->l == NULL)
                     {
-                        l->n = naux2;
+                        l->n = n2;
+
                         laux = cria_lista();
-                        laux->n = naux1;
+                        laux->n = n1;
+
                         laux->l = l;
                         l = laux;
                     }
                     else
                     {
-                        l->n = naux1;
+                        l->n = n1;
                     }
                 }
                 else
                 {
-                    if(naux2->l == NULL)
+                    if(n2->l == NULL)
                     {
-                        l->n = naux2;
+                        l->n = n2;
                     }
                     else
                     {
@@ -1734,6 +1745,16 @@ lista* acha_fim_lista(lista *l)
     lista *lc;
     for(lc = l; lc->l != NULL; lc = lc->l);
     return lc;
+}
+
+Long conta_itens_fim_arvore(no *n)
+{
+    lista *l;
+    Long itens;
+    l = acha_lista_fim_arvore(n);
+    itens = conta_items_lista(l);
+    libera_lista_lista(l);
+    return itens;
 }
 
 
@@ -2086,27 +2107,30 @@ QDD* le_vetor(char *nome)
 
 void reduz_lista_fim(lista *l, Short ex)
 {
+    no *n1, *n2;
     lista *lc1, *lc2, *laux;
-
     lc1 = l;
-    do
+    while(lc1->l != NULL)
     {
-        if(lc1->n->tipo != Fim)
+        n1 = lc1->n;
+        if(n1->tipo != Fim)
             ERRO("REDUZ LISTA FIM| NO DA LISTA NAO E FIM 1");
 
         lc2 = lc1;
         while(lc2->l != NULL)
         {
-            if(lc2->l->n->tipo != Fim)
-                ERRO("REDUZ LISTA FIM| NO DA LISTA NAO E FIM 1");
+            laux = lc2->l;
+            n2 = laux->n;
 
-            if(compara_no_fim(lc1->n,lc2->l->n,ex))
+            if(n2->tipo != Fim)
+                ERRO("REDUZ LISTA FIM| NO DA LISTA NAO E FIM 2");
+
+            if(compara_no_fim(n1,n2,ex))
             {
-                laux = lc2->l;
                 lc2->l = laux->l;
 
-                transfere_conexao(lc1->n,laux->n);
-                libera_no(laux->n);
+                transfere_conexao(n1,n2);
+                libera_no(n2);
                 libera_lista_no(laux);
             }
             else
@@ -2115,8 +2139,9 @@ void reduz_lista_fim(lista *l, Short ex)
             }
         }
         lc1 = lc1->l;
+        if(lc1 == NULL)
+            break;
     }
-    while(lc1 != NULL);
 }
 
 void reduz_QDD(QDD *Q, Short ex, Short classe)
@@ -3342,6 +3367,8 @@ QDD* copia_QDD(QDD *Q1)
 
 /**  produto QDD QDD base  **/
 
+Short caso[4];
+
 conta* espalha(suporte *s, Short classe)
 {
     no *n, *na, *naux, *nlixo;
@@ -3349,17 +3376,40 @@ conta* espalha(suporte *s, Short classe)
     conta *c, *cc, *cp, *cpc, *caux;
     suporte *sc, *saux;
     Short lado, delta, ex;
+    Long i, j, tam;
+    i = 0;
+    tam = 10000;
+    time_t antes, depois;
+    float Delta, tempo;
+    depois = clock();
     while(s->c[classe] != NULL)
     {
+        i++;
+        if(i%tam == 0)
+        {
+            antes = depois;
+            depois = clock();
+            Delta = depois - antes;
+            tempo = Delta/CLOCKS_PER_SEC;
+            printf("\ni: %4llu\t\ttempo: %.3f",i/tam,tempo);
+        }
+
         c = s->c[classe];
         n = c->n;
 
         cp = cria_conta(0);
         cp->n = n;
 
+        j=0;
         lc = n->l;
         while(lc != NULL)
         {
+            j++;
+            if(j%tam == 0)
+            {
+                printf("\nj: %llu\ti: %llu",j/tam,i);
+
+            }
             lp = lc->l;
 
             na = lc->n;
@@ -3384,6 +3434,7 @@ conta* espalha(suporte *s, Short classe)
                 if(cc == NULL)
                 {
                     /* Nao tem conta */
+                    caso[1] = 1;
                     caux = cria_conta(c->nivel);
                     caux->n = na;
 
@@ -3396,6 +3447,7 @@ conta* espalha(suporte *s, Short classe)
                     if(cc->nivel > c->nivel)
                     {
                         /* Alterar original */
+                        caso[2] = 1;
                         if(n == na->at.m.el)
                             nlixo = na->at.m.th;
                         else
@@ -3416,6 +3468,7 @@ conta* espalha(suporte *s, Short classe)
                     if(cc->nivel < c->nivel)
                     {
                         /* alterar atual */
+                        caso[3] = 1;
                         delta = c->nivel - cc->nivel;
                         ex = pow(2,delta);
 
@@ -3446,6 +3499,7 @@ conta* espalha(suporte *s, Short classe)
             else
             {
                 /* Não tem suporte */
+                caso[0] = 1;
                 caux = cria_conta(c->nivel);
                 caux->n = na;
 
@@ -3475,8 +3529,16 @@ void contracao_conta(conta *c)
 {
     no *na, *nd;
     conta *cc;
+    Long i, tam;
+    i = 0;
+    tam = 10000;
+
     for(cc = c; cc != NULL; cc = cc->c)
     {
+        i++;
+        if(i%tam == 0)
+            printf("\ni: %llu",i/tam);
+
         na = cc->n;
         nd = apply_soma(na->at.m.el,na->at.m.th);
         reduz_arvore(&nd,2);
@@ -3496,11 +3558,16 @@ conta* tratamento(suporte *s, Short classe, Short classeRef)
 
     conta *ci;
     ci = espalha(s,classe);
+
     return ci;
 }
 
 void contracao_QDD(QDD *Q, Short classe)
 {
+    Short i;
+    for(i=0; i<4; i++)
+        caso[i] = 0;
+
     Short nqbit;
     nqbit = Q->nqbit;
 
@@ -3531,6 +3598,8 @@ void contracao_QDD(QDD *Q, Short classe)
     suporte *saux;
     while(s != NULL)
     {
+        printf("\nS: %hu",s->nivel);
+
         ci = tratamento(s,C,classe);
         if(ci != NULL)
             break;
@@ -3550,11 +3619,17 @@ void contracao_QDD(QDD *Q, Short classe)
     if(ci == NULL)
         ERRO("CONTACAO QDD| NAO DETECTOU INICIO");
 
+    mostra_conta_no(ci);
+
     Long ex;
     ex = pow(2,ci->nivel);
     produto_arvore_real(Q->n,ex);
 
     libera_conta_no(ci);
+
+    printf("\nCasos: ");
+    for(i=0; i<4; i++)
+        printf("%hu",caso[i]);
 
     Q->l = acha_lista_fim_QDD(Q);
 }
@@ -3990,11 +4065,6 @@ QDD* Switch(Short nqbit)
     return Q1;
 }
 
-QDD** mede(QDD *Q, Short nqbit, double p[2])
-{
-
-}
-
 
 
 /**  Testes  **/
@@ -4381,42 +4451,27 @@ int main()
     setlocale(LC_ALL, "Portuguese");
     /***********************************/
 
-    configuracao(21);
-
     QDD *Q;
     Q = le_vetor("V21.txt");
-    reduz_QDD(Q,1,4);
+    printf("\nLeu\n\n");
+    configuracao(Q->nqbit);
+    reduz_QDD(Q,1,V);
 
-    no *n;
-    n = produto_vetor_vetor(Q,Q);
-
-    float m;
-    m = sqrt(n->at.f.re);
-    printf("\n|Q| = %f",m);
-
-    libera_no(n);
-
+    no *n0, *n1;
     lista *l;
     for(l = Q->l; l != NULL; l = l->l)
     {
-        n = produto_no_conjugado_no(l->n,l->n);
-        transfere_conexao(n,l->n);
-        libera_no(l->n);
-        l->n = n;
+        n0 = l->n;
+        n1 = produto_no_conjugado_no(n0,n0);
+        transfere_conexao(n1,n0);
+        libera_no(n0);
+        l->n = n1;
     }
-    printf("\n\n\nLISTA");
-    printf("\neps: %e",eps*eps);
     reduz_lista_fim(Q->l,2);
-    for(l = Q->l; l != NULL; l = l->l)
-    {
-        printf("\n%e %e",n->at.f.re,n->at.f.im);
-    }
-    l = Q->l;
-    no *n1, *n2;
-    n1=  l->n;
-    l = l->l;
-    n2 = l->n;
-    printf("\ndelta: %e",n1->at.f.re-n2->at.f.re);
+    //reduz_QDD(Q,2,V);
+
+    contracao_QDD(Q,V);
+    mostra_QDD(Q);
 
     /***********************************/
     finaliza_structs_globais();
