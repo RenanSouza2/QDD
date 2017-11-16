@@ -247,8 +247,14 @@ no* cria_no_meio(Short classe, Short nivel)
     return n;
 }
 
+FILE *fn;
+Short mos;
+
 no* cria_no_fim(float re,float im)
 {
+    if(mos)
+        fprintf(fn,"\n%e %e",re,im);
+
     no *n;
     n = malloc(tN);
     if(n == NULL)
@@ -3525,6 +3531,8 @@ conta* espalha(suporte *s, Short classe)
     return NULL;
 }
 
+FILE *fr;
+
 void contracao_conta(conta *c)
 {
     no *na, *nd;
@@ -3540,14 +3548,40 @@ void contracao_conta(conta *c)
             printf("\ni: %llu",i/tam);
 
         na = cc->n;
+        printf("\n1");
         nd = apply_soma(na->at.m.el,na->at.m.th);
+        printf("\n2");
         reduz_arvore(&nd,2);
+        printf("\n3");
+
+        if(compara_no_fim(na->at.m.el,na->at.m.th,1) == 0)
+        {
+            fprintf(fr,"\n\nCASO SOMA ESTRANHA");
+            fmostra_conta_no(fr,cc);
+            fmostra_arvore(fr,na);
+        }
+
+        if(cc->nivel < 13&&compara_no_fim_zero(nd,1))
+        {
+            fprintf(fr,"\n\nCASO ZERO");
+            fmostra_arvore(fr,na);
+        }
 
         transfere_conexao(nd,na);
         libera_arvore(na);
 
         cc->n = nd;
         (cc->nivel)--;
+
+        if(cc->nivel < 13&&compara_no_fim_zero(nd,1))
+        {
+            fmostra_conta_no(fr,cc);
+        }
+        /*if(mos)
+        {
+            mos = 0;
+            fmostra_conta_no(fr,cc);
+        }*/
     }
 }
 
@@ -3598,7 +3632,7 @@ void contracao_QDD(QDD *Q, Short classe)
     suporte *saux;
     while(s != NULL)
     {
-        printf("\nS: %hu",s->nivel);
+        fprintf(fr,"\nS: %hu",s->nivel);
 
         ci = tratamento(s,C,classe);
         if(ci != NULL)
@@ -3619,7 +3653,7 @@ void contracao_QDD(QDD *Q, Short classe)
     if(ci == NULL)
         ERRO("CONTACAO QDD| NAO DETECTOU INICIO");
 
-    mostra_conta_no(ci);
+    fmostra_conta_no(fr,ci);
 
     Long ex;
     ex = pow(2,ci->nivel);
@@ -4445,16 +4479,28 @@ Short teste_epsilon_unitario(Short vetor, Short Configuracao)
 
 int main()
 {
+    fn = fopen("Nos.txt","w");
+    mos = 0;
+
     inicia_relatorio_memoria(0);
     configuracao(20);
     inicia_structs_globais();
     setlocale(LC_ALL, "Portuguese");
     /***********************************/
 
+
+    fr = fopen("relato.txt","w");
+    fprintf(fr,"\neps : %e",eps);
+    fprintf(fr,"\neps2: %e",eps*eps);
+    fprintf(fr,"\n\nNzero");
+    fmostra_no(fr,nzero);
+    fprintf(fr,"\n\n\n\n\n");
+
     QDD *Q;
     Q = le_vetor("V21.txt");
     printf("\nLeu\n\n");
     configuracao(Q->nqbit);
+    mos = 1;
     reduz_QDD(Q,1,V);
 
     no *n0, *n1;
@@ -4467,11 +4513,15 @@ int main()
         libera_no(n0);
         l->n = n1;
     }
-    reduz_lista_fim(Q->l,2);
-    //reduz_QDD(Q,2,V);
+    fprintf(fr,"\nNo zero");
+    fmostra_no(fr,Q->l->n);
+    fprintf(fr,"\n\n\n\n");
+    //reduz_lista_fim(Q->l,2);
+    reduz_QDD(Q,2,V);
 
     contracao_QDD(Q,V);
-    mostra_QDD(Q);
+    fmostra_QDD(fr,Q);
+    libera_QDD(Q);
 
     /***********************************/
     finaliza_structs_globais();

@@ -1,27 +1,649 @@
 
-Endereco (no): 141322440
+eps : 4,882813e-005
+eps2: 2,384186e-009
 
+Nzero
+Endereco (no): 6627784
+
+Tipo: Numero
+0,000e+000 0,000e+000
+
+
+
+
+
+
+No zero
+Endereco (no): 18656488
+Ligacoes anteriores:
+	Ligacao   0: 144905328
+	Ligacao   1: 144268504
+	Ligacao   2: 115251096
+	Ligacao   3: 101942232
+	Ligacao   4: 94870424
+	Ligacao   5: 91258408
+	Ligacao   6: 89596016
+	Ligacao   7: 88222400
+	Ligacao   8: 88385056
+	Ligacao   9: 88109400
+	Ligacao  10: 88111160
+Tipo: Numero
+4,775e-007 0,000e+000
+
+
+
+
+
+S: 21
+S: 20
+S: 19
+S: 18
+S: 17
+S: 16
+S: 15
+S: 14
+S: 13
+S: 12
+S: 11
+S: 10
+S: 9
+S: 8
+S: 7
+S: 6
+S: 5
+S: 4
+
+CASO SOMA ESTRANHA
+Endereco (conta): 25422160
+nivel: 5
+
+no: 
+Endereco (no): 88107672
+Ligacoes anteriores:
+	Ligacao   0: 88107224
+Tipo/nivel: V4
+Ligacoes posteriores
+	else: 18693480
+	Then: 18693512
+
+c proximo: 25421896
+
+	Ligacao 0:
+Endereco (no): 88107672
+Ligacoes anteriores:
+	Ligacao   0: 88107224
+Tipo/nivel: V4
+Ligacoes posteriores
+	else: 18693480
+	Then: 18693512
+
+
+	Ligacao 1:
+Endereco (no): 18693480
+Ligacoes anteriores:
+	Ligacao   0: 88107672
+Tipo: Numero
+3,127e-002 0,000e+000
+
+
+	Ligacao 2:
+Endereco (no): 18693512
+Ligacoes anteriores:
+	Ligacao   0: 88107672
+Tipo: Numero
+0,000e+000 0,000e+000
+
+
+
+
+CASO SOMA ESTRANHA
+Endereco (conta): 25421896
+nivel: 5
+
+no: 
+Endereco (no): 88108280
+Ligacoes anteriores:
+	Ligacao   0: 88106904
+Tipo/nivel: V4
+Ligacoes posteriores
+	else: 18694408
+	Then: 18694216
+
+c proximo: 25422304
+
+	Ligacao 0:
+Endereco (no): 88108280
+Ligacoes anteriores:
+	Ligacao   0: 88106904
+Tipo/nivel: V4
+Ligacoes posteriores
+	else: 18694408
+	Then: 18694216
+
+
+	Ligacao 1:
+Endereco (no): 18694408
+Ligacoes anteriores:
+	Ligacao   0: 88108280
+Tipo: Numero
+0,000e+000 0,000e+000
+
+
+	Ligacao 2:
+Endereco (no): 18694216
+Ligacoes anteriores:
+	Ligacao   0: 88108280
+Tipo: Numero
+3,127e-002 0,000e+000
+
+
+
+
+CASO SOMA ESTRANHA
+Endereco (conta): 25422304
+nivel: 5
+
+no: 
+Endereco (no): 88106712
+Ligacoes anteriores:
+	Ligacao   0: 88107192
+Tipo/nivel: V4
+Ligacoes posteriores
+	else: 18693960
+	Then: 18693576
+
+c proximo: 25422184
+
+	Ligacao 0:
+Endereco (no): 88106712
+Ligacoes anteriores:
+	Ligacao   0: 88107192
+Tipo/nivel: V4
+Ligacoes posteriores
+	else: 18693960
+	Then: 18693576
+
+
+	Ligacao 1:
+Endereco (no): 18693960
+Ligacoes anteriores:
+	Ligacao   0: 88106712
+Tipo: Numero
+0,000e+000 0,000e+000
+
+
+	Ligacao 2:
+Endereco (no): 18693576
+Ligacoes anteriores:
+	Ligacao   0: 88106712
+Tipo: Numero
+3,128e-002 0,000e+000
+
+
+
+
+CASO SOMA ESTRANHA
+Endereco (conta): 25421920
+nivel: 5
+
+no: 
+Endereco (no): 88108216
+Ligacoes anteriores:
+	Ligacao   0: 88106904
+Tipo/nivel: V4
+Ligacoes posteriores
+	else: 18694280
+	Then: 18694440
+
+c proximo: 0
+
+	Ligacao 0:
+Endereco (no): 88108216
+Ligacoes anteriores:
+	Ligacao   0: 88106904
+Tipo/nivel: V4
+Ligacoes posteriores
+	else: 18694280
+	Then: 18694440
+
+
+	Ligacao 1:
+Endereco (no): 18694280
+Ligacoes anteriores:
+	Ligacao   0: 88108216
+Tipo: Numero
+3,127e-002 0,000e+000
+
+
+	Ligacao 2:
+Endereco (no): 18694440
+Ligacoes anteriores:
+	Ligacao   0: 88108216
+Tipo: Numero
+0,000e+000 0,000e+000
+
+
+
+S: 3
+
+CASO SOMA ESTRANHA
+Endereco (conta): 229419872
+nivel: 4
+
+no: 
+Endereco (no): 88107192
+Ligacoes anteriores:
+	Ligacao   0: 88107352
+Tipo/nivel: V3
+Ligacoes posteriores
+	else: 18693608
+	Then: 18694248
+
+c proximo: 229419536
+
+	Ligacao 0:
+Endereco (no): 88107192
+Ligacoes anteriores:
+	Ligacao   0: 88107352
+Tipo/nivel: V3
+Ligacoes posteriores
+	else: 18693608
+	Then: 18694248
+
+
+	Ligacao 1:
+Endereco (no): 18693608
+Ligacoes anteriores:
+	Ligacao   0: 88107192
+Tipo: Numero
+3,128e-002 0,000e+000
+
+
+	Ligacao 2:
+Endereco (no): 18694248
+Ligacoes anteriores:
+	Ligacao   0: 88107192
+Tipo: Numero
+6,257e-002 0,000e+000
+
+
+
+
+CASO SOMA ESTRANHA
+Endereco (conta): 229419200
+nivel: 4
+
+no: 
+Endereco (no): 88107064
+Ligacoes anteriores:
+	Ligacao   0: 88106392
+Tipo/nivel: V3
+Ligacoes posteriores
+	else: 18694184
+	Then: 18694152
+
+c proximo: 25422088
+
+	Ligacao 0:
+Endereco (no): 88107064
+Ligacoes anteriores:
+	Ligacao   0: 88106392
+Tipo/nivel: V3
+Ligacoes posteriores
+	else: 18694184
+	Then: 18694152
+
+
+	Ligacao 1:
+Endereco (no): 18694184
+Ligacoes anteriores:
+	Ligacao   0: 88107064
+Tipo: Numero
+6,248e-002 0,000e+000
+
+
+	Ligacao 2:
+Endereco (no): 18694152
+Ligacoes anteriores:
+	Ligacao   0: 88107064
+Tipo: Numero
+6,254e-002 0,000e+000
+
+
+
+
+CASO SOMA ESTRANHA
+Endereco (conta): 25422088
+nivel: 4
+
+no: 
+Endereco (no): 88107224
+Ligacoes anteriores:
+	Ligacao   0: 88106456
+Tipo/nivel: V3
+Ligacoes posteriores
+	else: 18693896
+	Then: 18693960
+
+c proximo: 0
+
+	Ligacao 0:
+Endereco (no): 88107224
+Ligacoes anteriores:
+	Ligacao   0: 88106456
+Tipo/nivel: V3
+Ligacoes posteriores
+	else: 18693896
+	Then: 18693960
+
+
+	Ligacao 1:
+Endereco (no): 18693896
+Ligacoes anteriores:
+	Ligacao   0: 88107224
+Tipo: Numero
+3,127e-002 0,000e+000
+
+
+	Ligacao 2:
+Endereco (no): 18693960
+Ligacoes anteriores:
+	Ligacao   0: 88107224
+Tipo: Numero
+0,000e+000 0,000e+000
+
+
+
+S: 2
+
+CASO SOMA ESTRANHA
+Endereco (conta): 229419224
+nivel: 3
+
+no: 
+Endereco (no): 88106456
+Ligacoes anteriores:
+	Ligacao   0: 88106840
+Tipo/nivel: V2
+Ligacoes posteriores
+	else: 18694344
+	Then: 18693864
+
+c proximo: 25422568
+
+	Ligacao 0:
+Endereco (no): 88106456
+Ligacoes anteriores:
+	Ligacao   0: 88106840
+Tipo/nivel: V2
+Ligacoes posteriores
+	else: 18694344
+	Then: 18693864
+
+
+	Ligacao 1:
+Endereco (no): 18694344
+Ligacoes anteriores:
+	Ligacao   0: 88106456
+Tipo: Numero
+3,127e-002 0,000e+000
+
+
+	Ligacao 2:
+Endereco (no): 18693864
+Ligacoes anteriores:
+	Ligacao   0: 88106456
+Tipo: Numero
+1,251e-001 0,000e+000
+
+
+
+
+CASO SOMA ESTRANHA
+Endereco (conta): 25422568
+nivel: 3
+
+no: 
+Endereco (no): 88106424
+Ligacoes anteriores:
+	Ligacao   0: 88106840
+Tipo/nivel: V2
+Ligacoes posteriores
+	else: 18694056
+	Then: 18694248
+
+c proximo: 6647760
+
+	Ligacao 0:
+Endereco (no): 88106424
+Ligacoes anteriores:
+	Ligacao   0: 88106840
+Tipo/nivel: V2
+Ligacoes posteriores
+	else: 18694056
+	Then: 18694248
+
+
+	Ligacao 1:
+Endereco (no): 18694056
+Ligacoes anteriores:
+	Ligacao   0: 88106424
+Tipo: Numero
+0,000e+000 0,000e+000
+
+
+	Ligacao 2:
+Endereco (no): 18694248
+Ligacoes anteriores:
+	Ligacao   0: 88106424
+Tipo: Numero
+6,254e-002 0,000e+000
+
+
+
+
+CASO SOMA ESTRANHA
+Endereco (conta): 6647760
+nivel: 3
+
+no: 
+Endereco (no): 88106392
+Ligacoes anteriores:
+	Ligacao   0: 88106616
+Tipo/nivel: V2
+Ligacoes posteriores
+	else: 18693480
+	Then: 18693672
+
+c proximo: 6648216
+
+	Ligacao 0:
+Endereco (no): 88106392
+Ligacoes anteriores:
+	Ligacao   0: 88106616
+Tipo/nivel: V2
+Ligacoes posteriores
+	else: 18693480
+	Then: 18693672
+
+
+	Ligacao 1:
+Endereco (no): 18693480
+Ligacoes anteriores:
+	Ligacao   0: 88106392
+Tipo: Numero
+0,000e+000 0,000e+000
+
+
+	Ligacao 2:
+Endereco (no): 18693672
+Ligacoes anteriores:
+	Ligacao   0: 88106392
+Tipo: Numero
+1,250e-001 0,000e+000
+
+
+
+
+CASO SOMA ESTRANHA
+Endereco (conta): 6648216
+nivel: 3
+
+no: 
+Endereco (no): 88107352
+Ligacoes anteriores:
+	Ligacao   0: 88106616
+Tipo/nivel: V2
+Ligacoes posteriores
+	else: 18694120
+	Then: 18694024
+
+c proximo: 0
+
+	Ligacao 0:
+Endereco (no): 88107352
+Ligacoes anteriores:
+	Ligacao   0: 88106616
+Tipo/nivel: V2
+Ligacoes posteriores
+	else: 18694120
+	Then: 18694024
+
+
+	Ligacao 1:
+Endereco (no): 18694120
+Ligacoes anteriores:
+	Ligacao   0: 88107352
+Tipo: Numero
+0,000e+000 0,000e+000
+
+
+	Ligacao 2:
+Endereco (no): 18694024
+Ligacoes anteriores:
+	Ligacao   0: 88107352
+Tipo: Numero
+9,385e-002 0,000e+000
+
+
+
+S: 1
+
+CASO SOMA ESTRANHA
+Endereco (conta): 229419440
+nivel: 2
+
+no: 
+Endereco (no): 88106616
+Ligacoes anteriores:
+	Ligacao   0: 88106968
+Tipo/nivel: V1
+Ligacoes posteriores
+	else: 18693992
+	Then: 18693768
+
+c proximo: 229419584
+
+	Ligacao 0:
+Endereco (no): 88106616
+Ligacoes anteriores:
+	Ligacao   0: 88106968
+Tipo/nivel: V1
+Ligacoes posteriores
+	else: 18693992
+	Then: 18693768
+
+
+	Ligacao 1:
+Endereco (no): 18693992
+Ligacoes anteriores:
+	Ligacao   0: 88106616
+Tipo: Numero
+9,385e-002 0,000e+000
+
+
+	Ligacao 2:
+Endereco (no): 18693768
+Ligacoes anteriores:
+	Ligacao   0: 88106616
+Tipo: Numero
+1,250e-001 0,000e+000
+
+
+
+
+CASO SOMA ESTRANHA
+Endereco (conta): 229419584
+nivel: 2
+
+no: 
+Endereco (no): 88106840
+Ligacoes anteriores:
+	Ligacao   0: 88106968
+Tipo/nivel: V1
+Ligacoes posteriores
+	else: 18693544
+	Then: 18693960
+
+c proximo: 0
+
+	Ligacao 0:
+Endereco (no): 88106840
+Ligacoes anteriores:
+	Ligacao   0: 88106968
+Tipo/nivel: V1
+Ligacoes posteriores
+	else: 18693544
+	Then: 18693960
+
+
+	Ligacao 1:
+Endereco (no): 18693544
+Ligacoes anteriores:
+	Ligacao   0: 88106840
+Tipo: Numero
+6,254e-002 0,000e+000
+
+
+	Ligacao 2:
+Endereco (no): 18693960
+Ligacoes anteriores:
+	Ligacao   0: 88106840
+Tipo: Numero
+1,563e-001 0,000e+000
+
+
+
+S: 0
+Endereco (conta): 229419680
+nivel: 0
+
+no: 
+Endereco (no): 18693704
+Ligacoes anteriores:
+	Ligacao   0: 201048904
 Tipo: Numero
 4,377e-001 0,000e+000
 
-Endereco (QDD): 6647976
+c proximo: 0
+Endereco (QDD): 6647832
 NQBIT: 21
 Itens: 2
 
 
 	Ligacao 0:
-Endereco (no): 198122136
+Endereco (no): 201048904
 
 Tipo: Inicio
 Ligacoes posteriores
-	n: 140454056
+	n: 18693704
 
 
 
 	Ligacao 1:
-Endereco (no): 140454056
+Endereco (no): 18693704
 Ligacoes anteriores:
-	Ligacao   0: 198122136
+	Ligacao   0: 201048904
 Tipo: Numero
 4,377e-001 0,000e+000
 
@@ -30,9 +652,9 @@ Tipo: Numero
 AMPLITUDES
 
 	Ligacao 0:
-Endereco (no): 140454056
+Endereco (no): 18693704
 Ligacoes anteriores:
-	Ligacao   0: 198122136
+	Ligacao   0: 201048904
 Tipo: Numero
 4,377e-001 0,000e+000
 
