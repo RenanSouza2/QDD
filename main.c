@@ -247,14 +247,8 @@ no* cria_no_meio(Short classe, Short nivel)
     return n;
 }
 
-FILE *fn;
-Short mos;
-
 no* cria_no_fim(float re,float im)
 {
-    if(mos)
-        fprintf(fn,"\n%e %e",re,im);
-
     no *n;
     n = malloc(tN);
     if(n == NULL)
@@ -498,56 +492,105 @@ lista* enlista_arvore(no *n)
     if(n == NULL)
         ERRO("ENLISTA ARVORE| ARVORE VAZIA");
 
-    lista *la, *l, *laux;
-
+    lista *l;
     l = cria_lista();
-    la = cria_lista();
-    la->n = n;
+    l->n = n;
 
-    while(la != NULL)
+    no *nel, *nth;
+    lista *lc, *laux, *lel, *lth;
+    Short adicionar;
+    for(lc = l; lc != NULL; lc = lc->l)
     {
-        n = la->n;
-        for(laux = l; laux->l != NULL; laux = laux->l)
-            if(laux->l->n == n)
+        n = lc->n;
+        switch(n->tipo)
+        {
+            case Inicio:
+                laux = cria_lista();
+                laux->n = n->at.i.n;
+
+                lc->l = laux;
                 break;
-        if(laux->l == NULL)
-        {
-            laux->l = cria_lista();
-            laux = laux->l;
-            laux->n = n;
-            switch(n->tipo)
-            {
-                case Inicio:
-                    la->n = n->at.i.n;
-                    if(la->n == NULL)
-                            ERRO("ENLISTA ARVORE| ARVORE DESCONEXA 1");
-                    break;
 
-                case Meio:
-                    la->n = n->at.m.th;
-                    if(la->n == NULL)
-                            ERRO("ENLISTA ARVORE| ARVORE DESCONEXA 2");
+            case Meio:
+                nel = n->at.m.el;
+                nth = n->at.m.th;
 
-                    laux = cria_lista();
-                    laux->n = n->at.m.el;
-                    laux->l = la;
-                    la = laux;
-                    if(la->n == NULL)
-                            ERRO("ENISTA ARVORE| ARVORE DESCONEXA 3");
-                    break;
-            }
-        }
-        else
-        {
-            laux = la->l;
-            libera_lista_no(la);
-            la = laux;
+                lel = NULL;
+                lth = NULL;
+                for(laux = l; laux != NULL; laux = laux->l)
+                {
+                    if(laux->n == nel)
+                    {
+                        lel = laux;
+                        if(lth != NULL)
+                            break;
+                    }
+                    if(laux->n == nth)
+                    {
+                        lth = laux;
+                        if(lel != NULL)
+                            break;
+                    }
+                }
+
+                adicionar = 3;
+                if(lel == NULL)
+                {
+                    if(lth == NULL)
+                    {
+                        if(nel == nth)
+                            adicionar = 1;
+                        else
+                            adicionar = 2;
+                    }
+                    else
+                    {
+                        adicionar = 1;
+                    }
+                }
+                else
+                {
+                    if(lth == NULL)
+                    {
+                        nel = nth;
+                        adicionar = 1;
+                    }
+                    else
+                    {
+                        adicionar = 0;
+                    }
+                }
+
+                switch(adicionar)
+                {
+
+                    case 3:
+                        ERRO("ENLISTA ARVVORE| CASO MEIO NAO ATIVOU NENHUMA REGRA");
+                        break;
+
+                    case 2:
+                        lth = cria_lista();
+                        lth->n = nth;
+
+                        lth->l = lc->l;
+                        lc->l = lth;
+
+                    case 1:
+                        lel = cria_lista();
+                        lel->n = nel;
+
+                        lel->l = lc->l;
+                        lc->l = lel;
+                        break;
+                }
+                break;
+
+            case Fim:
+                break;
         }
     }
 
-    laux = l->l;
-    libera_lista_no(l);
-    return laux;
+    return l;
 }
 
 lista* enlista_QDD(QDD *Q)
@@ -1268,24 +1311,28 @@ Short desconecta_UM(no *n1, no *n2)
         ERRO("DESCONECTA UM| N2 E NULL");
     if(n1->tipo == Fim)
         ERRO("DESCONECTA UM| FIM NAO TEM SUCESSORES");
+    if(n2->tipo == Inicio)
+        ERRO("DESCONECTA UM| INICIO NAO TEM ANTECESSORES");
 
-    lista *l;
-    l = cria_lista();
-    l->l = n2->l;
+    lista *l, *laux;
+    if(n2->l->n == n1)
+    {
+        l = n2->l->l;
+        libera_lista_no(n2->l);
+        n2->l = l;
+    }
+    else
+    {
+        for(l = n2->l; l->l != NULL; l = l->l)
+            if(l->l->n == n1)
+                break;
+        if(l->l == NULL)
+            ERRO("DESCONECTA UM| REGISTRO INCOMPATIVEL 1");
 
-    lista *lc;
-    for(lc = l; lc->l != NULL; lc = lc->l)
-        if(lc->l->n == n1)
-            break;
-    if(lc->l == NULL)
-        ERRO("DESCONECTA UM| REGISTRO INCOMPATIVEL 1");
-
-    lista *laux;
-    laux = lc->l;
-    lc->l = laux->l;
-    libera_lista_no(laux);
-    n2->l = l->l;
-    libera_lista_no(l);
+        laux = l->l;
+        l->l = laux->l;
+        libera_lista_no(laux);
+    }
 
     switch(n1->tipo)
     {
@@ -1696,6 +1743,8 @@ Short compara_no_fim_zero(no *n, Short ex)
 
 Short compara_apply(apply *a1, apply *a2)
 {
+    if(a1 != NULL)
+    if(a2 != NULL)
     if(a1->n1 == a2->n1)
     if(a1->n2 == a2->n2)
         return 1;
@@ -2339,56 +2388,84 @@ void reduz_arvore(no **n, Short ex)
 
 /**  apply esqueleto  **/
 
-void encaixa_apply(apply *a, apply *ac, Short lado)
+void encaixa_apply(apply *a, apply *ac)
 {
-    apply *ae;
-    ae = NULL;
-    switch(lado)
-    {
-        case Inicio:
-            ae = ac->a1;
-            ac->a = ae;
-            return;
-            break;
-
-        case Else:
-            ae = ac->a1;
-            break;
-
-        case Then:
-            ae = ac->a2;
-            break;
-
-        default:
-            ERRO("ENCAIXA APPLY| LADO INVALIDO");
-            break;
-    }
-    if(ae == NULL)
-        ERRO("ENCAIXA APPLY| LADO ESCOLHIDO VAZIO");
+    apply *a1, *a2;
+    a1 = ac->a1;
+    a2 = ac->a2;
 
     apply *aaux;
-    for(aaux = a; aaux != ac; aaux = aaux->a)
-        if(compara_apply(aaux,ae))
-            break;
-
-    if(aaux == ac)
+    for(aaux = a; aaux != NULL; aaux = aaux->a)
     {
-        ae->a = ac->a;
-        ac->a = ae;
+        if(compara_apply(aaux,a1))
+        {
+            ac->a1 = aaux;
+            libera_apply_no(a1);
+            a1 = NULL;
+
+            if(a2 == NULL)
+                break;
+        }
+
+        if(compara_apply(aaux,a2))
+        {
+            ac->a2 = aaux;
+            libera_apply_no(a2);
+            a2 = NULL;
+
+            if(a1 == NULL)
+                break;
+        }
+    }
+
+    Short adicionar;
+    adicionar = 3;
+    if(a1 == NULL)
+    {
+        if(a2 == NULL)
+        {
+            adicionar = 0;
+        }
+        else
+        {
+            a1 = a2;
+            adicionar = 1;
+        }
     }
     else
     {
-        switch(lado)
+        if(a2 == NULL)
         {
-            case Else:
-                ac->a1 = aaux;
-                break;
-
-            case Then:
-                ac->a2 = aaux;
-                break;
+            adicionar = 1;
         }
-        libera_apply_no(ae);
+        else
+        {
+            if(compara_apply(a1,a2))
+            {
+                ac->a1 = a1;
+                adicionar = 1;
+            }
+            else
+            {
+                adicionar = 2;
+            }
+        }
+    }
+
+    switch(adicionar)
+    {
+        case 3:
+            ERRO("APPLY BASE| ADICIONAR NAO ACIONOU NENHUMA REGRA");
+            break;
+
+        case 2:
+            a2->a = ac->a;
+            ac->a = a2;
+
+        case 1:
+            a1->a = ac->a;
+            ac->a = a1;
+            break;
     }
 }
 
@@ -2542,10 +2619,9 @@ no* apply_base(no *n1, no *n2, Short(*regra_apply)(apply*))
     a->n2 = n2;
 
     no *n;
-    apply *ac;
+    apply *ac, *a1, *a2;
     Short regra;
-    ac = a;
-    while(ac != NULL)
+    for(ac = a; ac != NULL; ac = ac->a)
     {
         regra = regra_apply(ac);
         monta_apply(ac,regra);
@@ -2554,18 +2630,15 @@ no* apply_base(no *n1, no *n2, Short(*regra_apply)(apply*))
         switch(n->tipo)
         {
             case Inicio:
-                encaixa_apply(a,ac,Inicio);
+                ac->a = ac->a1;
                 break;
 
             case Meio:
-                encaixa_apply(a,ac,Then);
-                encaixa_apply(a,ac,Else);
+                encaixa_apply(a,ac);
                 break;
         }
-        ac = ac->a;
     }
 
-    apply *a1, *a2;
     for(ac = a; ac != NULL; ac = ac->a)
     {
         a1 = ac->a1;
@@ -3311,19 +3384,20 @@ no* copia_arvore(no *n)
                 a1 = cria_apply();
                 a1->n1 = n->at.i.n;
                 ac->a1 = a1;
-                encaixa_apply(a,ac,Inicio);
+
+                ac->a = a1;
                 break;
 
             case Meio:
-                a2 = cria_apply();
-                a2->n1 = n->at.m.th;
-                ac->a2 = a2;
-                encaixa_apply(a,ac,Then);
-
                 a1 = cria_apply();
                 a1->n1 = n->at.m.el;
                 ac->a1 = a1;
-                encaixa_apply(a,ac,Else);
+
+                a2 = cria_apply();
+                a2->n1 = n->at.m.th;
+                ac->a2 = a2;
+
+                encaixa_apply(a,ac);
                 break;
         }
     }
@@ -3372,8 +3446,6 @@ QDD* copia_QDD(QDD *Q1)
 
 
 /**  produto QDD QDD base  **/
-
-Short caso[4];
 
 conta* espalha(suporte *s, Short classe)
 {
@@ -3440,7 +3512,6 @@ conta* espalha(suporte *s, Short classe)
                 if(cc == NULL)
                 {
                     /* Nao tem conta */
-                    caso[1] = 1;
                     caux = cria_conta(c->nivel);
                     caux->n = na;
 
@@ -3453,7 +3524,6 @@ conta* espalha(suporte *s, Short classe)
                     if(cc->nivel > c->nivel)
                     {
                         /* Alterar original */
-                        caso[2] = 1;
                         if(n == na->at.m.el)
                             nlixo = na->at.m.th;
                         else
@@ -3474,7 +3544,6 @@ conta* espalha(suporte *s, Short classe)
                     if(cc->nivel < c->nivel)
                     {
                         /* alterar atual */
-                        caso[3] = 1;
                         delta = c->nivel - cc->nivel;
                         ex = pow(2,delta);
 
@@ -3505,7 +3574,6 @@ conta* espalha(suporte *s, Short classe)
             else
             {
                 /* Não tem suporte */
-                caso[0] = 1;
                 caux = cria_conta(c->nivel);
                 caux->n = na;
 
@@ -3531,8 +3599,6 @@ conta* espalha(suporte *s, Short classe)
     return NULL;
 }
 
-FILE *fr;
-
 void contracao_conta(conta *c)
 {
     no *na, *nd;
@@ -3548,40 +3614,14 @@ void contracao_conta(conta *c)
             printf("\ni: %llu",i/tam);
 
         na = cc->n;
-        printf("\n1");
         nd = apply_soma(na->at.m.el,na->at.m.th);
-        printf("\n2");
         reduz_arvore(&nd,2);
-        printf("\n3");
-
-        if(compara_no_fim(na->at.m.el,na->at.m.th,1) == 0)
-        {
-            fprintf(fr,"\n\nCASO SOMA ESTRANHA");
-            fmostra_conta_no(fr,cc);
-            fmostra_arvore(fr,na);
-        }
-
-        if(cc->nivel < 13&&compara_no_fim_zero(nd,1))
-        {
-            fprintf(fr,"\n\nCASO ZERO");
-            fmostra_arvore(fr,na);
-        }
 
         transfere_conexao(nd,na);
         libera_arvore(na);
 
         cc->n = nd;
         (cc->nivel)--;
-
-        if(cc->nivel < 13&&compara_no_fim_zero(nd,1))
-        {
-            fmostra_conta_no(fr,cc);
-        }
-        /*if(mos)
-        {
-            mos = 0;
-            fmostra_conta_no(fr,cc);
-        }*/
     }
 }
 
@@ -3598,10 +3638,6 @@ conta* tratamento(suporte *s, Short classe, Short classeRef)
 
 void contracao_QDD(QDD *Q, Short classe)
 {
-    Short i;
-    for(i=0; i<4; i++)
-        caso[i] = 0;
-
     Short nqbit;
     nqbit = Q->nqbit;
 
@@ -3632,8 +3668,6 @@ void contracao_QDD(QDD *Q, Short classe)
     suporte *saux;
     while(s != NULL)
     {
-        fprintf(fr,"\nS: %hu",s->nivel);
-
         ci = tratamento(s,C,classe);
         if(ci != NULL)
             break;
@@ -3651,19 +3685,13 @@ void contracao_QDD(QDD *Q, Short classe)
         s = saux;
     }
     if(ci == NULL)
-        ERRO("CONTACAO QDD| NAO DETECTOU INICIO");
-
-    fmostra_conta_no(fr,ci);
+        ERRO("CONTRACAO QDD| NAO DETECTOU INICIO");
 
     Long ex;
     ex = pow(2,ci->nivel);
     produto_arvore_real(Q->n,ex);
 
     libera_conta_no(ci);
-
-    printf("\nCasos: ");
-    for(i=0; i<4; i++)
-        printf("%hu",caso[i]);
 
     Q->l = acha_lista_fim_QDD(Q);
 }
@@ -4479,49 +4507,17 @@ Short teste_epsilon_unitario(Short vetor, Short Configuracao)
 
 int main()
 {
-    fn = fopen("Nos.txt","w");
-    mos = 0;
-
     inicia_relatorio_memoria(0);
     configuracao(20);
     inicia_structs_globais();
     setlocale(LC_ALL, "Portuguese");
     /***********************************/
 
-
-    fr = fopen("relato.txt","w");
-    fprintf(fr,"\neps : %e",eps);
-    fprintf(fr,"\neps2: %e",eps*eps);
-    fprintf(fr,"\n\nNzero");
-    fmostra_no(fr,nzero);
-    fprintf(fr,"\n\n\n\n\n");
-
-    QDD *Q;
-    Q = le_vetor("V21.txt");
-    printf("\nLeu\n\n");
-    configuracao(Q->nqbit);
-    mos = 1;
-    reduz_QDD(Q,1,V);
-
-    no *n0, *n1;
-    lista *l;
-    for(l = Q->l; l != NULL; l = l->l)
-    {
-        n0 = l->n;
-        n1 = produto_no_conjugado_no(n0,n0);
-        transfere_conexao(n1,n0);
-        libera_no(n0);
-        l->n = n1;
-    }
-    fprintf(fr,"\nNo zero");
-    fmostra_no(fr,Q->l->n);
-    fprintf(fr,"\n\n\n\n");
-    //reduz_lista_fim(Q->l,2);
-    reduz_QDD(Q,2,V);
-
-    contracao_QDD(Q,V);
-    fmostra_QDD(fr,Q);
-    libera_QDD(Q);
+    QDD *Q1, *Q2;
+    Q1 = le_vetor("V8.txt");
+    Q2 = copia_QDD(Q1);
+    libera_QDD(Q1);
+    libera_QDD(Q2);
 
     /***********************************/
     finaliza_structs_globais();
