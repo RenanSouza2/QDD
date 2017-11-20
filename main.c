@@ -3453,41 +3453,19 @@ conta* espalha(suporte *s, Short classe)
     lista *lc, *lp;
     conta *c, *cc, *cp, *cpc, *caux;
     suporte *sc, *saux;
-    Short lado, delta, ex;
-    Long i, j, tam;
-    i = 0;
-    tam = 10000;
-    time_t antes, depois;
-    float Delta, tempo;
-    depois = clock();
+    Short lado, delta;
+    Long ex;
     while(s->c[classe] != NULL)
     {
-        i++;
-        if(i%tam == 0)
-        {
-            antes = depois;
-            depois = clock();
-            Delta = depois - antes;
-            tempo = Delta/CLOCKS_PER_SEC;
-            printf("\ni: %4llu\t\ttempo: %.3f",i/tam,tempo);
-        }
-
         c = s->c[classe];
         n = c->n;
 
         cp = cria_conta(0);
         cp->n = n;
 
-        j=0;
         lc = n->l;
         while(lc != NULL)
         {
-            j++;
-            if(j%tam == 0)
-            {
-                printf("\nj: %llu\ti: %llu",j/tam,i);
-
-            }
             lp = lc->l;
 
             na = lc->n;
@@ -3599,20 +3577,13 @@ conta* espalha(suporte *s, Short classe)
     return NULL;
 }
 
-void contracao_conta(conta *c)
+void contrai_conta(conta *c)
 {
     no *na, *nd;
     conta *cc;
-    Long i, tam;
-    i = 0;
-    tam = 10000;
 
     for(cc = c; cc != NULL; cc = cc->c)
     {
-        i++;
-        if(i%tam == 0)
-            printf("\ni: %llu",i/tam);
-
         na = cc->n;
         nd = apply_soma(na->at.m.el,na->at.m.th);
         reduz_arvore(&nd,2);
@@ -3627,8 +3598,11 @@ void contracao_conta(conta *c)
 
 conta* tratamento(suporte *s, Short classe, Short classeRef)
 {
+    if(s->c[classe] == NULL)
+        return NULL;
+
     if(classe == classeRef)
-        contracao_conta(s->c[classe]);
+        contrai_conta(s->c[classe]);
 
     conta *ci;
     ci = espalha(s,classe);
@@ -3636,7 +3610,7 @@ conta* tratamento(suporte *s, Short classe, Short classeRef)
     return ci;
 }
 
-void contracao_QDD(QDD *Q, Short classe)
+void contrai_QDD(QDD *Q, Short classe)
 {
     Short nqbit;
     nqbit = Q->nqbit;
@@ -3716,10 +3690,9 @@ QDD* produto_QDD_QDD(QDD *Q1, QDD *Q2, no* (*apply_operacao)(no *n1, no *n2), Sh
     Q->n = n;
     Q->l = l;
     reduz_lista_fim(l,2);
-    mostra_lista_com_no(l);
     reduz_QDD(Q,2,classe);
 
-    contracao_QDD(Q,classe);
+    contrai_QDD(Q,classe);
     libera_lista_lista(Q->l);
     Q->l = acha_lista_fim_QDD(Q);
     reduz_QDD(Q,1,4);
@@ -4513,11 +4486,29 @@ int main()
     setlocale(LC_ALL, "Portuguese");
     /***********************************/
 
-    QDD *Q1, *Q2;
-    Q1 = le_vetor("V8.txt");
-    Q2 = copia_QDD(Q1);
-    libera_QDD(Q1);
-    libera_QDD(Q2);
+    QDD *Q;
+    no *n;
+    Short i;
+    float m, e;
+    char nome[30];
+    for(i=1; i<=22; i++)
+    {
+        sprintf(nome,"V%hu.txt",i);
+        Q = le_vetor(nome);
+        configuracao(i);
+        reduz_QDD(Q,1,4);
+        n = produto_vetor_vetor(Q,Q);
+        printf("\n\nV%hu",i);
+        m = sqrt(n->at.f.re);
+        printf("\n|Q| = %f",m);
+        if(m>1)
+            e = m-1;
+        else
+            e = 1-m;
+        printf("\ne: %.0e",e);
+        libera_QDD(Q);
+        libera_no(n);
+    }
 
     /***********************************/
     finaliza_structs_globais();
