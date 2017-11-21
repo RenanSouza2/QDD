@@ -4487,28 +4487,68 @@ int main()
     /***********************************/
 
     QDD *Q;
-    no *n;
-    Short i;
-    float m, e;
-    char nome[30];
-    for(i=1; i<=22; i++)
-    {
-        sprintf(nome,"V%hu.txt",i);
-        Q = le_vetor(nome);
-        configuracao(i);
-        reduz_QDD(Q,1,4);
-        n = produto_vetor_vetor(Q,Q);
-        printf("\n\nV%hu",i);
-        m = sqrt(n->at.f.re);
-        printf("\n|Q| = %f",m);
-        if(m>1)
-            e = m-1;
-        else
-            e = 1-m;
-        printf("\ne: %.0e",e);
-        libera_QDD(Q);
-        libera_no(n);
-    }
+    Q = cria_QDD(21);
+    configuracao(Q->nqbit);
+
+    float re;
+    no *n0, *n1;
+    re = pow(2,-0.5*(Q->nqbit+1));
+    n0 = cria_no_fim(re-eps,re-eps);
+    n1 = cria_no_fim(re,re);
+    mostra_no_numero(n0);
+    mostra_no_numero(n1);
+    printf("\neps: %e",eps);
+    libera_no(n1);
+
+    lista *l;
+    l = lista_fim_2(n0,n1);
+    reduz_lista_fim(l,1);
+    printf("\n\nLista");
+    mostra_lista_com_no(l);
+
+    n1 = cria_no_inicio();
+    conecta_UM(n1,n0,Inicio);
+
+    Q->n = n1;
+    Q->l = l;
+
+    printf("\n\nPRIMEIRA TENTATIVA");
+    n1 = produto_vetor_vetor(Q,Q);
+    re = sqrt(n1->at.f.re);
+    printf("\n\n|Q| = %f",re);
+    re = 1-re;
+    printf("\nE: %.0e",re);
+    libera_QDD(Q);
+
+    Q = BASE(21,0);
+    re = pow(2,-0.5*(Q->nqbit+1));
+
+    l = Q->l;
+    n0 = cria_no_fim(re,re);
+    n1 = produto_no_conjugado_no(n0,n0);
+    libera_no(n0);
+    n0 = l->n;
+    transfere_conexao(n1,n0);
+    libera_no(n0);
+    l->n = n1;
+
+    l = l->l;
+    n0 = cria_no_fim(re-eps,re-eps);
+    n1 = produto_no_conjugado_no(n0,n0);
+    libera_no(n0);
+    n0 = l->n;
+    transfere_conexao(n1,n0);
+    libera_no(n0);
+    l->n = n1;
+
+    printf("\n\nSEGUNDA TENTATIVA");
+    contrai_QDD(Q,V);
+    n1 = Q->l->n;
+    re = sqrt(n1->at.f.re);
+    printf("\n\n|Q| = %f",re);
+    re = 1-re;
+    printf("\nE: %.0e",re);
+    libera_QDD(Q);
 
     /***********************************/
     finaliza_structs_globais();
