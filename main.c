@@ -2168,6 +2168,88 @@ QDD* le_vetor(char *nome)
     return Q;
 }
 
+void salva_QDD(QDD *Q, char *nome)
+{
+    lista *l;
+    Long itens;
+    l = enlista_QDD(Q);
+    itens = conta_items_lista(l);
+    mostra_lista(l);
+
+    Long **lig;
+    lig = malloc(itens*sizeof(Long*));
+    if(lig == NULL)
+        ERRO("SALVA QDD| ALLOCA LIG");
+    aumenta_memoria_fora(itens*sizeof(Long*));
+
+    Long i;
+    for(i=0; i<itens; i++)
+    {
+        lig[i] = malloc(2*sizeof(Long));
+        if(lig[i] == NULL)
+            ERRO("SALVA QDD| ALLOCA LIG[]");
+        aumenta_memoria_fora(2*sizeof(Long));
+
+        lig[i][0] = 0;
+        lig[i][1] = 1;
+    }
+
+    no **N;
+    N = malloc(itens*sizeof(no*));
+    if(N == NULL)
+        ERRO("SALVA QDD| ALLOCA N");
+    aumenta_memoria_fora(itens*sizeof(no*));
+
+    lista *lc;
+    i=0;
+    for(lc = l; lc != NULL; lc = lc->l)
+        N[i] = lc->n;
+
+    no *n, *n1, *n2;
+    Long j;
+    for(i=0; i<itens; i++)
+    {
+        n = N[i];
+        switch(n->tipo)
+        {
+            case Inicio:
+                n1 = n->at.i.n;
+                for(j = 0; j < itens; j++)
+                    if(N[j] == n1)
+                    {
+                        lig[i][0] = j;
+                        break;
+                    }
+                break;
+
+            case Meio:
+                n1 = n->at.m.el;
+                n2 = n->at.m.th;
+                for(j=0; j<itens; j++)
+                {
+                    if(N[j] == n1)
+                    {
+                        lig[i][0] = j;
+                        if(lig[i][1] != 0)
+                            break;
+                    }
+                    if(N[j] == n2)
+                    {
+                        lig[i][1] = j;
+                        if(lig[i][0] != 0)
+                            break;
+                    }
+                }
+                break;
+        }
+    }
+
+    for(i=0;i<itens; i++)
+    {
+        printf("lig[%3llu]: %3llu %3llu",i,lig[i][0],lig[i][1]);
+    }
+}
+
 
 
 /**  Reduz  **/
@@ -4788,7 +4870,89 @@ int main()
     setlocale(LC_ALL, "Portuguese");
     /***********************************/
 
+    /*Short N;
+    N = 64;
 
+    QDD *Q1, *Q2, *Q3;
+    Q1 = BASE(N,0);
+    Q2 = aplicar(QH,N,0);
+    Q3 = produto_matriz_vetor(Q2,Q1);
+    libera_QDD(Q1);
+    libera_QDD(Q2);
+    Q1 = Q3;
+
+    Short i;
+    for(i=1; i<N; i++)
+    {
+        printf("\ni: %2hu",i);
+        Q2 = aplicar(QH,N,i);
+        Q3 = controle(Q2,i-1,1);
+        libera_QDD(Q2);
+        Q2 = produto_matriz_vetor(Q3,Q1);
+        libera_QDD(Q1);
+        libera_QDD(Q3);
+        Q1 = Q2;
+    }
+
+    QDD **QM;
+    float p[2];
+    printf("\n");
+    for(i=0; i<N; i++)
+    {
+        QM = mede_conservativo(Q1,i,p);
+        printf("\ni: %2hu\t\tP0: %f\t\tP1: %f",i,p[0],p[1]);
+        libera_QDD(QM[0]);
+        libera_QDD(QM[1]);
+        libera_QDD_array(QM,2);
+    }
+    libera_QDD(Q1);*/
+
+    /*Short N;
+    N = 64;
+
+    QDD *QB, *Q1, *Q2, *Q3;
+    QB = BASE(1,0);
+    Q1 = produto_matriz_vetor(QS,QB);
+
+    Short i;
+    for(i=1; i<N; i++)
+    {
+        printf("\ni: %2hu",i);
+
+        Q2 = produto_tensorial(Q1,QB);
+        libera_QDD(Q1);
+        Q1 = Q2;
+
+        Q2 = aplicar(QS,i+1,i);
+        Q3 = controle(Q2,i-1,1);
+        libera_QDD(Q2);
+
+        Q2 = produto_matriz_vetor(Q3,Q1);
+        libera_QDD(Q1);
+        libera_QDD(Q3);
+        Q1 = Q2;
+    }
+
+    QDD **QM;
+    float p[2];
+    printf("\n");
+    for(i=0; i<N; i++)
+    {
+        QM = mede_conservativo(Q1,i,p);
+        printf("\ni: %2hu\t\tP0: %f\t\tP1: %f",i,p[0],p[1]);
+        libera_QDD(QM[0]);
+        libera_QDD(QM[1]);
+        libera_QDD_array(QM,2);
+    }
+    libera_QDD(Q1);
+    libera_QDD(QB);
+
+    printf("\n");
+    mostra_quantidades();*/
+
+    QDD *Q;
+    Q = potencia_tensorial(QH,3);
+    salva_QDD(Q,"H3.txt");
 
     /***********************************/
     finaliza_structs_globais();
