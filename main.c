@@ -3512,11 +3512,10 @@ QDD* copia_QDD(QDD *Q1)
 conta* espalha(suporte *s, Short classe)
 {
     no *n, *na, *naux, *nlixo;
-    lista *lc, *lp;
+    lista *lc, *lp, *lr, *lrc;
     conta *c, *cc, *cp, *cpc, *caux;
     suporte *sc, *saux;
-    Short lado, delta;
-    Long ex;
+    Short lado, delta, i;
     while(s->c[classe] != NULL)
     {
         c = s->c[classe];
@@ -3573,8 +3572,13 @@ conta* espalha(suporte *s, Short classe)
                         naux = copia_arvore(nlixo);
 
                         delta = cc->nivel - c->nivel;
-                        ex = pow(2,delta);
-                        produto_arvore_real(naux,ex);
+                        lr = acha_lista_fim_arvore(naux);
+                        for(i = 0; i < delta; i++)
+                        {
+                            for(lrc = lr; lrc != NULL; lrc = lrc->l)
+                                produto_no_real(lrc->n,2);
+                        }
+                        libera_lista_lista(lr);
 
                         conecta_UM(na,naux,lado);
                         libera_arvore(nlixo);
@@ -3585,7 +3589,6 @@ conta* espalha(suporte *s, Short classe)
                     {
                         /* alterar atual */
                         delta = c->nivel - cc->nivel;
-                        ex = pow(2,delta);
 
                         for(cpc = cp; cpc->c != NULL; cpc = cpc->c)
                             if(cpc->c->nivel > delta)
@@ -3597,8 +3600,14 @@ conta* espalha(suporte *s, Short classe)
                         }
                         else
                         {
-                            naux = copia_arvore(n);
-                            produto_arvore_real(naux,ex);
+                            naux = copia_arvore(cpc->n);
+                            lr = acha_lista_fim_arvore(naux);
+                            for(i = cpc->nivel; i < delta; i++)
+                            {
+                                for(lrc = lr; lrc != NULL; lrc = lrc->l)
+                                    produto_no_real(lrc->n,2);
+                            }
+                            libera_lista_lista(lr);
 
                             caux = cria_conta(delta);
                             caux->n = naux;
@@ -4274,6 +4283,30 @@ QDD** mede_conservativo(QDD *Q, Short nqbit, float p[2])
     return QF;
 }
 
+QDD*  mede_destrutivo(QDD *Q, Short nqbit, Short *resultado)
+{
+    QDD **QM;
+    float p[2];
+    QM = mede_conservativo(Q,nqbit,p);
+
+    float P;
+    srand(time(NULL));
+    P = rand();
+    P /= RAND_MAX;
+    if(P < p[0])
+    {
+        Q = QM[0];
+        libera_QDD(QM[1]);
+    }
+    else
+    {
+        Q = QM[1];
+        libera_QDD(QM[0]);
+    }
+    libera_QDD_array(QM,2);
+    return Q;
+}
+
 
 
 /**  Testes  **/
@@ -4746,6 +4779,7 @@ void teste_epslon(Short limiteInf, Short limiteSup, Short confSup)
 }
 
 
+
 int main()
 {
     inicia_relatorio_memoria(0);
@@ -4754,69 +4788,7 @@ int main()
     setlocale(LC_ALL, "Portuguese");
     /***********************************/
 
-    FILE *fp, *fr;
-    fp = fopen("Relatorio.txt","w");
-    fr = fopen("Planilha.csv","w");
 
-    fprintf(fr,"sep=|\n");
-
-    QDD  *QB, *Q1, *Q2, *Q3;
-    Short i;
-
-    QB = BASE(1,0);
-    Q1 = produto_matriz_vetor(QH,QB);
-
-    lista *l;
-    Long itens;
-
-    time_t antes, depois;
-    float delta, tempo;
-
-    for(i=1; i<200; i++)
-    {
-        antes = clock();
-        configuracao(i+1);
-        printf("\nI: %3hu",i);
-        fprintf(fp,"\nI: %3hu",i);
-        Q2 = produto_tensorial(Q1,QB);
-        libera_QDD(Q1);
-        Q1 = Q2;
-        Q2 = aplicar(QH,i+1,i);
-        Q3 = controle(Q2,i-1,1);
-        libera_QDD(Q2);
-        Q2 = produto_matriz_vetor(Q3,Q1);
-        libera_QDD(Q1);
-        libera_QDD(Q3);
-        Q1 = Q2;
-        depois = clock();
-
-        l = enlista_QDD(Q1);
-        itens = conta_items_lista(l);
-        printf("\t\tItens: %5llu",itens);
-        fprintf(fp,"\t\tItens: %5llu",itens);
-
-        delta = depois - antes;
-        tempo = delta/CLOCKS_PER_SEC;
-
-        printf("\t\tTempo: %.3f",tempo);
-        fprintf(fp,"\t\tTempo: %.3f",tempo);
-
-        fprintf(fr,"\n%hu|%llu|%.3f",i,itens,tempo);
-    }
-
-
-    QDD **QM;
-    float p[2];
-    for(i=0; i<200; i++)
-    {
-        QM = mede_conservativo(Q1,i,p);
-        printf("\ni: %3hu\t\tP0: %.3e\t\tP1: %.3e",p[0],p[1]);
-        fprintf(fp,"\ni: %3hu\t\tP0: %.3e\t\tP1: %.3e",p[0],p[1]);
-        libera_QDD(QM[0]);
-        libera_QDD(QM[1]);
-        libera_QDD_array(QM,2);
-    }
-    fclose(fp);
 
     /***********************************/
     finaliza_structs_globais();
