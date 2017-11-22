@@ -4754,9 +4754,8 @@ int main()
     setlocale(LC_ALL, "Portuguese");
     /***********************************/
 
-    Short N;
-    N = 80;
-    configuracao(N);
+    FILE *fp;
+    fp = fopen("Relatorio.txt","w");
 
     QDD  *QB, *Q1, *Q2, *Q3;
     Short i;
@@ -4764,10 +4763,18 @@ int main()
     QB = BASE(1,0);
     Q1 = produto_matriz_vetor(QH,QB);
 
+    lista *l;
+    Long itens;
+
+    time_t antes, depois;
+    float delta, tempo;
+
     for(i=1; i<200; i++)
     {
+        antes = clock();
         configuracao(i+1);
-        printf("\nI: %4hu",i);
+        printf("\nI: %3hu",i);
+        fprintf(fp,"\nI: %3hu",i);
         Q2 = produto_tensorial(Q1,QB);
         libera_QDD(Q1);
         Q1 = Q2;
@@ -4778,17 +4785,20 @@ int main()
         libera_QDD(Q1);
         libera_QDD(Q3);
         Q1 = Q2;
+        depois = clock();
+
+        l = enlista_QDD(Q1);
+        itens = conta_items_lista(l);
+        printf("\t\tItens: %5llu",itens);
+        fprintf(fp,"\t\tItens: %5llu",itens);
+
+        delta = depois - antes;
+        tempo = delta/CLOCKS_PER_SEC;
+
+        printf("\t\tTempo: %.3f",tempo);
+        fprintf(fp,"\t\tTempo: %.3f",tempo);
     }
 
-    FILE *fp;
-    fp = fopen("Relatorio.txt","w");
-
-    lista *l;
-    Long itens;
-    l = enlista_QDD(Q1);
-    itens = conta_items_lista(l);
-    printf("\nItens: %llu",itens);
-    fprintf(fp,"\nItens: %llu",itens);
 
     QDD **QM;
     float p[2];
