@@ -25,7 +25,6 @@ FILE *fm;
 unsigned long long mem = 0, memMax = 0, memF = 0;
 unsigned long long iQ = 0, iI = 0, iM = 0, iF = 0, iL = 0, iA = 0, iC = 0, iS = 0;
 unsigned short tQ, tN, tL, tA, tC, tS;
-unsigned long long MAX;
 unsigned short print, Nqbit;
 float eps;
 
@@ -132,7 +131,6 @@ void finaliza_relatorio_memoria()
 void configuracao(Short N)
 {
     Nqbit = N;
-    MAX = pow(2,N);
     eps = pow(2,-0.5*N)/20;
 }
 
@@ -334,6 +332,16 @@ suporte* cria_suporte(Short nivel)
     return s;
 }
 
+QDD** cria_QDD_array(Long N)
+{
+    QDD **Q;
+    Q = malloc(N*sizeof(QDD*));
+    if(Q == NULL)
+        ERRO("CRIA ARRAY QDD");
+    aumenta_memoria_fora(N*sizeof(QDD*));
+    return Q;
+}
+
 
 
 /** Destrutores  **/
@@ -471,6 +479,12 @@ void libera_suporte_lista(suporte *s)
         libera_suporte_no(s);
         s = sc;
     }
+}
+
+void libera_QDD_array(QDD **Q, Long N)
+{
+    diminui_memoria_fora(N*sizeof(QDD*));
+    free(Q);
 }
 
 
@@ -839,52 +853,52 @@ void mostra_quantidades()
     if(mem != 0)
     {
         vazio = 0;
-        printf("\nMem: %llu",mem);
+        printf("\nMem:  %llu",mem);
     }
     if(memF != 0)
     {
         vazio = 0;
-        printf("\nMem: %llu",memF);
+        printf("\nMemF: %llu",memF);
     }
     if(iQ != 0)
     {
         vazio = 0;
-        printf("\nQDD: %llu",iQ);
+        printf("\nQDD:  %llu",iQ);
     }
     if(iI != 0)
     {
         vazio = 0;
-        printf("\ni:   %llu",iI);
+        printf("\ni:    %llu",iI);
     }
     if(iM != 0)
     {
         vazio = 0;
-        printf("\nm:   %llu",iM);
+        printf("\nm:    %llu",iM);
     }
     if(iF != 0)
     {
         vazio = 0;
-        printf("\nf:   %llu",iF);
+        printf("\nf:    %llu",iF);
     }
     if(iL != 0)
     {
         vazio = 0;
-        printf("\nl:   %llu",iL);
+        printf("\nl:    %llu",iL);
     }
     if(iA != 0)
     {
         vazio = 0;
-        printf("\na:   %llu",iA);
+        printf("\na:    %llu",iA);
     }
     if(iC != 0)
     {
         vazio = 0;
-        printf("\nc:   %llu",iC);
+        printf("\nc:    %llu",iC);
     }
     if(iS != 0)
     {
         vazio = 0;
-        printf("\ns:   %llu",iS);
+        printf("\ns:    %llu",iS);
     }
     if(vazio)
         printf("\nTUDO ZERADO");
@@ -907,7 +921,6 @@ void mostra_configuracao()
 {
     printf("\nConfiguracao: ");
     printf("\nNqbit: %hu",Nqbit);
-    printf("\nMax: %lld",MAX);
     printf("\neps: %.3e",eps);
 }
 
@@ -1230,7 +1243,6 @@ void fmostra_configuracao(FILE *fp)
 {
     fprintf(fp,"\nConfiguracao: ");
     fprintf(fp,"\nNqbit: %hu",Nqbit);
-    fprintf(fp,"\nMax: %lld",MAX);
     fprintf(fp,"\neps: %.3e",eps);
 }
 
@@ -1660,11 +1672,11 @@ void inicia_structs_globais()
 void finaliza_structs_globais()
 {
     mem += 9*tQ+45*tN+63*tL;
-    iQ += 9;
-    iI += 9;
-    iM += 19;
-    iF += 17;
-    iL += 63;
+    iQ  += 9;
+    iI  += 9;
+    iM  += 19;
+    iF  += 17;
+    iL  += 63;
 
     libera_no(Qred->n);
     libera_QDD_no(Qred);
@@ -2280,9 +2292,9 @@ void reduz_QDD(QDD *Q, Short ex, Short classe)
             if(n1->tipo == Inicio)
                 ERRO("REDUZ QDD| NO INICIO NAO DEVERIA CHEGAR AQUI");
             if(n1->at.m.el == NULL)
-                ERRO("REDUZ QDD| NO NAO CONEXAO EM EL");
+                ERRO("REDUZ QDD| NO SEM CONEXAO EM EL");
             if(n1->at.m.th == NULL)
-                ERRO("REDUZ QDD| NO NAO CONEXAO EM TH");
+                ERRO("REDUZ QDD| NO SEM CONEXAO EM TH");
             if(n1->at.m.el == n1->at.m.th)
                 ERRO("REDUZ QDD| REDUNDANCIA TIPO 1 JA DEVERIA TER SIDO ELIMINADA");
 
@@ -2304,7 +2316,10 @@ void reduz_QDD(QDD *Q, Short ex, Short classe)
                     if(laux == NULL)
                         for(laux = l; laux != NULL; laux = laux->l)
                             if(laux->n == n2)
+                            {
+                                laux->n = NULL;
                                 break;
+                            }
 
                     desconecta_DOIS(n2);
                     transfere_conexao(n1,n2);
@@ -2324,10 +2339,13 @@ void reduz_QDD(QDD *Q, Short ex, Short classe)
                             continue;
                         if(n2->at.m.nivel > n1->at.m.nivel)
                             continue;
-                        if(n2->at.m.classe == C)
-                            continue;
-                        if(n1->at.m.classe == R)
-                            continue;
+                        if(n2->at.m.nivel == n1->at.m.nivel)
+                        {
+                            if(n2->at.m.classe == C)
+                                continue;
+                            if(n1->at.m.classe == R)
+                                continue;
+                        }
 
                         break;
                     }
@@ -2382,6 +2400,50 @@ void reduz_arvore(no **n, Short ex)
             libera_lista_lista(Qred->l);
             break;
     }
+}
+
+void reduz_arvore_regra_1(no **n)
+{
+    lista *l;
+    l = cria_lista();
+    l->l = enlista_arvore(*n);
+
+    no *n1, *n2;
+    lista *lc, *laux;
+    Short mudou;
+    do
+    {
+        mudou = 0;
+
+        lc = l;
+        while(lc->l != NULL)
+        {
+            laux = lc->l;
+            n1 = laux->n;
+            if(n1->tipo == Meio)
+            if(n1->at.m.el == n1->at.m.th)
+            {
+                n2 = n1->at.m.el;
+
+                desconecta_DOIS(n1);
+                transfere_conexao(n2,n1);
+                libera_no(n1);
+
+                lc->l = laux->l;
+                libera_lista_no(laux);
+
+                mudou = 1;
+                continue;
+            }
+            lc = lc->l;
+        }
+    }
+    while(mudou);
+
+    lc = l->l;
+    n1 = lc->n;
+    n = &n1;
+    libera_lista_lista(l);
 }
 
 
@@ -2661,8 +2723,8 @@ no* apply_base(no *n1, no *n2, Short(*regra_apply)(apply*))
                 break;
         }
     }
-    n = a->n;
 
+    n = a->n;
     libera_apply_lista(a);
 
     return n;
@@ -3689,7 +3751,6 @@ QDD* produto_QDD_QDD(QDD *Q1, QDD *Q2, no* (*apply_operacao)(no *n1, no *n2), Sh
     Q = cria_QDD(Q1->nqbit);
     Q->n = n;
     Q->l = l;
-    reduz_lista_fim(l,2);
     reduz_QDD(Q,2,classe);
 
     contrai_QDD(Q,classe);
@@ -3718,6 +3779,13 @@ void produto_QDD_no(QDD *Q, no *n1)
 
         l->n = naux;
     }
+}
+
+void produto_QDD_real(QDD *Q, float re)
+{
+    lista *l;
+    for(l = Q->l; l != NULL; l = l->l)
+        produto_no_real(l->n,re);
 }
 
 QDD* produto_tensorial(QDD *Q1, QDD *Q2)
@@ -3879,6 +3947,108 @@ no* produto_vetor_vetor(QDD *Q1, QDD *Q2)
     return n;
 }
 
+float modulo_vetor(QDD *Q)
+{
+    QDD *Q1;
+    no *n0, *n1;
+    lista *l;
+    Q1 = copia_QDD(Q);
+    for(l = Q1->l; l != NULL; l = l->l)
+    {
+        n0 = l->n;
+
+        n1 = produto_no_conjugado_no(n0,n0);
+        transfere_conexao(n1,n0);
+        libera_no(n0);
+
+        l->n = n1;
+    }
+
+    float m;
+    contrai_QDD(Q1,V);
+    n1 = Q1->l->n;
+    m = sqrt(n1->at.f.re);
+    libera_QDD(Q1);
+
+    return m;
+}
+
+
+
+/**  Auxiliar QDD  **/
+
+QDD** M01(Short N, Short n)
+{
+    QDD **Q;
+    Q = cria_QDD_array(2);
+
+    QDD *QIn, *Q1, *Q2;
+    Q1 = matriz_delta_kronecker(0,0);
+    Q2 = matriz_delta_kronecker(1,1);
+
+    QDD *Q1aux, *Q2aux;
+    Q1aux = NULL;
+    Q2aux = NULL;
+    if(n > 0)
+    {
+        QIn = potencia_tensorial(QI,n);
+        Q1aux = produto_tensorial(QIn,Q1);
+        Q2aux = produto_tensorial(QIn,Q2);
+
+        libera_QDD(QIn);
+        libera_QDD(Q1);
+        libera_QDD(Q2);
+
+        Q1 = Q1aux;
+        Q2 = Q2aux;
+    }
+
+    if(N - n > 1)
+    {
+        QIn = potencia_tensorial(QI,N - n-1);
+        Q1aux = produto_tensorial(Q1,QIn);
+        Q2aux = produto_tensorial(Q2,QIn);
+
+        libera_QDD(QIn);
+        libera_QDD(Q1);
+        libera_QDD(Q2);
+
+        Q1 = Q1aux;
+        Q2 = Q2aux;
+    }
+
+    Q[0] = Q1;
+    Q[1] = Q2;
+    return Q;
+}
+
+QDD* aplicar(QDD *Q, Short N, Short n)
+{
+    QDD *Q1, *Q2, *Q3;
+    Q1 = copia_QDD(Q);
+    if(n > 0)
+    {
+        Q2 = potencia_tensorial(QI,n);
+        Q3 = produto_tensorial(Q2,Q1);
+
+        libera_QDD(Q2);
+        libera_QDD(Q1);
+
+        Q1 = Q3;
+    }
+    if(N > n+(Q->nqbit))
+    {
+        Q2 = potencia_tensorial(QI,N-(n+(Q->nqbit)));
+        Q3 = produto_tensorial(Q1,Q2);
+
+        libera_QDD(Q2);
+        libera_QDD(Q1);
+
+        Q1 = Q3;
+    }
+    return Q1;
+}
+
 
 
 /** QDDs usuais  **/
@@ -3998,36 +4168,13 @@ QDD* controle(QDD *Q, Short controle, Short ativa)
     if(Q->nqbit <= controle)
         ERRO("CONTROLE| BIT DE CONTROLE ONTROLE PRECISA SER MENOR QUE NQBIT");
 
-    QDD *QIn, *Q1, *Q2;
-    Q1 = Q00;
-    Q2 = Q11;
+    QDD **QM, *Q1, *Q2;
+    QM = M01(Q->nqbit,controle);
+    Q1 = QM[0];
+    Q2 = QM[1];
+    libera_QDD_array(QM,2);
 
     QDD *Q1aux, *Q2aux;
-    Q1aux = NULL;
-    Q2aux = NULL;
-    if(controle > 0)
-    {
-        QIn = potencia_tensorial(QI,controle);
-        Q1 = produto_tensorial(QIn,Q1);
-        Q2 = produto_tensorial(QIn,Q2);
-        libera_QDD(QIn);
-    }
-
-    if(Q->nqbit - controle > 1)
-    {
-        QIn = potencia_tensorial(QI,Q->nqbit - controle-1);
-        Q1aux = produto_tensorial(Q1,QIn);
-        Q2aux = produto_tensorial(Q2,QIn);
-        libera_QDD(QIn);
-        if(Q1->nqbit > 1)
-        {
-            libera_QDD(Q1);
-            libera_QDD(Q2);
-        }
-        Q1 = Q1aux;
-        Q2 = Q2aux;
-    }\
-
     if(ativa == 0)
     {
         Q1aux = produto_matriz_matriz(Q1,Q);
@@ -4098,6 +4245,33 @@ QDD* Switch(Short nqbit)
     libera_QDD(Q3);
 
     return Q1;
+}
+
+QDD** mede_conservativo(QDD *Q, Short nqbit, float p[2])
+{
+    QDD **QM, **QF;
+    QM = M01(Q->nqbit,nqbit);
+    QF = cria_QDD_array(2);
+
+    QF[0] = produto_matriz_vetor(QM[0],Q);
+    QF[1] = produto_matriz_vetor(QM[1],Q);
+
+    p[0] = modulo_vetor(QF[0]);
+    p[1] = modulo_vetor(QF[1]);
+
+    if(p[0] > eps)
+        produto_QDD_real(QF[0],1/p[0]);
+    if(p[1] > eps)
+        produto_QDD_real(QF[1],1/p[1]);
+
+    p[0] *= p[0];
+    p[1] *= p[1];
+
+    libera_QDD(QM[0]);
+    libera_QDD(QM[1]);
+    libera_QDD_array(QM,2);
+
+    return QF;
 }
 
 
@@ -4435,7 +4609,7 @@ Short teste_memoria()
 
 }
 
-Short teste_epsilon_unitario(Short vetor, Short Configuracao)
+Short teste_epsilon_unitario(Short vetor, Short Configuracao, Long memS[2], float dados[5])
 {
     char nome[30];
     sprintf(nome,"V%hu.txt",vetor);
@@ -4443,30 +4617,56 @@ Short teste_epsilon_unitario(Short vetor, Short Configuracao)
     QDD *Q;
     Q = le_vetor(nome);
     configuracao(Configuracao);
-    printf("\nVetor: %hu",vetor);
+    printf("\n\nVetor: %hu",vetor);
     printf("\nConfiguracao: %hu",Nqbit);
+
+    time_t antes, depois;
+    double delta, tempo;
 
     Long memAntes, memDepois;
     float red;
     memAntes = mem;
+    antes = clock();
     reduz_QDD(Q,1,4);
+    depois = clock();
     memDepois = mem;
-    red = 1-((float)memDepois/memAntes);
-    printf("\nMemAntes : %llu",memAntes);
-    printf("\nMemDepois: %llu",memDepois);
-    printf("\nRed: %.3f",red);
 
-    no *n;
+    red = 1-((float)memDepois/memAntes);
+    red *= 100;
+    printf("\n\nMemAntes : %llu",memAntes);
+    printf("\nMemDepois: %llu",memDepois);
+    printf("\nRed: %.2f",red);
+
+    memS[0] = memAntes;
+    memS[1] = memDepois;
+    dados[0] = red;
+
+    memDepois = mem;
+    delta = depois - antes;
+    tempo = delta/CLOCKS_PER_SEC;
+    printf("\nTempo: %.3e\n",tempo);
+
+    dados[1] = tempo;
+
     float m, e;
-    n = produto_vetor_vetor(Q,Q);
-    m = sqrt(n->at.f.re);
+    antes = clock();
+    m = modulo_vetor(Q);
+    depois = clock();
+
     e = 1-m;
     printf("\n|Q| = %f",m);
-    printf("\nE: %.0e\n",e);
-    libera_QDD(Q);
-    libera_no(n);
+    printf("\nE: %.0e",e);
 
-    mostra_quantidades();
+    dados[2] = m;
+    dados[3] = e;
+
+    delta = depois - antes;
+    tempo = delta/CLOCKS_PER_SEC;
+    printf("\nTempo: %.3e\n",tempo);
+    libera_QDD(Q);
+
+    dados[4] = tempo;
+
     if(memDepois == 68)
         return 1;
     if(memAntes == memDepois)
@@ -4476,6 +4676,74 @@ Short teste_epsilon_unitario(Short vetor, Short Configuracao)
     return 0;
 }
 
+void teste_epslon(Short limiteInf, Short limiteSup, Short confSup)
+{
+    Short i, j, s;
+
+    Short var;
+    Long ***MemT;
+    float ***DadosT;
+    var  = limiteSup-limiteInf+1;
+
+    MemT = malloc(var*sizeof(Long**));
+    if(MemT == NULL)
+        ERRO("TESTE EPSLON| ALLOCA MEMT");
+    aumenta_memoria_fora(var*sizeof(Long**));
+
+    DadosT = malloc(var*sizeof(float**));
+    if(DadosT == NULL)
+        ERRO("TESTE EPSLON| ALLOCA DADOST");
+        aumenta_memoria_fora(var*sizeof(float**));
+
+    for(i=0; i<var; i++)
+    {
+        MemT[i] = malloc(confSup*sizeof(Long*));
+        if(MemT[i] == NULL)
+            ERRO("TESTE EPSLON| ALLOCA MEMT[]");
+        aumenta_memoria_fora(confSup*sizeof(Long*));
+
+        DadosT[i] = malloc(confSup*sizeof(float*));
+        if(DadosT[i] == NULL)
+            ERRO("TESTE EPSLON| ALLOCA DADOST[]");
+        aumenta_memoria_fora(confSup*sizeof(float*));
+
+        for(j=0; j<confSup; j++)
+        {
+            MemT[i][j] = malloc(2*sizeof(Long));
+            if(MemT[i][j] == NULL)
+                ERRO("TESTE EPSLON| ALLOCA MEMT[][]");
+            aumenta_memoria_fora(2*sizeof(Long));
+
+            for(s = 0; s < 2; s++)
+                MemT[i][j][s] =0;;
+
+            DadosT[i][j] = malloc(5*sizeof(float));
+            if(DadosT[i][j] == NULL)
+                ERRO("TESTE EPSLON| ALOCA DADOST[][]");
+            aumenta_memoria_fora(5*sizeof(float));
+
+            for(s = 0; s < 5; s++)
+                DadosT[i][j][s] = 0;
+        }
+    }
+
+    for(i=limiteInf; i<=limiteSup; i++)
+    {
+        for(j=i; j>0; j--)
+        {
+            s = teste_epsilon_unitario(i,j,MemT[i][j],DadosT[i][j]);
+            if(s)
+                break;
+        }
+
+        for(j = i+1; j<confSup; j++)
+        {
+            s = teste_epsilon_unitario(i,j,MemT[i][j],DadosT[i][j]);
+            if(s)
+                break;
+        }
+    }
+}
 
 
 int main()
@@ -4486,69 +4754,50 @@ int main()
     setlocale(LC_ALL, "Portuguese");
     /***********************************/
 
-    QDD *Q;
-    Q = cria_QDD(21);
-    configuracao(Q->nqbit);
+    Short N;
+    N = 63;
+    configuracao(N);
 
-    float re;
-    no *n0, *n1;
-    re = pow(2,-0.5*(Q->nqbit+1));
-    n0 = cria_no_fim(re-eps,re-eps);
-    n1 = cria_no_fim(re,re);
-    mostra_no_numero(n0);
-    mostra_no_numero(n1);
-    printf("\neps: %e",eps);
-    libera_no(n1);
+    QDD *Q1, *Q2, *Q3;
+    Short i;
+
+    Q1 = BASE(N,0);
+    Q2 = aplicar(QH,N,0);
+    Q3 = produto_matriz_vetor(Q2,Q1);
+    libera_QDD(Q2);
+    libera_QDD(Q1);
+    Q1 = Q3;
+    for(i=1; i<N; i++)
+    {
+        printf("\ni: %hu",i);
+        Q2 = aplicar(QH,N,i);
+        Q3 = controle(Q2,i-1,1);
+        libera_QDD(Q2);
+        Q2 = produto_matriz_vetor(Q3,Q1);
+        libera_QDD(Q3);
+        libera_QDD(Q1);
+        Q1 = Q2;
+    }
+
+    QDD **QM;
+    float p[2];
+    for(i=0; i<N; i++)
+    {
+
+        QM = mede_conservativo(Q1,i,p);
+        printf("\ni: %2hu\t\tP0: %.3e\t\tP1: %.3e",i,p[0],p[1]);
+        libera_QDD(QM[0]);
+        libera_QDD(QM[1]);
+        libera_QDD_array(QM,2);
+    }
 
     lista *l;
-    l = lista_fim_2(n0,n1);
-    reduz_lista_fim(l,1);
-    printf("\n\nLista");
-    mostra_lista_com_no(l);
-
-    n1 = cria_no_inicio();
-    conecta_UM(n1,n0,Inicio);
-
-    Q->n = n1;
-    Q->l = l;
-
-    printf("\n\nPRIMEIRA TENTATIVA");
-    n1 = produto_vetor_vetor(Q,Q);
-    re = sqrt(n1->at.f.re);
-    printf("\n\n|Q| = %f",re);
-    re = 1-re;
-    printf("\nE: %.0e",re);
-    libera_QDD(Q);
-
-    Q = BASE(21,0);
-    re = pow(2,-0.5*(Q->nqbit+1));
-
-    l = Q->l;
-    n0 = cria_no_fim(re,re);
-    n1 = produto_no_conjugado_no(n0,n0);
-    libera_no(n0);
-    n0 = l->n;
-    transfere_conexao(n1,n0);
-    libera_no(n0);
-    l->n = n1;
-
-    l = l->l;
-    n0 = cria_no_fim(re-eps,re-eps);
-    n1 = produto_no_conjugado_no(n0,n0);
-    libera_no(n0);
-    n0 = l->n;
-    transfere_conexao(n1,n0);
-    libera_no(n0);
-    l->n = n1;
-
-    printf("\n\nSEGUNDA TENTATIVA");
-    contrai_QDD(Q,V);
-    n1 = Q->l->n;
-    re = sqrt(n1->at.f.re);
-    printf("\n\n|Q| = %f",re);
-    re = 1-re;
-    printf("\nE: %.0e",re);
-    libera_QDD(Q);
+    Long itens;
+    l = enlista_QDD(Q1);
+    itens = conta_items_lista(l);
+    printf("\n\nItens: %llu",itens);
+    libera_lista_lista(l);
+    libera_QDD(Q1);
 
     /***********************************/
     finaliza_structs_globais();
