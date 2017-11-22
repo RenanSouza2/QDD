@@ -4755,49 +4755,53 @@ int main()
     /***********************************/
 
     Short N;
-    N = 63;
+    N = 80;
     configuracao(N);
 
-    QDD *Q1, *Q2, *Q3;
+    QDD  *QB, *Q1, *Q2, *Q3;
     Short i;
 
-    Q1 = BASE(N,0);
-    Q2 = aplicar(QH,N,0);
-    Q3 = produto_matriz_vetor(Q2,Q1);
-    libera_QDD(Q2);
-    libera_QDD(Q1);
-    Q1 = Q3;
-    for(i=1; i<N; i++)
+    QB = BASE(1,0);
+    Q1 = produto_matriz_vetor(QH,QB);
+
+    for(i=1; i<200; i++)
     {
-        printf("\ni: %hu",i);
-        Q2 = aplicar(QH,N,i);
+        configuracao(i+1);
+        printf("\nI: %4hu",i);
+        Q2 = produto_tensorial(Q1,QB);
+        libera_QDD(Q1);
+        Q1 = Q2;
+        Q2 = aplicar(QH,i+1,i);
         Q3 = controle(Q2,i-1,1);
         libera_QDD(Q2);
         Q2 = produto_matriz_vetor(Q3,Q1);
-        libera_QDD(Q3);
         libera_QDD(Q1);
+        libera_QDD(Q3);
         Q1 = Q2;
     }
 
-    QDD **QM;
-    float p[2];
-    for(i=0; i<N; i++)
-    {
-
-        QM = mede_conservativo(Q1,i,p);
-        printf("\ni: %2hu\t\tP0: %.3e\t\tP1: %.3e",i,p[0],p[1]);
-        libera_QDD(QM[0]);
-        libera_QDD(QM[1]);
-        libera_QDD_array(QM,2);
-    }
+    FILE *fp;
+    fp = fopen("Relatorio.txt","w");
 
     lista *l;
     Long itens;
     l = enlista_QDD(Q1);
     itens = conta_items_lista(l);
-    printf("\n\nItens: %llu",itens);
-    libera_lista_lista(l);
-    libera_QDD(Q1);
+    printf("\nItens: %llu",itens);
+    fprintf(fp,"\nItens: %llu",itens);
+
+    QDD **QM;
+    float p[2];
+    for(i=0; i<200; i++)
+    {
+        QM = mede_conservativo(Q1,i,p);
+        printf("\ni: %3hu\t\tP0: %.3e\t\tP1: %.3e",p[0],p[1]);
+        fprintf(fp,"\ni: %3hu\t\tP0: %.3e\t\tP1: %.3e",p[0],p[1]);
+        libera_QDD(QM[0]);
+        libera_QDD(QM[1]);
+        libera_QDD_array(QM,2);
+    }
+    fclose(fp);
 
     /***********************************/
     finaliza_structs_globais();
