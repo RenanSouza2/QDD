@@ -4754,8 +4754,11 @@ int main()
     setlocale(LC_ALL, "Portuguese");
     /***********************************/
 
-    FILE *fp;
+    FILE *fp, *fr;
     fp = fopen("Relatorio.txt","w");
+    fr = fopen("Planilha.csv","w");
+
+    fprintf(fr,"sep=|\n");
 
     QDD  *QB, *Q1, *Q2, *Q3;
     Short i;
@@ -4797,6 +4800,8 @@ int main()
 
         printf("\t\tTempo: %.3f",tempo);
         fprintf(fp,"\t\tTempo: %.3f",tempo);
+
+        fprintf(fr,"\n%hu|%llu|%.3f",i,itens,tempo);
     }
 
 
