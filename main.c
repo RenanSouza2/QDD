@@ -1317,7 +1317,6 @@ void fmostra_configuracao(FILE *fp)
 
 
 
-
 /** Conexões  **/
 
 void conecta_UM(no *n1, no *n2, Short lado)
@@ -2250,8 +2249,6 @@ void salva_QDD(QDD *Q, char *nome)
         return;
     }
 
-    printf("\nitens: %llu",itens);
-
     no **N;
     N = malloc(itens*sizeof(no*));
     if(N == NULL)
@@ -2272,9 +2269,7 @@ void salva_QDD(QDD *Q, char *nome)
     char nomeT[30];
     sprintf(nomeT,"%s.QDD",nome);
     fp = fopen(nomeT,"w");
-    fprintf(fp,"%llu",itens);
-
-    mostra_no(N[66]);
+    fprintf(fp,"%llu %hu",itens,Q->nqbit);
 
     no *n, *n1, *n2;
     Long j, el, th;
@@ -2284,7 +2279,7 @@ void salva_QDD(QDD *Q, char *nome)
         switch(n->tipo)
         {
             case Inicio:
-                fprintf(fp,"\n 1 0 I");
+                fprintf(fp,"\n1 0 I");
                 break;
 
             case Meio:
@@ -2323,6 +2318,123 @@ void salva_QDD(QDD *Q, char *nome)
     fclose(fp);
     diminui_memoria_fora(itens*sizeof(no*));
     free(N);
+}
+
+QDD* le_QDD(char *nome)
+{
+    FILE *fp;
+    char nomeT[30];
+    sprintf(nomeT,"%s.QDD",nome);
+    fp = fopen(nomeT,"r");
+    if(fp == NULL)
+        ERRO("LE QDD| NAO CONSEGUIU ABIR ARQUIVO");
+
+    Long itens;
+    Short nqbit;
+    fscanf(fp,"%I64u",&itens);
+    fscanf(fp,"%hu",&nqbit);
+
+    apply **A;
+    Long i;
+    A = malloc(itens*sizeof(apply*));
+    if(A == NULL)
+        ERRO("LE QDD| ALLOCA A");
+    aumenta_memoria_fora(itens*sizeof(apply*));
+    for(i=0; i<itens; i++)
+        A[i] = cria_apply();
+
+    no *n;
+    apply *a;
+    Short classe, nivel;
+    Long el, th;
+    float re, im;
+    char tipo;
+    for(i=0; i<itens; i++)
+    {
+        a = A[i];
+        if(i < itens-1)
+        {
+            a->a = A[i+1];
+        }
+
+        fscanf(fp,"\n%I64u",&el);
+        fscanf(fp," %I64u",&th);
+
+        fscanf(fp," %c",&tipo);
+
+        n = NULL;
+        switch(tipo)
+        {
+            case 'I':
+                a->a1 = A[el];
+
+                n = cria_no_inicio();
+                break;
+
+            case 'M':
+                fscanf(fp," %hu",&classe);
+                fscanf(fp," %hu",&nivel);
+
+                a->a1 = A[el];
+                a->a2 = A[th];
+
+                n = cria_no_meio(classe,nivel);
+                break;
+
+            case 'F':
+                fscanf(fp," %e",&re);
+                fscanf(fp," %e",&im);
+
+                n = cria_no_fim(re,im);
+                break;
+        }
+        if(n == NULL)
+            ERRO("LE QDD| NO NAO E I M OU F");
+
+        a->n = n;
+    }
+    fclose(fp);
+
+    a = A[0];
+    diminui_memoria_fora(itens*sizeof(apply*));
+    free(A);
+
+    apply *ac, *a1, *a2;
+    no *n1, *n2;
+    for(ac = a; ac != NULL; ac = ac->a)
+    {
+        a1 = ac->a1;
+        a2 = ac->a2;
+
+        n = ac->n;
+        switch(n->tipo)
+        {
+            case Inicio:
+                n1 = a1->n;
+
+                conecta_UM(n,n1,Inicio);
+                break;
+
+            case Meio:
+                n1 = a1->n;
+                n2 = a2->n;
+
+                conecta_DOIS(n,n1,n2);
+                break;
+        }
+    }
+
+    n = a->n;
+    libera_apply_lista(a);
+
+    lista *l;
+    l = acha_lista_fim_arvore(n);
+
+    QDD *Q;
+    Q = cria_QDD(nqbit);
+    Q->n = n;
+    Q->l = l;
+    return Q;
 }
 
 
@@ -4799,168 +4911,6 @@ Short teste_memoria()
 
 }
 
-Short teste_epsilon_unitario(Short vetor, Short Configuracao, Long memS[2], float dados[5])
-{
-    char nome[30];
-    sprintf(nome,"V%hu.txt",vetor);
-
-    QDD *Q;
-    Q = le_vetor(nome);
-    configuracao(Configuracao);
-    printf("\n\nVetor: %hu",vetor);
-    printf("\nConfiguracao: %hu",Nqbit);
-
-    time_t antes, depois;
-    double delta, tempo;
-
-    Long memAntes, memDepois;
-    float red;
-    memAntes = mem;
-    antes = clock();
-    reduz_QDD(Q,1,4);
-    depois = clock();
-    memDepois = mem;
-
-    red = 1-((float)memDepois/memAntes);
-    red *= 100;
-    printf("\n\nMemAntes : %llu",memAntes);
-    printf("\nMemDepois: %llu",memDepois);
-    printf("\nRed: %.2f",red);
-
-    memS[0] = memAntes;
-    memS[1] = memDepois;
-    dados[0] = red;
-
-    memDepois = mem;
-    delta = depois - antes;
-    tempo = delta/CLOCKS_PER_SEC;
-    printf("\nTempo: %.3e\n",tempo);
-
-    dados[1] = tempo;
-
-    float m, e;
-    antes = clock();
-    m = modulo_vetor(Q);
-    depois = clock();
-
-    e = 1-m;
-    printf("\n|Q| = %f",m);
-    printf("\nE: %.0e",e);
-
-    dados[2] = m;
-    dados[3] = e;
-
-    delta = depois - antes;
-    tempo = delta/CLOCKS_PER_SEC;
-    printf("\nTempo: %.3e\n",tempo);
-    libera_QDD(Q);
-
-    dados[4] = tempo;
-
-    if(memDepois == 68)
-        return 1;
-    if(memAntes == memDepois)
-        return 1;
-    if(e > 0.95)
-        return 1;
-    return 0;
-}
-
-void teste_epslon(Short limiteInf, Short limiteSup, Short confSup)
-{
-    Short i, j, s;
-
-    Short var;
-    Long ***MemT;
-    float ***DadosT;
-    var  = limiteSup-limiteInf+1;
-
-    MemT = malloc(var*sizeof(Long**));
-    if(MemT == NULL)
-        ERRO("TESTE EPSLON| ALLOCA MEMT");
-    aumenta_memoria_fora(var*sizeof(Long**));
-
-    DadosT = malloc(var*sizeof(float**));
-    if(DadosT == NULL)
-        ERRO("TESTE EPSLON| ALLOCA DADOST");
-    aumenta_memoria_fora(var*sizeof(float**));
-
-    for(i=0; i<var; i++)
-    {
-        MemT[i] = malloc(confSup*sizeof(Long*));
-        if(MemT[i] == NULL)
-            ERRO("TESTE EPSLON| ALLOCA MEMT[]");
-        aumenta_memoria_fora(confSup*sizeof(Long*));
-
-        DadosT[i] = malloc(confSup*sizeof(float*));
-        if(DadosT[i] == NULL)
-            ERRO("TESTE EPSLON| ALLOCA DADOST[]");
-        aumenta_memoria_fora(confSup*sizeof(float*));
-
-        for(j=0; j<confSup; j++)
-        {
-            MemT[i][j] = malloc(2*sizeof(Long));
-            if(MemT[i][j] == NULL)
-                ERRO("TESTE EPSLON| ALLOCA MEMT[][]");
-            aumenta_memoria_fora(2*sizeof(Long));
-
-            for(s = 0; s < 2; s++)
-                MemT[i][j][s] =0;;
-
-            DadosT[i][j] = malloc(5*sizeof(float));
-            if(DadosT[i][j] == NULL)
-                ERRO("TESTE EPSLON| ALOCA DADOST[][]");
-            aumenta_memoria_fora(5*sizeof(float));
-
-            for(s = 0; s < 5; s++)
-                DadosT[i][j][s] = 0;
-        }
-    }
-
-    Short i1;
-    for(i=limiteInf; i<=limiteSup; i++)
-    {
-        i1 = i-limiteInf;
-        for(j=i; j>0; j--)
-        {
-            s = teste_epsilon_unitario(i,j,MemT[i1][j],DadosT[i1][j]);
-            if(s)
-                break;
-        }
-
-        for(j = i+1; j<confSup; j++)
-        {
-            s = teste_epsilon_unitario(i,j,MemT[i1][j],DadosT[i1][j]);
-            if(s)
-                break;
-        }
-    }
-
-    for(i=0; i<var; i++)
-    {
-        for(j=0; j<confSup; j++)
-        {
-            diminui_memoria_fora(2*sizeof(Long));
-            free(MemT[i][j]);
-
-            diminui_memoria_fora(5*sizeof(float));
-            free(DadosT[i][j]);
-        }
-
-        diminui_memoria_fora(confSup*sizeof(Long*));
-        free(MemT[i]);
-
-        diminui_memoria_fora(confSup*sizeof(float*));
-        free(DadosT[i]);
-    }
-
-    diminui_memoria_fora(var*sizeof(Long**));
-    free(MemT);
-
-    diminui_memoria_fora(var*sizeof(float**));
-    free(DadosT);
-}
-
 
 
 int main()
@@ -4971,88 +4921,7 @@ int main()
     setlocale(LC_ALL, "Portuguese");
     /***********************************/
 
-    /*Short N;
-    N = 64;
 
-    QDD *Q1, *Q2, *Q3;
-    Q1 = BASE(N,0);
-    Q2 = aplicar(QH,N,0);
-    Q3 = produto_matriz_vetor(Q2,Q1);
-    libera_QDD(Q1);
-    libera_QDD(Q2);
-    Q1 = Q3;
-
-    Short i;
-    for(i=1; i<N; i++)
-    {
-        printf("\ni: %2hu",i);
-        Q2 = aplicar(QH,N,i);
-        Q3 = controle(Q2,i-1,1);
-        libera_QDD(Q2);
-        Q2 = produto_matriz_vetor(Q3,Q1);
-        libera_QDD(Q1);
-        libera_QDD(Q3);
-        Q1 = Q2;
-    }
-
-    QDD **QM;
-    float p[2];
-    printf("\n");
-    for(i=0; i<N; i++)
-    {
-        QM = mede_conservativo(Q1,i,p);
-        printf("\ni: %2hu\t\tP0: %f\t\tP1: %f",i,p[0],p[1]);
-        libera_QDD(QM[0]);
-        libera_QDD(QM[1]);
-        libera_QDD_array(QM,2);
-    }
-    libera_QDD(Q1);*/
-
-    Short N;
-    N = 64;
-
-    QDD *QB, *Q1, *Q2, *Q3;
-    QB = BASE(1,0);
-    Q1 = produto_matriz_vetor(QS,QB);
-
-    Short i;
-    for(i=1; i<N; i++)
-    {
-        printf("\ni: %2hu",i);
-
-        Q2 = produto_tensorial(Q1,QB);
-        libera_QDD(Q1);
-        Q1 = Q2;
-
-        Q2 = aplicar(QS,i+1,i);
-        Q3 = controle(Q2,i-1,1);
-        libera_QDD(Q2);
-
-        Q2 = produto_matriz_vetor(Q3,Q1);
-        libera_QDD(Q1);
-        libera_QDD(Q3);
-        Q1 = Q2;
-    }
-    libera_QDD(QB);
-
-
-    salva_QDD(Q1,"res");
-    libera_QDD(Q1);
-
-    /*QDD **QM;
-    float p[2];
-    printf("\n");
-    for(i=0; i<N; i++)
-    {
-        QM = mede_conservativo(Q1,i,p);
-        printf("\ni: %2hu\t\tP0: %f\t\tP1: %f",i,p[0],p[1]);
-        libera_QDD(QM[0]);
-        libera_QDD(QM[1]);
-        libera_QDD_array(QM,2);
-    }
-    libera_QDD(Q1);
-    printf("\n");
-    mostra_quantidades();*/
 
     /***********************************/
     finaliza_structs_globais();
