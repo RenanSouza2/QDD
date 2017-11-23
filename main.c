@@ -342,6 +342,47 @@ QDD** cria_QDD_array(Long N)
     return Q;
 }
 
+Long** cria_matriz_Long(Long linhas, Long colunas)
+{
+    Long **m, i, j;
+    m = malloc(linhas*sizeof(Long*));
+    if(m == NULL)
+        ERRO("CRIA MATRIZ| ALLOCA M");
+    aumenta_memoria_fora(linhas*sizeof(Long*));
+    for(i=0; i<linhas; i++)
+    {
+        m[i] = malloc(colunas*sizeof(Long));
+        if(m[i] == NULL)
+            ERRO("CRIA MATRIZ|ALLOCA M[]");
+        aumenta_memoria_fora(colunas*sizeof(Long));
+
+        for(j=0; j<colunas; j++)
+            m[i][j] = 0;
+    }
+    return m;
+}
+
+float** cria_matriz_float(Long linhas, Long colunas)
+{
+    Long i, j;
+    float **m;
+    m = malloc(linhas*sizeof(float*));
+    if(m == NULL)
+        ERRO("CRIA MATRIZ| ALLOCA M");
+    aumenta_memoria_fora(linhas*sizeof(float*));
+    for(i=0; i<linhas; i++)
+    {
+        m[i] = malloc(colunas*sizeof(float));
+        if(m[i] == NULL)
+            ERRO("CRIA MATRIZ|ALLOCA M[]");
+        aumenta_memoria_fora(colunas*sizeof(float));
+
+        for(j=0; j<colunas; j++)
+            m[i][j] = 0;
+    }
+    return m;
+}
+
 
 
 /** Destrutores  **/
@@ -487,17 +528,45 @@ void libera_QDD_array(QDD **Q, Long N)
     free(Q);
 }
 
+void libera_matriz_Long(Long **m, Long linhas, Long colunas)
+{
+    Long i;
+    for(i=0; i<linhas; i++)
+    {
+        diminui_memoria_fora(colunas*sizeof(Long));
+        free(m[i]);
+    }
+    diminui_memoria_fora(linhas*sizeof(Long*));
+    free(m);
+}
+
+void libera_matriz_float(float **m, Long linhas, Long colunas)
+{
+    Long i;
+    for(i=0; i<linhas; i++)
+    {
+        diminui_memoria_fora(colunas*sizeof(float));
+        free(m[i]);
+    }
+    diminui_memoria_fora(linhas*sizeof(float*));
+    free(m);
+}
+
 
 
 /** Enlistadores  **/
 
-Long conta_items_lista(lista *l)
+Long conta_itens_lista(lista *l)
 {
     Long i;
     i = 0;
     lista *lc;
     for(lc = l; lc != NULL; lc = lc->l)
+    {
         i++;
+        if(i == ULLONG_MAX)
+            break;
+    }
     return i;
 }
 
@@ -729,7 +798,7 @@ void mostra_QDD(QDD *Q)
     lista *l;
     Short itens;
     l = enlista_QDD(Q);
-    itens = conta_items_lista(l);
+    itens = conta_itens_lista(l);
 
     printf("NQBIT: %d\n",Q->nqbit);
     printf("Itens: %hu\n",itens);
@@ -1029,7 +1098,7 @@ void fmostra_QDD(FILE *fp, QDD *Q)
     lista *l;
     Short itens;
     l = enlista_QDD(Q);
-    itens = conta_items_lista(l);
+    itens = conta_itens_lista(l);
 
     fprintf(fp,"NQBIT: %d\n",Q->nqbit);
     fprintf(fp,"Itens: %hu\n",itens);
@@ -1819,7 +1888,7 @@ Long conta_itens_fim_arvore(no *n)
     lista *l;
     Long itens;
     l = acha_lista_fim_arvore(n);
-    itens = conta_items_lista(l);
+    itens = conta_itens_lista(l);
     libera_lista_lista(l);
     return itens;
 }
@@ -2173,26 +2242,15 @@ void salva_QDD(QDD *Q, char *nome)
     lista *l;
     Long itens;
     l = enlista_QDD(Q);
-    itens = conta_items_lista(l);
-    mostra_lista(l);
-
-    Long **lig;
-    lig = malloc(itens*sizeof(Long*));
-    if(lig == NULL)
-        ERRO("SALVA QDD| ALLOCA LIG");
-    aumenta_memoria_fora(itens*sizeof(Long*));
-
-    Long i;
-    for(i=0; i<itens; i++)
+    itens = conta_itens_lista(l);
+    if(itens == ULLONG_MAX)
     {
-        lig[i] = malloc(2*sizeof(Long));
-        if(lig[i] == NULL)
-            ERRO("SALVA QDD| ALLOCA LIG[]");
-        aumenta_memoria_fora(2*sizeof(Long));
-
-        lig[i][0] = 0;
-        lig[i][1] = 1;
+        printf("\nQDD Muito grande para ser salva");
+        libera_lista_lista(l);
+        return;
     }
+
+    printf("\nitens: %llu",itens);
 
     no **N;
     N = malloc(itens*sizeof(no*));
@@ -2201,53 +2259,70 @@ void salva_QDD(QDD *Q, char *nome)
     aumenta_memoria_fora(itens*sizeof(no*));
 
     lista *lc;
-    i=0;
-    for(lc = l; lc != NULL; lc = lc->l)
+    Long i;
+    lc = l;
+    for(i=0; i<itens; i++)
+    {
         N[i] = lc->n;
+        lc = lc->l;
+    }
+    libera_lista_lista(l);
+
+    FILE *fp;
+    char nomeT[30];
+    sprintf(nomeT,"%s.QDD",nome);
+    fp = fopen(nomeT,"w");
+    fprintf(fp,"%llu",itens);
+
+    mostra_no(N[66]);
 
     no *n, *n1, *n2;
-    Long j;
+    Long j, el, th;
     for(i=0; i<itens; i++)
     {
         n = N[i];
         switch(n->tipo)
         {
             case Inicio:
-                n1 = n->at.i.n;
-                for(j = 0; j < itens; j++)
-                    if(N[j] == n1)
-                    {
-                        lig[i][0] = j;
-                        break;
-                    }
+                fprintf(fp,"\n 1 0 I");
                 break;
 
             case Meio:
                 n1 = n->at.m.el;
                 n2 = n->at.m.th;
+                el = 0;
+                th = 0;
                 for(j=0; j<itens; j++)
                 {
                     if(N[j] == n1)
                     {
-                        lig[i][0] = j;
-                        if(lig[i][1] != 0)
+                        el = j;
+                        if(th != 0)
+                        {
                             break;
+                        }
                     }
                     if(N[j] == n2)
                     {
-                        lig[i][1] = j;
-                        if(lig[i][0] != 0)
+                        th = j;
+                        if(el != 0)
+                        {
                             break;
+                        }
                     }
                 }
+                fprintf(fp,"\n%llu %llu M %hu %hu",el,th,n->at.m.classe,n->at.m.nivel);
+                break;
+
+            case Fim:
+                fprintf(fp,"\n0 0 F %e %e",n->at.f.re,n->at.f.im);
                 break;
         }
     }
 
-    for(i=0;i<itens; i++)
-    {
-        printf("lig[%3llu]: %3llu %3llu",i,lig[i][0],lig[i][1]);
-    }
+    fclose(fp);
+    diminui_memoria_fora(itens*sizeof(no*));
+    free(N);
 }
 
 
@@ -4808,7 +4883,7 @@ void teste_epslon(Short limiteInf, Short limiteSup, Short confSup)
     DadosT = malloc(var*sizeof(float**));
     if(DadosT == NULL)
         ERRO("TESTE EPSLON| ALLOCA DADOST");
-        aumenta_memoria_fora(var*sizeof(float**));
+    aumenta_memoria_fora(var*sizeof(float**));
 
     for(i=0; i<var; i++)
     {
@@ -4842,22 +4917,48 @@ void teste_epslon(Short limiteInf, Short limiteSup, Short confSup)
         }
     }
 
+    Short i1;
     for(i=limiteInf; i<=limiteSup; i++)
     {
+        i1 = i-limiteInf;
         for(j=i; j>0; j--)
         {
-            s = teste_epsilon_unitario(i,j,MemT[i][j],DadosT[i][j]);
+            s = teste_epsilon_unitario(i,j,MemT[i1][j],DadosT[i1][j]);
             if(s)
                 break;
         }
 
         for(j = i+1; j<confSup; j++)
         {
-            s = teste_epsilon_unitario(i,j,MemT[i][j],DadosT[i][j]);
+            s = teste_epsilon_unitario(i,j,MemT[i1][j],DadosT[i1][j]);
             if(s)
                 break;
         }
     }
+
+    for(i=0; i<var; i++)
+    {
+        for(j=0; j<confSup; j++)
+        {
+            diminui_memoria_fora(2*sizeof(Long));
+            free(MemT[i][j]);
+
+            diminui_memoria_fora(5*sizeof(float));
+            free(DadosT[i][j]);
+        }
+
+        diminui_memoria_fora(confSup*sizeof(Long*));
+        free(MemT[i]);
+
+        diminui_memoria_fora(confSup*sizeof(float*));
+        free(DadosT[i]);
+    }
+
+    diminui_memoria_fora(var*sizeof(Long**));
+    free(MemT);
+
+    diminui_memoria_fora(var*sizeof(float**));
+    free(DadosT);
 }
 
 
@@ -4907,7 +5008,7 @@ int main()
     }
     libera_QDD(Q1);*/
 
-    /*Short N;
+    Short N;
     N = 64;
 
     QDD *QB, *Q1, *Q2, *Q3;
@@ -4932,8 +5033,13 @@ int main()
         libera_QDD(Q3);
         Q1 = Q2;
     }
+    libera_QDD(QB);
 
-    QDD **QM;
+
+    salva_QDD(Q1,"res");
+    libera_QDD(Q1);
+
+    /*QDD **QM;
     float p[2];
     printf("\n");
     for(i=0; i<N; i++)
@@ -4945,14 +5051,8 @@ int main()
         libera_QDD_array(QM,2);
     }
     libera_QDD(Q1);
-    libera_QDD(QB);
-
     printf("\n");
     mostra_quantidades();*/
-
-    QDD *Q;
-    Q = potencia_tensorial(QH,3);
-    salva_QDD(Q,"H3.txt");
 
     /***********************************/
     finaliza_structs_globais();
