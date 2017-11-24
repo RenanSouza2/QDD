@@ -24,6 +24,7 @@
 FILE *fm;
 unsigned long long mem = 0, memMax = 0, memF = 0;
 unsigned long long iQ = 0, iI = 0, iM = 0, iF = 0, iL = 0, iA = 0, iC = 0, iS = 0;
+unsigned long long mem0, iQ0, iI0, iM0, iF0, iL0;
 unsigned short tQ, tN, tL, tA, tC, tS;
 unsigned short print, Nqbit;
 float eps;
@@ -1633,6 +1634,40 @@ QDD* matriz_delta_kronecker(Short r, Short c)
     return Q;
 }
 
+QDD* matriz_faixa_diagonal(no *nf1, no *nf2, no *nf3, Short direcao)
+{
+    no *ni, *n1, *n2, *n3;
+    ni = cria_no_inicio();
+    n1 = cria_no_meio(R,0);
+    n2 = cria_no_meio(C,0);
+    n3 = cria_no_meio(C,0);
+
+    conecta_UM(ni,n1,Inicio);
+    conecta_DOIS(n1,n2,n3);
+
+    if(direcao == 0)
+    {
+        conecta_DOIS(n2,nf1,nf2);
+        conecta_DOIS(n3,nf2,nf3);
+    }
+    else
+    {
+        conecta_DOIS(n2,nf2,nf1);
+        conecta_DOIS(n3,nf3,nf2);
+    }
+
+    lista *l;
+    l = cria_lista();
+    l->n = nf1;
+    l->l = lista_fim_2(nf2,nf3);
+
+    QDD *Q;
+    Q = cria_QDD(1);
+    Q->n = ni;
+    Q->l = l;
+    return Q;
+}
+
 
 
 /** QDDs usuais  **/
@@ -1691,7 +1726,30 @@ QDD* H()
     Q = cria_QDD(1);
     Q->n = ni;
     Q->l = lista_fim_2(nf1,nf2);
+    return Q;
+}
 
+QDD* Y()
+{
+    no *nf0, *nfi1, *nfi2;
+    nf0  = cria_no_fim(0, 0);
+    nfi1 = cria_no_fim(0, 1);
+    nfi2 = cria_no_fim(0,-1);
+
+    QDD *Q;
+    Q = matriz_faixa_diagonal(nfi2,nf0,nfi1,1);
+    return Q;
+}
+
+QDD* Z()
+{
+    no *nf11, *nf0, *nf12;
+    nf11 = cria_no_fim(-1,0);
+    nf0  = cria_no_fim( 0,0);
+    nf12 = cria_no_fim( 1,1);
+
+    QDD *Q;
+    Q = matriz_faixa_diagonal(nf11,nf0,nf12,0);
     return Q;
 }
 
@@ -1699,7 +1757,7 @@ QDD* H()
 
 /**  estruturas globais  **/
 
-QDD *QH, *QI, *QX, *QS, *Q00, *Q01, *Q10, *Q11;
+QDD *QH, *QI, *QX, *QS, *QY, *Q00, *Q01, *Q10, *Q11;
 QDD *Qred;
 no  *nzero;
 lista *lzero;
@@ -1721,6 +1779,7 @@ void inicia_structs_globais()
     QI = I();
     QX = X();
     QS = S();
+    QY = Y();
 
     Q00 = matriz_delta_kronecker(0,0);
     Q01 = matriz_delta_kronecker(0,1);
@@ -1729,22 +1788,29 @@ void inicia_structs_globais()
 
     lzero = cria_lista();
 
-    mem -= 9*tQ+45*tN+63*tL;
-    iQ -= 9;
-    iI -= 9;
-    iM -= 19;
-    iF -= 17;
-    iL -= 63;
+    mem0 = mem;
+    iQ0  = iQ;
+    iI0  = iI;
+    iM0  = iM;
+    iF0  = iF;
+    iL0  = iL;
+
+    mem = 0;
+    iQ  = 0;
+    iI  = 0;
+    iM  = 0;
+    iF  = 0;
+    iL  = 0;
 }
 
 void finaliza_structs_globais()
 {
-    mem += 9*tQ+45*tN+63*tL;
-    iQ  += 9;
-    iI  += 9;
-    iM  += 19;
-    iF  += 17;
-    iL  += 63;
+    mem += mem0;
+    iQ  += iQ0;
+    iI  += iI0;
+    iM  += iM0;
+    iF  += iF0;
+    iL  += iL0;
 
     libera_no(Qred->n);
     libera_QDD_no(Qred);
@@ -1754,6 +1820,7 @@ void finaliza_structs_globais()
     libera_QDD(QI);
     libera_QDD(QX);
     libera_QDD(QS);
+    libera_QDD(QY);
 
     libera_QDD(Q00);
     libera_QDD(Q01);
@@ -4331,49 +4398,41 @@ QDD* aplicar(QDD *Q, Short N, Short n)
 
 /** QDDs usuais  **/
 
-QDD* Ro(double theta)
+QDD* Ro1(double theta)
 {
     if(theta <  eps)
     if(theta > -eps)
         return I();
 
-    no *ni, *n1, *n2, *n3, *n4, *n5;
-
-    ni = cria_no_inicio();
-    n1 = cria_no_meio(R,0);
-    conecta_UM(ni,n1,Inicio);
-
-    n2 = cria_no_meio(C,0);
-    n3 = cria_no_meio(C,0);
-    conecta_DOIS(n1,n2,n3);
-
-    double re, im;
-    n1 = n2;
-    n2 = n3;
-    n3 = cria_no_fim(1,0);
-    n4 = cria_no_fim(0,0);
-    re = cos(theta);
-    im = sin(theta);
-    n5 = cria_no_fim(re,im);
-    conecta_DOIS(n1,n3,n4);
-    conecta_DOIS(n2,n4,n5);
-
-    lista *l1, *l2, *l3;
-    l1 = cria_lista();
-    l2 = cria_lista();
-    l3 = cria_lista();
-
-    l1->n = n3;
-    l1->l = l2;
-    l2->n = n4;
-    l2->l = l3;
-    l3->n = n5;
+    no *nf0, *nf1, *nft;
+    float si, co;
+    si = sin(theta);
+    co = cos(theta);
+    nf0 = cria_no_fim(0,0);
+    nf1 = cria_no_fim(1,0);
+    nft = cria_no_fim(co,si);
 
     QDD *Q;
-    Q = cria_QDD(1);
-    Q->n = ni;
-    Q->l = l1;
+    Q = matriz_faixa_diagonal(nf1,nf0,nft,0);
+    return Q;
+}
 
+QDD* Ro2(double theta)
+{
+    if(theta <  eps)
+    if(theta > -eps)
+        return I();
+
+    no *nf0, *nft1, *nft2;
+    float si, co;
+    si = sin(theta);
+    co = cos(theta);
+    nf0  = cria_no_fim(0,0);
+    nft1 = cria_no_fim(co,-si);
+    nft2 = cria_no_fim(co, si);
+
+    QDD *Q;
+    Q = matriz_faixa_diagonal(nft1,nf0,nft2,0);
     return Q;
 }
 
