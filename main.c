@@ -4,7 +4,7 @@
 #include<time.h>
 #include<string.h>
 #include<limits.h>
-#include <locale.h>
+#include<locale.h>
 
 #define Inicio 0
 #define Meio 1
@@ -209,6 +209,16 @@ QDD* cria_QDD(Short nqbit)
     return Q;
 }
 
+QDD** cria_QDD_array(Long N)
+{
+    QDD **Q;
+    Q = malloc(N*sizeof(QDD*));
+    if(Q == NULL)
+        ERRO("CRIA ARRAY QDD");
+    aumenta_memoria_fora(N*sizeof(QDD*));
+    return Q;
+}
+
 no* cria_no_inicio()
 {
     no *n;
@@ -311,6 +321,29 @@ apply* cria_apply()
     return a;
 }
 
+apply*** cria_apply_matriz(Short linhas, Short colunas)
+{
+    apply ***A;
+    A = malloc(linhas*sizeof(apply**));
+    if(A == NULL)
+        ERRO("CRIA APPLY MATRIZ| ALLOCA A");
+    aumenta_memoria_fora(linhas*sizeof(apply**));
+
+    Short i, j;
+    for(i=0; i<linhas; i++)
+    {
+        A[i] = malloc(colunas*sizeof(apply*));
+        if(A[i] == NULL)
+            ERRO("CRIA APPLY MATRIZ| ALLOCA A[]");
+        aumenta_memoria_fora(colunas*sizeof(apply*));
+
+        for(j=0; j<colunas; j++)
+            A[i][j] = NULL;
+    }
+
+    return A;
+}
+
 conta* cria_conta(Short nivel)
 {
     conta *c;
@@ -346,57 +379,6 @@ suporte* cria_suporte(Short nivel)
     return s;
 }
 
-QDD** cria_QDD_array(Long N)
-{
-    QDD **Q;
-    Q = malloc(N*sizeof(QDD*));
-    if(Q == NULL)
-        ERRO("CRIA ARRAY QDD");
-    aumenta_memoria_fora(N*sizeof(QDD*));
-    return Q;
-}
-
-Long** cria_matriz_Long(Long linhas, Long colunas)
-{
-    Long **m, i, j;
-    m = malloc(linhas*sizeof(Long*));
-    if(m == NULL)
-        ERRO("CRIA MATRIZ| ALLOCA M");
-    aumenta_memoria_fora(linhas*sizeof(Long*));
-    for(i=0; i<linhas; i++)
-    {
-        m[i] = malloc(colunas*sizeof(Long));
-        if(m[i] == NULL)
-            ERRO("CRIA MATRIZ|ALLOCA M[]");
-        aumenta_memoria_fora(colunas*sizeof(Long));
-
-        for(j=0; j<colunas; j++)
-            m[i][j] = 0;
-    }
-    return m;
-}
-
-float** cria_matriz_float(Long linhas, Long colunas)
-{
-    Long i, j;
-    float **m;
-    m = malloc(linhas*sizeof(float*));
-    if(m == NULL)
-        ERRO("CRIA MATRIZ| ALLOCA M");
-    aumenta_memoria_fora(linhas*sizeof(float*));
-    for(i=0; i<linhas; i++)
-    {
-        m[i] = malloc(colunas*sizeof(float));
-        if(m[i] == NULL)
-            ERRO("CRIA MATRIZ|ALLOCA M[]");
-        aumenta_memoria_fora(colunas*sizeof(float));
-
-        for(j=0; j<colunas; j++)
-            m[i][j] = 0;
-    }
-    return m;
-}
-
 
 
 /** Destrutores  **/
@@ -407,6 +389,12 @@ void libera_QDD_no(QDD *Q)
     if(iQ == 0)
         ERRO("LIBERA QDD");
     iQ--;
+    free(Q);
+}
+
+void libera_QDD_array(QDD **Q, Long N)
+{
+    diminui_memoria_fora(N*sizeof(QDD*));
     free(Q);
 }
 
@@ -496,6 +484,18 @@ void libera_apply_lista(apply *a)
     }
 }
 
+void libera_apply_matriz(apply ***A, Short linhas, Short colunas)
+{
+    Short i;
+    for(i=0; i<linhas; i++)
+    {
+        diminui_memoria_fora(colunas*sizeof(apply*));
+        free(A[i]);
+    }
+    diminui_memoria_fora(linhas*sizeof(apply**));
+    free(A);
+}
+
 void libera_conta_no(conta *c)
 {
     diminui_memoria(tC);
@@ -534,36 +534,6 @@ void libera_suporte_lista(suporte *s)
         libera_suporte_no(s);
         s = sc;
     }
-}
-
-void libera_QDD_array(QDD **Q, Long N)
-{
-    diminui_memoria_fora(N*sizeof(QDD*));
-    free(Q);
-}
-
-void libera_matriz_Long(Long **m, Long linhas, Long colunas)
-{
-    Long i;
-    for(i=0; i<linhas; i++)
-    {
-        diminui_memoria_fora(colunas*sizeof(Long));
-        free(m[i]);
-    }
-    diminui_memoria_fora(linhas*sizeof(Long*));
-    free(m);
-}
-
-void libera_matriz_float(float **m, Long linhas, Long colunas)
-{
-    Long i;
-    for(i=0; i<linhas; i++)
-    {
-        diminui_memoria_fora(colunas*sizeof(float));
-        free(m[i]);
-    }
-    diminui_memoria_fora(linhas*sizeof(float*));
-    free(m);
 }
 
 
@@ -649,46 +619,60 @@ void fmostra_no(FILE *fp, no *n)
     fprintf(fp,"\n");
 }
 
-lista* enlista_arvore(no *n)
-{
+lista* enlista_arvore(no *n){
     if(n == NULL)
         ERRO("ENLISTA ARVORE| ARVORE VAZIA");
 
-    lista *l;
+    lista *la, *l, *laux;
+
     l = cria_lista();
-    l->n = n;
-    l->l = cria_lista();
-    l->l->n = n->at.i.n;
+    la = cria_lista();
+    la->n = n;
 
-    lista *lc1, *lc2;
-    lc1 = l;
-    while(lc1->l != NULL)
+    while(la != NULL)
     {
-        n = lc1->l->n;
-
-        for(lc2 = l; lc2 != lc1->l; lc2 = lc2->l)
-            if(lc2->n == n)
+        n = la->n;
+        for(laux = l; laux->l != NULL; laux = laux->l)
+            if(laux->l->n == n)
                 break;
-
-        if(lc2 == lc1->l)
+        if(laux->l == NULL)
         {
-            lc1 = lc1->l;
-            if(n->tipo == Meio)
+            laux->l = cria_lista();
+            laux = laux->l;
+            laux->n = n;
+            switch(n->tipo)
             {
-                lc2 = cria_lista_2(n->at.m.el,n->at.m.th);
-                lc2->l->l = lc1->l;
-                lc1->l = lc2;
+                case Inicio:
+                    la->n = n->at.i.n;
+                    if(la->n == NULL)
+                            ERRO("ENLISTA ARVORE| ARVORE DESCONEXA 1");
+                    break;
+
+                case Meio:
+                    la->n = n->at.m.th;
+                    if(la->n == NULL)
+                            ERRO("ENLISTA ARVORE| ARVORE DESCONEXA 2");
+
+                    laux = cria_lista();
+                    laux->n = n->at.m.el;
+                    laux->l = la;
+                    la = laux;
+                    if(la->n == NULL)
+                            ERRO("ENISTA ARVORE| ARVORE DESCONEXA 3");
+                    break;
             }
         }
         else
         {
-            lc2 = lc1->l;
-            lc1->l = lc2->l;
-            libera_lista_no(lc2);
+            laux = la->l;
+            libera_lista_no(la);
+            la = laux;
         }
     }
 
-    return l;
+    laux = l->l;
+    libera_lista_no(l);
+    return laux;
 }
 
 lista* enlista_QDD(QDD *Q)
@@ -701,6 +685,7 @@ lista* enlista_QDD(QDD *Q)
 
 
 /**  Mostra  **/
+
 void mostra_lista(lista *l)
 {
 
@@ -1000,7 +985,6 @@ void mostra_configuracao()
 
 
 /**  Fmostra  **/
-
 
 void fmostra_lista_com_no(FILE *fp, lista *l)
 {
@@ -2785,6 +2769,7 @@ void encaixa_apply(apply *a, apply *ac)
             a2->a = ac->a;
             ac->a = a2;
 
+
         case 1:
             a1->a = ac->a;
             ac->a = a1;
@@ -4169,7 +4154,6 @@ QDD* soma_QDD(QDD *Q1, QDD *Q2)
     QDD *Q;
     Q = cria_QDD(Q1->nqbit);
     Q->n = apply_soma(Q1->n,Q2->n);
-
     Q->l = acha_lista_fim_QDD(Q);
     reduz_QDD(Q,1,4);
 
@@ -4377,10 +4361,15 @@ QDD* BASE(Short N, Long n)
     for(i = 1; i < N; i++)
     {
         n2 = cria_no_meio(V,i);
-        if(n < ex)
-            conecta_DOIS(n1,n2,nf0);
-        else
+        if(n >= ex)
+        {
+            n -= ex;
             conecta_DOIS(n1,nf0,n2);
+        }
+        else
+        {
+            conecta_DOIS(n1,n2,nf0);
+        }
 
         n1 = n2;
         ex /= 2;
@@ -4397,7 +4386,7 @@ QDD* BASE(Short N, Long n)
     return Q;
 }
 
-QDD* W(Short N)
+QDD* w(Short N)
 {
     no *ni;
     ni = cria_no_inicio();
@@ -4417,6 +4406,33 @@ QDD* W(Short N)
     Q = cria_QDD(N);
     Q->n = ni;
     Q->l = l;
+
+    return Q;
+}
+
+QDD* W(Short N)
+{
+    QDD *Q, *Qi, *Qaux;
+    Q = BASE(N,1);
+
+    Short i;
+    Long ex;
+    ex = 1;
+    for(i=1; i<N; i++)
+    {
+        ex *= 2;
+
+        Qi = BASE(N,ex);
+        Qaux = soma_QDD(Q,Qi);
+
+        libera_QDD(Q);
+        libera_QDD(Qi);
+        Q = Qaux;
+    }
+
+    float re;
+    re = pow(N,-0.5);
+    produto_QDD_real(Q,re);
 
     return Q;
 }
@@ -4905,15 +4921,9 @@ int main()
     setlocale(LC_ALL, "Portuguese");
     /***********************************/
 
-    Short N;
-    N = 4;
-
-    configuracao(N);
-
     QDD *Q;
-    Q = potencia_tensorial(QI,N);
-    fmostra_QDD_sozinho(Q,"I.txt");
-    libera_QDD(Q);
+    Q = W(2);
+    mostra_QDD(Q);
 
     /***********************************/
     finaliza_structs_globais();
