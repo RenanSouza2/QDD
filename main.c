@@ -1868,6 +1868,16 @@ Long conta_itens_fim_arvore(no *n)
     return itens;
 }
 
+Long conta_itens_QDD(QDD *Q)
+{
+    lista *l;
+    Long itens;
+    l = enlista_QDD(Q);
+    itens = conta_itens_lista(l);
+    libera_lista_lista(l);
+    return itens;
+}
+
 
 
 /** Copia estrururas  **/
@@ -2914,7 +2924,7 @@ void monta_apply(apply *a, Short regra)
     a->a2 = a2;
 }
 
-no* apply_base(no *n1, no *n2, Short(*regra_apply)(apply*))
+no* apply_base_a(no *n1, no *n2, Short(*regra_apply)(apply*))
 {
     if(n1 == NULL)
         ERRO("APPLY BASE| N1 E NULL");
@@ -2976,6 +2986,147 @@ no* apply_base(no *n1, no *n2, Short(*regra_apply)(apply*))
     return n;
 }
 
+
+
+/**  apply alterntivo  **/
+
+void acha_indice(apply *a, Short *indice1, Short *indice2, Short N)
+{
+    no *n;
+    n = a->n1;
+
+    switch(n->tipo)
+    {
+        case Inicio:
+            *indice1 = 0;
+            *indice2 = 0;
+            break;
+
+        case Meio:
+            *indice1 = n->at.m.nivel+1;
+            *indice2 = n->at.m.classe;
+            break;
+
+        case Fim:
+            *indice1 = N+1;
+            *indice2 = 0;
+            break;
+    }
+}
+
+apply* encaixa_apply_alternativo(apply ***A, apply *ae, Short N)
+{
+    Short indice1, indice2;
+    acha_indice(ae,&indice1,&indice2,N);
+
+    apply *ac;
+    for(ac = A[indice1][indice2]; ac != NULL; ac = ac->a)
+        if(compara_apply(ac,ae))
+            break;
+
+    if(ac == NULL)
+    {
+        if(A[indice1][indice2] == NULL)
+            A[indice1][indice2] = ae;
+        else
+        {
+            for(ac = A[indice1][indice2]; ac->a != NULL; ac = ac->a);
+            ac->a = ae;
+        }
+        return ae;
+    }
+    else
+    {
+        libera_apply_no(ae);
+        return ac;
+    }
+    ERRO("ENCAIXA APPLY| NAO DEVERIA CHEGAR AQUI");
+    return NULL;
+}
+
+no* apply_base(no *n1, no *n2, Short(*regra_apply)(apply*), Short N)
+{
+    apply *a;
+    a = cria_apply();
+    a->n1 = n1;
+    a->n2 = n2;
+
+    Short indice1, indice2;
+    acha_indice(a,&indice1,&indice2,N);
+
+    apply ***A;
+    A = cria_apply_matriz(N,3);
+    A[indice1][indice2] = a;
+
+    apply *ac;
+    Short i, j, regra;
+    for(i=0; i<N+2; i++)
+    {
+        for(j=0; j<3; j++)
+        {
+            for(ac = A[i][j]; ac != NULL; ac = ac->a)
+            {
+                regra = regra_apply(ac);
+                monta_apply(ac,regra);
+
+                switch(ac->n->tipo)
+                {
+                    case Inicio:
+                        ac->a1 = encaixa_apply_alternativo(A,ac->a1,N);
+                        break;
+
+                    case Meio:
+                        ac->a1 = encaixa_apply_alternativo(A,ac->a1,N);
+                        ac->a2 = encaixa_apply_alternativo(A,ac->a2,N);
+                        break;
+                }
+            }
+        }
+    }
+
+    no *n;
+    apply *a1, *a2;
+    for(i=0; i<N+2; i++)
+    {
+        for(j=0; j<3; j++)
+        {
+            for(ac = A[i][j]; ac != NULL; ac = ac->a)
+            {
+                n = ac->n;
+                switch(n->tipo)
+                {
+                    case Inicio:
+                        a1 = ac->a1;
+
+                        n1 = a1->n;
+
+                        conecta_UM(n,n1,Inicio);
+                        break;
+
+                    case Meio:
+                        a1 = ac->a1;
+                        a2 = ac->a2;
+
+                        n1 = a1->n;
+                        n2 = a2->n;
+
+                        conecta_DOIS(n,n1,n2);
+                        break;
+                }
+            }
+        }
+    }
+
+    n = a->n;
+
+    for(i=0; i<N+2; i++)
+        for(j=0; j<3; j++)
+            libera_apply_lista(A[i][j]);
+
+    libera_apply_matriz(A,N+2,3);
+
+    return n;
+}
 
 
 /**  regra apply  **/
@@ -3644,31 +3795,31 @@ Short regra_apply_produto_vetor_vetor(apply *a)
 
 /**  apply pronto  **/
 
-no* apply_soma(no *n1, no *n2)
+no* apply_soma(no *n1, no *n2, Short N)
 {
     no *n;
-    n = apply_base(n1,n2,regra_apply_soma);
+    n = apply_base(n1,n2,regra_apply_soma,N);
     return n;
 }
 
-no* apply_produto_matriz_matriz(no *n1, no *n2)
+no* apply_produto_matriz_matriz(no *n1, no *n2, Short N)
 {
     no *n;
-    n = apply_base(n1,n2,regra_apply_produto_matriz_matriz);
+    n = apply_base(n1,n2,regra_apply_produto_matriz_matriz,N);
     return n;
 }
 
-no* apply_produto_matriz_vetor(no *n1, no *n2)
+no* apply_produto_matriz_vetor(no *n1, no *n2, Short N)
 {
     no *n;
-    n = apply_base(n1,n2,regra_apply_produto_matriz_vetor);
+    n = apply_base(n1,n2,regra_apply_produto_matriz_vetor,N);
     return n;
 }
 
-no* apply_produto_vetor_vetor(no *n1, no *n2)
+no* apply_produto_vetor_vetor(no *n1, no *n2, Short N)
 {
     no *n;
-    n = apply_base(n1,n2,regra_apply_produto_vetor_vetor);
+    n = apply_base(n1,n2,regra_apply_produto_vetor_vetor,N);
     return n;
 }
 
@@ -3894,7 +4045,7 @@ conta* espalha(suporte *s, Short classe)
     return NULL;
 }
 
-void contrai_conta(conta *c)
+void contrai_conta(conta *c,Short N)
 {
     no *na, *nd;
     conta *cc;
@@ -3902,7 +4053,7 @@ void contrai_conta(conta *c)
     for(cc = c; cc != NULL; cc = cc->c)
     {
         na = cc->n;
-        nd = apply_soma(na->at.m.el,na->at.m.th);
+        nd = apply_soma(na->at.m.el,na->at.m.th,N);
         reduz_arvore(&nd,2);
 
         transfere_conexao(nd,na);
@@ -3913,13 +4064,13 @@ void contrai_conta(conta *c)
     }
 }
 
-conta* tratamento(suporte *s, Short classe, Short classeRef)
+conta* tratamento(suporte *s, Short classe, Short classeRef, Short N)
 {
     if(s->c[classe] == NULL)
         return NULL;
 
     if(classe == classeRef)
-        contrai_conta(s->c[classe]);
+        contrai_conta(s->c[classe],N);
 
     conta *ci;
     ci = espalha(s,classe);
@@ -3959,15 +4110,15 @@ void contrai_QDD(QDD *Q, Short classe)
     suporte *saux;
     while(s != NULL)
     {
-        ci = tratamento(s,C,classe);
+        ci = tratamento(s,C,classe,Q->nqbit);
         if(ci != NULL)
             break;
 
-        ci = tratamento(s,V,classe);
+        ci = tratamento(s,V,classe,Q->nqbit);
         if(ci != NULL)
             break;
 
-        ci = tratamento(s,R,classe);
+        ci = tratamento(s,R,classe,Q->nqbit);
         if(ci != NULL)
             break;
 
@@ -3987,7 +4138,7 @@ void contrai_QDD(QDD *Q, Short classe)
     Q->l = acha_lista_fim_QDD(Q);
 }
 
-QDD* produto_QDD_QDD(QDD *Q1, QDD *Q2, no* (*apply_operacao)(no *n1, no *n2), Short classe)
+QDD* produto_QDD_QDD(QDD *Q1, QDD *Q2, no* (*apply_operacao)(no *n1, no *n2, Short), Short classe)
 {
     if(Q1 == NULL)
         ERRO("PRODUTO QDD QDD| Q1 E NULL");
@@ -3997,7 +4148,7 @@ QDD* produto_QDD_QDD(QDD *Q1, QDD *Q2, no* (*apply_operacao)(no *n1, no *n2), Sh
         ERRO("PRODUTO QDD QDD| QDDS TEM QUANTIDADES DIFERENTES DE NQBITS");
 
     no *n;
-    n = apply_operacao(Q1->n,Q2->n);
+    n = apply_operacao(Q1->n,Q2->n,Q1->nqbit);
 
     lista *l;
     l = acha_lista_fim_arvore(n);
@@ -4153,7 +4304,7 @@ QDD* soma_QDD(QDD *Q1, QDD *Q2)
 
     QDD *Q;
     Q = cria_QDD(Q1->nqbit);
-    Q->n = apply_soma(Q1->n,Q2->n);
+    Q->n = apply_soma(Q1->n,Q2->n,Q->nqbit);
     Q->l = acha_lista_fim_QDD(Q);
     reduz_QDD(Q,1,4);
 
@@ -4231,7 +4382,7 @@ float modulo_vetor(QDD *Q)
 
 /**  Auxiliar QDD  **/
 
-QDD* aplicar(QDD *Q, Short N, Short n)
+QDD* aplica(QDD *Q, Short N, Short n)
 {
     QDD *Q1, *Q2, *Q3;
     Q1 = copia_QDD(Q);
@@ -4307,7 +4458,7 @@ QDD** M01(Short N, Short n)
 
 /** QDDs usuais  **/
 
-QDD* Ro1(double theta)
+QDD* Ro(double theta)
 {
     if(theta <  eps)
     if(theta > -eps)
@@ -4323,25 +4474,6 @@ QDD* Ro1(double theta)
 
     QDD *Q;
     Q = matriz_faixa_diagonal(nf1,nf0,nft,0);
-    return Q;
-}
-
-QDD* Ro2(double theta)
-{
-    if(theta <  eps)
-    if(theta > -eps)
-        return I();
-
-    no *nf0, *nft1, *nft2;
-    float si, co;
-    si = sin(theta);
-    co = cos(theta);
-    nf0  = cria_no_fim(0,0);
-    nft1 = cria_no_fim(co,-si);
-    nft2 = cria_no_fim(co, si);
-
-    QDD *Q;
-    Q = matriz_faixa_diagonal(nft1,nf0,nft2,0);
     return Q;
 }
 
@@ -4437,7 +4569,7 @@ QDD* W(Short N)
     return Q;
 }
 
-QDD* controle(QDD *Q, Short controle, Short ativa)
+QDD* controla(QDD *Q, Short controle, Short ativa)
 {
     if(Q == NULL)
         ERRO("CONTROLE| Q E NULL");
@@ -4921,9 +5053,97 @@ int main()
     setlocale(LC_ALL, "Portuguese");
     /***********************************/
 
+    /*QDD *QH2;
+    QH2 = aplica(QH,2,0);
+
+    QDD *Qc, *Q1;
+    Q1 = aplica(QX,2,1);
+    Qc = controla(Q1,0,1);
+    libera_QDD(Q1);
+
+    QDD *Qr1;
+    Q1 = Ro(pi/4);
+    Qr1 = aplica(Q1,2,0);
+    libera_QDD(Q1);
+
+    QDD *Qr2;
+    Q1 = Ro(-pi/4);
+    Qr2 = aplica(Q1,2,0);
+    libera_QDD(Q1);
+
+    QDD *Q2;
+    Q1 = produto_matriz_matriz(Qr1,QH2);
+    Q2 = produto_matriz_matriz(Qc,Q1);
+    libera_QDD(Q1);
+    Q1 = produto_matriz_matriz(Qr2,Q2);
+    libera_QDD(Q2);
+    Q2 = produto_matriz_matriz(QH2,Q1);
+    libera_QDD(Q1);
+
+    mostra_QDD(Q2);
+
+    libera_QDD(Q2);
+    libera_QDD(QH2);
+    libera_QDD(Qc);
+    libera_QDD(Qr1);
+    libera_QDD(Qr2);*/
+
+    /*QDD *Q1, *Q2, *Q3;
+    Q1 = H();
+
+    time_t antes, depois;
+    float delta, tempo;
+
+    Short i;
+    Long itens;
+    for(i=1; i<64; i++)
+    {
+        printf("\ni: %hu",i);
+        antes = clock();
+        Q2 = produto_tensorial(Q1,QI);
+        libera_QDD(Q1);
+        Q1 = Q2;
+
+        Q2 = aplica(QH,i+1,i);
+        Q3 = controla(Q2,i-1,0);
+        libera_QDD(Q2);
+        Q2 = Q3;
+
+        Q3 = produto_matriz_matriz(Q2,Q1);
+        libera_QDD(Q1);
+        libera_QDD(Q2);
+        Q1 = Q3;
+        depois = clock();
+
+        delta = depois - antes;
+        tempo = delta/CLOCKS_PER_SEC;
+
+        itens = conta_itens_QDD(Q1);
+        printf("\t\titens: %hu",itens);
+        printf("\t\ttempo: %.3f",tempo);
+    }
+
+    salva_QDD(Q1,"Hc64_0");
+    libera_QDD(Q1);*/
+
+    /*QDD *Q0, *Q1;
+    Q0 = le_QDD("Hc64_0");
+    Q1 = le_QDD("Hc64_1");
+
     QDD *Q;
-    Q = W(2);
-    mostra_QDD(Q);
+    Q = produto_matriz_matriz(Q0,Q1);
+    libera_QDD(Q)*/
+
+    Short N;
+    N = 60;
+
+    configuracao(N);
+    QDD *Q1, *Q2;
+    Q1 = potencia_tensorial(QH,N);
+
+    Q2 = produto_matriz_matriz(Q1,Q1);
+
+
 
     /***********************************/
     finaliza_structs_globais();
