@@ -129,16 +129,6 @@ void finaliza_relatorio_memoria()
     }
 }
 
-void configuracao(Short N)
-{
-    Nqbit = N;
-    eps = pow(2,-0.5*N)/20;
-}
-
-
-
-/** ERRO**/
-
 void ERRO(char *s)
 {
     printf("\n\nERRO %s",s);
@@ -146,6 +136,15 @@ void ERRO(char *s)
         fprintf(fm,"\n\nERRO %s",s);
     finaliza_relatorio_memoria();
     exit(EXIT_FAILURE);
+}
+
+void configuracao(Short N)
+{
+    if(N > 64)
+        ERRO("CONFIGURACAO| N>64PODE GERAR ERROS");
+
+    Nqbit = N;
+    eps = pow(2,-0.5*N)/20;
 }
 
 
@@ -194,7 +193,7 @@ void diminui_memoria_fora(Long m)
 
 /** Construtores  **/
 
-QDD*     cria_QDD(Short nqbit)
+QDD* cria_QDD(Short nqbit)
 {
     QDD *Q;
     Q = malloc(tQ);
@@ -209,7 +208,7 @@ QDD*     cria_QDD(Short nqbit)
     return Q;
 }
 
-QDD**    cria_QDD_array(Long N)
+QDD** cria_QDD_array(Long N)
 {
     QDD **Q;
     Q = malloc(N*sizeof(QDD*));
@@ -219,7 +218,7 @@ QDD**    cria_QDD_array(Long N)
     return Q;
 }
 
-no*      cria_no_inicio()
+no* cria_no_inicio()
 {
     no *n;
     n = malloc(tN);
@@ -236,7 +235,7 @@ no*      cria_no_inicio()
     return n;
 }
 
-no*      cria_no_meio(Short classe, Short nivel)
+no* cria_no_meio(Short classe, Short nivel)
 {
     no *n;
     n = malloc(tN);
@@ -256,7 +255,7 @@ no*      cria_no_meio(Short classe, Short nivel)
     return n;
 }
 
-no*      cria_no_fim(float re,float im)
+no* cria_no_fim(float re,float im)
 {
     no *n;
     n = malloc(tN);
@@ -274,7 +273,7 @@ no*      cria_no_fim(float re,float im)
     return n;
 }
 
-lista*   cria_lista()
+lista* cria_lista()
 {
     lista *l;
     l = malloc(tL);
@@ -288,7 +287,7 @@ lista*   cria_lista()
     return l;
 }
 
-lista*   cria_lista_2(no *nf1, no *nf2)
+lista* cria_lista_2(no *nf1, no *nf2)
 {
     lista *l1, *l2;
     l1 = cria_lista();
@@ -301,7 +300,7 @@ lista*   cria_lista_2(no *nf1, no *nf2)
     return l1;
 }
 
-apply*   cria_apply()
+apply* cria_apply()
 {
     apply *a;
     a = malloc(tA);
@@ -344,7 +343,7 @@ apply*** cria_apply_matriz(Short linhas, Short colunas)
     return A;
 }
 
-conta*   cria_conta(Short nivel)
+conta* cria_conta(Short nivel)
 {
     conta *c;
     c = malloc(tC);
@@ -540,86 +539,6 @@ void libera_suporte_lista(suporte *s)
 
 /** Enlistadores  **/
 
-Long   conta_itens_lista(lista *l)
-{
-    Long i;
-    i = 0;
-    lista *lc;
-    for(lc = l; lc != NULL; lc = lc->l)
-    {
-        i++;
-        if(i == ULLONG_MAX)
-            break;
-    }
-    return i;
-}
-
-void   fmostra_lista(FILE *fp, lista *l)
-{
-    no *n;
-    lista *lc;
-    Long ligacao = 0;
-    lc = l;
-    for(lc = l; lc != NULL; lc = lc->l)
-    {
-        n = lc->n;
-        fprintf(fp,"\n\tLigacao %3d:",ligacao);
-        fprintf(fp," %d",n);
-        ligacao++;
-    }
-}
-
-void   fmostra_no(FILE *fp, no *n)
-{
-    fprintf(fp,"\nEndereco (no): %d\n",n);
-    if(n == NULL)
-        return;
-
-    if(n->l != NULL)
-    {
-        fprintf(fp,"Ligacoes anteriores:");
-        fmostra_lista(fp,n->l);
-    }
-    fprintf(fp,"\nTipo");
-    switch(n->tipo)
-    {
-        case Inicio:
-            fprintf(fp,": Inicio\n");
-            fprintf(fp,"Ligacoes posteriores\n");
-            fprintf(fp,"\tn: %d\n",n->at.i.n);
-            break;
-
-        case Meio:
-            fprintf(fp,"/nivel: ");
-            switch(n->at.m.classe)
-            {
-                case V:
-                    fprintf(fp,"V");
-                    break;
-
-                case R:
-                    fprintf(fp,"R");
-                    break;
-
-                case C:
-                    fprintf(fp,"C");
-                    break;
-            }
-
-            fprintf(fp,"%d\n",n->at.m.nivel);
-            fprintf(fp,"Ligacoes posteriores\n");
-            fprintf(fp,"\telse: %d\n",n->at.m.el);
-            fprintf(fp,"\tThen: %d",n->at.m.th);
-            break;
-
-        case Fim:
-            fprintf(fp,": Numero\n");
-            fprintf(fp,"%.3e %.3e",n->at.f.re,n->at.f.im);
-            break;
-    }
-    fprintf(fp,"\n");
-}
-
 lista* enlista_arvore(no *n)
 {
     if(n == NULL)
@@ -683,6 +602,35 @@ lista* enlista_QDD(QDD *Q)
     l = enlista_arvore(Q->n);
     return l;
 }
+
+
+
+/**  Conta itens  **/
+
+Long conta_itens_lista(lista *l)
+{
+    Long i;
+    i = 0;
+    lista *lc;
+    for(lc = l; lc != NULL; lc = lc->l)
+    {
+        i++;
+        if(i == ULLONG_MAX)
+            break;
+    }
+    return i;
+}
+
+Long   conta_itens_QDD(QDD *Q)
+{
+    lista *l;
+    Long itens;
+    l = enlista_QDD(Q);
+    itens = conta_itens_lista(l);
+    libera_lista_lista(l);
+    return itens;
+}
+
 
 
 
@@ -1024,6 +972,72 @@ void mostra_configuracao()
 
 
 /**  Fmostra  **/
+
+void fmostra_lista(FILE *fp, lista *l)
+{
+    no *n;
+    lista *lc;
+    Long ligacao = 0;
+    lc = l;
+    for(lc = l; lc != NULL; lc = lc->l)
+    {
+        n = lc->n;
+        fprintf(fp,"\n\tLigacao %3d:",ligacao);
+        fprintf(fp," %d",n);
+        ligacao++;
+    }
+}
+
+void fmostra_no(FILE *fp, no *n)
+{
+    fprintf(fp,"\nEndereco (no): %d\n",n);
+    if(n == NULL)
+        return;
+
+    if(n->l != NULL)
+    {
+        fprintf(fp,"Ligacoes anteriores:");
+        fmostra_lista(fp,n->l);
+    }
+    fprintf(fp,"\nTipo");
+    switch(n->tipo)
+    {
+        case Inicio:
+            fprintf(fp,": Inicio\n");
+            fprintf(fp,"Ligacoes posteriores\n");
+            fprintf(fp,"\tn: %d\n",n->at.i.n);
+            break;
+
+        case Meio:
+            fprintf(fp,"/nivel: ");
+            switch(n->at.m.classe)
+            {
+                case V:
+                    fprintf(fp,"V");
+                    break;
+
+                case R:
+                    fprintf(fp,"R");
+                    break;
+
+                case C:
+                    fprintf(fp,"C");
+                    break;
+            }
+
+            fprintf(fp,"%d\n",n->at.m.nivel);
+            fprintf(fp,"Ligacoes posteriores\n");
+            fprintf(fp,"\telse: %d\n",n->at.m.el);
+            fprintf(fp,"\tThen: %d",n->at.m.th);
+            break;
+
+        case Fim:
+            fprintf(fp,": Numero\n");
+            fprintf(fp,"%.3e %.3e",n->at.f.re,n->at.f.im);
+            break;
+    }
+    fprintf(fp,"\n");
+}
 
 void fmostra_lista_com_no(FILE *fp, lista *l)
 {
@@ -1924,7 +1938,11 @@ lista* acha_fim_lista(lista *l)
     return lc;
 }
 
-Long   conta_itens_fim_arvore(no *n)
+
+
+/**  Conta itens  */
+
+Long conta_itens_fim_arvore(no *n)
 {
     lista *l;
     Long itens;
@@ -1934,12 +1952,49 @@ Long   conta_itens_fim_arvore(no *n)
     return itens;
 }
 
-Long   conta_itens_QDD(QDD *Q)
+Long conta_itens_classe_QDD(QDD *Q, Short classe)
 {
-    lista *l;
+    lista *l, *lc;
     Long itens;
     l = enlista_QDD(Q);
-    itens = conta_itens_lista(l);
+    itens = 0;
+    for(lc = l; lc != NULL; lc = lc->l)
+    {
+        if(lc->n->tipo == Meio)
+        if(lc->n->at.m.classe == classe)
+            itens++;
+    }
+    return itens;
+}
+
+Long conta_itens_apply_lista(apply *a)
+{
+    apply *ac;
+    Long itens;
+    itens = 0;
+    for(ac = a; ac != NULL; ac = ac->a)
+        itens++;
+    return itens;
+}
+
+Long conta_itens_conta_lista(conta *c)
+{
+    conta *cc;
+    Long itens;
+    itens = 0;
+    for(cc = c; cc != NULL; cc = cc->c)
+        itens++;
+    return itens;
+}
+
+Long conta_item_arvore(no *n)
+{
+    lista *l, *lc;
+    Long itens;
+    l = enlista_arvore(n);
+    itens = 0;
+    for(lc=  l; lc != NULL; lc = lc->l)
+        itens++;
     libera_lista_lista(l);
     return itens;
 }
@@ -1948,7 +2003,7 @@ Long   conta_itens_QDD(QDD *Q)
 
 /** Copia estrururas  **/
 
-no*    copia_no(no *n1)
+no* copia_no(no *n1)
 {
     no *n2 = NULL;
     switch(n1->tipo)
@@ -1996,7 +2051,7 @@ lista* copia_lista_sem_cabeca(lista *l1)
 
 /** Operações algebricas com estruturas simples  **/
 
-no*  soma_no(no *n1, no *n2)
+no* soma_no(no *n1, no *n2)
 {
     no *n;
     double re, im;
@@ -2006,7 +2061,7 @@ no*  soma_no(no *n1, no *n2)
     return n;
 }
 
-no*  produto_no_no(no *n1, no *n2)
+no* produto_no_no(no *n1, no *n2)
 {
     no *n;
     double re, im;
@@ -2016,7 +2071,7 @@ no*  produto_no_no(no *n1, no *n2)
     return n;
 }
 
-no*  produto_no_conjugado_no(no *n1, no *n2)
+no* produto_no_conjugado_no(no *n1, no *n2)
 {
     no *n;
     double re, im;
@@ -2990,7 +3045,7 @@ void monta_apply(apply *a, Short regra)
     a->a2 = a2;
 }
 
-no* apply_base_aternativo(no *n1, no *n2, Short(*regra_apply)(apply*))
+no* apply_base_aternativo(no *n1, no *n2, Short(*regra_apply)(apply*), Short N)
 {
     if(n1 == NULL)
         ERRO("APPLY BASE| N1 E NULL");
@@ -3093,6 +3148,9 @@ apply* encaixa_apply_alternativo(apply ***A, apply *a, Short N)
         return a;
     }
 
+    Short item1, item2;
+    item1 = conta_itens_apply_lista(A[indice1][indice2]);
+
     apply *ac;
     for(ac = A[indice1][indice2]; ac->a != NULL; ac = ac->a)
         if(compara_apply(ac,a))
@@ -3109,6 +3167,13 @@ apply* encaixa_apply_alternativo(apply ***A, apply *a, Short N)
 
     ac->a = a;
 
+    item2 = conta_itens_apply_lista(A[indice1][indice2]);
+    if(item2-item1 != 1)
+    {
+        printf("\nFIM");
+        mostra_apply_compacto_lista(A[indice1][indice2]);
+        ERRO("ALGUMA COISA ERRADA");
+    }
     return a;
 }
 
@@ -3157,6 +3222,16 @@ no* apply_base(no *n1, no *n2, Short(*regra_apply)(apply*), Short N)
             for(ac = A[i][j]; ac != NULL; ac = ac->a)
             {
                 n = ac->n;
+
+                Short itema;
+                itema = 0;
+                Short i0,j0;
+                apply *ac0;
+                for(i0=0; i0<N+2; i0++)
+                    for(j0=0;j0<3;j0++)
+                        for(ac0 = A[i0][j0]; ac0 != NULL; ac0 = ac0->a)
+                            itema++;
+
                 switch(n->tipo)
                 {
                     case Inicio:
@@ -3177,6 +3252,16 @@ no* apply_base(no *n1, no *n2, Short(*regra_apply)(apply*), Short N)
                         conecta_DOIS(n,n1,n2);
                         break;
                 }
+
+                Short itemb;
+                itemb = 0;
+                for(i0=0; i0<N+2; i0++)
+                    for(j0=0;j0<3;j0++)
+                        for(ac0 = A[i0][j0]; ac0 != NULL; ac0 = ac0->a)
+                            itemb++;
+
+                if(itemb-itema>2)
+                    ERRO("PUTA QUE PARIU");
             }
         }
     }
@@ -3971,6 +4056,8 @@ QDD* copia_QDD(QDD *Q1)
 
 /**  produto QDD QDD base  **/
 
+Short mos;
+
 conta* espalha(suporte *s, Short classe)
 {
     no *n, *na, *naux, *nlixo;
@@ -4115,11 +4202,46 @@ void contrai_conta(conta *c,Short N)
     no *na, *nd;
     conta *cc;
 
+    time_t antes, depois;
+    float delta, tempo1, tempo2, prop;
+    Short me;
+
     for(cc = c; cc != NULL; cc = cc->c)
     {
         na = cc->n;
+
+        antes = clock();
         nd = apply_soma(na->at.m.el,na->at.m.th,N);
+        depois = clock();
+
+        delta = depois-antes;
+        tempo1 = delta/CLOCKS_PER_SEC;
+        me = 0;
+        if(tempo1 > 0.02)
+        {
+            me = 1;
+            printf("\ntS: %.3f",tempo1);
+        }
+
+        antes = clock();
         reduz_arvore(&nd,2);
+        depois = clock();
+
+        delta = depois-antes;
+        tempo2 = delta/CLOCKS_PER_SEC;
+        prop = tempo2/tempo1;
+        Short j;
+        if(me)
+        {
+            printf("   tR: %.3f",tempo2);
+            printf("   prop: %.3f",prop);
+            if(prop > 1)
+            {
+                printf("  <");
+                for(j=1; j<prop; j++)
+                    printf("-");
+            }
+        }
 
         transfere_conexao(nd,na);
         libera_arvore(na);
@@ -4136,6 +4258,11 @@ conta* tratamento(suporte *s, Short classe, Short classeRef, Short N)
 
     if(classe == classeRef)
         contrai_conta(s->c[classe],N);
+
+    Long itens;
+    itens = conta_itens_conta_lista(s->c[classe]);
+    if(mos)
+        printf("\n%hu %2hu\t%2hu\tItens (conta): %llu",classe,s->nivel,N,itens);
 
     conta *ci;
     ci = espalha(s,classe);
@@ -4223,6 +4350,10 @@ QDD* produto_QDD_QDD(QDD *Q1, QDD *Q2, no* (*apply_operacao)(no *n1, no *n2, Sho
     Q->n = n;
     Q->l = l;
     reduz_QDD(Q,2,classe);
+
+    Long itens;
+    itens = conta_itens_classe_QDD(Q,R);
+    printf("\nItens: %llu\t\t\tN: %hu",itens,Q1->nqbit);
 
     contrai_QDD(Q,classe);
     libera_lista_lista(Q->l);
@@ -4775,6 +4906,44 @@ QDD*  mede_destrutivo(QDD *Q, Short nqbit, Short *resultado)
 
 
 
+/**  Cria arquivos QDD  **/
+
+void cria_HcN(Short N, Short salva)
+{
+    QDD *Q1, *Q2, *Q3;
+    Q1 = H();
+
+    char nome[30];
+    Short i;
+    for(i=1; i<N; i++)
+    {
+        printf("\n\ni: %2hu",i+1);
+        Q2 = produto_tensorial(Q1,QI);
+        libera_QDD(Q1);
+        Q1 = Q2;
+
+        Q2 = aplica(QH,i+1,i);
+        mos = 0;
+        Q3 = controla(Q2,i-1,0);
+        libera_QDD(Q2);
+        Q2 = Q3;
+
+        mos = 1;
+        Q3 = produto_matriz_matriz(Q2,Q1);
+        libera_QDD(Q1);
+        libera_QDD(Q2);
+        Q1 = Q3;
+
+        sprintf(nome,"Hc%hu",i+1);
+        if(salva)
+            salva_QDD(Q1,nome);
+    }
+
+    libera_QDD(Q1);
+}
+
+
+
 /**  Testes  **/
 
 double teste_velocidade_unico(char *nome, QDD* (*le)(char*), FILE *fp, FILE *fr, Short primeiro, Long *Quantidade)
@@ -5118,86 +5287,31 @@ int main()
     setlocale(LC_ALL, "Portuguese");
     /***********************************/
 
-    /*QDD *QH2;
-    QH2 = aplica(QH,2,0);
+    Short N;
+    N = 50;
 
-    QDD *Qc, *Q1;
-    Q1 = aplica(QX,2,1);
-    Qc = controla(Q1,0,1);
-    libera_QDD(Q1);
+    mos = 0;
 
-    QDD *Qr1;
-    Q1 = Ro(pi/4);
-    Qr1 = aplica(Q1,2,0);
-    libera_QDD(Q1);
+    QDD **Qr;
+    Qr = cria_QDD_array(N);
 
-    QDD *Qr2;
-    Q1 = Ro(-pi/4);
-    Qr2 = aplica(Q1,2,0);
-    libera_QDD(Q1);
-
-    QDD *Q2;
-    Q1 = produto_matriz_matriz(Qr1,QH2);
-    Q2 = produto_matriz_matriz(Qc,Q1);
-    libera_QDD(Q1);
-    Q1 = produto_matriz_matriz(Qr2,Q2);
-    libera_QDD(Q2);
-    Q2 = produto_matriz_matriz(QH2,Q1);
-    libera_QDD(Q1);
-
-    mostra_QDD(Q2);
-
-    libera_QDD(Q2);
-    libera_QDD(QH2);
-    libera_QDD(Qc);
-    libera_QDD(Qr1);
-    libera_QDD(Qr2);*/
-
-    QDD *Q1, *Q2, *Q3;
-    Q1 = H();
-
-    time_t antes, depois;
-    float delta, tempo;
-
+    QDD *Q1, *Q2;
     Short i;
-    Long itens;
-    for(i=1; i<64; i++)
+    float theta;
+    theta = pi;
+    Qr[0] = QH;
+    for(i=1; i<N; i++)
     {
-        printf("\ni: %hu",i);
-        antes = clock();
-        Q2 = produto_tensorial(Q1,QI);
+        theta = pi/2;
+
+        Q1 = Ro(theta);
+        Q2 = aplica(Q1,i+1,0);
         libera_QDD(Q1);
-        Q1 = Q2;
-
-        Q2 = aplica(QH,i+1,i);
-        Q3 = controla(Q2,i-1,0);
+        Q1 = controla(Q2,i,1);
         libera_QDD(Q2);
-        Q2 = Q3;
 
-        Q3 = produto_matriz_matriz(Q2,Q1);
-        libera_QDD(Q1);
-        libera_QDD(Q2);
-        Q1 = Q3;
-        depois = clock();
-
-        delta = depois - antes;
-        tempo = delta/CLOCKS_PER_SEC;
-
-        itens = conta_itens_QDD(Q1);
-        printf("\t\titens: %hu",itens);
-        printf("\t\ttempo: %.3f",tempo);
+        Qr[i] = Q1;
     }
-
-    salva_QDD(Q1,"Hc64_0");
-    libera_QDD(Q1);
-
-    /*QDD *Q0, *Q1;
-    Q0 = le_QDD("Hc64_0");
-    Q1 = le_QDD("Hc64_1");
-
-    QDD *Q;
-    Q = produto_matriz_matriz(Q0,Q1);
-    libera_QDD(Q);*/
 
     /***********************************/
     finaliza_structs_globais();
