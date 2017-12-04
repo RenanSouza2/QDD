@@ -3015,11 +3015,8 @@ apply* encaixa_apply(apply ***A, apply *a, Short N)
         ERRO("ENCAIXA APPLY| CONIDCAO IMPOSSIVEL");
 
     ac->a = a;
-
     return a;
 }
-
-
 
 no* apply_base(no *n1, no *n2, Short(*regra_apply)(apply*), Short N)
 {
@@ -3057,17 +3054,12 @@ no* apply_base(no *n1, no *n2, Short(*regra_apply)(apply*), Short N)
         }
     }
 
-    Short item;
-
     no *n;
     apply *a1, *a2;
-    printf("\n");
     for(i=0; i<N+2; i++)
     {
         for(j=0; j<3; j++)
         {
-            item = 0;
-            printf("\nA[%2hu][%2hu] = ",i,j);
             for(ac = A[i][j]; ac != NULL; ac = ac->a)
             {
                 n = ac->n;
@@ -3093,7 +3085,6 @@ no* apply_base(no *n1, no *n2, Short(*regra_apply)(apply*), Short N)
                         break;
                 }
             }
-            printf("%d",item);
         }
     }
 
@@ -3818,7 +3809,6 @@ no* copia_arvore(no *n, Short N)
     A = cria_apply_matriz(N+2,3);
     encaixa_apply(A,a,N);
 
-    no *n1, *n2;
     apply *ac, *a1, *a2;
     Short i, j;
     for(i=0; i<N+2; i++)
@@ -3827,28 +3817,32 @@ no* copia_arvore(no *n, Short N)
         {
             for(ac = A[i][j]; ac != NULL; ac = ac->a)
             {
-                n1 = ac->n1;
-                n  = copia_no(n1);
+                n = ac->n1;
+                ac->n = copia_no(n);
 
-                ac->n = n;
                 switch(n->tipo)
                 {
+                    case Inicio:
+                        a1 = cria_apply();
+                        a1->n1 = n->at.i.n;
+                        ac->a1 = encaixa_apply(A,a1,N);
+                        break;
+
                     case Meio:
                         a2 = cria_apply();
-                        a2->n1 = n1->at.i.n;
-
+                        a2->n1 = n->at.m.th;
                         ac->a2 = encaixa_apply(A,a2,N);
 
-                    case Inicio:
-
-                        ac->a1 = encaixa_apply(A,ac->a1,N);
+                        a1 = cria_apply();
+                        a1->n1 = n->at.m.el;
+                        ac->a1 = encaixa_apply(A,a1,N);
                         break;
                 }
             }
         }
     }
 
-    printf("\n");
+    no *n1, *n2;
     for(i=0; i<N+2; i++)
     {
         for(j=0; j<3; j++)
@@ -3856,6 +3850,8 @@ no* copia_arvore(no *n, Short N)
             for(ac = A[i][j]; ac != NULL; ac = ac->a)
             {
                 n = ac->n;
+                if(n == NULL)
+                    ERRO("COPIA ARVORE| NO NAO DEVERIA SER NULO");
 
                 switch(n->tipo)
                 {
@@ -3906,8 +3902,6 @@ QDD* copia_QDD(QDD *Q1)
 
 
 /**  produto QDD QDD base  **/
-
-Short mos;
 
 conta* espalha(suporte *s, Short classe, Short N)
 {
@@ -4114,8 +4108,6 @@ void contrai_QDD(QDD *Q, Short classe)
     suporte *saux;
     while(s != NULL)
     {
-        if(mos)
-            printf("\ns: %hu",s->nivel);
         ci = tratamento(s,C,classe,Q->nqbit);
         if(ci != NULL)
             break;
@@ -4153,31 +4145,8 @@ QDD* produto_QDD_QDD(QDD *Q1, QDD *Q2, no* (*apply_operacao)(no *n1, no *n2, Sho
     if(Q1->nqbit != Q2->nqbit)
         ERRO("PRODUTO QDD QDD| QDDS TEM QUANTIDADES DIFERENTES DE NQBITS");
 
-    time_t antes, depois;
-    float delta, tempo1, tempo2, tempo3;;
-    Short me;
-
     no *n;
-
-    antes = clock();
     n = apply_operacao(Q1->n,Q2->n,Q1->nqbit);
-    depois = clock();
-
-    Long item;
-    if(mos)
-    {
-        item = conta_item_arvore(n);
-        printf("\nitem apply: %llu",item);
-    }
-
-    delta = depois-antes;
-    tempo1 = delta/CLOCKS_PER_SEC;
-    me = 0;
-    if(mos && tempo1 > 0.02)
-    {
-        me = 1;
-        printf("\ntA: %.3f",tempo1);
-    }
 
     lista *l;
     l = acha_lista_fim_arvore(n);
@@ -4186,26 +4155,9 @@ QDD* produto_QDD_QDD(QDD *Q1, QDD *Q2, no* (*apply_operacao)(no *n1, no *n2, Sho
     Q = cria_QDD(Q1->nqbit);
     Q->n = n;
     Q->l = l;
-
-    antes = clock();
     reduz_QDD(Q,2,classe);
-    depois = clock();
 
-    delta = depois-antes;
-    tempo2 = delta/CLOCKS_PER_SEC;
-    if(me)
-        printf("\ttR: %.3f",tempo2);
-
-
-    antes = clock();
     contrai_QDD(Q,classe);
-    depois = clock();
-
-    delta = depois-antes;
-    tempo3 = delta/CLOCKS_PER_SEC;
-    if(me)
-        printf("\ttC: %.3f\n",tempo3);
-
     libera_lista_lista(Q->l);
     Q->l = acha_lista_fim_QDD(Q);
     reduz_QDD(Q,1,4);
@@ -4253,6 +4205,7 @@ QDD* produto_tensorial(QDD *Q1, QDD *Q2)
     QDD *Q2a;
     lista *l1, *l2;
     Q2a = copia_QDD(Q2);
+    Q2a->nqbit = Q->nqbit;
     l1 = enlista_QDD(Q2a);
     for(l2 = l1; l2 != NULL; l2 = l2->l)
         if(l2->n->tipo == Meio)
@@ -4809,12 +4762,10 @@ void cria_QFT(Short N)
         printf("\ni: %2hu",i+1);
         configuracao(i+1);
 
-        printf("\t\tA");
         Q1 = produto_tensorial(Qr,QI);
         libera_QDD(Qr);
         Qr = Q1;
 
-        printf("\nB");
         theta /= 2;
         Q1 = Ro(theta);
         Q2 = aplica(Q1,i+1,0);
@@ -4822,41 +4773,31 @@ void cria_QFT(Short N)
         Q1=  controla(Q2,i,1);
         libera_QDD(Q2);
 
-        printf("\nC");
         Q2 = produto_matriz_matriz(Q1,Qr);
         libera_QDD(Qr);
         libera_QDD(Q1);
         Qr = Q2;
 
-        printf("\nD");
         Q1 = produto_tensorial(QI,Qft);
         libera_QDD(Qft);
         Qft = Q1;
 
-        mos = 1;
-        printf("\nE");
         Q1 = produto_matriz_matriz(Qft,Qr);
         libera_QDD(Qft);
         Qft = Q1;
 
-        mos = 0;
-        printf("\nF");
         Q1 = aplica(Qs2,i+1,1);
         libera_QDD(Qs2);
         Qs2 = Qs1;
         Qs1 = Q1;
 
-        printf("\nG");
         Q1 = Switch(i+1);
 
-        printf("\nH");
         Q2 = produto_matriz_matriz(Qs1,Q1);
         libera_QDD(Qs1);
         libera_QDD(Q1);
         Qs1 = Q2;
 
-        mos = 1;
-        printf("\nI");
         Q1 = produto_matriz_matriz(Qs1,Qft);
         sprintf(nome,"QFT%hu",i+1);
         salva_QDD(Q1,nome);
@@ -4868,6 +4809,7 @@ void cria_QFT(Short N)
     libera_QDD(Qs2);
     libera_QDD(Qft);
 }
+
 
 
 /**  Testes  **/
@@ -5213,7 +5155,38 @@ int main()
     setlocale(LC_ALL, "Portuguese");
     /***********************************/
 
-    cria_QFT(10);
+    Short N;
+    N = 15;
+    configuracao(N);
+
+    QDD **Qr;
+    Qr = cria_QDD_array(N);
+    Qr[0] = QH;
+
+    QDD *Q1, *Q2, *Q3;
+    Short i;
+    float theta;
+    theta = pi;
+    for(i=1; i<N; i++)
+    {
+        printf("\nA");
+        theta /= 2;
+        Q1 = Ro(theta);
+        printf("\nB");
+        Q2 = aplica(Q1,i+1,0);
+        printf("\nC");
+        libera_QDD(Q1);
+        printf("\nD");
+        Q1 = controla(Q2,i,1);
+        printf("\nE");
+        libera_QDD(Q2);
+        printf("\nF");
+
+        Q2 = produto_tensorial(Qr[i-1],QI);
+        printf("\nG");
+
+        Q3 = produto_matriz_matriz(Q1,Q2);
+    }
 
     /***********************************/
     finaliza_structs_globais();
