@@ -827,9 +827,22 @@ void mostra_apply_compacto_lista(apply *a)
     Long ligacao = 0;
     for(ac = a; ac != NULL; ac = ac->a)
     {
-        printf("\n\n\n\n\nLigacao apply %d",ligacao);
+        printf("\n\nLigacao apply %d",ligacao);
         mostra_apply_compacto_no(ac);
         ligacao++;
+    }
+}
+
+void mostra_apply_compacto_matriz(apply ***A, Short linhas, Short colunas)
+{
+    Short i, j;
+    for(i=0; i<linhas; i++)
+    {
+        for(j=0; j<colunas; j++)
+        {
+            printf("\n\n\t\t\tA[%hu][%hu]",i,j);
+            mostra_apply_compacto_lista(A[i][j]);
+        }
     }
 }
 
@@ -1165,7 +1178,7 @@ void fmostra_apply_compacto_lista(FILE *fp, apply *a)
     Long ligacao = 0;
     for(ac = a; ac != NULL; ac = ac->a)
     {
-        fprintf(fp,"\n\n\n\n\nLigacao apply %d",ligacao);
+        fprintf(fp,"\n\nLigacao apply %d",ligacao);
         fmostra_apply_compacto_no(fp,ac);
         ligacao++;
     }
@@ -2849,6 +2862,9 @@ void acha_indice(apply *a, Short *indice1, Short *indice2, Short N)
     no *n;
     n = a->n1;
 
+    if(n == NULL)
+        ERRO("ACHA INDICE| N E NULL");
+
     switch(n->tipo)
     {
         case Inicio:
@@ -3038,53 +3054,50 @@ apply* encaixa_apply(apply ***A, apply *a, Short N)
 
 no* monta_arvore(apply ***A, Short N)
 {
-    no *n0, *n, *n1, *n2;
-    apply *a1, *a2, *ac;
+    no *n0, *n, *nc;
+    apply *a, *ac;
     Short i, j, ini;
-    ini = 0;
     n0 = NULL;
+    ini = 1;
     for(i=0; i<N+2; i++)
     {
         for(j=0; j<3; j++)
         {
-            for(ac = A[i][j]; ac != NULL; ac = ac->a)
+            if(ini)
+            if(A[i][j] != NULL)
             {
-                n = ac->n;
+                ini = 0;
+                n0 = A[i][j]->n;
+            }
+
+            for(a = A[i][j]; a != NULL; a = a->a)
+            {
+                n = a->n;
+
+                if(n == NULL)
+                    ERRO("MONTA ARVORE| APPLY VAZIO");
 
                 switch(n->tipo)
                 {
                     case Inicio:
-                        a1 = ac->a1;
-
-                        n1 = a1->n;
-
-                        conecta_UM(n,n1,Inicio);
+                        ac = a->a1;
+                        nc = ac->n;
+                        conecta_UM(n,nc,Inicio);
                         break;
 
                     case Meio:
-                        a1 = ac->a1;
-                        a2 = ac->a2;
+                        ac = a->a1;
+                        nc = ac->n1;
+                        conecta_UM(n,nc,Else);
 
-                        n1 = a1->n;
-                        n2 = a2->n;
-
-                        conecta_DOIS(n,n1,n2);
+                        ac = a->a2;
+                        nc = ac->n;
+                        conecta_UM(n,nc,Then);
                         break;
                 }
             }
-
-            if(ini == 0)
-            if(A[i][j] != NULL)
-            {
-                ini = 1;
-                n0 = A[i][j]->n;
-            }
         }
     }
-
-    if(n0 == NULL)
-        ERRO("MONTA ARVORE| NAO ENCONTROU PRIMEIRO NO");
-
     return n0;
 }
 
@@ -3101,7 +3114,6 @@ no* apply_base(no *n1, no *n2, Short(*regra_apply)(apply*), Short N)
 
     apply *ac;
     Short i, j, regra;
-
     for(i=0; i<N+2; i++)
     {
         for(j=0; j<3; j++)
@@ -3842,32 +3854,41 @@ apply*** encaixa_arvore(no *n, Short N)
     A = cria_apply_matriz(N+2,3);
     encaixa_apply(A,a,N);
 
-    apply *ac, *a1, *a2;
+    apply *ac;
     Short i, j;
     for(i=0; i<N+2; i++)
     {
-        for(j=0; j<3; j++)
+        for(j=0; j<N+2; j++)
         {
-            for(ac = A[i][j]; ac != NULL; ac = ac->a)
+            for(a = A[i][j]; a != NULL; a = a->a)
             {
-                n = ac->n;
-
+                printf("\nA");
+                n = a->n1;
+                if(n == NULL)
+                {
+                    mostra_apply_compacto_no(a);
+                    ERRO("ENCAIXA ARVORE| APPLY VAZIO");
+                }
+                printf("\nB");
                 switch(n->tipo)
                 {
                     case Inicio:
-                        a1 = cria_apply();
-                        a1->n1 = n->at.i.n;
-                        ac->a1 = encaixa_apply(A,a1,N);
+                        printf("\nC");
+                        ac = cria_apply();
+                        ac->n1 = n->at.i.n;
+                        a->a1 = encaixa_apply(A,ac,N);
                         break;
 
                     case Meio:
-                        a2 = cria_apply();
-                        a2->n1 = n->at.m.th;
-                        ac->a2 = encaixa_apply(A,a2,N);
+                        printf("\nD");
+                        ac = cria_apply();
+                        ac->n1 = n->at.m.th;
+                        a->a2 = encaixa_apply(A,ac,N);
 
-                        a1 = cria_apply();
-                        a1->n1 = n->at.m.el;
-                        ac->a2 = encaixa_apply(A,a1,N);
+                        printf("\nE");
+                        ac = cria_apply();
+                        ac->n1 = n->at.m.el;
+                        a->a1 = encaixa_apply(A,ac,N);
                         break;
                 }
             }
@@ -3876,101 +3897,52 @@ apply*** encaixa_arvore(no *n, Short N)
     return A;
 }
 
-void conecta_arvore(apply ***A, Short N)
+no* monta_copia(apply ***A, Short N)
 {
-    apply *ac;
+    apply *a;
     Short i, j;
     for(i=0; i<N+2; i++)
-        for(j=0; j<N+2; j++)
-            for(ac = A[i][j]; ac != NULL; ac = ac->a)
-                ac->n = copia_no(ac->n1);
+        for(j=0; j<3; j++)
+            for(a = A[i][j]; a != NULL; a = a->a)
+                a->n = copia_no(a->n1);
 
-    no *n, *n1, *n2;
-    apply *a1, *a2;
-    for(i=0; i<N+2; i++)
-    {
-        for(j=0; j<N+2; j++)
-        {
-            for(ac = A[i][j]; ac != NULL; ac = ac->a)
-            {
-                n = ac->n;
-                switch(n->tipo)
-                {
-                    case Inicio:
-                        a1 = ac->a1;
-                        n1 = a1->n;
-                        conecta_UM(n,n1,Inicio);
-                        break;
-
-                    case Meio:
-                        a1 = ac->a1;
-                        a2 = ac->a2;
-
-                        n1 = a1->n;
-                        n2 = a2->n;
-
-                        conecta_DOIS(n,n1,n2);
-                        break;
-                }
-            }
-        }
-    }
+    no *n;
+    n = monta_arvore(A,N);
+    return n;
 }
 
 no* copia_arvore(no *n, Short N)
 {
     apply ***A;
     A = encaixa_arvore(n,N);
-    conecta_arvore(A,N);
-    n = monta_arvore(A,N);
+    n = monta_copia(A,N);
+    libera_apply_matriz(A,N+2,3);
     return n;
 }
 
 no** copia_arvore_varios(no *n0, Short N, Long quantidade)
 {
-    apply ***A;
-    A = encaixa_arvore(n0,N);
 
-    no **n;
-    Long i;
-    n = cria_no_array(quantidade);
-    for(i=0; i<quantidade; i++)
-    {
-       conecta_arvore(A,N);
-        n[i] = monta_arvore(A,N);
-    }
-    return n;
 }
 
 QDD* copia_QDD(QDD *Q1)
 {
-    if(Q1 == NULL)
-        ERRO("COPIA QDD| QDD E NULL");
+    no *n;
+    n = copia_arvore(Q1->n,Q1->nqbit);
 
-    QDD *Q2;
-    Q2 = cria_QDD(Q1->nqbit);
+    lista *l;
+    l = acha_lista_fim_arvore(n);
 
-    Q2->n = copia_arvore(Q1->n,Q1->nqbit);
-    Q2->l = acha_lista_fim_QDD(Q2);
-
-    return Q2;
+    QDD *Q;
+    Q = cria_QDD(Q1->nqbit);
+    Q->n = n;
+    Q->l = l;
+    return Q;
 }
 
 QDD** copia_QDD_varios(QDD *Q0, Long quantidade)
 {
-    no **n;
-    n = copia_arvore_varios(Q0->n,Q0->nqbit,quantidade);
 
-    QDD **Q;
-    Short i;
-    Q = cria_QDD_array(quantidade);
-    for(i=0; i<quantidade; i++)
-    {
-        Q[i] = cria_QDD(Q0->nqbit);
-        Q[i]->n = n[i];
-        Q[i]->l = acha_lista_fim_arvore(n[i]);
-    }
-    return Q;
 }
 
 
@@ -5230,11 +5202,13 @@ int main()
     /***********************************/
 
     QDD *Q;
-    Q = le_matriz("H4.txt");
+    Q = le_matriz("H2.txt");
     reduz_QDD(Q,1,4);
 
     QDD *Q1;
     Q1 = copia_QDD(Q);
+    mostra_QDD(Q1);
+    libera_QDD(Q1);
 
     /***********************************/
     finaliza_structs_globais();
