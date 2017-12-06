@@ -10,8 +10,8 @@
 #define Meio 1
 #define Fim 2
 
-#define V 0
-#define R 1
+#define R 0
+#define V 1
 #define C 2
 
 #define Else 1
@@ -273,6 +273,16 @@ no* cria_no_fim(float re,float im)
     return n;
 }
 
+no** cria_no_array(Long N)
+{
+    no **n;
+    n = malloc(N*sizeof(no*));
+    if(n == NULL)
+        ERRO("CRIA NO ARRAY");
+    aumenta_memoria_fora(N*sizeof(no*));
+    return n;
+}
+
 lista* cria_lista()
 {
     lista *l;
@@ -440,6 +450,12 @@ void libera_no(no *n)
     free(n);
 }
 
+void libera_no_array(no **n, Long N)
+{
+    diminui_memoria_fora(N*sizeof(no*));
+    free(n);
+}
+
 void libera_lista_no(lista *l)
 {
     if(l == NULL)
@@ -485,9 +501,12 @@ void libera_apply_lista(apply *a)
 
 void libera_apply_matriz(apply ***A, Short linhas, Short colunas)
 {
-    Short i;
+    Short i, j;
     for(i=0; i<linhas; i++)
     {
+        for(j=0; j<colunas; j++)
+            libera_apply_lista(A[i][j]);
+
         diminui_memoria_fora(colunas*sizeof(apply*));
         free(A[i]);
     }
@@ -630,7 +649,6 @@ Long   conta_itens_QDD(QDD *Q)
     libera_lista_lista(l);
     return itens;
 }
-
 
 
 
@@ -3018,6 +3036,58 @@ apply* encaixa_apply(apply ***A, apply *a, Short N)
     return a;
 }
 
+no* monta_arvore(apply ***A, Short N)
+{
+    no *n0, *n, *n1, *n2;
+    apply *a1, *a2, *ac;
+    Short i, j, ini;
+    ini = 0;
+    n0 = NULL;
+    for(i=0; i<N+2; i++)
+    {
+        for(j=0; j<3; j++)
+        {
+            for(ac = A[i][j]; ac != NULL; ac = ac->a)
+            {
+                n = ac->n;
+
+                switch(n->tipo)
+                {
+                    case Inicio:
+                        a1 = ac->a1;
+
+                        n1 = a1->n;
+
+                        conecta_UM(n,n1,Inicio);
+                        break;
+
+                    case Meio:
+                        a1 = ac->a1;
+                        a2 = ac->a2;
+
+                        n1 = a1->n;
+                        n2 = a2->n;
+
+                        conecta_DOIS(n,n1,n2);
+                        break;
+                }
+            }
+
+            if(ini == 0)
+            if(A[i][j] != NULL)
+            {
+                ini = 1;
+                n0 = A[i][j]->n;
+            }
+        }
+    }
+
+    if(n0 == NULL)
+        ERRO("MONTA ARVORE| NAO ENCONTROU PRIMEIRO NO");
+
+    return n0;
+}
+
 no* apply_base(no *n1, no *n2, Short(*regra_apply)(apply*), Short N)
 {
     apply *a;
@@ -3055,44 +3125,7 @@ no* apply_base(no *n1, no *n2, Short(*regra_apply)(apply*), Short N)
     }
 
     no *n;
-    apply *a1, *a2;
-    for(i=0; i<N+2; i++)
-    {
-        for(j=0; j<3; j++)
-        {
-            for(ac = A[i][j]; ac != NULL; ac = ac->a)
-            {
-                n = ac->n;
-
-                switch(n->tipo)
-                {
-                    case Inicio:
-                        a1 = ac->a1;
-
-                        n1 = a1->n;
-
-                        conecta_UM(n,n1,Inicio);
-                        break;
-
-                    case Meio:
-                        a1 = ac->a1;
-                        a2 = ac->a2;
-
-                        n1 = a1->n;
-                        n2 = a2->n;
-
-                        conecta_DOIS(n,n1,n2);
-                        break;
-                }
-            }
-        }
-    }
-
-    n = a->n;
-
-    for(i=0; i<N+2; i++)
-        for(j=0; j<3; j++)
-            libera_apply_lista(A[i][j]);
+    n = monta_arvore(A,N);
 
     libera_apply_matriz(A,N+2,3);
 
@@ -3799,7 +3832,7 @@ no* apply_produto_vetor_vetor(no *n1, no *n2, Short N)
 
 /** copia estruturas complexas **/
 
-no* copia_arvore(no *n, Short N)
+apply*** encaixa_arvore(no *n, Short N)
 {
     apply *a;
     a = cria_apply();
@@ -3817,8 +3850,7 @@ no* copia_arvore(no *n, Short N)
         {
             for(ac = A[i][j]; ac != NULL; ac = ac->a)
             {
-                n = ac->n1;
-                ac->n = copia_no(n);
+                n = ac->n;
 
                 switch(n->tipo)
                 {
@@ -3835,31 +3867,38 @@ no* copia_arvore(no *n, Short N)
 
                         a1 = cria_apply();
                         a1->n1 = n->at.m.el;
-                        ac->a1 = encaixa_apply(A,a1,N);
+                        ac->a2 = encaixa_apply(A,a1,N);
                         break;
                 }
             }
         }
     }
+    return A;
+}
 
-    no *n1, *n2;
+void conecta_arvore(apply ***A, Short N)
+{
+    apply *ac;
+    Short i, j;
+    for(i=0; i<N+2; i++)
+        for(j=0; j<N+2; j++)
+            for(ac = A[i][j]; ac != NULL; ac = ac->a)
+                ac->n = copia_no(ac->n1);
+
+    no *n, *n1, *n2;
+    apply *a1, *a2;
     for(i=0; i<N+2; i++)
     {
-        for(j=0; j<3; j++)
+        for(j=0; j<N+2; j++)
         {
             for(ac = A[i][j]; ac != NULL; ac = ac->a)
             {
                 n = ac->n;
-                if(n == NULL)
-                    ERRO("COPIA ARVORE| NO NAO DEVERIA SER NULO");
-
                 switch(n->tipo)
                 {
                     case Inicio:
                         a1 = ac->a1;
-
                         n1 = a1->n;
-
                         conecta_UM(n,n1,Inicio);
                         break;
 
@@ -3876,20 +3915,38 @@ no* copia_arvore(no *n, Short N)
             }
         }
     }
+}
 
-    n = a->n;
+no* copia_arvore(no *n, Short N)
+{
+    apply ***A;
+    A = encaixa_arvore(n,N);
+    conecta_arvore(A,N);
+    n = monta_arvore(A,N);
+    return n;
+}
 
-    for(i=0; i<N+2; i++)
-        for(j=0; j<3; j++)
-            libera_apply_lista(A[i][j]);
+no** copia_arvore_varios(no *n0, Short N, Long quantidade)
+{
+    apply ***A;
+    A = encaixa_arvore(n0,N);
 
-    libera_apply_matriz(A,N+2,3);
-
+    no **n;
+    Long i;
+    n = cria_no_array(quantidade);
+    for(i=0; i<quantidade; i++)
+    {
+       conecta_arvore(A,N);
+        n[i] = monta_arvore(A,N);
+    }
     return n;
 }
 
 QDD* copia_QDD(QDD *Q1)
 {
+    if(Q1 == NULL)
+        ERRO("COPIA QDD| QDD E NULL");
+
     QDD *Q2;
     Q2 = cria_QDD(Q1->nqbit);
 
@@ -3897,6 +3954,23 @@ QDD* copia_QDD(QDD *Q1)
     Q2->l = acha_lista_fim_QDD(Q2);
 
     return Q2;
+}
+
+QDD** copia_QDD_varios(QDD *Q0, Long quantidade)
+{
+    no **n;
+    n = copia_arvore_varios(Q0->n,Q0->nqbit,quantidade);
+
+    QDD **Q;
+    Short i;
+    Q = cria_QDD_array(quantidade);
+    for(i=0; i<quantidade; i++)
+    {
+        Q[i] = cria_QDD(Q0->nqbit);
+        Q[i]->n = n[i];
+        Q[i]->l = acha_lista_fim_arvore(n[i]);
+    }
+    return Q;
 }
 
 
@@ -5155,38 +5229,12 @@ int main()
     setlocale(LC_ALL, "Portuguese");
     /***********************************/
 
-    Short N;
-    N = 15;
-    configuracao(N);
+    QDD *Q;
+    Q = le_matriz("H4.txt");
+    reduz_QDD(Q,1,4);
 
-    QDD **Qr;
-    Qr = cria_QDD_array(N);
-    Qr[0] = QH;
-
-    QDD *Q1, *Q2, *Q3;
-    Short i;
-    float theta;
-    theta = pi;
-    for(i=1; i<N; i++)
-    {
-        printf("\nA");
-        theta /= 2;
-        Q1 = Ro(theta);
-        printf("\nB");
-        Q2 = aplica(Q1,i+1,0);
-        printf("\nC");
-        libera_QDD(Q1);
-        printf("\nD");
-        Q1 = controla(Q2,i,1);
-        printf("\nE");
-        libera_QDD(Q2);
-        printf("\nF");
-
-        Q2 = produto_tensorial(Qr[i-1],QI);
-        printf("\nG");
-
-        Q3 = produto_matriz_matriz(Q1,Q2);
-    }
+    QDD *Q1;
+    Q1 = copia_QDD(Q);
 
     /***********************************/
     finaliza_structs_globais();
