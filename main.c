@@ -103,7 +103,7 @@ typedef struct apply   apply;
 typedef struct conta   conta;
 typedef struct suporte suporte;
 
-typedef unsigned short Short;
+typedef unsigned short     Short;
 typedef unsigned long long Long;
 
 
@@ -3087,7 +3087,7 @@ no* monta_arvore(apply ***A, Short N)
 
                     case Meio:
                         ac = a->a1;
-                        nc = ac->n1;
+                        nc = ac->n;
                         conecta_UM(n,nc,Else);
 
                         ac = a->a2;
@@ -3844,7 +3844,7 @@ no* apply_produto_vetor_vetor(no *n1, no *n2, Short N)
 
 /** copia estruturas complexas **/
 
-apply*** encaixa_arvore(no *n, Short N)
+apply*** monta_apply_matriz(no *n, Short N)
 {
     apply *a;
     a = cria_apply();
@@ -3858,34 +3858,24 @@ apply*** encaixa_arvore(no *n, Short N)
     Short i, j;
     for(i=0; i<N+2; i++)
     {
-        for(j=0; j<N+2; j++)
+        for(j=0; j<3; j++)
         {
             for(a = A[i][j]; a != NULL; a = a->a)
             {
-                printf("\nA");
                 n = a->n1;
-                if(n == NULL)
-                {
-                    mostra_apply_compacto_no(a);
-                    ERRO("ENCAIXA ARVORE| APPLY VAZIO");
-                }
-                printf("\nB");
                 switch(n->tipo)
                 {
                     case Inicio:
-                        printf("\nC");
                         ac = cria_apply();
                         ac->n1 = n->at.i.n;
                         a->a1 = encaixa_apply(A,ac,N);
                         break;
 
                     case Meio:
-                        printf("\nD");
                         ac = cria_apply();
                         ac->n1 = n->at.m.th;
                         a->a2 = encaixa_apply(A,ac,N);
 
-                        printf("\nE");
                         ac = cria_apply();
                         ac->n1 = n->at.m.el;
                         a->a1 = encaixa_apply(A,ac,N);
@@ -3894,6 +3884,7 @@ apply*** encaixa_arvore(no *n, Short N)
             }
         }
     }
+
     return A;
 }
 
@@ -3914,15 +3905,10 @@ no* monta_copia(apply ***A, Short N)
 no* copia_arvore(no *n, Short N)
 {
     apply ***A;
-    A = encaixa_arvore(n,N);
+    A = monta_apply_matriz(n,N);
     n = monta_copia(A,N);
     libera_apply_matriz(A,N+2,3);
     return n;
-}
-
-no** copia_arvore_varios(no *n0, Short N, Long quantidade)
-{
-
 }
 
 QDD* copia_QDD(QDD *Q1)
@@ -3940,9 +3926,42 @@ QDD* copia_QDD(QDD *Q1)
     return Q;
 }
 
+no** copia_arvore_varios(no *n0, Short N, Long quantidade)
+{
+    apply ***A;
+    A = monta_apply_matriz(n0,N);
+
+    no **n;
+    Long i;
+    n = cria_no_array(quantidade);
+    for(i=0; i<quantidade; i++)
+        n[i] = monta_copia(A,N);
+
+    libera_apply_matriz(A,N+2,3);
+
+    return n;
+}
+
 QDD** copia_QDD_varios(QDD *Q0, Long quantidade)
 {
+    no **n;
+    n = copia_arvore_varios(Q0->n,Q0->nqbit,quantidade);
 
+    QDD **Q;
+    lista *l;
+    Long i;
+    Q = cria_QDD_array(quantidade);
+    for(i=0; i<quantidade; i++)
+    {
+        l = acha_lista_fim_arvore(n[i]);
+
+        Q[i] = cria_QDD(Q0->nqbit);
+        Q[i]->n = n[i];
+        Q[i]->l = l;
+    }
+    libera_no_array(n,quantidade);
+
+    return Q;
 }
 
 
@@ -4258,10 +4277,18 @@ QDD* produto_tensorial(QDD *Q1, QDD *Q2)
             (l2->n->at.m.nivel) += nqbit1;
     libera_lista_lista(l1);
 
+    QDD **Q2B;
+    Long itens;
+    itens = conta_itens_lista(Q1->l);
+    Q2B = copia_QDD_varios(Q2a,itens);
+    libera_QDD(Q2a);
+
     QDD *Q2b;
     no *n, *n1, *n2, *naux;
+    Short i;
     l1 = Q->l;
     Q->l = NULL;
+    i = 0;
     while(l1 != NULL)
     {
         n1 = l1->n;
@@ -4271,10 +4298,12 @@ QDD* produto_tensorial(QDD *Q1, QDD *Q2)
             l1->l = Q->l;
             Q->l = l1;
             l1 = l2;
+
+            libera_QDD(Q2B[i]);
         }
         else
         {
-            Q2b = copia_QDD(Q2a);
+            Q2b = Q2B[i];
             n = Q2b->n;
             if(n->tipo != Inicio)
                 ERRO("PRODUTO TENSORIAL| PRIMEIRO NO DE QDD NAO E INICIO");
@@ -4307,8 +4336,9 @@ QDD* produto_tensorial(QDD *Q1, QDD *Q2)
             libera_lista_no(l1);
             l1 = l2;
         }
+        i++;
     }
-    libera_QDD(Q2a);
+    libera_QDD_array(Q2B,itens);
 
     reduz_QDD(Q,1,4);
     return Q;
@@ -5201,14 +5231,31 @@ int main()
     setlocale(LC_ALL, "Portuguese");
     /***********************************/
 
-    QDD *Q;
-    Q = le_matriz("H2.txt");
-    reduz_QDD(Q,1,4);
+    Short N;
+    N = 10;
 
-    QDD *Q1;
-    Q1 = copia_QDD(Q);
-    mostra_QDD(Q1);
-    libera_QDD(Q1);
+    QDD *Qr;
+    Qr = cria_QDD_array(N);
+    Qr[0] = H();
+
+    QDD *Q1, *Q2;
+    Short i;
+    float theta;
+    theta = pi;
+    for(i=1; i<N; i++)
+    {
+        theta /= 2;
+        Q1 = Ro(theta);
+        Q2 = aplica(Q1,i+1,0);
+        libera_QDD(Q1);
+        Q1 = controla(Q2,i,1);
+    }
+
+    Short j;
+    for(i=0; i<)
+    {
+
+    }
 
     /***********************************/
     finaliza_structs_globais();
