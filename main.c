@@ -5234,9 +5234,9 @@ int main()
     Short N;
     N = 10;
 
-    QDD *Qr;
+    QDD **Qr;
     Qr = cria_QDD_array(N);
-    Qr[0] = H();
+    Qr[0] = QH;
 
     QDD *Q1, *Q2;
     Short i;
@@ -5244,6 +5244,7 @@ int main()
     theta = pi;
     for(i=1; i<N; i++)
     {
+        printf("\ni0: %hu",i);
         theta /= 2;
         Q1 = Ro(theta);
         Q2 = aplica(Q1,i+1,0);
@@ -5251,10 +5252,23 @@ int main()
         Q1 = controla(Q2,i,1);
     }
 
-    Short j;
-    for(i=0; i<)
-    {
+    Q1 = W(N);
 
+    printf("\n");
+    QDD *Q3;
+    Short j;
+    for(i=0; i<N; i++)
+    {
+        printf("\ni1: %hu",i);
+        for(j=0; j+i<N; j++)
+        {
+            printf("\n\tj: %hu",j);
+            Q2 = aplica(Qr[j],N,i);
+            Q3 = produto_matriz_vetor(Q2,Q1);
+            libera_QDD(Q1);
+            libera_QDD(Q2);
+            Q1 = Q3;
+        }
     }
 
     /***********************************/
