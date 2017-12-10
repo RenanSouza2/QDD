@@ -215,6 +215,11 @@ QDD** cria_QDD_array(Long N)
     if(Q == NULL)
         ERRO("CRIA ARRAY QDD");
     aumenta_memoria_fora(N*sizeof(QDD*));
+
+    Long i;
+    for(i=0; i<N; i++)
+        Q[i] = NULL;
+
     return Q;
 }
 
@@ -328,29 +333,6 @@ apply* cria_apply()
     a->a2 = NULL;
 
     return a;
-}
-
-apply*** cria_apply_matriz(Short linhas, Short colunas)
-{
-    apply ***A;
-    A = malloc(linhas*sizeof(apply**));
-    if(A == NULL)
-        ERRO("CRIA APPLY MATRIZ| ALLOCA A");
-    aumenta_memoria_fora(linhas*sizeof(apply**));
-
-    Short i, j;
-    for(i=0; i<linhas; i++)
-    {
-        A[i] = malloc(colunas*sizeof(apply*));
-        if(A[i] == NULL)
-            ERRO("CRIA APPLY MATRIZ| ALLOCA A[]");
-        aumenta_memoria_fora(colunas*sizeof(apply*));
-
-        for(j=0; j<colunas; j++)
-            A[i][j] = NULL;
-    }
-
-    return A;
 }
 
 conta* cria_conta(Short nivel)
@@ -497,21 +479,6 @@ void libera_apply_lista(apply *a)
         libera_apply_no(a);
         a = ac;
     }
-}
-
-void libera_apply_matriz(apply ***A, Short linhas, Short colunas)
-{
-    Short i, j;
-    for(i=0; i<linhas; i++)
-    {
-        for(j=0; j<colunas; j++)
-            libera_apply_lista(A[i][j]);
-
-        diminui_memoria_fora(colunas*sizeof(apply*));
-        free(A[i]);
-    }
-    diminui_memoria_fora(linhas*sizeof(apply**));
-    free(A);
 }
 
 void libera_conta_no(conta *c)
@@ -1780,7 +1747,7 @@ QDD* Z()
 QDD *QH, *QI, *QX, *QS, *QY, *Q00, *Q01, *Q10, *Q11;
 QDD *Qred;
 no *nzero;
-lista *lzero;
+apply *A[66][3];
 
 void inicia_structs_globais()
 {
@@ -1806,8 +1773,6 @@ void inicia_structs_globais()
     Q10 = matriz_delta_kronecker(1,0);
     Q11 = matriz_delta_kronecker(1,1);
 
-    lzero = cria_lista();
-
     mem0 = mem;
     iQ0  = iQ;
     iI0  = iI;
@@ -1821,6 +1786,11 @@ void inicia_structs_globais()
     iM  = 0;
     iF  = 0;
     iL  = 0;
+
+    Short i, j;
+    for(i=0; i<66; i++)
+        for(j=0; j<3; j++)
+            A[i][j] = NULL;
 }
 
 void finaliza_structs_globais()
@@ -1846,8 +1816,6 @@ void finaliza_structs_globais()
     libera_QDD(Q01);
     libera_QDD(Q10);
     libera_QDD(Q11);
-
-    libera_lista_no(lzero);
 }
 
 
@@ -3023,7 +2991,7 @@ void monta_apply(apply *a, Short regra)
     a->a2 = a2;
 }
 
-apply* encaixa_apply(apply ***A, apply *a, Short N)
+apply* encaixa_apply(apply *a, Short N)
 {
     Short indice1, indice2;
     acha_indice(a,&indice1,&indice2,N);
@@ -3052,7 +3020,7 @@ apply* encaixa_apply(apply ***A, apply *a, Short N)
     return a;
 }
 
-no* monta_arvore(apply ***A, Short N)
+no* monta_arvore(Short N)
 {
     no *n0, *n, *nc;
     apply *a, *ac;
@@ -3101,6 +3069,19 @@ no* monta_arvore(apply ***A, Short N)
     return n0;
 }
 
+void limpa_apply_matriz(Short N)
+{
+    Short i, j;
+    for(i=0; i<N+2; i++)
+    {
+        for(j=0; j<2; j++)
+        {
+            libera_apply_lista(A[i][j]);
+            A[i][j] = NULL;
+        }
+    }
+}
+
 no* apply_base(no *n1, no *n2, Short(*regra_apply)(apply*), Short N)
 {
     apply *a;
@@ -3108,9 +3089,7 @@ no* apply_base(no *n1, no *n2, Short(*regra_apply)(apply*), Short N)
     a->n1 = n1;
     a->n2 = n2;
 
-    apply ***A;
-    A = cria_apply_matriz(N+2,3);
-    encaixa_apply(A,a,N);
+    encaixa_apply(a,N);
 
     apply *ac;
     Short i, j, regra;
@@ -3126,10 +3105,10 @@ no* apply_base(no *n1, no *n2, Short(*regra_apply)(apply*), Short N)
                 switch(ac->n->tipo)
                 {
                     case Meio:
-                        ac->a2 = encaixa_apply(A,ac->a2,N);
+                        ac->a2 = encaixa_apply(ac->a2,N);
 
                     case Inicio:
-                        ac->a1 = encaixa_apply(A,ac->a1,N);
+                        ac->a1 = encaixa_apply(ac->a1,N);
                         break;
                 }
             }
@@ -3137,9 +3116,9 @@ no* apply_base(no *n1, no *n2, Short(*regra_apply)(apply*), Short N)
     }
 
     no *n;
-    n = monta_arvore(A,N);
+    n = monta_arvore(N);
 
-    libera_apply_matriz(A,N+2,3);
+    limpa_apply_matriz(N);
 
     return n;
 }
@@ -3844,15 +3823,12 @@ no* apply_produto_vetor_vetor(no *n1, no *n2, Short N)
 
 /** copia estruturas complexas **/
 
-apply*** monta_apply_matriz(no *n, Short N)
+void monta_apply_matriz(no *n, Short N)
 {
     apply *a;
     a = cria_apply();
     a->n1 = n;
-
-    apply ***A;
-    A = cria_apply_matriz(N+2,3);
-    encaixa_apply(A,a,N);
+    encaixa_apply(a,N);
 
     apply *ac;
     Short i, j;
@@ -3868,27 +3844,25 @@ apply*** monta_apply_matriz(no *n, Short N)
                     case Inicio:
                         ac = cria_apply();
                         ac->n1 = n->at.i.n;
-                        a->a1 = encaixa_apply(A,ac,N);
+                        a->a1 = encaixa_apply(ac,N);
                         break;
 
                     case Meio:
                         ac = cria_apply();
                         ac->n1 = n->at.m.th;
-                        a->a2 = encaixa_apply(A,ac,N);
+                        a->a2 = encaixa_apply(ac,N);
 
                         ac = cria_apply();
                         ac->n1 = n->at.m.el;
-                        a->a1 = encaixa_apply(A,ac,N);
+                        a->a1 = encaixa_apply(ac,N);
                         break;
                 }
             }
         }
     }
-
-    return A;
 }
 
-no* monta_copia(apply ***A, Short N)
+no* monta_copia(Short N)
 {
     apply *a;
     Short i, j;
@@ -3898,16 +3872,15 @@ no* monta_copia(apply ***A, Short N)
                 a->n = copia_no(a->n1);
 
     no *n;
-    n = monta_arvore(A,N);
+    n = monta_arvore(N);
     return n;
 }
 
 no* copia_arvore(no *n, Short N)
 {
-    apply ***A;
-    A = monta_apply_matriz(n,N);
-    n = monta_copia(A,N);
-    libera_apply_matriz(A,N+2,3);
+    monta_apply_matriz(n,N);
+    n = monta_copia(N);
+    limpa_apply_matriz(N);
     return n;
 }
 
@@ -3928,16 +3901,15 @@ QDD* copia_QDD(QDD *Q1)
 
 no** copia_arvore_varios(no *n0, Short N, Long quantidade)
 {
-    apply ***A;
-    A = monta_apply_matriz(n0,N);
+    monta_apply_matriz(n0,N);
 
     no **n;
     Long i;
     n = cria_no_array(quantidade);
     for(i=0; i<quantidade; i++)
-        n[i] = monta_copia(A,N);
+        n[i] = monta_copia(N);
 
-    libera_apply_matriz(A,N+2,3);
+    limpa_apply_matriz(N);
 
     return n;
 }
@@ -5231,8 +5203,9 @@ int main()
     setlocale(LC_ALL, "Portuguese");
     /***********************************/
 
-    Short N;
-    N = 10;
+    /*Short N;
+    N = 20;
+    configuracao(N);
 
     QDD **Qr;
     Qr = cria_QDD_array(N);
@@ -5245,18 +5218,30 @@ int main()
     for(i=1; i<N; i++)
     {
         printf("\ni0: %hu",i);
+
         theta /= 2;
         Q1 = Ro(theta);
         Q2 = aplica(Q1,i+1,0);
         libera_QDD(Q1);
         Q1 = controla(Q2,i,1);
-    }
 
-    Q1 = W(N);
+        Qr[i] = Q1;
+    }*/
+
+    /*Q1 = W(N);
+
+    time_t antes, depois, rawtime;
+    float delta, tempo, tempo2;
+    struct tm *timeinfo;
+    time(&rawtime);
+    timeinfo = localtime(&rawtime);
+    printf("\t%02d:%02d  %2d/%02d",timeinfo->tm_hour,timeinfo->tm_min,timeinfo->tm_mday,timeinfo->tm_mon+1);
 
     printf("\n");
     QDD *Q3;
     Short j;
+    depois = clock();
+    tempo = 0;
     for(i=0; i<N; i++)
     {
         printf("\ni1: %hu",i);
@@ -5268,8 +5253,41 @@ int main()
             libera_QDD(Q1);
             libera_QDD(Q2);
             Q1 = Q3;
+
+            antes = depois;
+            depois = clock();
+            delta = depois-antes;
+            tempo2 = tempo;
+            tempo = delta/CLOCKS_PER_SEC;
+            delta = tempo - tempo2;
+            printf("\ttempo: %.3f\tdelta: %.3f",tempo,delta);
+
+            time(&rawtime);
+            timeinfo = localtime(&rawtime);
+            printf("\t%02d:%02d  %2d/%02d",timeinfo->tm_hour,timeinfo->tm_min,timeinfo->tm_mday,timeinfo->tm_mon+1);
         }
-    }
+    }*/
+
+    /*printf("\n");
+    for(i=1; i<N; i++)
+    {
+        printf("\ni1: %hu",i);
+
+        Q1 = produto_tensorial(Qr[i-1],QI);
+        Q2 = produto_matriz_matriz(Qr[i],Q1);
+
+        libera_QDD(Qr[i]);
+        libera_QDD(Q1);
+
+        Qr[i] = Q2;
+    }*/
+
+    QDD *Q;
+    Q = copia_QDD(QH);
+    mostra_QDD(QH);
+    libera_QDD(Q);
+
+    mostra_quantidades();
 
     /***********************************/
     finaliza_structs_globais();
