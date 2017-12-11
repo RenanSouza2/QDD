@@ -3074,7 +3074,7 @@ void limpa_apply_matriz(Short N)
     Short i, j;
     for(i=0; i<N+2; i++)
     {
-        for(j=0; j<2; j++)
+        for(j=0; j<3; j++)
         {
             libera_apply_lista(A[i][j]);
             A[i][j] = NULL;
@@ -4431,6 +4431,9 @@ float modulo_vetor(QDD *Q)
 
 QDD* aplica(QDD *Q, Short N, Short n)
 {
+    if(n+Q->nqbit > N)
+        ERRO("APLICA| QDD NAO SE ENCAIXA EM N");
+
     QDD *Q1, *Q2, *Q3;
     Q1 = copia_QDD(Q);
     if(n > 0)
@@ -5203,7 +5206,7 @@ int main()
     setlocale(LC_ALL, "Portuguese");
     /***********************************/
 
-    /*Short N;
+    Short N;
     N = 20;
     configuracao(N);
 
@@ -5215,77 +5218,66 @@ int main()
     Short i;
     float theta;
     theta = pi;
-    for(i=1; i<N; i++)
+    for(i=1;i<N;i++)
     {
-        printf("\ni0: %hu",i);
+        printf("\ni0: %2hu",i);
 
         theta /= 2;
         Q1 = Ro(theta);
         Q2 = aplica(Q1,i+1,0);
         libera_QDD(Q1);
         Q1 = controla(Q2,i,1);
+        libera_QDD(Q2);
 
         Qr[i] = Q1;
-    }*/
+    }
 
-    /*Q1 = W(N);
+    Q1 = W(N);
 
-    time_t antes, depois, rawtime;
-    float delta, tempo, tempo2;
+
+    time_t rawtime, antes, depois;
     struct tm *timeinfo;
-    time(&rawtime);
-    timeinfo = localtime(&rawtime);
-    printf("\t%02d:%02d  %2d/%02d",timeinfo->tm_hour,timeinfo->tm_min,timeinfo->tm_mday,timeinfo->tm_mon+1);
+    float delta, tempo;
 
     printf("\n");
     QDD *Q3;
     Short j;
     depois = clock();
-    tempo = 0;
-    for(i=0; i<N; i++)
+    for(i=0;i<N;i++)
     {
-        printf("\ni1: %hu",i);
-        for(j=0; j+i<N; j++)
+        printf("\n\ni1: %2hu",i);
+        for(j=0;j+i<N;j++)
         {
-            printf("\n\tj: %hu",j);
+            antes = depois;
+
+            printf("\n  j: %2hu",j);
             Q2 = aplica(Qr[j],N,i);
             Q3 = produto_matriz_vetor(Q2,Q1);
             libera_QDD(Q1);
             libera_QDD(Q2);
             Q1 = Q3;
 
-            antes = depois;
             depois = clock();
-            delta = depois-antes;
-            tempo2 = tempo;
+            delta = depois - antes;
             tempo = delta/CLOCKS_PER_SEC;
-            delta = tempo - tempo2;
-            printf("\ttempo: %.3f\tdelta: %.3f",tempo,delta);
+
+            printf("\t\t%.3f",tempo);
 
             time(&rawtime);
             timeinfo = localtime(&rawtime);
+
             printf("\t%02d:%02d  %2d/%02d",timeinfo->tm_hour,timeinfo->tm_min,timeinfo->tm_mday,timeinfo->tm_mon+1);
         }
-    }*/
+    }
 
-    /*printf("\n");
-    for(i=1; i<N; i++)
-    {
-        printf("\ni1: %hu",i);
+    Long itens;
+    itens = conta_itens_QDD(Q1);
+    printf("\n%llu",itens);
 
-        Q1 = produto_tensorial(Qr[i-1],QI);
-        Q2 = produto_matriz_matriz(Qr[i],Q1);
-
+    libera_QDD(Q1);
+    for(i=1;i<N;i++)
         libera_QDD(Qr[i]);
-        libera_QDD(Q1);
-
-        Qr[i] = Q2;
-    }*/
-
-    QDD *Q;
-    Q = copia_QDD(QH);
-    mostra_QDD(QH);
-    libera_QDD(Q);
+    libera_QDD_array(Qr,N);
 
     mostra_quantidades();
 
