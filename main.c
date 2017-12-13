@@ -24,6 +24,8 @@
 FILE *fm;
 unsigned long long mem = 0, memMax = 0, memF = 0;
 unsigned long long iQ = 0, iI = 0, iM = 0, iF = 0, iL = 0, iA = 0, iC = 0, iS = 0;
+unsigned long long cQ = 0, cI = 0, cM = 0, cF = 0, cL = 0, cA = 0, cC = 0, cS = 0;
+unsigned long long lQ = 0, lI = 0, lM = 0, lF = 0, lL = 0, lA = 0, lC = 0, lS = 0;
 unsigned long long mem0, iQ0, iI0, iM0, iF0, iL0;
 unsigned short tQ, tN, tL, tA, tC, tS;
 unsigned short print, Nqbit;
@@ -42,7 +44,7 @@ struct QDD
 
 struct no
 {
-    unsigned short tipo;
+    unsigned char tipo;
     struct lista *l;
     union atributos
     {
@@ -201,6 +203,7 @@ QDD* cria_QDD(Short nqbit)
         ERRO("CRIA QDD");
     aumenta_memoria(tQ);
     iQ++;
+    cQ++;
 
     Q->n = NULL;
     Q->nqbit = nqbit;
@@ -231,6 +234,7 @@ no* cria_no_inicio()
         ERRO("CRIA INICIO");
     aumenta_memoria(tN);
     iI++;
+    cI++;
 
     n->tipo = Inicio;
     n->l = NULL;
@@ -248,6 +252,7 @@ no* cria_no_meio(Short classe, Short nivel)
         ERRO("CRIA MEIO");
     aumenta_memoria(tN);
     iM++;
+    cM++;
 
     n->tipo = Meio;
     n->l = NULL;
@@ -268,6 +273,7 @@ no* cria_no_fim(float re,float im)
         ERRO("CRIA FIM");
     aumenta_memoria(tN);
     iF++;
+    cF++;
 
     n->tipo = Fim;
     n->l = NULL;
@@ -296,6 +302,7 @@ lista* cria_lista()
         ERRO("CRIA LISTA");
     aumenta_memoria(tL);
     iL++;
+    cL++;
 
     l->l = NULL;
     l->n = NULL;
@@ -323,6 +330,7 @@ apply* cria_apply()
         ERRO("CRIA APPLY");
     aumenta_memoria(tA);
     iA++;
+    cA++;
 
     a->n  = NULL;
     a->n1 = NULL;
@@ -343,6 +351,7 @@ conta* cria_conta(Short nivel)
         ERRO("CRIA CONTA");
     aumenta_memoria(tC);
     iC++;
+    cC++;
 
     c->n = NULL;
     c->nivel = nivel;
@@ -359,6 +368,7 @@ suporte* cria_suporte(Short nivel)
         ERRO("CRIA SUPORTE");
     aumenta_memoria(tS);
     iS++;
+    cS++;
 
     s->c[C] = NULL;
     s->c[R] = NULL;
@@ -380,6 +390,7 @@ void libera_QDD_no(QDD *Q)
     if(iQ == 0)
         ERRO("LIBERA QDD");
     iQ--;
+    lQ++;
     free(Q);
 }
 
@@ -415,18 +426,21 @@ void libera_no(no *n)
         if(iI == 0)
             ERRO("LIBERA INICIO");
         iI--;
+        lI++;
         break;
 
         case Meio:
         if(iM == 0)
             ERRO("LIBERA MEIO");
         iM--;
+        lM++;
         break;
 
         case Fim:
         if(iF == 0)
             ERRO("LIBERA FIM");
         iF--;
+        lF++;
         break;
     }
     free(n);
@@ -467,6 +481,7 @@ void libera_apply_no(apply *a)
     if(iA == 0)
         ERRO("LIBERA APPLY");
     iA--;
+    lA++;
     free(a);
 }
 
@@ -487,6 +502,7 @@ void libera_conta_no(conta *c)
     if(iC == 0)
         ERRO("LIBERA CONTA");
     iC--;
+    lC++;
     free(c);
 }
 
@@ -507,6 +523,7 @@ void libera_suporte_no(suporte *s)
     if(iS == 0)
         ERRO("LIBERA SUPORTE");
     iS--;
+    lS++;
     free(s);
 }
 
@@ -607,7 +624,7 @@ Long conta_itens_lista(lista *l)
     return i;
 }
 
-Long   conta_itens_QDD(QDD *Q)
+Long conta_itens_QDD(QDD *Q)
 {
     lista *l;
     Long itens;
@@ -946,6 +963,53 @@ void mostra_quantidades()
     if(vazio)
         printf("\nTUDO ZERADO");
     printf("\n");
+}
+
+void mostra_contagem()
+{
+    Short vazio = 1;
+    if(cQ != 0)
+    {
+        vazio = 0;
+        printf("\ncQ: %llu\tlQ: %llu",cQ,lQ);
+    }
+    if(cI!= 0)
+    {
+        vazio = 0;
+        printf("\ncI: %llu\tlI: %llu",cI,lI);
+    }
+    if(cM != 0)
+    {
+        vazio = 0;
+        printf("\ncM: %llu\tlM: %llu",cM,lM);
+    }
+    if(cF != 0)
+    {
+        vazio = 0;
+        printf("\ncF: %llu\tlF: %llu",cF,lF);
+    }
+    if(cL != 0)
+    {
+        vazio = 0;
+        printf("\ncL: %llu\tlL: %llu",cL,lL);
+    }
+    if(cA != 0)
+    {
+        vazio = 0;
+        printf("\ncA: %llu\tlA: %llu",cA,lA);
+    }
+    if(cC != 0)
+    {
+        vazio = 0;
+        printf("\ncC: %llu\tlC: %llu",cC,lC);
+    }
+    if(cS != 0)
+    {
+        vazio = 0;
+        printf("\ncS: %llu\tlS: %llu",cS,lS);
+    }
+    if(vazio)
+        printf("\nNAO CRIOU NADA");
 }
 
 void mostra_tamanhos()
@@ -1786,6 +1850,12 @@ void inicia_structs_globais()
     iM  = 0;
     iF  = 0;
     iL  = 0;
+
+    cQ = 0;
+    cI = 0;
+    cM = 0;
+    cF = 0;
+    cL = 0;
 
     Short i, j;
     for(i=0; i<66; i++)
@@ -5197,6 +5267,26 @@ Short teste_memoria()
 }
 
 
+typedef struct
+{
+    Short tipo;
+    Short classe, nivel;
+    struct no1 *el, *th;
+
+}no1;
+
+no1* cria_no_meio_teste(Short classe, Short nivel)
+{
+    no1 *n;
+    n = malloc(sizeof(no1));
+    n->tipo = Meio;
+    n->classe = classe;
+    n->nivel = nivel;
+    n->el = NULL;
+    n->th = NULL;
+    return n;
+}
+
 
 int main()
 {
@@ -5206,8 +5296,8 @@ int main()
     setlocale(LC_ALL, "Portuguese");
     /***********************************/
 
-    Short N;
-    N = 20;
+    /*Short N;
+    N = 14;
     configuracao(N);
 
     QDD **Qr;
@@ -5245,7 +5335,7 @@ int main()
     depois = clock();
     for(i=0;i<N;i++)
     {
-        printf("\n\ni1: %2hu",i);
+        printf("\n\n\n\ni1: %2hu\n",i);
         for(j=0;j+i<N;j++)
         {
             antes = depois;
@@ -5279,7 +5369,52 @@ int main()
         libera_QDD(Qr[i]);
     libera_QDD_array(Qr,N);
 
-    mostra_quantidades();
+    mostra_quantidades();*/
+
+    /*no1 *n;
+    Long i, tam;
+    tam = 100000000;
+
+    time_t antes, depois;
+    float delta, tempo;
+
+    antes = clock();
+    for(i=0;i<tam;i++)
+    {
+        n = cria_no_meio_teste(1,2);
+        free(n);
+    }
+    depois = clock();
+
+    delta = depois - antes;
+    tempo = delta/CLOCKS_PER_SEC;
+    printf("\nTempo : %.3f",tempo);
+    tempo /= tam;
+    printf("\nMedida: %.3e",tempo);*/
+
+    Long i, tam;
+    tam = 100000000;
+
+    time_t antes, depois;
+    float delta, tempo;
+
+    no1 *n1;
+    no *n;
+
+    antes = clock();
+    for(i=0; i<tam; i++)
+    {
+        n = cria_no_meio(1,2);
+        free(n);
+    }
+    depois = clock();
+
+    delta = depois - antes;
+    tempo = delta/CLOCKS_PER_SEC;
+
+    printf("\nTempo : %.3f",tempo);
+    tempo /= tam;
+    printf("\nmedida: %.3e",tempo);
 
     /***********************************/
     finaliza_structs_globais();
