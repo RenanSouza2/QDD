@@ -5296,8 +5296,8 @@ int main()
     setlocale(LC_ALL, "Portuguese");
     /***********************************/
 
-    /*Short N;
-    N = 14;
+    Short N;
+    N = 18;
     configuracao(N);
 
     QDD **Qr;
@@ -5342,10 +5342,15 @@ int main()
 
             printf("\n  j: %2hu",j);
             Q2 = aplica(Qr[j],N,i);
+
+            salva_QDD(Q1,"Q1");
+            salva_QDD(Q2,"Q2");
+
             Q3 = produto_matriz_vetor(Q2,Q1);
             libera_QDD(Q1);
             libera_QDD(Q2);
             Q1 = Q3;
+
 
             depois = clock();
             delta = depois - antes;
@@ -5369,52 +5374,7 @@ int main()
         libera_QDD(Qr[i]);
     libera_QDD_array(Qr,N);
 
-    mostra_quantidades();*/
-
-    /*no1 *n;
-    Long i, tam;
-    tam = 100000000;
-
-    time_t antes, depois;
-    float delta, tempo;
-
-    antes = clock();
-    for(i=0;i<tam;i++)
-    {
-        n = cria_no_meio_teste(1,2);
-        free(n);
-    }
-    depois = clock();
-
-    delta = depois - antes;
-    tempo = delta/CLOCKS_PER_SEC;
-    printf("\nTempo : %.3f",tempo);
-    tempo /= tam;
-    printf("\nMedida: %.3e",tempo);*/
-
-    Long i, tam;
-    tam = 100000000;
-
-    time_t antes, depois;
-    float delta, tempo;
-
-    no1 *n1;
-    no *n;
-
-    antes = clock();
-    for(i=0; i<tam; i++)
-    {
-        n = cria_no_meio(1,2);
-        free(n);
-    }
-    depois = clock();
-
-    delta = depois - antes;
-    tempo = delta/CLOCKS_PER_SEC;
-
-    printf("\nTempo : %.3f",tempo);
-    tempo /= tam;
-    printf("\nmedida: %.3e",tempo);
+    mostra_quantidades();
 
     /***********************************/
     finaliza_structs_globais();
