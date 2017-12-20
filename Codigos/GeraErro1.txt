@@ -1,0 +1,80 @@
+
+    Short N;
+    N = 18;
+    configuracao(N);
+
+    QDD **Qr;
+    Qr = cria_QDD_array(N);
+    Qr[0] = QH;
+
+    QDD *Q1, *Q2;
+    Short i;
+    float theta;
+    theta = pi;
+    for(i=1;i<N;i++)
+    {
+        printf("\ni0: %2hu",i);
+
+        theta /= 2;
+        Q1 = Ro(theta);
+        Q2 = aplica(Q1,i+1,0);
+        libera_QDD(Q1);
+        Q1 = controla(Q2,i,1);
+        libera_QDD(Q2);
+
+        Qr[i] = Q1;
+    }
+
+    Q1 = W(N);
+
+
+    time_t rawtime, antes, depois;
+    struct tm *timeinfo;
+    float delta, tempo;
+
+    printf("\n");
+    QDD *Q3;
+    Short j;
+    depois = clock();
+    for(i=0;i<N;i++)
+    {
+        printf("\n\n\n\ni1: %2hu\n",i);
+        for(j=0;j+i<N;j++)
+        {
+            antes = depois;
+
+            printf("\n  j: %2hu",j);
+            Q2 = aplica(Qr[j],N,i);
+
+            salva_QDD(Q1,"Q1");
+            salva_QDD(Q2,"Q2");
+
+            Q3 = produto_matriz_vetor(Q2,Q1);
+            libera_QDD(Q1);
+            libera_QDD(Q2);
+            Q1 = Q3;
+
+
+            depois = clock();
+            delta = depois - antes;
+            tempo = delta/CLOCKS_PER_SEC;
+
+            printf("\t\t%.3f",tempo);
+
+            time(&rawtime);
+            timeinfo = localtime(&rawtime);
+
+            printf("\t%02d:%02d  %2d/%02d",timeinfo->tm_hour,timeinfo->tm_min,timeinfo->tm_mday,timeinfo->tm_mon+1);
+        }
+    }
+
+    Long itens;
+    itens = conta_itens_QDD(Q1);
+    printf("\n%llu",itens);
+
+    libera_QDD(Q1);
+    for(i=1;i<N;i++)
+        libera_QDD(Qr[i]);
+    libera_QDD_array(Qr,N);
+
+    mostra_quantidades();

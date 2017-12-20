@@ -1,0 +1,3377 @@
+
+Endereco (QDD): 6998064
+NQBIT: 48
+Itens: 288
+
+
+	Ligacao 0:
+Endereco (no): 7017896
+
+Tipo: Inicio
+Ligacoes posteriores
+	n: 7018472
+
+
+
+	Ligacao 1:
+Endereco (no): 7018472
+Ligacoes anteriores:
+	Ligacao   0: 7017896
+Tipo/nivel: R0
+Ligacoes posteriores
+	else: 7014824
+	Then: 7018440
+
+
+	Ligacao 2:
+Endereco (no): 7014824
+Ligacoes anteriores:
+	Ligacao   0: 7018472
+	Ligacao   1: 7018440
+Tipo/nivel: R1
+Ligacoes posteriores
+	else: 7014920
+	Then: 7015336
+
+
+	Ligacao 3:
+Endereco (no): 7014920
+Ligacoes anteriores:
+	Ligacao   0: 7014824
+Tipo/nivel: C1
+Ligacoes posteriores
+	else: 7015368
+	Then: 7035120
+
+
+	Ligacao 4:
+Endereco (no): 7015368
+Ligacoes anteriores:
+	Ligacao   0: 7014920
+	Ligacao   1: 7015336
+Tipo/nivel: R2
+Ligacoes posteriores
+	else: 7014600
+	Then: 7015496
+
+
+	Ligacao 5:
+Endereco (no): 7014600
+Ligacoes anteriores:
+	Ligacao   0: 7015368
+Tipo/nivel: C2
+Ligacoes posteriores
+	else: 7015208
+	Then: 7035120
+
+
+	Ligacao 6:
+Endereco (no): 7015208
+Ligacoes anteriores:
+	Ligacao   0: 7014600
+	Ligacao   1: 7015496
+Tipo/nivel: R3
+Ligacoes posteriores
+	else: 7014856
+	Then: 7014664
+
+
+	Ligacao 7:
+Endereco (no): 7014856
+Ligacoes anteriores:
+	Ligacao   0: 7015208
+Tipo/nivel: C3
+Ligacoes posteriores
+	else: 7014888
+	Then: 7035120
+
+
+	Ligacao 8:
+Endereco (no): 7014888
+Ligacoes anteriores:
+	Ligacao   0: 7014856
+	Ligacao   1: 7014664
+Tipo/nivel: R4
+Ligacoes posteriores
+	else: 7015272
+	Then: 7015144
+
+
+	Ligacao 9:
+Endereco (no): 7015272
+Ligacoes anteriores:
+	Ligacao   0: 7014888
+Tipo/nivel: C4
+Ligacoes posteriores
+	else: 7014984
+	Then: 7035120
+
+
+	Ligacao 10:
+Endereco (no): 7014984
+Ligacoes anteriores:
+	Ligacao   0: 7015272
+	Ligacao   1: 7015144
+Tipo/nivel: R5
+Ligacoes posteriores
+	else: 7015528
+	Then: 7015432
+
+
+	Ligacao 11:
+Endereco (no): 7015528
+Ligacoes anteriores:
+	Ligacao   0: 7014984
+Tipo/nivel: C5
+Ligacoes posteriores
+	else: 7015400
+	Then: 7035120
+
+
+	Ligacao 12:
+Endereco (no): 7015400
+Ligacoes anteriores:
+	Ligacao   0: 7015528
+	Ligacao   1: 7015432
+Tipo/nivel: R6
+Ligacoes posteriores
+	else: 7015016
+	Then: 7015112
+
+
+	Ligacao 13:
+Endereco (no): 7015016
+Ligacoes anteriores:
+	Ligacao   0: 7015400
+Tipo/nivel: C6
+Ligacoes posteriores
+	else: 7015304
+	Then: 7035120
+
+
+	Ligacao 14:
+Endereco (no): 7015304
+Ligacoes anteriores:
+	Ligacao   0: 7015016
+	Ligacao   1: 7015112
+Tipo/nivel: R7
+Ligacoes posteriores
+	else: 7014728
+	Then: 7015464
+
+
+	Ligacao 15:
+Endereco (no): 7014728
+Ligacoes anteriores:
+	Ligacao   0: 7015304
+Tipo/nivel: C7
+Ligacoes posteriores
+	else: 7014536
+	Then: 7035120
+
+
+	Ligacao 16:
+Endereco (no): 7014536
+Ligacoes anteriores:
+	Ligacao   0: 7014728
+	Ligacao   1: 7015464
+Tipo/nivel: R8
+Ligacoes posteriores
+	else: 7014568
+	Then: 7014760
+
+
+	Ligacao 17:
+Endereco (no): 7014568
+Ligacoes anteriores:
+	Ligacao   0: 7014536
+Tipo/nivel: C8
+Ligacoes posteriores
+	else: 7015048
+	Then: 7035120
+
+
+	Ligacao 18:
+Endereco (no): 7015048
+Ligacoes anteriores:
+	Ligacao   0: 7014568
+	Ligacao   1: 7014760
+Tipo/nivel: R9
+Ligacoes posteriores
+	else: 7014632
+	Then: 7015080
+
+
+	Ligacao 19:
+Endereco (no): 7014632
+Ligacoes anteriores:
+	Ligacao   0: 7015048
+Tipo/nivel: C9
+Ligacoes posteriores
+	else: 7014696
+	Then: 7035120
+
+
+	Ligacao 20:
+Endereco (no): 7014696
+Ligacoes anteriores:
+	Ligacao   0: 7014632
+	Ligacao   1: 7015080
+Tipo/nivel: R10
+Ligacoes posteriores
+	else: 7016168
+	Then: 7016392
+
+
+	Ligacao 21:
+Endereco (no): 7016168
+Ligacoes anteriores:
+	Ligacao   0: 7014696
+Tipo/nivel: C10
+Ligacoes posteriores
+	else: 7015592
+	Then: 7035120
+
+
+	Ligacao 22:
+Endereco (no): 7015592
+Ligacoes anteriores:
+	Ligacao   0: 7016168
+	Ligacao   1: 7016392
+Tipo/nivel: R11
+Ligacoes posteriores
+	else: 7015624
+	Then: 7015944
+
+
+	Ligacao 23:
+Endereco (no): 7015624
+Ligacoes anteriores:
+	Ligacao   0: 7015592
+Tipo/nivel: C11
+Ligacoes posteriores
+	else: 7016296
+	Then: 7035120
+
+
+	Ligacao 24:
+Endereco (no): 7016296
+Ligacoes anteriores:
+	Ligacao   0: 7015624
+	Ligacao   1: 7015944
+Tipo/nivel: R12
+Ligacoes posteriores
+	else: 7015912
+	Then: 7016008
+
+
+	Ligacao 25:
+Endereco (no): 7015912
+Ligacoes anteriores:
+	Ligacao   0: 7016296
+Tipo/nivel: C12
+Ligacoes posteriores
+	else: 7016040
+	Then: 7035120
+
+
+	Ligacao 26:
+Endereco (no): 7016040
+Ligacoes anteriores:
+	Ligacao   0: 7015912
+	Ligacao   1: 7016008
+Tipo/nivel: R13
+Ligacoes posteriores
+	else: 7015976
+	Then: 7016200
+
+
+	Ligacao 27:
+Endereco (no): 7015976
+Ligacoes anteriores:
+	Ligacao   0: 7016040
+Tipo/nivel: C13
+Ligacoes posteriores
+	else: 7016072
+	Then: 7035120
+
+
+	Ligacao 28:
+Endereco (no): 7016072
+Ligacoes anteriores:
+	Ligacao   0: 7015976
+	Ligacao   1: 7016200
+Tipo/nivel: R14
+Ligacoes posteriores
+	else: 7016104
+	Then: 7015656
+
+
+	Ligacao 29:
+Endereco (no): 7016104
+Ligacoes anteriores:
+	Ligacao   0: 7016072
+Tipo/nivel: C14
+Ligacoes posteriores
+	else: 7016360
+	Then: 7035120
+
+
+	Ligacao 30:
+Endereco (no): 7016360
+Ligacoes anteriores:
+	Ligacao   0: 7016104
+	Ligacao   1: 7015656
+Tipo/nivel: R15
+Ligacoes posteriores
+	else: 7016136
+	Then: 7016424
+
+
+	Ligacao 31:
+Endereco (no): 7016136
+Ligacoes anteriores:
+	Ligacao   0: 7016360
+Tipo/nivel: C15
+Ligacoes posteriores
+	else: 7016456
+	Then: 7035120
+
+
+	Ligacao 32:
+Endereco (no): 7016456
+Ligacoes anteriores:
+	Ligacao   0: 7016136
+	Ligacao   1: 7016424
+Tipo/nivel: R16
+Ligacoes posteriores
+	else: 7016264
+	Then: 7016232
+
+
+	Ligacao 33:
+Endereco (no): 7016264
+Ligacoes anteriores:
+	Ligacao   0: 7016456
+Tipo/nivel: C16
+Ligacoes posteriores
+	else: 7016328
+	Then: 7035120
+
+
+	Ligacao 34:
+Endereco (no): 7016328
+Ligacoes anteriores:
+	Ligacao   0: 7016264
+	Ligacao   1: 7016232
+Tipo/nivel: R17
+Ligacoes posteriores
+	else: 7015688
+	Then: 7016488
+
+
+	Ligacao 35:
+Endereco (no): 7015688
+Ligacoes anteriores:
+	Ligacao   0: 7016328
+Tipo/nivel: C17
+Ligacoes posteriores
+	else: 7016520
+	Then: 7035120
+
+
+	Ligacao 36:
+Endereco (no): 7016520
+Ligacoes anteriores:
+	Ligacao   0: 7015688
+	Ligacao   1: 7016488
+Tipo/nivel: R18
+Ligacoes posteriores
+	else: 7015784
+	Then: 7016552
+
+
+	Ligacao 37:
+Endereco (no): 7015784
+Ligacoes anteriores:
+	Ligacao   0: 7016520
+Tipo/nivel: C18
+Ligacoes posteriores
+	else: 7015560
+	Then: 7035120
+
+
+	Ligacao 38:
+Endereco (no): 7015560
+Ligacoes anteriores:
+	Ligacao   0: 7015784
+	Ligacao   1: 7016552
+Tipo/nivel: R19
+Ligacoes posteriores
+	else: 7015752
+	Then: 7015720
+
+
+	Ligacao 39:
+Endereco (no): 7015752
+Ligacoes anteriores:
+	Ligacao   0: 7015560
+Tipo/nivel: C19
+Ligacoes posteriores
+	else: 7015816
+	Then: 7035120
+
+
+	Ligacao 40:
+Endereco (no): 7015816
+Ligacoes anteriores:
+	Ligacao   0: 7015752
+	Ligacao   1: 7015720
+Tipo/nivel: R20
+Ligacoes posteriores
+	else: 7015880
+	Then: 7015848
+
+
+	Ligacao 41:
+Endereco (no): 7015880
+Ligacoes anteriores:
+	Ligacao   0: 7015816
+Tipo/nivel: C20
+Ligacoes posteriores
+	else: 7016872
+	Then: 7035120
+
+
+	Ligacao 42:
+Endereco (no): 7016872
+Ligacoes anteriores:
+	Ligacao   0: 7015880
+	Ligacao   1: 7015848
+Tipo/nivel: R21
+Ligacoes posteriores
+	else: 7017544
+	Then: 7017032
+
+
+	Ligacao 43:
+Endereco (no): 7017544
+Ligacoes anteriores:
+	Ligacao   0: 7016872
+Tipo/nivel: C21
+Ligacoes posteriores
+	else: 7017256
+	Then: 7035120
+
+
+	Ligacao 44:
+Endereco (no): 7017256
+Ligacoes anteriores:
+	Ligacao   0: 7017544
+	Ligacao   1: 7017032
+Tipo/nivel: R22
+Ligacoes posteriores
+	else: 7016712
+	Then: 7016744
+
+
+	Ligacao 45:
+Endereco (no): 7016712
+Ligacoes anteriores:
+	Ligacao   0: 7017256
+Tipo/nivel: C22
+Ligacoes posteriores
+	else: 7016680
+	Then: 7035120
+
+
+	Ligacao 46:
+Endereco (no): 7016680
+Ligacoes anteriores:
+	Ligacao   0: 7016712
+	Ligacao   1: 7016744
+Tipo/nivel: R23
+Ligacoes posteriores
+	else: 7017576
+	Then: 7016616
+
+
+	Ligacao 47:
+Endereco (no): 7017576
+Ligacoes anteriores:
+	Ligacao   0: 7016680
+Tipo/nivel: C23
+Ligacoes posteriores
+	else: 7017352
+	Then: 7035120
+
+
+	Ligacao 48:
+Endereco (no): 7017352
+Ligacoes anteriores:
+	Ligacao   0: 7017576
+	Ligacao   1: 7016616
+Tipo/nivel: R24
+Ligacoes posteriores
+	else: 7016584
+	Then: 7017384
+
+
+	Ligacao 49:
+Endereco (no): 7016584
+Ligacoes anteriores:
+	Ligacao   0: 7017352
+Tipo/nivel: C24
+Ligacoes posteriores
+	else: 7016648
+	Then: 7035120
+
+
+	Ligacao 50:
+Endereco (no): 7016648
+Ligacoes anteriores:
+	Ligacao   0: 7016584
+	Ligacao   1: 7017384
+Tipo/nivel: R25
+Ligacoes posteriores
+	else: 7016776
+	Then: 7017160
+
+
+	Ligacao 51:
+Endereco (no): 7016776
+Ligacoes anteriores:
+	Ligacao   0: 7016648
+Tipo/nivel: C25
+Ligacoes posteriores
+	else: 7016904
+	Then: 7035120
+
+
+	Ligacao 52:
+Endereco (no): 7016904
+Ligacoes anteriores:
+	Ligacao   0: 7016776
+	Ligacao   1: 7017160
+Tipo/nivel: R26
+Ligacoes posteriores
+	else: 7017320
+	Then: 7017064
+
+
+	Ligacao 53:
+Endereco (no): 7017320
+Ligacoes anteriores:
+	Ligacao   0: 7016904
+Tipo/nivel: C26
+Ligacoes posteriores
+	else: 7016808
+	Then: 7035120
+
+
+	Ligacao 54:
+Endereco (no): 7016808
+Ligacoes anteriores:
+	Ligacao   0: 7017320
+	Ligacao   1: 7017064
+Tipo/nivel: R27
+Ligacoes posteriores
+	else: 7016840
+	Then: 7017288
+
+
+	Ligacao 55:
+Endereco (no): 7016840
+Ligacoes anteriores:
+	Ligacao   0: 7016808
+Tipo/nivel: C27
+Ligacoes posteriores
+	else: 7016936
+	Then: 7035120
+
+
+	Ligacao 56:
+Endereco (no): 7016936
+Ligacoes anteriores:
+	Ligacao   0: 7016840
+	Ligacao   1: 7017288
+Tipo/nivel: R28
+Ligacoes posteriores
+	else: 7017416
+	Then: 7016968
+
+
+	Ligacao 57:
+Endereco (no): 7017416
+Ligacoes anteriores:
+	Ligacao   0: 7016936
+Tipo/nivel: C28
+Ligacoes posteriores
+	else: 7017000
+	Then: 7035120
+
+
+	Ligacao 58:
+Endereco (no): 7017000
+Ligacoes anteriores:
+	Ligacao   0: 7017416
+	Ligacao   1: 7016968
+Tipo/nivel: R29
+Ligacoes posteriores
+	else: 7017128
+	Then: 7017096
+
+
+	Ligacao 59:
+Endereco (no): 7017128
+Ligacoes anteriores:
+	Ligacao   0: 7017000
+Tipo/nivel: C29
+Ligacoes posteriores
+	else: 7017448
+	Then: 7035120
+
+
+	Ligacao 60:
+Endereco (no): 7017448
+Ligacoes anteriores:
+	Ligacao   0: 7017128
+	Ligacao   1: 7017096
+Tipo/nivel: R30
+Ligacoes posteriores
+	else: 7017224
+	Then: 7017192
+
+
+	Ligacao 61:
+Endereco (no): 7017224
+Ligacoes anteriores:
+	Ligacao   0: 7017448
+Tipo/nivel: C30
+Ligacoes posteriores
+	else: 7017480
+	Then: 7035120
+
+
+	Ligacao 62:
+Endereco (no): 7017480
+Ligacoes anteriores:
+	Ligacao   0: 7017224
+	Ligacao   1: 7017192
+Tipo/nivel: R31
+Ligacoes posteriores
+	else: 6981248
+	Then: 7017512
+
+
+	Ligacao 63:
+Endereco (no): 6981248
+Ligacoes anteriores:
+	Ligacao   0: 7017480
+Tipo/nivel: C31
+Ligacoes posteriores
+	else: 6981376
+	Then: 7035120
+
+
+	Ligacao 64:
+Endereco (no): 6981376
+Ligacoes anteriores:
+	Ligacao   0: 6981248
+	Ligacao   1: 7017512
+Tipo/nivel: R32
+Ligacoes posteriores
+	else: 6981216
+	Then: 6981088
+
+
+	Ligacao 65:
+Endereco (no): 6981216
+Ligacoes anteriores:
+	Ligacao   0: 6981376
+Tipo/nivel: C32
+Ligacoes posteriores
+	else: 6981280
+	Then: 7035120
+
+
+	Ligacao 66:
+Endereco (no): 6981280
+Ligacoes anteriores:
+	Ligacao   0: 6981216
+	Ligacao   1: 6981088
+Tipo/nivel: R33
+Ligacoes posteriores
+	else: 6980960
+	Then: 6980896
+
+
+	Ligacao 67:
+Endereco (no): 6980960
+Ligacoes anteriores:
+	Ligacao   0: 6981280
+Tipo/nivel: C33
+Ligacoes posteriores
+	else: 6981440
+	Then: 7035120
+
+
+	Ligacao 68:
+Endereco (no): 6981440
+Ligacoes anteriores:
+	Ligacao   0: 6980960
+	Ligacao   1: 6980896
+Tipo/nivel: R34
+Ligacoes posteriores
+	else: 6981408
+	Then: 6980992
+
+
+	Ligacao 69:
+Endereco (no): 6981408
+Ligacoes anteriores:
+	Ligacao   0: 6981440
+Tipo/nivel: C34
+Ligacoes posteriores
+	else: 6981632
+	Then: 7035120
+
+
+	Ligacao 70:
+Endereco (no): 6981632
+Ligacoes anteriores:
+	Ligacao   0: 6981408
+	Ligacao   1: 6980992
+Tipo/nivel: R35
+Ligacoes posteriores
+	else: 6981536
+	Then: 6981760
+
+
+	Ligacao 71:
+Endereco (no): 6981536
+Ligacoes anteriores:
+	Ligacao   0: 6981632
+Tipo/nivel: C35
+Ligacoes posteriores
+	else: 6981472
+	Then: 7035120
+
+
+	Ligacao 72:
+Endereco (no): 6981472
+Ligacoes anteriores:
+	Ligacao   0: 6981536
+	Ligacao   1: 6981760
+Tipo/nivel: R36
+Ligacoes posteriores
+	else: 6982656
+	Then: 6981504
+
+
+	Ligacao 73:
+Endereco (no): 6982656
+Ligacoes anteriores:
+	Ligacao   0: 6981472
+Tipo/nivel: C36
+Ligacoes posteriores
+	else: 6982304
+	Then: 7035120
+
+
+	Ligacao 74:
+Endereco (no): 6982304
+Ligacoes anteriores:
+	Ligacao   0: 6982656
+	Ligacao   1: 6981504
+Tipo/nivel: R37
+Ligacoes posteriores
+	else: 6982432
+	Then: 6982112
+
+
+	Ligacao 75:
+Endereco (no): 6982432
+Ligacoes anteriores:
+	Ligacao   0: 6982304
+Tipo/nivel: C37
+Ligacoes posteriores
+	else: 6981824
+	Then: 7035120
+
+
+	Ligacao 76:
+Endereco (no): 6981824
+Ligacoes anteriores:
+	Ligacao   0: 6982432
+	Ligacao   1: 6982112
+Tipo/nivel: R38
+Ligacoes posteriores
+	else: 6981856
+	Then: 6982496
+
+
+	Ligacao 77:
+Endereco (no): 6981856
+Ligacoes anteriores:
+	Ligacao   0: 6981824
+Tipo/nivel: C38
+Ligacoes posteriores
+	else: 6981888
+	Then: 7035120
+
+
+	Ligacao 78:
+Endereco (no): 6981888
+Ligacoes anteriores:
+	Ligacao   0: 6981856
+	Ligacao   1: 6982496
+Tipo/nivel: R39
+Ligacoes posteriores
+	else: 6981984
+	Then: 6981952
+
+
+	Ligacao 79:
+Endereco (no): 6981984
+Ligacoes anteriores:
+	Ligacao   0: 6981888
+Tipo/nivel: C39
+Ligacoes posteriores
+	else: 6982048
+	Then: 7035120
+
+
+	Ligacao 80:
+Endereco (no): 6982048
+Ligacoes anteriores:
+	Ligacao   0: 6981984
+	Ligacao   1: 6981952
+Tipo/nivel: R40
+Ligacoes posteriores
+	else: 7028064
+	Then: 6982208
+
+
+	Ligacao 81:
+Endereco (no): 7028064
+Ligacoes anteriores:
+	Ligacao   0: 6982048
+Tipo/nivel: C40
+Ligacoes posteriores
+	else: 7028224
+	Then: 7035120
+
+
+	Ligacao 82:
+Endereco (no): 7028224
+Ligacoes anteriores:
+	Ligacao   0: 7028064
+	Ligacao   1: 6982208
+Tipo/nivel: R41
+Ligacoes posteriores
+	else: 7028544
+	Then: 7028096
+
+
+	Ligacao 83:
+Endereco (no): 7028544
+Ligacoes anteriores:
+	Ligacao   0: 7028224
+Tipo/nivel: C41
+Ligacoes posteriores
+	else: 7028832
+	Then: 7035120
+
+
+	Ligacao 84:
+Endereco (no): 7028832
+Ligacoes anteriores:
+	Ligacao   0: 7028544
+	Ligacao   1: 7028096
+Tipo/nivel: R42
+Ligacoes posteriores
+	else: 7028000
+	Then: 7027936
+
+
+	Ligacao 85:
+Endereco (no): 7028000
+Ligacoes anteriores:
+	Ligacao   0: 7028832
+Tipo/nivel: C42
+Ligacoes posteriores
+	else: 7028128
+	Then: 7035120
+
+
+	Ligacao 86:
+Endereco (no): 7028128
+Ligacoes anteriores:
+	Ligacao   0: 7028000
+	Ligacao   1: 7027936
+Tipo/nivel: R43
+Ligacoes posteriores
+	else: 7028256
+	Then: 7028800
+
+
+	Ligacao 87:
+Endereco (no): 7028256
+Ligacoes anteriores:
+	Ligacao   0: 7028128
+Tipo/nivel: C43
+Ligacoes posteriores
+	else: 7027968
+	Then: 7035120
+
+
+	Ligacao 88:
+Endereco (no): 7027968
+Ligacoes anteriores:
+	Ligacao   0: 7028256
+	Ligacao   1: 7028800
+Tipo/nivel: R44
+Ligacoes posteriores
+	else: 7028512
+	Then: 7028288
+
+
+	Ligacao 89:
+Endereco (no): 7028512
+Ligacoes anteriores:
+	Ligacao   0: 7027968
+Tipo/nivel: C44
+Ligacoes posteriores
+	else: 7028704
+	Then: 7035120
+
+
+	Ligacao 90:
+Endereco (no): 7028704
+Ligacoes anteriores:
+	Ligacao   0: 7028512
+	Ligacao   1: 7028288
+Tipo/nivel: R45
+Ligacoes posteriores
+	else: 7028736
+	Then: 7028160
+
+
+	Ligacao 91:
+Endereco (no): 7028736
+Ligacoes anteriores:
+	Ligacao   0: 7028704
+Tipo/nivel: C45
+Ligacoes posteriores
+	else: 7028576
+	Then: 7035120
+
+
+	Ligacao 92:
+Endereco (no): 7028576
+Ligacoes anteriores:
+	Ligacao   0: 7028736
+	Ligacao   1: 7028160
+Tipo/nivel: R46
+Ligacoes posteriores
+	else: 7028192
+	Then: 7028864
+
+
+	Ligacao 93:
+Endereco (no): 7028192
+Ligacoes anteriores:
+	Ligacao   0: 7028576
+Tipo/nivel: C46
+Ligacoes posteriores
+	else: 7028032
+	Then: 7035120
+
+
+	Ligacao 94:
+Endereco (no): 7028032
+Ligacoes anteriores:
+	Ligacao   0: 7028192
+	Ligacao   1: 7028864
+Tipo/nivel: R47
+Ligacoes posteriores
+	else: 7028480
+	Then: 7028320
+
+
+	Ligacao 95:
+Endereco (no): 7028480
+Ligacoes anteriores:
+	Ligacao   0: 7028032
+Tipo/nivel: C47
+Ligacoes posteriores
+	else: 7035760
+	Then: 7035120
+
+
+	Ligacao 96:
+Endereco (no): 7035760
+Ligacoes anteriores:
+	Ligacao   0: 7028320
+	Ligacao   1: 7028480
+Tipo: Numero
+7,071e-001 0,000e+000
+
+
+	Ligacao 97:
+Endereco (no): 7035120
+Ligacoes anteriores:
+	Ligacao   0: 7028480
+	Ligacao   1: 7028320
+	Ligacao   2: 7028192
+	Ligacao   3: 7028864
+	Ligacao   4: 7028736
+	Ligacao   5: 7028160
+	Ligacao   6: 7028512
+	Ligacao   7: 7028288
+	Ligacao   8: 7028256
+	Ligacao   9: 7028800
+	Ligacao  10: 7028000
+	Ligacao  11: 7027936
+	Ligacao  12: 7028544
+	Ligacao  13: 7028096
+	Ligacao  14: 7028064
+	Ligacao  15: 6982208
+	Ligacao  16: 6981984
+	Ligacao  17: 6981952
+	Ligacao  18: 6981856
+	Ligacao  19: 6982496
+	Ligacao  20: 6982432
+	Ligacao  21: 6982112
+	Ligacao  22: 6982656
+	Ligacao  23: 6981504
+	Ligacao  24: 6981536
+	Ligacao  25: 6981760
+	Ligacao  26: 6981408
+	Ligacao  27: 6980992
+	Ligacao  28: 6980960
+	Ligacao  29: 6980896
+	Ligacao  30: 6981216
+	Ligacao  31: 6981088
+	Ligacao  32: 6981248
+	Ligacao  33: 7017512
+	Ligacao  34: 7017224
+	Ligacao  35: 7017192
+	Ligacao  36: 7017128
+	Ligacao  37: 7017096
+	Ligacao  38: 7017416
+	Ligacao  39: 7016968
+	Ligacao  40: 7016840
+	Ligacao  41: 7017288
+	Ligacao  42: 7017320
+	Ligacao  43: 7017064
+	Ligacao  44: 7016776
+	Ligacao  45: 7017160
+	Ligacao  46: 7016584
+	Ligacao  47: 7017384
+	Ligacao  48: 7017576
+	Ligacao  49: 7016616
+	Ligacao  50: 7016712
+	Ligacao  51: 7016744
+	Ligacao  52: 7017544
+	Ligacao  53: 7017032
+	Ligacao  54: 7015880
+	Ligacao  55: 7015848
+	Ligacao  56: 7015752
+	Ligacao  57: 7015720
+	Ligacao  58: 7015784
+	Ligacao  59: 7016552
+	Ligacao  60: 7015688
+	Ligacao  61: 7016488
+	Ligacao  62: 7016264
+	Ligacao  63: 7016232
+	Ligacao  64: 7016136
+	Ligacao  65: 7016424
+	Ligacao  66: 7016104
+	Ligacao  67: 7015656
+	Ligacao  68: 7015976
+	Ligacao  69: 7016200
+	Ligacao  70: 7015912
+	Ligacao  71: 7016008
+	Ligacao  72: 7015624
+	Ligacao  73: 7015944
+	Ligacao  74: 7016168
+	Ligacao  75: 7016392
+	Ligacao  76: 7014632
+	Ligacao  77: 7015080
+	Ligacao  78: 7014568
+	Ligacao  79: 7014760
+	Ligacao  80: 7014728
+	Ligacao  81: 7015464
+	Ligacao  82: 7015016
+	Ligacao  83: 7015112
+	Ligacao  84: 7015528
+	Ligacao  85: 7015432
+	Ligacao  86: 7015272
+	Ligacao  87: 7015144
+	Ligacao  88: 7014856
+	Ligacao  89: 7014664
+	Ligacao  90: 7014600
+	Ligacao  91: 7015496
+	Ligacao  92: 7014920
+	Ligacao  93: 7015336
+	Ligacao  94: 7028448
+	Ligacao  95: 7028672
+	Ligacao  96: 7028608
+	Ligacao  97: 7028640
+	Ligacao  98: 7029248
+	Ligacao  99: 7029664
+	Ligacao 100: 7029888
+	Ligacao 101: 7029696
+	Ligacao 102: 7029536
+	Ligacao 103: 7028960
+	Ligacao 104: 7029408
+	Ligacao 105: 7029344
+	Ligacao 106: 7029184
+	Ligacao 107: 7029824
+	Ligacao 108: 7029120
+	Ligacao 109: 7029088
+	Ligacao 110: 7029568
+	Ligacao 111: 7029600
+	Ligacao 112: 7029760
+	Ligacao 113: 7029440
+	Ligacao 114: 7028896
+	Ligacao 115: 7029312
+	Ligacao 116: 7028928
+	Ligacao 117: 7028992
+	Ligacao 118: 7029504
+	Ligacao 119: 7029056
+	Ligacao 120: 7030464
+	Ligacao 121: 7030496
+	Ligacao 122: 7030400
+	Ligacao 123: 7030336
+	Ligacao 124: 7030560
+	Ligacao 125: 7030144
+	Ligacao 126: 7030176
+	Ligacao 127: 7029984
+	Ligacao 128: 7030528
+	Ligacao 129: 7030080
+	Ligacao 130: 7030592
+	Ligacao 131: 7030752
+	Ligacao 132: 7030720
+	Ligacao 133: 7030784
+	Ligacao 134: 7030816
+	Ligacao 135: 7030432
+	Ligacao 136: 7030688
+	Ligacao 137: 7030848
+	Ligacao 138: 7029952
+	Ligacao 139: 7030016
+	Ligacao 140: 7027328
+	Ligacao 141: 7027008
+	Ligacao 142: 7027552
+	Ligacao 143: 7027264
+	Ligacao 144: 7026912
+	Ligacao 145: 7027616
+	Ligacao 146: 7027648
+	Ligacao 147: 7027520
+	Ligacao 148: 7027680
+	Ligacao 149: 7027232
+	Ligacao 150: 7027808
+	Ligacao 151: 7026944
+	Ligacao 152: 7026976
+	Ligacao 153: 7027168
+	Ligacao 154: 7027456
+	Ligacao 155: 7027840
+	Ligacao 156: 7026848
+	Ligacao 157: 7026880
+	Ligacao 158: 7027424
+	Ligacao 159: 7027360
+	Ligacao 160: 7027392
+	Ligacao 161: 7038736
+	Ligacao 162: 7038288
+	Ligacao 163: 7038384
+	Ligacao 164: 7038416
+	Ligacao 165: 7038896
+	Ligacao 166: 7038160
+	Ligacao 167: 7038480
+	Ligacao 168: 7038800
+	Ligacao 169: 7038544
+	Ligacao 170: 7038576
+	Ligacao 171: 7038832
+	Ligacao 172: 7038640
+	Ligacao 173: 7038224
+	Ligacao 174: 7038864
+	Ligacao 175: 7038928
+	Ligacao 176: 7038992
+	Ligacao 177: 7039024
+	Ligacao 178: 7038128
+	Ligacao 179: 7038256
+	Ligacao 180: 7038352
+	Ligacao 181: 7035600
+	Ligacao 182: 7035504
+	Ligacao 183: 7035984
+	Ligacao 184: 7035696
+	Ligacao 185: 7035088
+	Ligacao 186: 7035344
+	Ligacao 187: 7035536
+Tipo: Numero
+-0,000e+000 0,000e+000
+
+
+	Ligacao 98:
+Endereco (no): 7028320
+Ligacoes anteriores:
+	Ligacao   0: 7028032
+Tipo/nivel: C47
+Ligacoes posteriores
+	else: 7035120
+	Then: 7035760
+
+
+	Ligacao 99:
+Endereco (no): 7028864
+Ligacoes anteriores:
+	Ligacao   0: 7028576
+Tipo/nivel: C46
+Ligacoes posteriores
+	else: 7035120
+	Then: 7028032
+
+
+	Ligacao 100:
+Endereco (no): 7028160
+Ligacoes anteriores:
+	Ligacao   0: 7028704
+Tipo/nivel: C45
+Ligacoes posteriores
+	else: 7035120
+	Then: 7028576
+
+
+	Ligacao 101:
+Endereco (no): 7028288
+Ligacoes anteriores:
+	Ligacao   0: 7027968
+Tipo/nivel: C44
+Ligacoes posteriores
+	else: 7035120
+	Then: 7028704
+
+
+	Ligacao 102:
+Endereco (no): 7028800
+Ligacoes anteriores:
+	Ligacao   0: 7028128
+Tipo/nivel: C43
+Ligacoes posteriores
+	else: 7035120
+	Then: 7027968
+
+
+	Ligacao 103:
+Endereco (no): 7027936
+Ligacoes anteriores:
+	Ligacao   0: 7028832
+Tipo/nivel: C42
+Ligacoes posteriores
+	else: 7035120
+	Then: 7028128
+
+
+	Ligacao 104:
+Endereco (no): 7028096
+Ligacoes anteriores:
+	Ligacao   0: 7028224
+Tipo/nivel: C41
+Ligacoes posteriores
+	else: 7035120
+	Then: 7028832
+
+
+	Ligacao 105:
+Endereco (no): 6982208
+Ligacoes anteriores:
+	Ligacao   0: 6982048
+Tipo/nivel: C40
+Ligacoes posteriores
+	else: 7035120
+	Then: 7028224
+
+
+	Ligacao 106:
+Endereco (no): 6981952
+Ligacoes anteriores:
+	Ligacao   0: 6981888
+Tipo/nivel: C39
+Ligacoes posteriores
+	else: 7035120
+	Then: 6982048
+
+
+	Ligacao 107:
+Endereco (no): 6982496
+Ligacoes anteriores:
+	Ligacao   0: 6981824
+Tipo/nivel: C38
+Ligacoes posteriores
+	else: 7035120
+	Then: 6981888
+
+
+	Ligacao 108:
+Endereco (no): 6982112
+Ligacoes anteriores:
+	Ligacao   0: 6982304
+Tipo/nivel: C37
+Ligacoes posteriores
+	else: 7035120
+	Then: 6981824
+
+
+	Ligacao 109:
+Endereco (no): 6981504
+Ligacoes anteriores:
+	Ligacao   0: 6981472
+Tipo/nivel: C36
+Ligacoes posteriores
+	else: 7035120
+	Then: 6982304
+
+
+	Ligacao 110:
+Endereco (no): 6981760
+Ligacoes anteriores:
+	Ligacao   0: 6981632
+Tipo/nivel: C35
+Ligacoes posteriores
+	else: 7035120
+	Then: 6981472
+
+
+	Ligacao 111:
+Endereco (no): 6980992
+Ligacoes anteriores:
+	Ligacao   0: 6981440
+Tipo/nivel: C34
+Ligacoes posteriores
+	else: 7035120
+	Then: 6981632
+
+
+	Ligacao 112:
+Endereco (no): 6980896
+Ligacoes anteriores:
+	Ligacao   0: 6981280
+Tipo/nivel: C33
+Ligacoes posteriores
+	else: 7035120
+	Then: 6981440
+
+
+	Ligacao 113:
+Endereco (no): 6981088
+Ligacoes anteriores:
+	Ligacao   0: 6981376
+Tipo/nivel: C32
+Ligacoes posteriores
+	else: 7035120
+	Then: 6981280
+
+
+	Ligacao 114:
+Endereco (no): 7017512
+Ligacoes anteriores:
+	Ligacao   0: 7017480
+Tipo/nivel: C31
+Ligacoes posteriores
+	else: 7035120
+	Then: 6981376
+
+
+	Ligacao 115:
+Endereco (no): 7017192
+Ligacoes anteriores:
+	Ligacao   0: 7017448
+Tipo/nivel: C30
+Ligacoes posteriores
+	else: 7035120
+	Then: 7017480
+
+
+	Ligacao 116:
+Endereco (no): 7017096
+Ligacoes anteriores:
+	Ligacao   0: 7017000
+Tipo/nivel: C29
+Ligacoes posteriores
+	else: 7035120
+	Then: 7017448
+
+
+	Ligacao 117:
+Endereco (no): 7016968
+Ligacoes anteriores:
+	Ligacao   0: 7016936
+Tipo/nivel: C28
+Ligacoes posteriores
+	else: 7035120
+	Then: 7017000
+
+
+	Ligacao 118:
+Endereco (no): 7017288
+Ligacoes anteriores:
+	Ligacao   0: 7016808
+Tipo/nivel: C27
+Ligacoes posteriores
+	else: 7035120
+	Then: 7016936
+
+
+	Ligacao 119:
+Endereco (no): 7017064
+Ligacoes anteriores:
+	Ligacao   0: 7016904
+Tipo/nivel: C26
+Ligacoes posteriores
+	else: 7035120
+	Then: 7016808
+
+
+	Ligacao 120:
+Endereco (no): 7017160
+Ligacoes anteriores:
+	Ligacao   0: 7016648
+Tipo/nivel: C25
+Ligacoes posteriores
+	else: 7035120
+	Then: 7016904
+
+
+	Ligacao 121:
+Endereco (no): 7017384
+Ligacoes anteriores:
+	Ligacao   0: 7017352
+Tipo/nivel: C24
+Ligacoes posteriores
+	else: 7035120
+	Then: 7016648
+
+
+	Ligacao 122:
+Endereco (no): 7016616
+Ligacoes anteriores:
+	Ligacao   0: 7016680
+Tipo/nivel: C23
+Ligacoes posteriores
+	else: 7035120
+	Then: 7017352
+
+
+	Ligacao 123:
+Endereco (no): 7016744
+Ligacoes anteriores:
+	Ligacao   0: 7017256
+Tipo/nivel: C22
+Ligacoes posteriores
+	else: 7035120
+	Then: 7016680
+
+
+	Ligacao 124:
+Endereco (no): 7017032
+Ligacoes anteriores:
+	Ligacao   0: 7016872
+Tipo/nivel: C21
+Ligacoes posteriores
+	else: 7035120
+	Then: 7017256
+
+
+	Ligacao 125:
+Endereco (no): 7015848
+Ligacoes anteriores:
+	Ligacao   0: 7015816
+Tipo/nivel: C20
+Ligacoes posteriores
+	else: 7035120
+	Then: 7016872
+
+
+	Ligacao 126:
+Endereco (no): 7015720
+Ligacoes anteriores:
+	Ligacao   0: 7015560
+Tipo/nivel: C19
+Ligacoes posteriores
+	else: 7035120
+	Then: 7015816
+
+
+	Ligacao 127:
+Endereco (no): 7016552
+Ligacoes anteriores:
+	Ligacao   0: 7016520
+Tipo/nivel: C18
+Ligacoes posteriores
+	else: 7035120
+	Then: 7015560
+
+
+	Ligacao 128:
+Endereco (no): 7016488
+Ligacoes anteriores:
+	Ligacao   0: 7016328
+Tipo/nivel: C17
+Ligacoes posteriores
+	else: 7035120
+	Then: 7016520
+
+
+	Ligacao 129:
+Endereco (no): 7016232
+Ligacoes anteriores:
+	Ligacao   0: 7016456
+Tipo/nivel: C16
+Ligacoes posteriores
+	else: 7035120
+	Then: 7016328
+
+
+	Ligacao 130:
+Endereco (no): 7016424
+Ligacoes anteriores:
+	Ligacao   0: 7016360
+Tipo/nivel: C15
+Ligacoes posteriores
+	else: 7035120
+	Then: 7016456
+
+
+	Ligacao 131:
+Endereco (no): 7015656
+Ligacoes anteriores:
+	Ligacao   0: 7016072
+Tipo/nivel: C14
+Ligacoes posteriores
+	else: 7035120
+	Then: 7016360
+
+
+	Ligacao 132:
+Endereco (no): 7016200
+Ligacoes anteriores:
+	Ligacao   0: 7016040
+Tipo/nivel: C13
+Ligacoes posteriores
+	else: 7035120
+	Then: 7016072
+
+
+	Ligacao 133:
+Endereco (no): 7016008
+Ligacoes anteriores:
+	Ligacao   0: 7016296
+Tipo/nivel: C12
+Ligacoes posteriores
+	else: 7035120
+	Then: 7016040
+
+
+	Ligacao 134:
+Endereco (no): 7015944
+Ligacoes anteriores:
+	Ligacao   0: 7015592
+Tipo/nivel: C11
+Ligacoes posteriores
+	else: 7035120
+	Then: 7016296
+
+
+	Ligacao 135:
+Endereco (no): 7016392
+Ligacoes anteriores:
+	Ligacao   0: 7014696
+Tipo/nivel: C10
+Ligacoes posteriores
+	else: 7035120
+	Then: 7015592
+
+
+	Ligacao 136:
+Endereco (no): 7015080
+Ligacoes anteriores:
+	Ligacao   0: 7015048
+Tipo/nivel: C9
+Ligacoes posteriores
+	else: 7035120
+	Then: 7014696
+
+
+	Ligacao 137:
+Endereco (no): 7014760
+Ligacoes anteriores:
+	Ligacao   0: 7014536
+Tipo/nivel: C8
+Ligacoes posteriores
+	else: 7035120
+	Then: 7015048
+
+
+	Ligacao 138:
+Endereco (no): 7015464
+Ligacoes anteriores:
+	Ligacao   0: 7015304
+Tipo/nivel: C7
+Ligacoes posteriores
+	else: 7035120
+	Then: 7014536
+
+
+	Ligacao 139:
+Endereco (no): 7015112
+Ligacoes anteriores:
+	Ligacao   0: 7015400
+Tipo/nivel: C6
+Ligacoes posteriores
+	else: 7035120
+	Then: 7015304
+
+
+	Ligacao 140:
+Endereco (no): 7015432
+Ligacoes anteriores:
+	Ligacao   0: 7014984
+Tipo/nivel: C5
+Ligacoes posteriores
+	else: 7035120
+	Then: 7015400
+
+
+	Ligacao 141:
+Endereco (no): 7015144
+Ligacoes anteriores:
+	Ligacao   0: 7014888
+Tipo/nivel: C4
+Ligacoes posteriores
+	else: 7035120
+	Then: 7014984
+
+
+	Ligacao 142:
+Endereco (no): 7014664
+Ligacoes anteriores:
+	Ligacao   0: 7015208
+Tipo/nivel: C3
+Ligacoes posteriores
+	else: 7035120
+	Then: 7014888
+
+
+	Ligacao 143:
+Endereco (no): 7015496
+Ligacoes anteriores:
+	Ligacao   0: 7015368
+Tipo/nivel: C2
+Ligacoes posteriores
+	else: 7035120
+	Then: 7015208
+
+
+	Ligacao 144:
+Endereco (no): 7015336
+Ligacoes anteriores:
+	Ligacao   0: 7014824
+Tipo/nivel: C1
+Ligacoes posteriores
+	else: 7035120
+	Then: 7015368
+
+
+	Ligacao 145:
+Endereco (no): 7018440
+Ligacoes anteriores:
+	Ligacao   0: 7018472
+Tipo/nivel: C0
+Ligacoes posteriores
+	else: 7014824
+	Then: 7028416
+
+
+	Ligacao 146:
+Endereco (no): 7028416
+Ligacoes anteriores:
+	Ligacao   0: 7018440
+Tipo/nivel: R1
+Ligacoes posteriores
+	else: 7028672
+	Then: 7028448
+
+
+	Ligacao 147:
+Endereco (no): 7028672
+Ligacoes anteriores:
+	Ligacao   0: 7028416
+Tipo/nivel: C1
+Ligacoes posteriores
+	else: 7027904
+	Then: 7035120
+
+
+	Ligacao 148:
+Endereco (no): 7027904
+Ligacoes anteriores:
+	Ligacao   0: 7028672
+	Ligacao   1: 7028448
+Tipo/nivel: R2
+Ligacoes posteriores
+	else: 7028640
+	Then: 7028608
+
+
+	Ligacao 149:
+Endereco (no): 7028640
+Ligacoes anteriores:
+	Ligacao   0: 7027904
+Tipo/nivel: C2
+Ligacoes posteriores
+	else: 7028768
+	Then: 7035120
+
+
+	Ligacao 150:
+Endereco (no): 7028768
+Ligacoes anteriores:
+	Ligacao   0: 7028640
+	Ligacao   1: 7028608
+Tipo/nivel: R3
+Ligacoes posteriores
+	else: 7029664
+	Then: 7029248
+
+
+	Ligacao 151:
+Endereco (no): 7029664
+Ligacoes anteriores:
+	Ligacao   0: 7028768
+Tipo/nivel: C3
+Ligacoes posteriores
+	else: 7029216
+	Then: 7035120
+
+
+	Ligacao 152:
+Endereco (no): 7029216
+Ligacoes anteriores:
+	Ligacao   0: 7029664
+	Ligacao   1: 7029248
+Tipo/nivel: R4
+Ligacoes posteriores
+	else: 7029696
+	Then: 7029888
+
+
+	Ligacao 153:
+Endereco (no): 7029696
+Ligacoes anteriores:
+	Ligacao   0: 7029216
+Tipo/nivel: C4
+Ligacoes posteriores
+	else: 7029152
+	Then: 7035120
+
+
+	Ligacao 154:
+Endereco (no): 7029152
+Ligacoes anteriores:
+	Ligacao   0: 7029696
+	Ligacao   1: 7029888
+Tipo/nivel: R5
+Ligacoes posteriores
+	else: 7028960
+	Then: 7029536
+
+
+	Ligacao 155:
+Endereco (no): 7028960
+Ligacoes anteriores:
+	Ligacao   0: 7029152
+Tipo/nivel: C5
+Ligacoes posteriores
+	else: 7029632
+	Then: 7035120
+
+
+	Ligacao 156:
+Endereco (no): 7029632
+Ligacoes anteriores:
+	Ligacao   0: 7028960
+	Ligacao   1: 7029536
+Tipo/nivel: R6
+Ligacoes posteriores
+	else: 7029344
+	Then: 7029408
+
+
+	Ligacao 157:
+Endereco (no): 7029344
+Ligacoes anteriores:
+	Ligacao   0: 7029632
+Tipo/nivel: C6
+Ligacoes posteriores
+	else: 7029728
+	Then: 7035120
+
+
+	Ligacao 158:
+Endereco (no): 7029728
+Ligacoes anteriores:
+	Ligacao   0: 7029344
+	Ligacao   1: 7029408
+Tipo/nivel: R7
+Ligacoes posteriores
+	else: 7029824
+	Then: 7029184
+
+
+	Ligacao 159:
+Endereco (no): 7029824
+Ligacoes anteriores:
+	Ligacao   0: 7029728
+Tipo/nivel: C7
+Ligacoes posteriores
+	else: 7029792
+	Then: 7035120
+
+
+	Ligacao 160:
+Endereco (no): 7029792
+Ligacoes anteriores:
+	Ligacao   0: 7029824
+	Ligacao   1: 7029184
+Tipo/nivel: R8
+Ligacoes posteriores
+	else: 7029088
+	Then: 7029120
+
+
+	Ligacao 161:
+Endereco (no): 7029088
+Ligacoes anteriores:
+	Ligacao   0: 7029792
+Tipo/nivel: C8
+Ligacoes posteriores
+	else: 7029280
+	Then: 7035120
+
+
+	Ligacao 162:
+Endereco (no): 7029280
+Ligacoes anteriores:
+	Ligacao   0: 7029088
+	Ligacao   1: 7029120
+Tipo/nivel: R9
+Ligacoes posteriores
+	else: 7029600
+	Then: 7029568
+
+
+	Ligacao 163:
+Endereco (no): 7029600
+Ligacoes anteriores:
+	Ligacao   0: 7029280
+Tipo/nivel: C9
+Ligacoes posteriores
+	else: 7029376
+	Then: 7035120
+
+
+	Ligacao 164:
+Endereco (no): 7029376
+Ligacoes anteriores:
+	Ligacao   0: 7029600
+	Ligacao   1: 7029568
+Tipo/nivel: R10
+Ligacoes posteriores
+	else: 7029440
+	Then: 7029760
+
+
+	Ligacao 165:
+Endereco (no): 7029440
+Ligacoes anteriores:
+	Ligacao   0: 7029376
+Tipo/nivel: C10
+Ligacoes posteriores
+	else: 7029856
+	Then: 7035120
+
+
+	Ligacao 166:
+Endereco (no): 7029856
+Ligacoes anteriores:
+	Ligacao   0: 7029440
+	Ligacao   1: 7029760
+Tipo/nivel: R11
+Ligacoes posteriores
+	else: 7029312
+	Then: 7028896
+
+
+	Ligacao 167:
+Endereco (no): 7029312
+Ligacoes anteriores:
+	Ligacao   0: 7029856
+Tipo/nivel: C11
+Ligacoes posteriores
+	else: 7029472
+	Then: 7035120
+
+
+	Ligacao 168:
+Endereco (no): 7029472
+Ligacoes anteriores:
+	Ligacao   0: 7029312
+	Ligacao   1: 7028896
+Tipo/nivel: R12
+Ligacoes posteriores
+	else: 7028992
+	Then: 7028928
+
+
+	Ligacao 169:
+Endereco (no): 7028992
+Ligacoes anteriores:
+	Ligacao   0: 7029472
+Tipo/nivel: C12
+Ligacoes posteriores
+	else: 7029024
+	Then: 7035120
+
+
+	Ligacao 170:
+Endereco (no): 7029024
+Ligacoes anteriores:
+	Ligacao   0: 7028992
+	Ligacao   1: 7028928
+Tipo/nivel: R13
+Ligacoes posteriores
+	else: 7029056
+	Then: 7029504
+
+
+	Ligacao 171:
+Endereco (no): 7029056
+Ligacoes anteriores:
+	Ligacao   0: 7029024
+Tipo/nivel: C13
+Ligacoes posteriores
+	else: 7030048
+	Then: 7035120
+
+
+	Ligacao 172:
+Endereco (no): 7030048
+Ligacoes anteriores:
+	Ligacao   0: 7029056
+	Ligacao   1: 7029504
+Tipo/nivel: R14
+Ligacoes posteriores
+	else: 7030496
+	Then: 7030464
+
+
+	Ligacao 173:
+Endereco (no): 7030496
+Ligacoes anteriores:
+	Ligacao   0: 7030048
+Tipo/nivel: C14
+Ligacoes posteriores
+	else: 7030368
+	Then: 7035120
+
+
+	Ligacao 174:
+Endereco (no): 7030368
+Ligacoes anteriores:
+	Ligacao   0: 7030496
+	Ligacao   1: 7030464
+Tipo/nivel: R15
+Ligacoes posteriores
+	else: 7030336
+	Then: 7030400
+
+
+	Ligacao 175:
+Endereco (no): 7030336
+Ligacoes anteriores:
+	Ligacao   0: 7030368
+Tipo/nivel: C15
+Ligacoes posteriores
+	else: 7030272
+	Then: 7035120
+
+
+	Ligacao 176:
+Endereco (no): 7030272
+Ligacoes anteriores:
+	Ligacao   0: 7030336
+	Ligacao   1: 7030400
+Tipo/nivel: R16
+Ligacoes posteriores
+	else: 7030144
+	Then: 7030560
+
+
+	Ligacao 177:
+Endereco (no): 7030144
+Ligacoes anteriores:
+	Ligacao   0: 7030272
+Tipo/nivel: C16
+Ligacoes posteriores
+	else: 7030240
+	Then: 7035120
+
+
+	Ligacao 178:
+Endereco (no): 7030240
+Ligacoes anteriores:
+	Ligacao   0: 7030144
+	Ligacao   1: 7030560
+Tipo/nivel: R17
+Ligacoes posteriores
+	else: 7029984
+	Then: 7030176
+
+
+	Ligacao 179:
+Endereco (no): 7029984
+Ligacoes anteriores:
+	Ligacao   0: 7030240
+Tipo/nivel: C17
+Ligacoes posteriores
+	else: 7030208
+	Then: 7035120
+
+
+	Ligacao 180:
+Endereco (no): 7030208
+Ligacoes anteriores:
+	Ligacao   0: 7029984
+	Ligacao   1: 7030176
+Tipo/nivel: R18
+Ligacoes posteriores
+	else: 7030080
+	Then: 7030528
+
+
+	Ligacao 181:
+Endereco (no): 7030080
+Ligacoes anteriores:
+	Ligacao   0: 7030208
+Tipo/nivel: C18
+Ligacoes posteriores
+	else: 7030304
+	Then: 7035120
+
+
+	Ligacao 182:
+Endereco (no): 7030304
+Ligacoes anteriores:
+	Ligacao   0: 7030080
+	Ligacao   1: 7030528
+Tipo/nivel: R19
+Ligacoes posteriores
+	else: 7030752
+	Then: 7030592
+
+
+	Ligacao 183:
+Endereco (no): 7030752
+Ligacoes anteriores:
+	Ligacao   0: 7030304
+Tipo/nivel: C19
+Ligacoes posteriores
+	else: 7030624
+	Then: 7035120
+
+
+	Ligacao 184:
+Endereco (no): 7030624
+Ligacoes anteriores:
+	Ligacao   0: 7030752
+	Ligacao   1: 7030592
+Tipo/nivel: R20
+Ligacoes posteriores
+	else: 7030784
+	Then: 7030720
+
+
+	Ligacao 185:
+Endereco (no): 7030784
+Ligacoes anteriores:
+	Ligacao   0: 7030624
+Tipo/nivel: C20
+Ligacoes posteriores
+	else: 7030112
+	Then: 7035120
+
+
+	Ligacao 186:
+Endereco (no): 7030112
+Ligacoes anteriores:
+	Ligacao   0: 7030784
+	Ligacao   1: 7030720
+Tipo/nivel: R21
+Ligacoes posteriores
+	else: 7030432
+	Then: 7030816
+
+
+	Ligacao 187:
+Endereco (no): 7030432
+Ligacoes anteriores:
+	Ligacao   0: 7030112
+Tipo/nivel: C21
+Ligacoes posteriores
+	else: 7030656
+	Then: 7035120
+
+
+	Ligacao 188:
+Endereco (no): 7030656
+Ligacoes anteriores:
+	Ligacao   0: 7030432
+	Ligacao   1: 7030816
+Tipo/nivel: R22
+Ligacoes posteriores
+	else: 7030848
+	Then: 7030688
+
+
+	Ligacao 189:
+Endereco (no): 7030848
+Ligacoes anteriores:
+	Ligacao   0: 7030656
+Tipo/nivel: C22
+Ligacoes posteriores
+	else: 7029920
+	Then: 7035120
+
+
+	Ligacao 190:
+Endereco (no): 7029920
+Ligacoes anteriores:
+	Ligacao   0: 7030848
+	Ligacao   1: 7030688
+Tipo/nivel: R23
+Ligacoes posteriores
+	else: 7030016
+	Then: 7029952
+
+
+	Ligacao 191:
+Endereco (no): 7030016
+Ligacoes anteriores:
+	Ligacao   0: 7029920
+Tipo/nivel: C23
+Ligacoes posteriores
+	else: 7027488
+	Then: 7035120
+
+
+	Ligacao 192:
+Endereco (no): 7027488
+Ligacoes anteriores:
+	Ligacao   0: 7030016
+	Ligacao   1: 7029952
+Tipo/nivel: R24
+Ligacoes posteriores
+	else: 7027008
+	Then: 7027328
+
+
+	Ligacao 193:
+Endereco (no): 7027008
+Ligacoes anteriores:
+	Ligacao   0: 7027488
+Tipo/nivel: C24
+Ligacoes posteriores
+	else: 7027712
+	Then: 7035120
+
+
+	Ligacao 194:
+Endereco (no): 7027712
+Ligacoes anteriores:
+	Ligacao   0: 7027008
+	Ligacao   1: 7027328
+Tipo/nivel: R25
+Ligacoes posteriores
+	else: 7027264
+	Then: 7027552
+
+
+	Ligacao 195:
+Endereco (no): 7027264
+Ligacoes anteriores:
+	Ligacao   0: 7027712
+Tipo/nivel: C25
+Ligacoes posteriores
+	else: 7027104
+	Then: 7035120
+
+
+	Ligacao 196:
+Endereco (no): 7027104
+Ligacoes anteriores:
+	Ligacao   0: 7027264
+	Ligacao   1: 7027552
+Tipo/nivel: R26
+Ligacoes posteriores
+	else: 7027616
+	Then: 7026912
+
+
+	Ligacao 197:
+Endereco (no): 7027616
+Ligacoes anteriores:
+	Ligacao   0: 7027104
+Tipo/nivel: C26
+Ligacoes posteriores
+	else: 7027744
+	Then: 7035120
+
+
+	Ligacao 198:
+Endereco (no): 7027744
+Ligacoes anteriores:
+	Ligacao   0: 7027616
+	Ligacao   1: 7026912
+Tipo/nivel: R27
+Ligacoes posteriores
+	else: 7027520
+	Then: 7027648
+
+
+	Ligacao 199:
+Endereco (no): 7027520
+Ligacoes anteriores:
+	Ligacao   0: 7027744
+Tipo/nivel: C27
+Ligacoes posteriores
+	else: 7027136
+	Then: 7035120
+
+
+	Ligacao 200:
+Endereco (no): 7027136
+Ligacoes anteriores:
+	Ligacao   0: 7027520
+	Ligacao   1: 7027648
+Tipo/nivel: R28
+Ligacoes posteriores
+	else: 7027232
+	Then: 7027680
+
+
+	Ligacao 201:
+Endereco (no): 7027232
+Ligacoes anteriores:
+	Ligacao   0: 7027136
+Tipo/nivel: C28
+Ligacoes posteriores
+	else: 7027776
+	Then: 7035120
+
+
+	Ligacao 202:
+Endereco (no): 7027776
+Ligacoes anteriores:
+	Ligacao   0: 7027232
+	Ligacao   1: 7027680
+Tipo/nivel: R29
+Ligacoes posteriores
+	else: 7026944
+	Then: 7027808
+
+
+	Ligacao 203:
+Endereco (no): 7026944
+Ligacoes anteriores:
+	Ligacao   0: 7027776
+Tipo/nivel: C29
+Ligacoes posteriores
+	else: 7027584
+	Then: 7035120
+
+
+	Ligacao 204:
+Endereco (no): 7027584
+Ligacoes anteriores:
+	Ligacao   0: 7026944
+	Ligacao   1: 7027808
+Tipo/nivel: R30
+Ligacoes posteriores
+	else: 7027168
+	Then: 7026976
+
+
+	Ligacao 205:
+Endereco (no): 7027168
+Ligacoes anteriores:
+	Ligacao   0: 7027584
+Tipo/nivel: C30
+Ligacoes posteriores
+	else: 7027200
+	Then: 7035120
+
+
+	Ligacao 206:
+Endereco (no): 7027200
+Ligacoes anteriores:
+	Ligacao   0: 7027168
+	Ligacao   1: 7026976
+Tipo/nivel: R31
+Ligacoes posteriores
+	else: 7027840
+	Then: 7027456
+
+
+	Ligacao 207:
+Endereco (no): 7027840
+Ligacoes anteriores:
+	Ligacao   0: 7027200
+Tipo/nivel: C31
+Ligacoes posteriores
+	else: 7027296
+	Then: 7035120
+
+
+	Ligacao 208:
+Endereco (no): 7027296
+Ligacoes anteriores:
+	Ligacao   0: 7027840
+	Ligacao   1: 7027456
+Tipo/nivel: R32
+Ligacoes posteriores
+	else: 7026880
+	Then: 7026848
+
+
+	Ligacao 209:
+Endereco (no): 7026880
+Ligacoes anteriores:
+	Ligacao   0: 7027296
+Tipo/nivel: C32
+Ligacoes posteriores
+	else: 7027040
+	Then: 7035120
+
+
+	Ligacao 210:
+Endereco (no): 7027040
+Ligacoes anteriores:
+	Ligacao   0: 7026880
+	Ligacao   1: 7026848
+Tipo/nivel: R33
+Ligacoes posteriores
+	else: 7027360
+	Then: 7027424
+
+
+	Ligacao 211:
+Endereco (no): 7027360
+Ligacoes anteriores:
+	Ligacao   0: 7027040
+Tipo/nivel: C33
+Ligacoes posteriores
+	else: 7027072
+	Then: 7035120
+
+
+	Ligacao 212:
+Endereco (no): 7027072
+Ligacoes anteriores:
+	Ligacao   0: 7027360
+	Ligacao   1: 7027424
+Tipo/nivel: R34
+Ligacoes posteriores
+	else: 7038736
+	Then: 7027392
+
+
+	Ligacao 213:
+Endereco (no): 7038736
+Ligacoes anteriores:
+	Ligacao   0: 7027072
+Tipo/nivel: C34
+Ligacoes posteriores
+	else: 7038608
+	Then: 7035120
+
+
+	Ligacao 214:
+Endereco (no): 7038608
+Ligacoes anteriores:
+	Ligacao   0: 7038736
+	Ligacao   1: 7027392
+Tipo/nivel: R35
+Ligacoes posteriores
+	else: 7038384
+	Then: 7038288
+
+
+	Ligacao 215:
+Endereco (no): 7038384
+Ligacoes anteriores:
+	Ligacao   0: 7038608
+Tipo/nivel: C35
+Ligacoes posteriores
+	else: 7038768
+	Then: 7035120
+
+
+	Ligacao 216:
+Endereco (no): 7038768
+Ligacoes anteriores:
+	Ligacao   0: 7038384
+	Ligacao   1: 7038288
+Tipo/nivel: R36
+Ligacoes posteriores
+	else: 7038896
+	Then: 7038416
+
+
+	Ligacao 217:
+Endereco (no): 7038896
+Ligacoes anteriores:
+	Ligacao   0: 7038768
+Tipo/nivel: C36
+Ligacoes posteriores
+	else: 7038704
+	Then: 7035120
+
+
+	Ligacao 218:
+Endereco (no): 7038704
+Ligacoes anteriores:
+	Ligacao   0: 7038896
+	Ligacao   1: 7038416
+Tipo/nivel: R37
+Ligacoes posteriores
+	else: 7038480
+	Then: 7038160
+
+
+	Ligacao 219:
+Endereco (no): 7038480
+Ligacoes anteriores:
+	Ligacao   0: 7038704
+Tipo/nivel: C37
+Ligacoes posteriores
+	else: 7038192
+	Then: 7035120
+
+
+	Ligacao 220:
+Endereco (no): 7038192
+Ligacoes anteriores:
+	Ligacao   0: 7038480
+	Ligacao   1: 7038160
+Tipo/nivel: R38
+Ligacoes posteriores
+	else: 7038544
+	Then: 7038800
+
+
+	Ligacao 221:
+Endereco (no): 7038544
+Ligacoes anteriores:
+	Ligacao   0: 7038192
+Tipo/nivel: C38
+Ligacoes posteriores
+	else: 7038448
+	Then: 7035120
+
+
+	Ligacao 222:
+Endereco (no): 7038448
+Ligacoes anteriores:
+	Ligacao   0: 7038544
+	Ligacao   1: 7038800
+Tipo/nivel: R39
+Ligacoes posteriores
+	else: 7038832
+	Then: 7038576
+
+
+	Ligacao 223:
+Endereco (no): 7038832
+Ligacoes anteriores:
+	Ligacao   0: 7038448
+Tipo/nivel: C39
+Ligacoes posteriores
+	else: 7038512
+	Then: 7035120
+
+
+	Ligacao 224:
+Endereco (no): 7038512
+Ligacoes anteriores:
+	Ligacao   0: 7038832
+	Ligacao   1: 7038576
+Tipo/nivel: R40
+Ligacoes posteriores
+	else: 7038224
+	Then: 7038640
+
+
+	Ligacao 225:
+Endereco (no): 7038224
+Ligacoes anteriores:
+	Ligacao   0: 7038512
+Tipo/nivel: C40
+Ligacoes posteriores
+	else: 7038672
+	Then: 7035120
+
+
+	Ligacao 226:
+Endereco (no): 7038672
+Ligacoes anteriores:
+	Ligacao   0: 7038224
+	Ligacao   1: 7038640
+Tipo/nivel: R41
+Ligacoes posteriores
+	else: 7038928
+	Then: 7038864
+
+
+	Ligacao 227:
+Endereco (no): 7038928
+Ligacoes anteriores:
+	Ligacao   0: 7038672
+Tipo/nivel: C41
+Ligacoes posteriores
+	else: 7038960
+	Then: 7035120
+
+
+	Ligacao 228:
+Endereco (no): 7038960
+Ligacoes anteriores:
+	Ligacao   0: 7038928
+	Ligacao   1: 7038864
+Tipo/nivel: R42
+Ligacoes posteriores
+	else: 7039024
+	Then: 7038992
+
+
+	Ligacao 229:
+Endereco (no): 7039024
+Ligacoes anteriores:
+	Ligacao   0: 7038960
+Tipo/nivel: C42
+Ligacoes posteriores
+	else: 7039056
+	Then: 7035120
+
+
+	Ligacao 230:
+Endereco (no): 7039056
+Ligacoes anteriores:
+	Ligacao   0: 7039024
+	Ligacao   1: 7038992
+Tipo/nivel: R43
+Ligacoes posteriores
+	else: 7038256
+	Then: 7038128
+
+
+	Ligacao 231:
+Endereco (no): 7038256
+Ligacoes anteriores:
+	Ligacao   0: 7039056
+Tipo/nivel: C43
+Ligacoes posteriores
+	else: 7038320
+	Then: 7035120
+
+
+	Ligacao 232:
+Endereco (no): 7038320
+Ligacoes anteriores:
+	Ligacao   0: 7038256
+	Ligacao   1: 7038128
+Tipo/nivel: R44
+Ligacoes posteriores
+	else: 7035600
+	Then: 7038352
+
+
+	Ligacao 233:
+Endereco (no): 7035600
+Ligacoes anteriores:
+	Ligacao   0: 7038320
+Tipo/nivel: C44
+Ligacoes posteriores
+	else: 7035280
+	Then: 7035120
+
+
+	Ligacao 234:
+Endereco (no): 7035280
+Ligacoes anteriores:
+	Ligacao   0: 7035600
+	Ligacao   1: 7038352
+Tipo/nivel: R45
+Ligacoes posteriores
+	else: 7035984
+	Then: 7035504
+
+
+	Ligacao 235:
+Endereco (no): 7035984
+Ligacoes anteriores:
+	Ligacao   0: 7035280
+Tipo/nivel: C45
+Ligacoes posteriores
+	else: 7036048
+	Then: 7035120
+
+
+	Ligacao 236:
+Endereco (no): 7036048
+Ligacoes anteriores:
+	Ligacao   0: 7035984
+	Ligacao   1: 7035504
+Tipo/nivel: R46
+Ligacoes posteriores
+	else: 7035088
+	Then: 7035696
+
+
+	Ligacao 237:
+Endereco (no): 7035088
+Ligacoes anteriores:
+	Ligacao   0: 7036048
+Tipo/nivel: C46
+Ligacoes posteriores
+	else: 7035376
+	Then: 7035120
+
+
+	Ligacao 238:
+Endereco (no): 7035376
+Ligacoes anteriores:
+	Ligacao   0: 7035088
+	Ligacao   1: 7035696
+Tipo/nivel: R47
+Ligacoes posteriores
+	else: 7035536
+	Then: 7035344
+
+
+	Ligacao 239:
+Endereco (no): 7035536
+Ligacoes anteriores:
+	Ligacao   0: 7035376
+Tipo/nivel: C47
+Ligacoes posteriores
+	else: 7035056
+	Then: 7035120
+
+
+	Ligacao 240:
+Endereco (no): 7035056
+Ligacoes anteriores:
+	Ligacao   0: 7035344
+	Ligacao   1: 7035536
+Tipo: Numero
+-7,071e-001 0,000e+000
+
+
+	Ligacao 241:
+Endereco (no): 7035344
+Ligacoes anteriores:
+	Ligacao   0: 7035376
+Tipo/nivel: C47
+Ligacoes posteriores
+	else: 7035120
+	Then: 7035056
+
+
+	Ligacao 242:
+Endereco (no): 7035696
+Ligacoes anteriores:
+	Ligacao   0: 7036048
+Tipo/nivel: C46
+Ligacoes posteriores
+	else: 7035120
+	Then: 7035376
+
+
+	Ligacao 243:
+Endereco (no): 7035504
+Ligacoes anteriores:
+	Ligacao   0: 7035280
+Tipo/nivel: C45
+Ligacoes posteriores
+	else: 7035120
+	Then: 7036048
+
+
+	Ligacao 244:
+Endereco (no): 7038352
+Ligacoes anteriores:
+	Ligacao   0: 7038320
+Tipo/nivel: C44
+Ligacoes posteriores
+	else: 7035120
+	Then: 7035280
+
+
+	Ligacao 245:
+Endereco (no): 7038128
+Ligacoes anteriores:
+	Ligacao   0: 7039056
+Tipo/nivel: C43
+Ligacoes posteriores
+	else: 7035120
+	Then: 7038320
+
+
+	Ligacao 246:
+Endereco (no): 7038992
+Ligacoes anteriores:
+	Ligacao   0: 7038960
+Tipo/nivel: C42
+Ligacoes posteriores
+	else: 7035120
+	Then: 7039056
+
+
+	Ligacao 247:
+Endereco (no): 7038864
+Ligacoes anteriores:
+	Ligacao   0: 7038672
+Tipo/nivel: C41
+Ligacoes posteriores
+	else: 7035120
+	Then: 7038960
+
+
+	Ligacao 248:
+Endereco (no): 7038640
+Ligacoes anteriores:
+	Ligacao   0: 7038512
+Tipo/nivel: C40
+Ligacoes posteriores
+	else: 7035120
+	Then: 7038672
+
+
+	Ligacao 249:
+Endereco (no): 7038576
+Ligacoes anteriores:
+	Ligacao   0: 7038448
+Tipo/nivel: C39
+Ligacoes posteriores
+	else: 7035120
+	Then: 7038512
+
+
+	Ligacao 250:
+Endereco (no): 7038800
+Ligacoes anteriores:
+	Ligacao   0: 7038192
+Tipo/nivel: C38
+Ligacoes posteriores
+	else: 7035120
+	Then: 7038448
+
+
+	Ligacao 251:
+Endereco (no): 7038160
+Ligacoes anteriores:
+	Ligacao   0: 7038704
+Tipo/nivel: C37
+Ligacoes posteriores
+	else: 7035120
+	Then: 7038192
+
+
+	Ligacao 252:
+Endereco (no): 7038416
+Ligacoes anteriores:
+	Ligacao   0: 7038768
+Tipo/nivel: C36
+Ligacoes posteriores
+	else: 7035120
+	Then: 7038704
+
+
+	Ligacao 253:
+Endereco (no): 7038288
+Ligacoes anteriores:
+	Ligacao   0: 7038608
+Tipo/nivel: C35
+Ligacoes posteriores
+	else: 7035120
+	Then: 7038768
+
+
+	Ligacao 254:
+Endereco (no): 7027392
+Ligacoes anteriores:
+	Ligacao   0: 7027072
+Tipo/nivel: C34
+Ligacoes posteriores
+	else: 7035120
+	Then: 7038608
+
+
+	Ligacao 255:
+Endereco (no): 7027424
+Ligacoes anteriores:
+	Ligacao   0: 7027040
+Tipo/nivel: C33
+Ligacoes posteriores
+	else: 7035120
+	Then: 7027072
+
+
+	Ligacao 256:
+Endereco (no): 7026848
+Ligacoes anteriores:
+	Ligacao   0: 7027296
+Tipo/nivel: C32
+Ligacoes posteriores
+	else: 7035120
+	Then: 7027040
+
+
+	Ligacao 257:
+Endereco (no): 7027456
+Ligacoes anteriores:
+	Ligacao   0: 7027200
+Tipo/nivel: C31
+Ligacoes posteriores
+	else: 7035120
+	Then: 7027296
+
+
+	Ligacao 258:
+Endereco (no): 7026976
+Ligacoes anteriores:
+	Ligacao   0: 7027584
+Tipo/nivel: C30
+Ligacoes posteriores
+	else: 7035120
+	Then: 7027200
+
+
+	Ligacao 259:
+Endereco (no): 7027808
+Ligacoes anteriores:
+	Ligacao   0: 7027776
+Tipo/nivel: C29
+Ligacoes posteriores
+	else: 7035120
+	Then: 7027584
+
+
+	Ligacao 260:
+Endereco (no): 7027680
+Ligacoes anteriores:
+	Ligacao   0: 7027136
+Tipo/nivel: C28
+Ligacoes posteriores
+	else: 7035120
+	Then: 7027776
+
+
+	Ligacao 261:
+Endereco (no): 7027648
+Ligacoes anteriores:
+	Ligacao   0: 7027744
+Tipo/nivel: C27
+Ligacoes posteriores
+	else: 7035120
+	Then: 7027136
+
+
+	Ligacao 262:
+Endereco (no): 7026912
+Ligacoes anteriores:
+	Ligacao   0: 7027104
+Tipo/nivel: C26
+Ligacoes posteriores
+	else: 7035120
+	Then: 7027744
+
+
+	Ligacao 263:
+Endereco (no): 7027552
+Ligacoes anteriores:
+	Ligacao   0: 7027712
+Tipo/nivel: C25
+Ligacoes posteriores
+	else: 7035120
+	Then: 7027104
+
+
+	Ligacao 264:
+Endereco (no): 7027328
+Ligacoes anteriores:
+	Ligacao   0: 7027488
+Tipo/nivel: C24
+Ligacoes posteriores
+	else: 7035120
+	Then: 7027712
+
+
+	Ligacao 265:
+Endereco (no): 7029952
+Ligacoes anteriores:
+	Ligacao   0: 7029920
+Tipo/nivel: C23
+Ligacoes posteriores
+	else: 7035120
+	Then: 7027488
+
+
+	Ligacao 266:
+Endereco (no): 7030688
+Ligacoes anteriores:
+	Ligacao   0: 7030656
+Tipo/nivel: C22
+Ligacoes posteriores
+	else: 7035120
+	Then: 7029920
+
+
+	Ligacao 267:
+Endereco (no): 7030816
+Ligacoes anteriores:
+	Ligacao   0: 7030112
+Tipo/nivel: C21
+Ligacoes posteriores
+	else: 7035120
+	Then: 7030656
+
+
+	Ligacao 268:
+Endereco (no): 7030720
+Ligacoes anteriores:
+	Ligacao   0: 7030624
+Tipo/nivel: C20
+Ligacoes posteriores
+	else: 7035120
+	Then: 7030112
+
+
+	Ligacao 269:
+Endereco (no): 7030592
+Ligacoes anteriores:
+	Ligacao   0: 7030304
+Tipo/nivel: C19
+Ligacoes posteriores
+	else: 7035120
+	Then: 7030624
+
+
+	Ligacao 270:
+Endereco (no): 7030528
+Ligacoes anteriores:
+	Ligacao   0: 7030208
+Tipo/nivel: C18
+Ligacoes posteriores
+	else: 7035120
+	Then: 7030304
+
+
+	Ligacao 271:
+Endereco (no): 7030176
+Ligacoes anteriores:
+	Ligacao   0: 7030240
+Tipo/nivel: C17
+Ligacoes posteriores
+	else: 7035120
+	Then: 7030208
+
+
+	Ligacao 272:
+Endereco (no): 7030560
+Ligacoes anteriores:
+	Ligacao   0: 7030272
+Tipo/nivel: C16
+Ligacoes posteriores
+	else: 7035120
+	Then: 7030240
+
+
+	Ligacao 273:
+Endereco (no): 7030400
+Ligacoes anteriores:
+	Ligacao   0: 7030368
+Tipo/nivel: C15
+Ligacoes posteriores
+	else: 7035120
+	Then: 7030272
+
+
+	Ligacao 274:
+Endereco (no): 7030464
+Ligacoes anteriores:
+	Ligacao   0: 7030048
+Tipo/nivel: C14
+Ligacoes posteriores
+	else: 7035120
+	Then: 7030368
+
+
+	Ligacao 275:
+Endereco (no): 7029504
+Ligacoes anteriores:
+	Ligacao   0: 7029024
+Tipo/nivel: C13
+Ligacoes posteriores
+	else: 7035120
+	Then: 7030048
+
+
+	Ligacao 276:
+Endereco (no): 7028928
+Ligacoes anteriores:
+	Ligacao   0: 7029472
+Tipo/nivel: C12
+Ligacoes posteriores
+	else: 7035120
+	Then: 7029024
+
+
+	Ligacao 277:
+Endereco (no): 7028896
+Ligacoes anteriores:
+	Ligacao   0: 7029856
+Tipo/nivel: C11
+Ligacoes posteriores
+	else: 7035120
+	Then: 7029472
+
+
+	Ligacao 278:
+Endereco (no): 7029760
+Ligacoes anteriores:
+	Ligacao   0: 7029376
+Tipo/nivel: C10
+Ligacoes posteriores
+	else: 7035120
+	Then: 7029856
+
+
+	Ligacao 279:
+Endereco (no): 7029568
+Ligacoes anteriores:
+	Ligacao   0: 7029280
+Tipo/nivel: C9
+Ligacoes posteriores
+	else: 7035120
+	Then: 7029376
+
+
+	Ligacao 280:
+Endereco (no): 7029120
+Ligacoes anteriores:
+	Ligacao   0: 7029792
+Tipo/nivel: C8
+Ligacoes posteriores
+	else: 7035120
+	Then: 7029280
+
+
+	Ligacao 281:
+Endereco (no): 7029184
+Ligacoes anteriores:
+	Ligacao   0: 7029728
+Tipo/nivel: C7
+Ligacoes posteriores
+	else: 7035120
+	Then: 7029792
+
+
+	Ligacao 282:
+Endereco (no): 7029408
+Ligacoes anteriores:
+	Ligacao   0: 7029632
+Tipo/nivel: C6
+Ligacoes posteriores
+	else: 7035120
+	Then: 7029728
+
+
+	Ligacao 283:
+Endereco (no): 7029536
+Ligacoes anteriores:
+	Ligacao   0: 7029152
+Tipo/nivel: C5
+Ligacoes posteriores
+	else: 7035120
+	Then: 7029632
+
+
+	Ligacao 284:
+Endereco (no): 7029888
+Ligacoes anteriores:
+	Ligacao   0: 7029216
+Tipo/nivel: C4
+Ligacoes posteriores
+	else: 7035120
+	Then: 7029152
+
+
+	Ligacao 285:
+Endereco (no): 7029248
+Ligacoes anteriores:
+	Ligacao   0: 7028768
+Tipo/nivel: C3
+Ligacoes posteriores
+	else: 7035120
+	Then: 7029216
+
+
+	Ligacao 286:
+Endereco (no): 7028608
+Ligacoes anteriores:
+	Ligacao   0: 7027904
+Tipo/nivel: C2
+Ligacoes posteriores
+	else: 7035120
+	Then: 7028768
+
+
+	Ligacao 287:
+Endereco (no): 7028448
+Ligacoes anteriores:
+	Ligacao   0: 7028416
+Tipo/nivel: C1
+Ligacoes posteriores
+	else: 7035120
+	Then: 7027904
+
+
+
+AMPLITUDES
+
+	Ligacao 0:
+Endereco (no): 7035056
+Ligacoes anteriores:
+	Ligacao   0: 7035344
+	Ligacao   1: 7035536
+Tipo: Numero
+-7,071e-001 0,000e+000
+
+
+	Ligacao 1:
+Endereco (no): 7035120
+Ligacoes anteriores:
+	Ligacao   0: 7028480
+	Ligacao   1: 7028320
+	Ligacao   2: 7028192
+	Ligacao   3: 7028864
+	Ligacao   4: 7028736
+	Ligacao   5: 7028160
+	Ligacao   6: 7028512
+	Ligacao   7: 7028288
+	Ligacao   8: 7028256
+	Ligacao   9: 7028800
+	Ligacao  10: 7028000
+	Ligacao  11: 7027936
+	Ligacao  12: 7028544
+	Ligacao  13: 7028096
+	Ligacao  14: 7028064
+	Ligacao  15: 6982208
+	Ligacao  16: 6981984
+	Ligacao  17: 6981952
+	Ligacao  18: 6981856
+	Ligacao  19: 6982496
+	Ligacao  20: 6982432
+	Ligacao  21: 6982112
+	Ligacao  22: 6982656
+	Ligacao  23: 6981504
+	Ligacao  24: 6981536
+	Ligacao  25: 6981760
+	Ligacao  26: 6981408
+	Ligacao  27: 6980992
+	Ligacao  28: 6980960
+	Ligacao  29: 6980896
+	Ligacao  30: 6981216
+	Ligacao  31: 6981088
+	Ligacao  32: 6981248
+	Ligacao  33: 7017512
+	Ligacao  34: 7017224
+	Ligacao  35: 7017192
+	Ligacao  36: 7017128
+	Ligacao  37: 7017096
+	Ligacao  38: 7017416
+	Ligacao  39: 7016968
+	Ligacao  40: 7016840
+	Ligacao  41: 7017288
+	Ligacao  42: 7017320
+	Ligacao  43: 7017064
+	Ligacao  44: 7016776
+	Ligacao  45: 7017160
+	Ligacao  46: 7016584
+	Ligacao  47: 7017384
+	Ligacao  48: 7017576
+	Ligacao  49: 7016616
+	Ligacao  50: 7016712
+	Ligacao  51: 7016744
+	Ligacao  52: 7017544
+	Ligacao  53: 7017032
+	Ligacao  54: 7015880
+	Ligacao  55: 7015848
+	Ligacao  56: 7015752
+	Ligacao  57: 7015720
+	Ligacao  58: 7015784
+	Ligacao  59: 7016552
+	Ligacao  60: 7015688
+	Ligacao  61: 7016488
+	Ligacao  62: 7016264
+	Ligacao  63: 7016232
+	Ligacao  64: 7016136
+	Ligacao  65: 7016424
+	Ligacao  66: 7016104
+	Ligacao  67: 7015656
+	Ligacao  68: 7015976
+	Ligacao  69: 7016200
+	Ligacao  70: 7015912
+	Ligacao  71: 7016008
+	Ligacao  72: 7015624
+	Ligacao  73: 7015944
+	Ligacao  74: 7016168
+	Ligacao  75: 7016392
+	Ligacao  76: 7014632
+	Ligacao  77: 7015080
+	Ligacao  78: 7014568
+	Ligacao  79: 7014760
+	Ligacao  80: 7014728
+	Ligacao  81: 7015464
+	Ligacao  82: 7015016
+	Ligacao  83: 7015112
+	Ligacao  84: 7015528
+	Ligacao  85: 7015432
+	Ligacao  86: 7015272
+	Ligacao  87: 7015144
+	Ligacao  88: 7014856
+	Ligacao  89: 7014664
+	Ligacao  90: 7014600
+	Ligacao  91: 7015496
+	Ligacao  92: 7014920
+	Ligacao  93: 7015336
+	Ligacao  94: 7028448
+	Ligacao  95: 7028672
+	Ligacao  96: 7028608
+	Ligacao  97: 7028640
+	Ligacao  98: 7029248
+	Ligacao  99: 7029664
+	Ligacao 100: 7029888
+	Ligacao 101: 7029696
+	Ligacao 102: 7029536
+	Ligacao 103: 7028960
+	Ligacao 104: 7029408
+	Ligacao 105: 7029344
+	Ligacao 106: 7029184
+	Ligacao 107: 7029824
+	Ligacao 108: 7029120
+	Ligacao 109: 7029088
+	Ligacao 110: 7029568
+	Ligacao 111: 7029600
+	Ligacao 112: 7029760
+	Ligacao 113: 7029440
+	Ligacao 114: 7028896
+	Ligacao 115: 7029312
+	Ligacao 116: 7028928
+	Ligacao 117: 7028992
+	Ligacao 118: 7029504
+	Ligacao 119: 7029056
+	Ligacao 120: 7030464
+	Ligacao 121: 7030496
+	Ligacao 122: 7030400
+	Ligacao 123: 7030336
+	Ligacao 124: 7030560
+	Ligacao 125: 7030144
+	Ligacao 126: 7030176
+	Ligacao 127: 7029984
+	Ligacao 128: 7030528
+	Ligacao 129: 7030080
+	Ligacao 130: 7030592
+	Ligacao 131: 7030752
+	Ligacao 132: 7030720
+	Ligacao 133: 7030784
+	Ligacao 134: 7030816
+	Ligacao 135: 7030432
+	Ligacao 136: 7030688
+	Ligacao 137: 7030848
+	Ligacao 138: 7029952
+	Ligacao 139: 7030016
+	Ligacao 140: 7027328
+	Ligacao 141: 7027008
+	Ligacao 142: 7027552
+	Ligacao 143: 7027264
+	Ligacao 144: 7026912
+	Ligacao 145: 7027616
+	Ligacao 146: 7027648
+	Ligacao 147: 7027520
+	Ligacao 148: 7027680
+	Ligacao 149: 7027232
+	Ligacao 150: 7027808
+	Ligacao 151: 7026944
+	Ligacao 152: 7026976
+	Ligacao 153: 7027168
+	Ligacao 154: 7027456
+	Ligacao 155: 7027840
+	Ligacao 156: 7026848
+	Ligacao 157: 7026880
+	Ligacao 158: 7027424
+	Ligacao 159: 7027360
+	Ligacao 160: 7027392
+	Ligacao 161: 7038736
+	Ligacao 162: 7038288
+	Ligacao 163: 7038384
+	Ligacao 164: 7038416
+	Ligacao 165: 7038896
+	Ligacao 166: 7038160
+	Ligacao 167: 7038480
+	Ligacao 168: 7038800
+	Ligacao 169: 7038544
+	Ligacao 170: 7038576
+	Ligacao 171: 7038832
+	Ligacao 172: 7038640
+	Ligacao 173: 7038224
+	Ligacao 174: 7038864
+	Ligacao 175: 7038928
+	Ligacao 176: 7038992
+	Ligacao 177: 7039024
+	Ligacao 178: 7038128
+	Ligacao 179: 7038256
+	Ligacao 180: 7038352
+	Ligacao 181: 7035600
+	Ligacao 182: 7035504
+	Ligacao 183: 7035984
+	Ligacao 184: 7035696
+	Ligacao 185: 7035088
+	Ligacao 186: 7035344
+	Ligacao 187: 7035536
+Tipo: Numero
+-0,000e+000 0,000e+000
+
+
+	Ligacao 2:
+Endereco (no): 7035760
+Ligacoes anteriores:
+	Ligacao   0: 7028320
+	Ligacao   1: 7028480
+Tipo: Numero
+7,071e-001 0,000e+000
+
+

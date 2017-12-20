@@ -4485,6 +4485,7 @@ float modulo_vetor(QDD *Q)
 
         l->n = n1;
     }
+    reduz_QDD(Q1,2,V);
 
     float m;
     contrai_QDD(Q1,V);
@@ -4578,7 +4579,69 @@ QDD** M01(Short N, Short n)
 
 /** QDDs usuais  **/
 
-QDD* Ro(double theta)
+QDD* Rx(double theta)
+{
+    no *ni, *n1, *n2, *n3;
+    ni = cria_no_inicio();
+    n1 = cria_no_meio(R,0);
+    n2 = cria_no_meio(C,0);
+    n3 = cria_no_meio(C,0);
+    conecta_UM(ni,n1,Inicio);
+    conecta_DOIS(n1,n2,n3);
+
+    double si, co;
+    theta /= 2;
+    si = sin(theta);
+    co = cos(theta);
+
+    no *nf1,*nf2, *nf3, *nf4;
+    nf1 = cria_no_fim( co,0);
+    nf2 = cria_no_fim(-si,0);
+    nf3 = cria_no_fim(0,si);
+    nf4 = cria_no_fim(0,co);
+    conecta_DOIS(n2,nf1,nf2);
+    conecta_DOIS(n3,nf3,nf4);
+
+    lista *l1, *l2, *l3, *l4;
+    l1 = cria_lista();
+    l2 = cria_lista();
+    l3 = cria_lista();
+    l4 = cria_lista();
+
+    l1->n = nf1;
+    l2->n = nf2;
+    l3->n = nf3;
+    l4->n = nf4;
+
+    l1->l = l2;
+    l2->l = l3;
+    l3->l = l4;
+
+    QDD *Q;
+    Q = cria_QDD(1);
+    Q->n = ni;
+    Q->l = l1;
+    return Q;
+}
+
+QDD* Ry(double theta)
+{
+    double si, co;
+    theta /= 2;
+    si = sin(theta);
+    co = cos(theta);
+
+    no *nf1, *nf2, *nf3;
+    nf1 = cria_no_fim(-si,0);
+    nf2 = cria_no_fim( co,0);
+    nf3 = cria_no_fim( si,0);
+
+    QDD *Q;
+    Q = matriz_faixa_diagonal(nf1,nf2,nf3,1);
+    return Q;
+}
+
+QDD* Rz(double theta)
 {
     if(theta <  eps)
     if(theta > -eps)
@@ -4786,16 +4849,18 @@ QDD** mede_conservativo(QDD *Q, Short nqbit, float p[2])
     QF[0] = produto_matriz_vetor(QM[0],Q);
     QF[1] = produto_matriz_vetor(QM[1],Q);
 
-    p[0] = modulo_vetor(QF[0]);
-    p[1] = modulo_vetor(QF[1]);
+    float paux[2];
+
+    paux[0] = modulo_vetor(QF[0]);
+    p[0] = paux[0]*paux[0];
+    p[1] = 1-p[0];
+    paux[1] = sqrt(p[1]);
 
     if(p[0] > eps)
-        produto_QDD_real(QF[0],1/p[0]);
+        produto_QDD_real(QF[0],1/paux[0]);
     if(p[1] > eps)
-        produto_QDD_real(QF[1],1/p[1]);
+        produto_QDD_real(QF[1],1/paux[1]);
 
-    p[0] *= p[0];
-    p[1] *= p[1];
 
     libera_QDD(QM[0]);
     libera_QDD(QM[1]);
@@ -4804,7 +4869,7 @@ QDD** mede_conservativo(QDD *Q, Short nqbit, float p[2])
     return QF;
 }
 
-QDD*  mede_destrutivo(QDD *Q, Short nqbit, Short *resultado)
+QDD* mede_destrutivo(QDD *Q, Short nqbit, Short *resultado)
 {
     QDD **QM;
     float p[2];
@@ -4826,6 +4891,31 @@ QDD*  mede_destrutivo(QDD *Q, Short nqbit, Short *resultado)
     }
     libera_QDD_array(QM,2);
     return Q;
+}
+
+void mede_todos(QDD *Q)
+{
+    time_t antes, depois;
+    float delta, tempo;
+
+    QDD **QM;
+    Short i;
+    float p[2];
+    printf("\n");
+    for(i=0;i<Q->nqbit;i++)
+    {
+        antes = clock();
+        QM = mede_conservativo(Q,i,p);
+        libera_QDD(QM[0]);
+        libera_QDD(QM[1]);
+        libera_QDD_array(QM,2);
+        depois = clock();
+
+        delta = depois - antes;
+        tempo = delta/CLOCKS_PER_SEC;
+
+        printf("\ni: %2hu\tp0: %f\tp1: %f\tt: %.3f",i,p[0],p[1],tempo);
+    }
 }
 
 
@@ -4888,7 +4978,7 @@ void cria_QFT(Short N)
         Qr = Q1;
 
         theta /= 2;
-        Q1 = Ro(theta);
+        Q1 = Rz(theta);
         Q2 = aplica(Q1,i+1,0);
         libera_QDD(Q1);
         Q1=  controla(Q2,i,1);
@@ -4934,6 +5024,18 @@ void cria_QFT(Short N)
 
 
 /**  Testes  **/
+
+void mostra_hora(FILE *fp)
+{
+    time_t rawtime;
+    struct tm *timeinfo;
+    time(&rawtime);
+    timeinfo = localtime(&rawtime);
+
+    printf("\t%02d:%02d  %02d/%02d",timeinfo->tm_hour,timeinfo->tm_min,timeinfo->tm_mday,timeinfo->tm_mon+1);
+    if(fp != NULL)
+        fprintf(fp,"\t%02d:%02d  %02d/%02d",timeinfo->tm_hour,timeinfo->tm_min,timeinfo->tm_mday,timeinfo->tm_mon+1);
+}
 
 double teste_velocidade_unico(char *nome, QDD* (*le)(char*), FILE *fp, FILE *fr, Short primeiro, Long *Quantidade)
 {
@@ -4989,13 +5091,7 @@ double teste_velocidade_unico(char *nome, QDD* (*le)(char*), FILE *fp, FILE *fr,
 
         *Quantidade = 1;
 
-        time_t rawtime;
-        struct tm *timeinfo;
-        time(&rawtime);
-        timeinfo = localtime(&rawtime);
-
-        printf("\t%02d:%02d  %02d/%02d",timeinfo->tm_hour,timeinfo->tm_min,timeinfo->tm_mday,timeinfo->tm_mon+1);
-        fprintf(fr,"\t%02d:%02d  %02d/%02d",timeinfo->tm_hour,timeinfo->tm_min,timeinfo->tm_mday,timeinfo->tm_mon+1);
+        mostra_hora(fr);
 
         return precisao;
     }
@@ -5267,26 +5363,6 @@ Short teste_memoria()
 }
 
 
-typedef struct
-{
-    Short tipo;
-    Short classe, nivel;
-    struct no1 *el, *th;
-
-}no1;
-
-no1* cria_no_meio_teste(Short classe, Short nivel)
-{
-    no1 *n;
-    n = malloc(sizeof(no1));
-    n->tipo = Meio;
-    n->classe = classe;
-    n->nivel = nivel;
-    n->el = NULL;
-    n->th = NULL;
-    return n;
-}
-
 
 int main()
 {
@@ -5300,6 +5376,9 @@ int main()
     N = 18;
     configuracao(N);
 
+    time_t antes, depois;
+    float delta, tempo;
+
     QDD **Qr;
     Qr = cria_QDD_array(N);
     Qr[0] = QH;
@@ -5311,70 +5390,45 @@ int main()
     for(i=1;i<N;i++)
     {
         printf("\ni0: %2hu",i);
-
+        antes = clock();
         theta /= 2;
-        Q1 = Ro(theta);
-        Q2 = aplica(Q1,i+1,0);
+        Q1 = Rz(theta);
+        Q2 = aplica(Q1,i+1,i);
         libera_QDD(Q1);
-        Q1 = controla(Q2,i,1);
-        libera_QDD(Q2);
+        Q1 = controla(Q2,0,1);
 
         Qr[i] = Q1;
+        depois = clock();
+
+        delta = depois - antes;
+        tempo = delta/CLOCKS_PER_SEC;
+        printf("\t%.3f",tempo);
     }
 
     Q1 = W(N);
 
-
-    time_t rawtime, antes, depois;
-    struct tm *timeinfo;
-    float delta, tempo;
-
-    printf("\n");
     QDD *Q3;
     Short j;
-    depois = clock();
     for(i=0;i<N;i++)
     {
-        printf("\n\n\n\ni1: %2hu\n",i);
+        printf("\ni0: %2hu",i);
         for(j=0;j+i<N;j++)
         {
-            antes = depois;
-
             printf("\n  j: %2hu",j);
+            antes = clock();
             Q2 = aplica(Qr[j],N,i);
-
-            salva_QDD(Q1,"Q1");
-            salva_QDD(Q2,"Q2");
-
             Q3 = produto_matriz_vetor(Q2,Q1);
-            libera_QDD(Q1);
             libera_QDD(Q2);
+            libera_QDD(Q1);
             Q1 = Q3;
-
-
             depois = clock();
+
             delta = depois - antes;
             tempo = delta/CLOCKS_PER_SEC;
-
-            printf("\t\t%.3f",tempo);
-
-            time(&rawtime);
-            timeinfo = localtime(&rawtime);
-
-            printf("\t%02d:%02d  %2d/%02d",timeinfo->tm_hour,timeinfo->tm_min,timeinfo->tm_mday,timeinfo->tm_mon+1);
+            printf("\t%.3f",tempo);
+            mostra_hora(NULL);
         }
     }
-
-    Long itens;
-    itens = conta_itens_QDD(Q1);
-    printf("\n%llu",itens);
-
-    libera_QDD(Q1);
-    for(i=1;i<N;i++)
-        libera_QDD(Qr[i]);
-    libera_QDD_array(Qr,N);
-
-    mostra_quantidades();
 
     /***********************************/
     finaliza_structs_globais();
