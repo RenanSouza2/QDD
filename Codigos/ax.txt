@@ -1,0 +1,12 @@
+
+    QDD *Q1, *QHn;
+    Q1 = le_QDD("QFT");
+    QHn = aplica(QH,18,15);
+
+    QDD *Q;
+    Q = produto_matriz_vetor(QHn,Q1);
+    libera_QDD(Q1);
+    libera_QDD(QHn);
+    mostra_quantidades();
+    salva_QDD(Q,"QFT1");
+    libera_QDD(Q);

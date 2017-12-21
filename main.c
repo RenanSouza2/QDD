@@ -140,6 +140,14 @@ void ERRO(char *s)
     exit(EXIT_FAILURE);
 }
 
+void MENSAGEM(char *s)
+{
+    FILE *fp;
+    fp = fopen("MENSAGEM.txt","w");
+    fprintf(fp,s);
+    fclose(fp);
+}
+
 void configuracao(Short N)
 {
     if(N > 64)
@@ -2663,7 +2671,7 @@ void reduz_QDD(QDD *Q, Short ex, Short classe)
     l = copia_lista_sem_cabeca(Q->l);
 
     no *nc, *n1, *n2;
-    lista *lnc1, *lnc2, *lnc3, *lnc4, *lp, *laux;
+    lista *lnc1, *lnc2, *lnc3, *lnc4, *lp, *laux, *le;
     Short mudou, inicio;
     inicio = 0;
     while(l != NULL)
@@ -2688,6 +2696,10 @@ void reduz_QDD(QDD *Q, Short ex, Short classe)
             lnc4 = NULL;
             while(n1->at.m.el == n1->at.m.th)
             {
+                for(le = l; le != NULL; le = le->l)
+                    if(le->n == n1)
+                        ERRO("REDUZ QDD| ELIMINANDO NO QUE ESTA NA LISTA DE CHECAGEM");
+
                 desconecta_DOIS(n1);
                 transfere_conexao(nc,n1);
                 laux = l;
@@ -2710,6 +2722,10 @@ void reduz_QDD(QDD *Q, Short ex, Short classe)
                 n1 = lnc1->n;
                 if(n1->at.m.el == n1->at.m.th)
                 {
+                    for(le = l; le != NULL; le = le->l)
+                        if(le->n == n1)
+                            ERRO("REDUZ QDD| ELIMINANDO NO QUE ESTA NA LISTA DE CHECAGEM");
+
                     mudou = 1;
                     desconecta_DOIS(n1);
                     transfere_conexao(nc,n1);
@@ -4869,6 +4885,8 @@ QDD** mede_conservativo(QDD *Q, Short nqbit, float p[2])
     return QF;
 }
 
+QDD** mede_conservativo_alternativo(QDD *Q, Short nqbit, float p[2])
+
 QDD* mede_destrutivo(QDD *Q, Short nqbit, Short *resultado)
 {
     QDD **QM;
@@ -5372,63 +5390,7 @@ int main()
     setlocale(LC_ALL, "Portuguese");
     /***********************************/
 
-    Short N;
-    N = 18;
-    configuracao(N);
 
-    time_t antes, depois;
-    float delta, tempo;
-
-    QDD **Qr;
-    Qr = cria_QDD_array(N);
-    Qr[0] = QH;
-
-    QDD *Q1, *Q2;
-    Short i;
-    float theta;
-    theta = pi;
-    for(i=1;i<N;i++)
-    {
-        printf("\ni0: %2hu",i);
-        antes = clock();
-        theta /= 2;
-        Q1 = Rz(theta);
-        Q2 = aplica(Q1,i+1,i);
-        libera_QDD(Q1);
-        Q1 = controla(Q2,0,1);
-
-        Qr[i] = Q1;
-        depois = clock();
-
-        delta = depois - antes;
-        tempo = delta/CLOCKS_PER_SEC;
-        printf("\t%.3f",tempo);
-    }
-
-    Q1 = W(N);
-
-    QDD *Q3;
-    Short j;
-    for(i=0;i<N;i++)
-    {
-        printf("\ni0: %2hu",i);
-        for(j=0;j+i<N;j++)
-        {
-            printf("\n  j: %2hu",j);
-            antes = clock();
-            Q2 = aplica(Qr[j],N,i);
-            Q3 = produto_matriz_vetor(Q2,Q1);
-            libera_QDD(Q2);
-            libera_QDD(Q1);
-            Q1 = Q3;
-            depois = clock();
-
-            delta = depois - antes;
-            tempo = delta/CLOCKS_PER_SEC;
-            printf("\t%.3f",tempo);
-            mostra_hora(NULL);
-        }
-    }
 
     /***********************************/
     finaliza_structs_globais();
