@@ -134,8 +134,10 @@ void finaliza_relatorio_memoria()
 void ERRO(char *s)
 {
     printf("\n\nERRO %s",s);
-    if(print)
-        fprintf(fm,"\n\nERRO %s",s);
+    FILE *fe;
+    fe = fopen("ERRO.txt","w");
+    fprintf(fe,"ERRO %s",s);
+    fclose(fe);
     finaliza_relatorio_memoria();
     exit(EXIT_FAILURE);
 }
