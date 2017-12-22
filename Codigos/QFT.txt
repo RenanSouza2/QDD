@@ -37,7 +37,7 @@
     Short j;
     for(i=0;i<N;i++)
     {
-        printf("\n\n\ni1: %2hu\n",i);
+        printf("\n\n\ni1: %2hu/%hu\n",i,N);
         for(j=0;j+i<N;j++)
         {
             printf("\n  j: %2hu",j);

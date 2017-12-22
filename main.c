@@ -2670,6 +2670,9 @@ void reduz_QDD(QDD *Q, Short ex, Short classe)
     lista *l;
     l = copia_lista_sem_cabeca(Q->l);
 
+    lista *ll, *llc;
+    ll = NULL;
+
     no *nc, *n1, *n2;
     lista *lnc1, *lnc2, *lnc3, *lnc4, *lp, *laux, *le;
     Short mudou, inicio;
@@ -2677,33 +2680,12 @@ void reduz_QDD(QDD *Q, Short ex, Short classe)
     while(l != NULL)
     {
         nc = l->n;
-        if(nc->l == NULL)
-            ERRO("REDUZ QDD| NC NAO TEM ANTERIORES");
-
-        /* Regra 1 */
-        do
+        if(nc->l != NULL)
         {
-            mudou = 0;
-
-            n1 = nc->l->n;
-            if(n1->tipo == Inicio)
+            /* Regra 1 */
+            do
             {
-                inicio = 1;
-                break;
-            }
-
-            lnc3 = NULL;
-            lnc4 = NULL;
-            while(n1->at.m.el == n1->at.m.th)
-            {
-                for(le = l; le != NULL; le = le->l)
-                    if(le->n == n1)
-                        ERRO("REDUZ QDD| ELIMINANDO NO QUE ESTA NA LISTA DE CHECAGEM");
-
-                desconecta_DOIS(n1);
-                transfere_conexao(nc,n1);
-                laux = l;
-                libera_no(n1);
+                mudou = 0;
 
                 n1 = nc->l->n;
                 if(n1->tipo == Inicio)
@@ -2711,114 +2693,148 @@ void reduz_QDD(QDD *Q, Short ex, Short classe)
                     inicio = 1;
                     break;
                 }
-            }
 
-            lnc2 = nc->l;
-            lnc1 = lnc2->l;
-            lnc4 = lnc2;
-
-            while(lnc1 != NULL)
-            {
-                n1 = lnc1->n;
-                if(n1->at.m.el == n1->at.m.th)
+                lnc3 = NULL;
+                lnc4 = NULL;
+                while(n1->at.m.el == n1->at.m.th)
                 {
                     for(le = l; le != NULL; le = le->l)
                         if(le->n == n1)
                             ERRO("REDUZ QDD| ELIMINANDO NO QUE ESTA NA LISTA DE CHECAGEM");
 
-                    mudou = 1;
                     desconecta_DOIS(n1);
                     transfere_conexao(nc,n1);
-                    libera_no(n1);
-                    lnc1 = lnc2->l;
-                }
-                else
-                {
-                    lnc2 = lnc1;
-                    lnc1 = lnc1->l;
-                }
-                if(lnc1 == lnc3)
-                    break;
-            }
-            lnc3 = lnc4;
-        }
-        while(mudou);
-        if(inicio)
-            break;
+                    laux = l;
 
-        /* Regra 2 */
-        for(lnc1 = nc->l; lnc1 != NULL; lnc1 = lnc1->l)
-        {
-            n1 = lnc1->n;
-            if(n1->tipo == Inicio)
-                ERRO("REDUZ QDD| NO INICIO NAO DEVERIA CHEGAR AQUI");
-            if(n1->at.m.el == NULL)
-                ERRO("REDUZ QDD| NO SEM CONEXAO EM EL");
-            if(n1->at.m.th == NULL)
-                ERRO("REDUZ QDD| NO SEM CONEXAO EM TH");
-            if(n1->at.m.el == n1->at.m.th)
-                ERRO("REDUZ QDD| REDUNDANCIA TIPO 1 JA DEVERIA TER SIDO ELIMINADA");
+                    llc = cria_lista();
+                    llc->n = n1;
+                    llc->l = ll;
+                    ll = llc;
 
-            mudou = 0;
-            laux = NULL;
-
-            for(lnc2 = nc->l; lnc2 != NULL; lnc2 = lp)
-            {
-                lp = lnc2->l;
-
-                if(lnc1 == lnc2)
-                    continue;
-
-                n2 = lnc2->n;
-                if(compara_no_meio_completo(n1,n2,classe))
-                {
-                    mudou = 1;
-
-                    if(laux == NULL)
-                        for(laux = l; laux != NULL; laux = laux->l)
-                            if(laux->n == n2)
-                            {
-                                laux->n = NULL;
-                                break;
-                            }
-
-                    desconecta_DOIS(n2);
-                    transfere_conexao(n1,n2);
-                    libera_no(n2);
-                }
-            }
-
-            if(mudou)
-            {
-                if(laux == NULL)
-                {
-                    for(laux = l; laux->l != NULL; laux = laux->l)
+                    n1 = nc->l->n;
+                    if(n1->tipo == Inicio)
                     {
-                        n2 = laux->l->n;
-
-                        if(n2->tipo == Fim)
-                            continue;
-                        if(n2->at.m.nivel > n1->at.m.nivel)
-                            continue;
-                        if(n2->at.m.nivel == n1->at.m.nivel)
-                        {
-                            if(n2->at.m.classe == C)
-                                continue;
-                            if(n1->at.m.classe == R)
-                                continue;
-                        }
-
+                        inicio = 1;
                         break;
                     }
-                    lp = cria_lista();
-                    lp->n = n1;
-
-                    lp->l = laux->l;
-                    laux->l = lp;
                 }
-                else
+
+                lnc2 = nc->l;
+                lnc1 = lnc2->l;
+                lnc4 = lnc2;
+
+                while(lnc1 != NULL)
                 {
-                    laux->n = n1;
+                    n1 = lnc1->n;
+                    if(n1->at.m.el == n1->at.m.th)
+                    {
+                        for(le = l; le != NULL; le = le->l)
+                            if(le->n == n1)
+                                ERRO("REDUZ QDD| ELIMINANDO NO QUE ESTA NA LISTA DE CHECAGEM");
+
+                        mudou = 1;
+                        desconecta_DOIS(n1);
+                        transfere_conexao(nc,n1);
+
+                        llc = cria_lista();
+                        llc->n = n1;
+                        llc->l = ll;
+                        ll = llc;
+
+                        lnc1 = lnc2->l;
+                    }
+                    else
+                    {
+                        lnc2 = lnc1;
+                        lnc1 = lnc1->l;
+                    }
+                    if(lnc1 == lnc3)
+                        break;
+                }
+                lnc3 = lnc4;
+            }
+            while(mudou);
+            if(inicio)
+                break;
+
+            /* Regra 2 */
+            for(lnc1 = nc->l; lnc1 != NULL; lnc1 = lnc1->l)
+            {
+                n1 = lnc1->n;
+                if(n1->tipo == Inicio)
+                    ERRO("REDUZ QDD| NO INICIO NAO DEVERIA CHEGAR AQUI");
+                if(n1->at.m.el == NULL)
+                    ERRO("REDUZ QDD| NO SEM CONEXAO EM EL");
+                if(n1->at.m.th == NULL)
+                    ERRO("REDUZ QDD| NO SEM CONEXAO EM TH");
+                if(n1->at.m.el == n1->at.m.th)
+                    ERRO("REDUZ QDD| REDUNDANCIA TIPO 1 JA DEVERIA TER SIDO ELIMINADA");
+
+                mudou = 0;
+                laux = NULL;
+
+                for(lnc2 = nc->l; lnc2 != NULL; lnc2 = lp)
+                {
+                    lp = lnc2->l;
+
+                    if(lnc1 == lnc2)
+                        continue;
+
+                    n2 = lnc2->n;
+                    if(compara_no_meio_completo(n1,n2,classe))
+                    {
+                        mudou = 1;
+
+                        if(laux == NULL)
+                            for(laux = l; laux != NULL; laux = laux->l)
+                                if(laux->n == n2)
+                                {
+                                    laux->n = NULL;
+                                    break;
+                                }
+
+                        desconecta_DOIS(n2);
+                        transfere_conexao(n1,n2);
+
+                        llc = cria_lista();
+                        llc->n = n2;
+                        llc->l = ll;
+                        ll = llc;
+                    }
+                }
+
+                if(mudou)
+                {
+                    if(laux == NULL)
+                    {
+                        for(laux = l; laux->l != NULL; laux = laux->l)
+                        {
+                            n2 = laux->l->n;
+
+                            if(n2->tipo == Fim)
+                                continue;
+                            if(n2->at.m.nivel > n1->at.m.nivel)
+                                continue;
+                            if(n2->at.m.nivel == n1->at.m.nivel)
+                            {
+                                if(n2->at.m.classe == C)
+                                    continue;
+                                if(n1->at.m.classe == R)
+                                    continue;
+                            }
+
+                            break;
+                        }
+                        lp = cria_lista();
+                        lp->n = n1;
+
+                        lp->l = laux->l;
+                        laux->l = lp;
+                    }
+                    else
+                    {
+                        laux->n = n1;
+                    }
                 }
             }
         }
@@ -2828,6 +2844,14 @@ void reduz_QDD(QDD *Q, Short ex, Short classe)
         l = lnc1;
     }
     libera_lista_no(l);
+
+    while(ll != NULL)
+    {
+        llc = ll->l;
+        libera_no(ll->n);
+        libera_lista_no(ll);
+        ll = llc;
+    }
 }
 
 void reduz_arvore(no **n, Short ex)
@@ -4886,6 +4910,11 @@ QDD** mede_conservativo(QDD *Q, Short nqbit, float p[2])
 }
 
 QDD** mede_conservativo_alternativo(QDD *Q, Short nqbit, float p[2])
+{
+    QDD **QM;
+    QM = NULL;
+    return QM;
+}
 
 QDD* mede_destrutivo(QDD *Q, Short nqbit, Short *resultado)
 {
@@ -5390,7 +5419,74 @@ int main()
     setlocale(LC_ALL, "Portuguese");
     /***********************************/
 
+    char nome[30], men[50];
+    Short N;
+    for(N = 0; N<40; N++)
+    {
+        sprintf(nome,"QFT%hu",N);
+        configuracao(N);
 
+        time_t antes, depois;
+        float delta, tempo;
+
+        QDD **Qr;
+        Qr = cria_QDD_array(N);
+        Qr[0] = QH;
+
+        QDD *Q1, *Q2;
+        Short i;
+        float theta;
+        theta = pi;
+        for(i=1;i<N;i++)
+        {
+            printf("\ni0: %2hu",i);
+            sprintf(men,"i0: %2hu",i);
+            MENSAGEM(men);
+            antes = clock();
+            theta /= 2;
+            Q1 = Rz(theta);
+            Q2 = aplica(Q1,i+1,i);
+            libera_QDD(Q1);
+            Q1 = controla(Q2,0,1);
+
+            Qr[i] = Q1;
+            depois = clock();
+
+            delta = depois - antes;
+            tempo = delta/CLOCKS_PER_SEC;
+            printf("\t%.3f",tempo);
+        }
+
+        Q1 = W(N);
+
+        QDD *Q3;
+        Short j;
+        for(i=0;i<N;i++)
+        {
+            printf("\n\n\ni1: %2hu/%hu\n",i,N);
+            for(j=0;j+i<N;j++)
+            {
+                printf("\n  j: %2hu",j);
+                antes = clock();
+                Q2 = aplica(Qr[j],N,i);
+                Q3 = produto_matriz_vetor(Q2,Q1);
+                libera_QDD(Q2);
+                libera_QDD(Q1);
+                Q1 = Q3;
+                salva_QDD(Q1,"QFT");
+                depois = clock();
+
+                delta = depois - antes;
+                tempo = delta/CLOCKS_PER_SEC;
+                printf("\t\t%.3f",tempo);
+                mostra_hora(NULL);
+                sprintf(men,"i1: %hu/%hu j: %hu t: %.3f",i,N,j,tempo);
+                MENSAGEM(men);
+            }
+        }
+
+        salva_QDD(Q1,nome);
+    }
 
     /***********************************/
     finaliza_structs_globais();
