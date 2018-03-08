@@ -23,11 +23,11 @@
 
 FILE *fm;
 unsigned long long mem = 0, memMax = 0, memF = 0;
-unsigned long long iQ = 0, iI = 0, iM = 0, iF = 0, iL = 0, iA = 0, iC = 0, iS = 0;
-unsigned long long cQ = 0, cI = 0, cM = 0, cF = 0, cL = 0, cA = 0, cC = 0, cS = 0;
-unsigned long long lQ = 0, lI = 0, lM = 0, lF = 0, lL = 0, lA = 0, lC = 0, lS = 0;
-unsigned long long mem0, iQ0, iI0, iM0, iF0, iL0;
-unsigned short tQ, tN, tL, tA, tC, tS;
+unsigned long long iQ = 0, iI = 0, iM = 0, iF = 0, iL = 0, iA = 0, iC = 0, iS = 0, iB = 0; // contagem total
+unsigned long long cQ = 0, cI = 0, cM = 0, cF = 0, cL = 0, cA = 0, cC = 0, cS = 0, cB = 0; // contagem criados
+unsigned long long lQ = 0, lI = 0, lM = 0, lF = 0, lL = 0, lA = 0, lC = 0, lS = 0, lB = 0; // contagem liberado
+unsigned long long mem0, iQ0, iI0, iM0, iF0, iL0; // Contagem inicial
+unsigned short tQ, tN, tL, tA, tC, tS, tB; // tamanho structs
 unsigned short print, Nqbit;
 float eps;
 
@@ -93,6 +93,13 @@ struct suporte
     struct suporte *s;
 };
 
+struct busca
+{
+    struct no *n;
+    unsigned long long e;
+    struct busca *b;
+};
+
 
 
 /** Typedefs e definitions  **/
@@ -104,6 +111,7 @@ typedef struct lista lista;
 typedef struct apply   apply;
 typedef struct conta   conta;
 typedef struct suporte suporte;
+typedef struct busca   busca;
 
 typedef unsigned short     Short;
 typedef unsigned long long Long;
@@ -390,6 +398,23 @@ suporte* cria_suporte(Short nivel)
     return s;
 }
 
+busca* cria_busca()
+{
+    busca *b;
+    b = malloc(tB);
+    if(b == NULL)
+        ERRO("CRIA BASE");
+    aumenta_memoria(tB);
+    iB++;
+    cB++;
+
+    b->n = NULL;
+    b->e = 0;
+    b->b = NULL;
+
+    return b;
+}
+
 
 
 /** Destrutores  **/
@@ -546,6 +571,16 @@ void libera_suporte_lista(suporte *s)
         libera_suporte_no(s);
         s = sc;
     }
+}
+
+void libera_busca_no(busca *b)
+{
+    diminui_memoria(tB);
+    if(iB == 0)
+        ERRO("LIBERA BUSCA");
+    iB--;
+    lB++;
+    free(b);
 }
 
 
@@ -915,6 +950,23 @@ void mostra_suporte_lista_com_conta(suporte *s)
         mostra_suporte_no_com_conta(sc);
         ligacao++;
     }
+}
+
+void mostra_busca_no(busca *b)
+{
+    printf("\nEndereco (busca): %d",b);
+    printf("\nno: ");
+    mostra_no(b->n);
+    printf("\ne: %llu",b->e);
+    printf("\nb proximo: %d",b->b);
+}
+
+void mostra_busca_no_compacto(busca *b)
+{
+    printf("\nEndereco (busca): %d",b);
+    printf("\nno: %d",b->n);
+    printf("\ne : %llu",b->e);
+    printf("\nb proximo: %d",b->b);
 }
 
 void mostra_quantidades()
@@ -4964,6 +5016,27 @@ void mede_todos(QDD *Q)
         tempo = delta/CLOCKS_PER_SEC;
 
         printf("\ni: %2hu\tp0: %f\tp1: %f\tt: %.3f",i,p[0],p[1],tempo);
+    }
+}
+
+void Busca(no *n, Short N)
+{
+    busca *b;
+    b = cria_busca();
+    b->n = n;
+    b->b = b;
+
+    no *n1;
+    lista *lc;
+    busca *bs;
+    bs = NULL;
+    while(b != NULL)
+    {
+        n = b->n;
+        for(lc = n->l; lc != NULL; lc = lc->l)
+        {
+            n1 = lc->n;
+        }
     }
 }
 
