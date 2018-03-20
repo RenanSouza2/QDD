@@ -23,11 +23,11 @@
 
 FILE *fm;
 unsigned long long mem = 0, memMax = 0, memF = 0;
-unsigned long long iQ = 0, iI = 0, iM = 0, iF = 0, iL = 0, iA = 0, iC = 0, iS = 0, iB = 0; // contagem total
-unsigned long long cQ = 0, cI = 0, cM = 0, cF = 0, cL = 0, cA = 0, cC = 0, cS = 0, cB = 0; // contagem criados
-unsigned long long lQ = 0, lI = 0, lM = 0, lF = 0, lL = 0, lA = 0, lC = 0, lS = 0, lB = 0; // contagem liberado
+unsigned long long iQ = 0, iI = 0, iM = 0, iF = 0, iL = 0, iA = 0, iC = 0, iS = 0, iB = 0, iLS = 0; // contagem total
+unsigned long long cQ = 0, cI = 0, cM = 0, cF = 0, cL = 0, cA = 0, cC = 0, cS = 0, cB = 0, cLS = 0; // contagem criados
+unsigned long long lQ = 0, lI = 0, lM = 0, lF = 0, lL = 0, lA = 0, lC = 0, lS = 0, lB = 0, lLS = 0; // contagem liberado
 unsigned long long mem0, iQ0, iI0, iM0, iF0, iL0; // Contagem inicial
-unsigned short tQ, tN, tL, tA, tC, tS, tB; // tamanho structs
+unsigned short tQ, tN, tL, tA, tC, tS, tB, tLS; // tamanho structs
 unsigned short print, Nqbit;
 float eps;
 
@@ -96,8 +96,15 @@ struct suporte
 struct busca
 {
     struct no *n;
-    unsigned long long e;
+    unsigned short N;
+    struct l_string *l_s;
     struct busca *b;
+};
+
+struct l_string
+{
+    char s[64];
+    struct l_string *l_s;
 };
 
 
@@ -108,10 +115,11 @@ typedef struct QDD   QDD;
 typedef struct no    no;
 typedef struct lista lista;
 
-typedef struct apply   apply;
-typedef struct conta   conta;
-typedef struct suporte suporte;
-typedef struct busca   busca;
+typedef struct apply    apply;
+typedef struct conta    conta;
+typedef struct suporte  suporte;
+typedef struct busca    busca;
+typedef struct l_string l_string;
 
 typedef unsigned short     Short;
 typedef unsigned long long Long;
@@ -408,13 +416,29 @@ busca* cria_busca()
     iB++;
     cB++;
 
-    b->n = NULL;
-    b->e = 0;
-    b->b = NULL;
+    b->n   = NULL;
+    b->N   = 0;
+    b->l_s = NULL;
+    b->b   = NULL;
 
     return b;
 }
 
+l_string* cria_l_string()
+{
+    l_string *l_s;
+    l_s = malloc(tB);
+    if(l_s == NULL)
+        ERRO("CRIA L STRING");
+    aumenta_memoria(tLS);
+    iLS++;
+    cLS++;
+
+    l_s->s[0] = '\0';
+    l_s->l_s = NULL;
+
+    return l_s;
+}
 
 
 /** Destrutores  **/
@@ -496,6 +520,7 @@ void libera_lista_no(lista *l)
     if(iL == 0)
         ERRO("LIBERA LISTA");
     iL--;
+    lL++;
     free(l);
 }
 
@@ -583,6 +608,15 @@ void libera_busca_no(busca *b)
     free(b);
 }
 
+void libera_l_string(l_string *ls)
+{
+    diminui_memoria(tLS);
+    if(iLS == 0)
+        ERRO("LIBERA L STRING");
+    iLS--;
+    lLS++;
+    free(ls);
+}
 
 
 /** Enlistadores  **/
@@ -957,7 +991,6 @@ void mostra_busca_no(busca *b)
     printf("\nEndereco (busca): %d",b);
     printf("\nno: ");
     mostra_no(b->n);
-    printf("\ne: %llu",b->e);
     printf("\nb proximo: %d",b->b);
 }
 
@@ -965,7 +998,6 @@ void mostra_busca_no_compacto(busca *b)
 {
     printf("\nEndereco (busca): %d",b);
     printf("\nno: %d",b->n);
-    printf("\ne : %llu",b->e);
     printf("\nb proximo: %d",b->b);
 }
 
@@ -1022,6 +1054,16 @@ void mostra_quantidades()
         vazio = 0;
         printf("\ns:    %llu",iS);
     }
+    if(iB != 0)
+    {
+        vazio = 0;
+        printf("\nb:    %llu",iB);
+    }
+    if(iLS != 0)
+    {
+        vazio = 0;
+        printf("\nls:    %llu",iLS);
+    }
     if(vazio)
         printf("\nTUDO ZERADO");
     printf("\n");
@@ -1070,19 +1112,31 @@ void mostra_contagem()
         vazio = 0;
         printf("\ncS: %llu\tlS: %llu",cS,lS);
     }
+    if(cB != 0)
+    {
+        vazio = 0;
+        printf("\ncB: %llu\tlS: %llu",cB,lB);
+    }
+    if(cLS != 0)
+    {
+        vazio = 0;
+        printf("\ncLS: %llu\tlS: %llu",cLS,lLS);
+    }
     if(vazio)
         printf("\nNAO CRIOU NADA");
 }
 
 void mostra_tamanhos()
 {
-    printf("\nTAMANHOS");
+    printf("\n\nTAMANHOS\n");
     printf("\nQDD: %d",tQ);
     printf("\nn:   %d",tN);
     printf("\nl:   %d",tL);
     printf("\na:   %d",tA);
     printf("\nc:   %d",tC);
     printf("\ns:   %d",tS);
+    printf("\nb:   %d",tB);
+    printf("\nls:  %d",tLS);
     printf("\n");
 }
 
@@ -1877,12 +1931,14 @@ apply *A[66][3];
 
 void inicia_structs_globais()
 {
-    tQ = sizeof(QDD);
-    tN = sizeof(no);
-    tL = sizeof(lista);
-    tA = sizeof(apply);
-    tC = sizeof(conta);
-    tS = sizeof(suporte);
+    tQ  = sizeof(QDD);
+    tN  = sizeof(no);
+    tL  = sizeof(lista);
+    tA  = sizeof(apply);
+    tC  = sizeof(conta);
+    tS  = sizeof(suporte);
+    tB  = sizeof(busca);
+    tLS = sizeof(l_string);
 
     Qred  = cria_QDD(1);
     Qred->n = cria_no_inicio();
@@ -2758,7 +2814,6 @@ void reduz_QDD(QDD *Q, Short ex, Short classe)
 
                     desconecta_DOIS(n1);
                     transfere_conexao(nc,n1);
-                    laux = l;
 
                     llc = cria_lista();
                     llc->n = n1;
@@ -2800,7 +2855,7 @@ void reduz_QDD(QDD *Q, Short ex, Short classe)
                     else
                     {
                         lnc2 = lnc1;
-                        lnc1 = lnc1->l;
+                        lnc1 = lnc2->l;
                     }
                     if(lnc1 == lnc3)
                         break;
@@ -4846,7 +4901,7 @@ QDD* W(Short N)
     return Q;
 }
 
-QDD* controla(QDD *Q, Short controle, Short ativa)
+QDD* controla(QDD *Q, Short controle, Short ativa) // controle: indice qbit controle, ativa 0 ou 1
 {
     if(Q == NULL)
         ERRO("CONTROLE| Q E NULL");
@@ -4934,6 +4989,42 @@ QDD* Switch(Short nqbit)
     return Q1;
 }
 
+QDD* QFT(QDD *Q)
+{
+    Short N;
+    N = Q->n;
+
+    QDD **Qr;
+    Qr = cria_QDD_array(N);
+    Qr[0] = H;
+
+    QDD *Q1, *Q2;
+    Short i;
+    float theta;
+    theta = pi;
+    for(i=2;i<=N;i++)
+    {
+        theta /= 2;
+        Q1 = Rz(theta);
+        Q2 = aplica(Qaux1,i,0);
+        libera_QDD(Qaux1);
+        Qaux1 = controla(Qaux2,i-1,1);
+        libera_QDD(Qaux2);
+        Qr[i-1]= Qaux1;
+    }
+
+    Short j;
+    for(i=N; i>0; i--)
+    {
+        for(j=0; j<i; j++)
+        {
+            Q
+        }
+    }
+}
+
+/**   Medidas   **/
+
 QDD** mede_conservativo(QDD *Q, Short nqbit, float p[2])
 {
     QDD **QM, **QF;
@@ -5019,12 +5110,25 @@ void mede_todos(QDD *Q)
     }
 }
 
+
+
+/**   Busca   **/
+
+l_string* adiciona(l_string *l_si, Short B)
+{
+    l_string *l_so;
+    l_so = cria_l_string();
+    sprintf(l_so->s,"%d%s",B,l_si->s);
+    return l_so;
+}
+
 void Busca(no *n, Short N)
 {
     busca *b;
     b = cria_busca();
     b->n = n;
-    b->b = b;
+    b->N = N;
+    b->l_s = cria_l_string();
 
     no *n1;
     lista *lc;
@@ -5494,7 +5598,14 @@ int main()
     setlocale(LC_ALL, "Portuguese");
     /***********************************/
 
+    QDD *Q;
+    Q = Rz(pi/2);
+    mostra_QDD(Q);
+    libera_QDD(Q);
 
+    printf("\n\n");
+    mostra_quantidades();
+    mostra_contagem();
 
     /***********************************/
     finaliza_structs_globais();
