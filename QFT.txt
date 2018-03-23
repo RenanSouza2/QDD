@@ -1,0 +1,113 @@
+
+
+Endereco (QDD): 5407472
+NQBIT: 3
+Itens: 8
+
+
+	Ligacao 0:
+Endereco (no): 5409056
+
+Tipo: Inicio
+Ligacoes posteriores
+	n: 5409632
+
+
+
+	Ligacao 1:
+Endereco (no): 5409632
+Ligacoes anteriores:
+	Ligacao   0: 5409056
+Tipo/nivel: V0
+Ligacoes posteriores
+	else: 5413656
+	Then: 5413112
+
+
+	Ligacao 2:
+Endereco (no): 5413656
+Ligacoes anteriores:
+	Ligacao   0: 5409632
+Tipo/nivel: V1
+Ligacoes posteriores
+	else: 5413400
+	Then: 5413944
+
+
+	Ligacao 3:
+Endereco (no): 5413400
+Ligacoes anteriores:
+	Ligacao   0: 5413656
+Tipo: Numero
+3,536e-001 0,000e+000
+
+
+	Ligacao 4:
+Endereco (no): 5413944
+Ligacoes anteriores:
+	Ligacao   0: 5413656
+Tipo: Numero
+-3,536e-001 0,000e+000
+
+
+	Ligacao 5:
+Endereco (no): 5413112
+Ligacoes anteriores:
+	Ligacao   0: 5409632
+Tipo/nivel: V1
+Ligacoes posteriores
+	else: 5412504
+	Then: 5412984
+
+
+	Ligacao 6:
+Endereco (no): 5412504
+Ligacoes anteriores:
+	Ligacao   0: 5413112
+Tipo: Numero
+1,545e-008 -3,536e-001
+
+
+	Ligacao 7:
+Endereco (no): 5412984
+Ligacoes anteriores:
+	Ligacao   0: 5413112
+Tipo: Numero
+-1,545e-008 3,536e-001
+
+
+
+AMPLITUDES
+
+	Ligacao 0:
+Endereco (no): 5413400
+Ligacoes anteriores:
+	Ligacao   0: 5413656
+Tipo: Numero
+3,536e-001 0,000e+000
+
+
+	Ligacao 1:
+Endereco (no): 5413944
+Ligacoes anteriores:
+	Ligacao   0: 5413656
+Tipo: Numero
+-3,536e-001 0,000e+000
+
+
+	Ligacao 2:
+Endereco (no): 5412504
+Ligacoes anteriores:
+	Ligacao   0: 5413112
+Tipo: Numero
+1,545e-008 -3,536e-001
+
+
+	Ligacao 3:
+Endereco (no): 5412984
+Ligacoes anteriores:
+	Ligacao   0: 5413112
+Tipo: Numero
+-1,545e-008 3,536e-001
+
+

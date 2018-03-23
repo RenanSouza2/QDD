@@ -4991,37 +4991,52 @@ QDD* Switch(Short nqbit)
 
 QDD* QFT(QDD *Q)
 {
+    QDD *Qa;
+    Qa = copia_QDD(Q);
+
     Short N;
-    N = Q->n;
+    N = Q->nqbit;
 
     QDD **Qr;
     Qr = cria_QDD_array(N);
-    Qr[0] = H;
+    Qr[0] = QH;
 
     QDD *Q1, *Q2;
     Short i;
     float theta;
     theta = pi;
-    for(i=2;i<=N;i++)
+    for(i=2; i<=N; i++)
     {
         theta /= 2;
         Q1 = Rz(theta);
-        Q2 = aplica(Qaux1,i,0);
-        libera_QDD(Qaux1);
-        Qaux1 = controla(Qaux2,i-1,1);
-        libera_QDD(Qaux2);
-        Qr[i-1]= Qaux1;
+        Q2 = aplica(Q1,i,0);
+        libera_QDD(Q1);
+        Q1 = controla(Q2,i-1,1);
+        libera_QDD(Q2);
+        Qr[i-1] = Q1;
     }
 
     Short j;
-    for(i=N; i>0; i--)
+    for(j=N; j>0; j--)
     {
-        for(j=0; j<i; j++)
+        for(i=0; i<j; i++)
         {
-            Q
+            Q1 = aplica(Qr[i],N,N-j);
+            Q2 = produto_matriz_vetor(Q1,Qa);
+            libera_QDD(Q1);
+            libera_QDD(Qa);
+            Qa = Q2;
         }
     }
+
+    for(i=1; i<N; i++)
+        libera_QDD(Qr[i]);
+    libera_QDD_array(Qr,N);
+
+    return Qa;
 }
+
+
 
 /**   Medidas   **/
 
@@ -5598,14 +5613,13 @@ int main()
     setlocale(LC_ALL, "Portuguese");
     /***********************************/
 
-    QDD *Q;
-    Q = Rz(pi/2);
-    mostra_QDD(Q);
-    libera_QDD(Q);
+    QDD *Qb, *Q;
+    Qb = BASE(3,6);
+    Q = QFT(Qb);
+    fmostra_QDD_sozinho(Q,"QFT.txt");
 
-    printf("\n\n");
-    mostra_quantidades();
-    mostra_contagem();
+    libera_QDD(Qb);
+    libera_QDD(Q);
 
     /***********************************/
     finaliza_structs_globais();
