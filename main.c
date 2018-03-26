@@ -5613,13 +5613,35 @@ int main()
     setlocale(LC_ALL, "Portuguese");
     /***********************************/
 
-    QDD *Qb, *Q;
-    Qb = BASE(3,6);
-    Q = QFT(Qb);
-    fmostra_QDD_sozinho(Q,"QFT.txt");
+    Short N;
+    for(N=1; N<25; N++)
+    {
+        printf("\nN: %d",N);
+        QDD *Q1, *Q2, *Qb;
+        Q1 = BASE(N,0);
+        Q2 = BASE(N,512);
+        Qb = soma_QDD(Q1,Q2);
+        produto_QDD_real(Qb,0.5);
+        libera_QDD(Q1);
+        libera_QDD(Q2);
 
-    libera_QDD(Qb);
-    libera_QDD(Q);
+        QDD *Q;
+        Q = QFT(Qb);
+
+        Short i;
+        for(i=N; i>1; i-=2)
+        {
+            Q1 = Switch(i);
+            Q2 = aplica(Q1,N,(N-i)/2);
+            libera_QDD(Q1);
+
+            Q1 = produto_matriz_vetor(Q2,Q);
+            libera_QDD(Q2);
+            libera_QDD(Q);
+            Q = Q1;
+        }
+    }
+
 
     /***********************************/
     finaliza_structs_globais();
