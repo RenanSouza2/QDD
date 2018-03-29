@@ -21,7 +21,7 @@
 
 
 
-FILE *fm;
+FILE *fm, *fmr = NULL;;
 unsigned long long mem = 0, memMax = 0, memF = 0;
 unsigned long long iQ = 0, iI = 0, iM = 0, iF = 0, iL = 0, iA = 0, iC = 0, iS = 0, iB = 0, iLS = 0; // contagem total
 unsigned long long cQ = 0, cI = 0, cM = 0, cF = 0, cL = 0, cA = 0, cC = 0, cS = 0, cB = 0, cLS = 0; // contagem criados
@@ -164,6 +164,11 @@ void MENSAGEM(char *s)
     fp = fopen("MENSAGEM.txt","w");
     fprintf(fp,s);
     fclose(fp);
+}
+
+void MENSAGEM_ACUMULATIVA(char *s)
+{
+    fprintf(fmr,"\n%s",s);
 }
 
 void configuracao(Short N)
@@ -441,6 +446,7 @@ l_string* cria_l_string()
 }
 
 
+
 /** Destrutores  **/
 
 void libera_QDD_no(QDD *Q)
@@ -617,6 +623,7 @@ void libera_l_string(l_string *ls)
     lLS++;
     free(ls);
 }
+
 
 
 /** Enlistadores  **/
@@ -1979,6 +1986,8 @@ void inicia_structs_globais()
     for(i=0; i<66; i++)
         for(j=0; j<3; j++)
             A[i][j] = NULL;
+
+    fmr = fopen("MensagemAcumulativa.txt","w");
 }
 
 void finaliza_structs_globais()
@@ -2004,6 +2013,8 @@ void finaliza_structs_globais()
     libera_QDD(Q01);
     libera_QDD(Q10);
     libera_QDD(Q11);
+
+    fclose(fmr);
 }
 
 
@@ -5033,6 +5044,18 @@ QDD* QFT(QDD *Q)
         libera_QDD(Qr[i]);
     libera_QDD_array(Qr,N);
 
+    for(i=N; i>1; i-=2)
+    {
+        Q1 = Switch(i);
+        Q2 = aplica(Q1,N,(N-i)/2);
+        libera_QDD(Q1);
+
+        Q1 = produto_matriz_vetor(Q2,Qa);
+        libera_QDD(Q2);
+        libera_QDD(Qa);
+        Qa = Q1;
+    }
+
     return Qa;
 }
 
@@ -5613,35 +5636,24 @@ int main()
     setlocale(LC_ALL, "Portuguese");
     /***********************************/
 
-    Short N;
-    for(N=1; N<25; N++)
+    Short N, i;
+    float re;
+    char mensagem[30];
+    re = sqrt(0.5);
+    for(N=2; N<60; N++)
     {
         printf("\nN: %d",N);
-        QDD *Q1, *Q2, *Qb;
-        Q1 = BASE(N,0);
-        Q2 = BASE(N,512);
-        Qb = soma_QDD(Q1,Q2);
-        produto_QDD_real(Qb,0.5);
-        libera_QDD(Q1);
-        libera_QDD(Q2);
+        QDD *Qb;
+        Qb = W(N);
 
         QDD *Q;
         Q = QFT(Qb);
+        libera_QDD(Qb);
 
-        Short i;
-        for(i=N; i>1; i-=2)
-        {
-            Q1 = Switch(i);
-            Q2 = aplica(Q1,N,(N-i)/2);
-            libera_QDD(Q1);
-
-            Q1 = produto_matriz_vetor(Q2,Q);
-            libera_QDD(Q2);
-            libera_QDD(Q);
-            Q = Q1;
-        }
+        libera_QDD(Q);
+        sprintf(mensagem,"N: %d",N);
+        MENSAGEM_ACUMULATIVA(mensagem);
     }
-
 
     /***********************************/
     finaliza_structs_globais();
