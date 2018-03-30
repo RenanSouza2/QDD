@@ -23,11 +23,11 @@
 
 FILE *fm, *fmr = NULL;;
 unsigned long long mem = 0, memMax = 0, memF = 0;
-unsigned long long iQ = 0, iI = 0, iM = 0, iF = 0, iL = 0, iA = 0, iC = 0, iS = 0, iB = 0, iLS = 0; // contagem total
-unsigned long long cQ = 0, cI = 0, cM = 0, cF = 0, cL = 0, cA = 0, cC = 0, cS = 0, cB = 0, cLS = 0; // contagem criados
-unsigned long long lQ = 0, lI = 0, lM = 0, lF = 0, lL = 0, lA = 0, lC = 0, lS = 0, lB = 0, lLS = 0; // contagem liberado
-unsigned long long mem0, iQ0, iI0, iM0, iF0, iL0; // Contagem inicial
-unsigned short tQ, tN, tL, tA, tC, tS, tB, tLS; // tamanho structs
+unsigned long long iQ = 0, iI = 0, iM = 0, iF = 0, iL = 0, iA = 0, iC = 0, iS = 0, iB = 0, iR = 0; // contagem total
+unsigned long long cQ = 0, cI = 0, cM = 0, cF = 0, cL = 0, cA = 0, cC = 0, cS = 0, cB = 0, cR = 0; // contagem criados
+unsigned long long lQ = 0, lI = 0, lM = 0, lF = 0, lL = 0, lA = 0, lC = 0, lS = 0, lB = 0, lR = 0; // contagem liberado
+unsigned long long mem0, iQ0, iI0, iM0, iF0, iL0, iR0; // Contagem inicial
+unsigned short tQ, tN, tL, tA, tC, tS, tB, tR; // tamanho structs
 unsigned short print, Nqbit;
 float eps;
 
@@ -96,15 +96,14 @@ struct suporte
 struct busca
 {
     struct no *n;
-    unsigned short N;
-    struct l_string *l_s;
+    struct rota *r;
     struct busca *b;
 };
 
-struct l_string
+struct rota
 {
-    char s[64];
-    struct l_string *l_s;
+    char num[64];
+    struct rota *r;
 };
 
 
@@ -115,11 +114,11 @@ typedef struct QDD   QDD;
 typedef struct no    no;
 typedef struct lista lista;
 
-typedef struct apply    apply;
-typedef struct conta    conta;
-typedef struct suporte  suporte;
-typedef struct busca    busca;
-typedef struct l_string l_string;
+typedef struct apply   apply;
+typedef struct conta   conta;
+typedef struct suporte suporte;
+typedef struct busca   busca;
+typedef struct rota rota;
 
 typedef unsigned short     Short;
 typedef unsigned long long Long;
@@ -422,27 +421,50 @@ busca* cria_busca()
     cB++;
 
     b->n   = NULL;
-    b->N   = 0;
-    b->l_s = NULL;
+    b->r = NULL;
     b->b   = NULL;
 
     return b;
 }
 
-l_string* cria_l_string()
+rota* cria_rota(char *num)
 {
-    l_string *l_s;
-    l_s = malloc(tB);
-    if(l_s == NULL)
-        ERRO("CRIA L STRING");
-    aumenta_memoria(tLS);
-    iLS++;
-    cLS++;
+    rota *r;
+    r = malloc(tR);
+    if(r == NULL)
+        ERRO("CRIA ROTA");
+    aumenta_memoria(tR);
+    iR++;
+    cR++;
 
-    l_s->s[0] = '\0';
-    l_s->l_s = NULL;
+    sprintf(r->num,"%s",num);
+    r->r = NULL;
 
-    return l_s;
+    return r;
+}
+
+rota* cria_rota_vazia()
+{
+    rota *r;
+    r = malloc(tR);
+    if(r == NULL)
+        ERRO("CRIA ROTA");
+    aumenta_memoria(tR);
+    iR++;
+    cR++;
+
+    r->num[0] = '\0';
+    r->r = NULL;
+
+    return r;
+}
+
+rota* cria_rota_bifurcacao()
+{
+    rota *r;
+    r = cria_rota("0");
+    r->r = cria_rota("1");
+    return r;
 }
 
 
@@ -614,14 +636,25 @@ void libera_busca_no(busca *b)
     free(b);
 }
 
-void libera_l_string(l_string *ls)
+void libera_rota_no(rota *r)
 {
-    diminui_memoria(tLS);
-    if(iLS == 0)
-        ERRO("LIBERA L STRING");
-    iLS--;
-    lLS++;
-    free(ls);
+    diminui_memoria(tR);
+    if(iR == 0)
+        ERRO("LIBERA ROTA");
+    iR--;
+    lR++;
+    free(r);
+}
+
+void libera_rota_lista(rota *r)
+{
+    rota *raux;
+    while(r != NULL)
+    {
+        raux = r->r;
+        libera_rota_no(r);
+        r = raux;
+    }
 }
 
 
@@ -798,6 +831,16 @@ void mostra_no_numero(no *n)
         ERRO("MOSTRA NUMERO NO| NO TEM QUE SER TIPO FIM");
 
     printf("\n%e\t%e",n->at.f.re,n->at.f.im);
+}
+
+void mostra_lista_numero(lista *l)
+{
+    if(l == NULL)
+        return;
+
+    lista *lc;
+    for(lc = l; lc != NULL; lc = lc->l)
+        mostra_no_numero(lc->n);
 }
 
 void mostra_lista_com_no(lista *l)
@@ -993,11 +1036,22 @@ void mostra_suporte_lista_com_conta(suporte *s)
     }
 }
 
+void mostra_rotas(rota *r)
+{
+    Long i;
+    for(i=0; r != NULL; i++)
+    {
+        printf("\n\tRota %3llu: %s",i,r->num);
+        r = r->r;
+    }
+}
+
 void mostra_busca_no(busca *b)
 {
     printf("\nEndereco (busca): %d",b);
     printf("\nno: ");
     mostra_no(b->n);
+    mostra_rotas(b->r);
     printf("\nb proximo: %d",b->b);
 }
 
@@ -1005,6 +1059,7 @@ void mostra_busca_no_compacto(busca *b)
 {
     printf("\nEndereco (busca): %d",b);
     printf("\nno: %d",b->n);
+    mostra_rotas(b->r);
     printf("\nb proximo: %d",b->b);
 }
 
@@ -1066,14 +1121,25 @@ void mostra_quantidades()
         vazio = 0;
         printf("\nb:    %llu",iB);
     }
-    if(iLS != 0)
+    if(iR != 0)
     {
         vazio = 0;
-        printf("\nls:    %llu",iLS);
+        printf("\nr:    %llu",iR);
     }
     if(vazio)
         printf("\nTUDO ZERADO");
     printf("\n");
+}
+
+void mostra_quantidades_zero()
+{
+    printf("\nMem0: %llu",mem0);
+    printf("\nQ0:   %llu",iQ0);
+    printf("\nI0:   %llu",iI0);
+    printf("\nM0:   %llu",iM0);
+    printf("\nF0:   %llu",iF0);
+    printf("\nL0:   %llu",iL0);
+    printf("\nR0:   %llu",iR0);
 }
 
 void mostra_contagem()
@@ -1124,10 +1190,10 @@ void mostra_contagem()
         vazio = 0;
         printf("\ncB: %llu\tlS: %llu",cB,lB);
     }
-    if(cLS != 0)
+    if(cR != 0)
     {
         vazio = 0;
-        printf("\ncLS: %llu\tlS: %llu",cLS,lLS);
+        printf("\ncLS: %llu\tlS: %llu",cR,lR);
     }
     if(vazio)
         printf("\nNAO CRIOU NADA");
@@ -1143,7 +1209,7 @@ void mostra_tamanhos()
     printf("\nc:   %d",tC);
     printf("\ns:   %d",tS);
     printf("\nb:   %d",tB);
-    printf("\nls:  %d",tLS);
+    printf("\nr:   %d",tR);
     printf("\n");
 }
 
@@ -1935,17 +2001,18 @@ QDD *QH, *QI, *QX, *QS, *QY, *Q00, *Q01, *Q10, *Q11;
 QDD *Qred;
 no *nzero;
 apply *A[66][3];
+rota *rb;
 
 void inicia_structs_globais()
 {
-    tQ  = sizeof(QDD);
-    tN  = sizeof(no);
-    tL  = sizeof(lista);
-    tA  = sizeof(apply);
-    tC  = sizeof(conta);
-    tS  = sizeof(suporte);
-    tB  = sizeof(busca);
-    tLS = sizeof(l_string);
+    tQ = sizeof(QDD);
+    tN = sizeof(no);
+    tL = sizeof(lista);
+    tA = sizeof(apply);
+    tC = sizeof(conta);
+    tS = sizeof(suporte);
+    tB = sizeof(busca);
+    tR = sizeof(rota);
 
     Qred  = cria_QDD(1);
     Qred->n = cria_no_inicio();
@@ -1962,12 +2029,15 @@ void inicia_structs_globais()
     Q10 = matriz_delta_kronecker(1,0);
     Q11 = matriz_delta_kronecker(1,1);
 
+    rb = cria_rota_bifurcacao();
+
     mem0 = mem;
     iQ0  = iQ;
     iI0  = iI;
     iM0  = iM;
     iF0  = iF;
     iL0  = iL;
+    iR0  = iR;
 
     mem = 0;
     iQ  = 0;
@@ -1975,6 +2045,7 @@ void inicia_structs_globais()
     iM  = 0;
     iF  = 0;
     iL  = 0;
+    iR  = 0;
 
     cQ = 0;
     cI = 0;
@@ -1998,6 +2069,7 @@ void finaliza_structs_globais()
     iM  += iM0;
     iF  += iF0;
     iL  += iL0;
+    iR  += iR0;
 
     libera_no(Qred->n);
     libera_QDD_no(Qred);
@@ -2013,6 +2085,8 @@ void finaliza_structs_globais()
     libera_QDD(Q01);
     libera_QDD(Q10);
     libera_QDD(Q11);
+
+    libera_rota_lista(rb);
 
     fclose(fmr);
 }
@@ -2243,6 +2317,13 @@ lista* copia_lista_sem_cabeca(lista *l1)
     laux = l2->l;
     libera_lista_no(l2);
     return laux;
+}
+
+rota* copia_rota(rota *r1)
+{
+    rota *r;
+    r = cria_rota(r1->num);
+    return r;
 }
 
 
@@ -4861,7 +4942,7 @@ QDD* BASE(Short N, Long n)
     return Q;
 }
 
-QDD* w(Short N)
+QDD* ALL(Short N)
 {
     no *ni;
     ni = cria_no_inicio();
@@ -5152,34 +5233,221 @@ void mede_todos(QDD *Q)
 
 /**   Busca   **/
 
-l_string* adiciona(l_string *l_si, Short B)
+rota* concatena_rotas(rota *r1, rota *r2)
 {
-    l_string *l_so;
-    l_so = cria_l_string();
-    sprintf(l_so->s,"%d%s",B,l_si->s);
-    return l_so;
+    rota *r, *rc, *rc1, *rc2;
+    r = cria_rota_vazia();
+    rc = r;
+    for(rc1 = r1; rc1 != NULL; rc1 = rc1->r)
+    {
+        for(rc2 = r2; rc2 != NULL; rc2 = rc2->r)
+        {
+            rc->r = cria_rota_vazia();
+            rc = rc->r;
+
+            sprintf(rc->num,"%s%s",rc1->num,rc2->num);
+        }
+    }
+
+    rc = r->r;
+    libera_rota_no(r);
+    r = rc;
+
+    return r;
 }
 
-void Busca(no *n, Short N)
+void ordena_rotas_recursivo(rota *r, Short N)
+{
+    if(r->r->r == NULL)
+        return;
+
+    rota *r0, *r1, *ra;
+    r0 = cria_rota_vazia();
+    r1 = cria_rota_vazia();
+
+    while(r->r != NULL)
+    {
+        ra = r->r;
+        r->r = ra->r;
+
+        switch(ra->num[N])
+        {
+            case '0':
+                ra->r = r0->r;
+                r0->r = ra;
+                break;
+
+            case '1':
+                ra->r = r1->r;
+                r1->r = ra;
+                break;
+        }
+    }
+
+    ordena_rotas_recursivo(r0,N+1);
+    ordena_rotas_recursivo(r1,N+1);
+
+    r->r = r0->r;
+    for(r0 = r; r0->r != NULL; r0 = r0->r);
+    r0->r = r1->r;
+    libera_rota_no(r0);
+    libera_rota_no(r1);
+}
+
+void ordena_rotas(rota **r)
+{
+    rota *ra;
+    ra = cria_rota_vazia();
+    ra->r = *r;
+    ordena_rotas_recursivo(ra,0);
+    *r = ra->r;
+    libera_rota_no(ra);
+}
+
+rota* busca_rotas(no *n, Short N)
 {
     busca *b;
     b = cria_busca();
     b->n = n;
-    b->N = N;
-    b->l_s = cria_l_string();
+    b->r = cria_rota_vazia();
 
-    no *n1;
+    no *nc;
     lista *lc;
-    busca *bs;
-    bs = NULL;
+    busca *bc, *bn, *baux;
+    rota *r, *rc;
+    Short Na, Nc, i;
     while(b != NULL)
     {
+        if(n == NULL)
+            ERRO("BUSCA ROTAS| BUSCA COM NO VAZIO");
         n = b->n;
+        if(n->tipo == Inicio)
+            break;
+        if(n->l == NULL)
+            ERRO("BUSCA NOTAS| NO SEM ANTERIORES");
+
+        Na = 0;
+        switch(n->tipo)
+        {
+            case Meio:
+                Na = n->at.m.nivel;
+                break;
+
+            case Fim:
+                Na = N;
+                break;
+        }
+
         for(lc = n->l; lc != NULL; lc = lc->l)
         {
-            n1 = lc->n;
+            nc = lc->n;
+
+            Nc = 0;
+            r = NULL;
+            switch(nc->tipo)
+            {
+                case Inicio:
+                    Nc = Na;
+                    r = cria_rota_vazia();
+                    break;
+
+                case Meio:
+                    Nc = Na - (nc->at.m.nivel) - 1;
+                    if(nc->at.m.el == n)
+                        r = cria_rota("0");
+                    if(nc->at.m.th == n)
+                        r = cria_rota("1");
+                    break;
+            }
+
+            for(i=0; i<Nc; i++)
+            {
+                rc = concatena_rotas(r,rb);
+                libera_rota_lista(r);
+                r = rc;
+            }
+            rc = concatena_rotas(r,b->r);
+            libera_rota_lista(r);
+            r = rc;
+
+            for(bc = b; bc != NULL; bc = bc->b)
+                if(bc->n == nc)
+                    break;
+            if(bc == NULL)
+            {
+                bn = cria_busca();
+                bn->n = nc;
+                bn->r = r;
+
+                switch(nc->tipo)
+                {
+                    case Inicio:
+                        for(bc = b; bc->b != NULL; bc = bc->b);
+                        bc->b = bn;
+                        break;
+
+                    case Meio:
+                        for(bc = b; bc->b != NULL; bc = bc->b)
+                        {
+                            baux = bc->b;
+                            if(baux->n->tipo == Inicio)
+                                break;
+                            if(baux->n->at.m.nivel < nc->at.m.nivel)
+                                break;
+                        }
+                        bn->b = bc->b;
+                        bc->b = bn;
+                        break;
+                }
+            }
+            else
+            {
+                for(rc = bc->r; rc->r != NULL; rc = rc->r);
+                rc->r = r;
+            }
         }
+
+        bc = b->b;
+        if(bc == NULL)
+            break;
+        libera_rota_lista(b->r);
+        libera_busca_no(b);
+        b = bc;
     }
+    if(b == NULL)
+        ERRO("BUSCA ROTAS| NAO RETORNOU BUSCA");
+
+    r = b->r;
+    libera_busca_no(b);
+    ordena_rotas(&r);
+    return r;
+}
+
+rota* busca_mais_provavel(QDD *Q)
+{
+    no *n, *naux, *nmax;
+    lista *l;
+    double p;
+    p = 0;
+    nmax = NULL;
+    for(l = Q->l; l!= NULL; l = l->l)
+    {
+        n = l->n;
+        naux = produto_no_conjugado_no(n,n);
+
+        if(naux->at.f.re > p)
+        {
+            nmax = n;
+            p = naux->at.f.re;
+        }
+        libera_no(naux);
+    }
+    if(nmax == NULL)
+        ERRO("BUSCA MAIS PROVAVEL| NAO ACHOU AMPLITUDE COM MAIOR MODULO");
+
+    rota *r;
+    r = busca_rotas(nmax,Q->nqbit);
+    return r;
 }
 
 
@@ -5636,23 +5904,32 @@ int main()
     setlocale(LC_ALL, "Portuguese");
     /***********************************/
 
-    Short N, i;
-    float re;
-    char mensagem[30];
-    re = sqrt(0.5);
-    for(N=2; N<60; N++)
+    Short N;
+    N = 8;
+
+    QDD *Qb;
+    rota *r;
+    Qb = W(N);
+    r = busca_mais_provavel(Qb);
+    mostra_rotas(r);
+    libera_rota_lista(r);
+
+    printf("\n\n");
+    QDD *Q;
+    Q = QFT(Qb);
+    r = busca_mais_provavel(Q);
+    mostra_rotas(r);
+    libera_QDD(Qb);
+    libera_rota_lista(r);
+
+    no *n;
+    lista *l;
+    for(l = Q->l; l != NULL; l = l->l)
     {
-        printf("\nN: %d",N);
-        QDD *Qb;
-        Qb = W(N);
-
-        QDD *Q;
-        Q = QFT(Qb);
-        libera_QDD(Qb);
-
-        libera_QDD(Q);
-        sprintf(mensagem,"N: %d",N);
-        MENSAGEM_ACUMULATIVA(mensagem);
+        mostra_no_numero(l->n);
+        n = produto_no_conjugado_no(l->n,l->n);
+        printf("\t\t%f",n->at.f.re);
+        libera_no(n);
     }
 
     /***********************************/
