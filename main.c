@@ -118,7 +118,7 @@ typedef struct apply   apply;
 typedef struct conta   conta;
 typedef struct suporte suporte;
 typedef struct busca   busca;
-typedef struct rota rota;
+typedef struct rota    rota;
 
 typedef unsigned short     Short;
 typedef unsigned long long Long;
@@ -167,6 +167,9 @@ void MENSAGEM(char *s)
 
 void MENSAGEM_ACUMULATIVA(char *s)
 {
+    if(fmr == NULL)
+        fmr = fopen("MensagemAcumulativa.txt","w");
+
     fprintf(fmr,"\n%s",s);
 }
 
@@ -657,6 +660,20 @@ void libera_rota_lista(rota *r)
     }
 }
 
+void libera_busca_lista(busca *b)
+{
+    busca *bc;
+    while(b != NULL)
+    {
+        if(b->r != NULL)
+            libera_rota_lista(b->r);
+
+        bc = b->b;
+        libera_busca_no(b);
+        b = bc;
+    }
+}
+
 
 
 /** Enlistadores  **/
@@ -830,7 +847,10 @@ void mostra_no_numero(no *n)
     if(n->tipo != Fim)
         ERRO("MOSTRA NUMERO NO| NO TEM QUE SER TIPO FIM");
 
-    printf("\n%e\t%e",n->at.f.re,n->at.f.im);
+    printf("\n%e",n->at.f.re);
+    if(n->at.f.im >  eps)
+    if(n->at.f.im < -eps)
+        printf("\t%e",n->at.f.im > eps);
 }
 
 void mostra_lista_numero(lista *l)
@@ -1049,18 +1069,72 @@ void mostra_rotas(rota *r)
 void mostra_busca_no(busca *b)
 {
     printf("\nEndereco (busca): %d",b);
+    if(b == NULL)
+        return;
+
     printf("\nno: ");
     mostra_no(b->n);
     mostra_rotas(b->r);
     printf("\nb proximo: %d",b->b);
 }
 
+void mostra_busca_lista(busca *b)
+{
+    busca *bc;
+    int i;
+    i = 0;
+    for(bc = b; bc != NULL; bc = bc->b)
+    {
+        printf("\n\tBusca %d: ",i);
+        mostra_busca_no(bc);
+        i++;
+    }
+}
+
 void mostra_busca_no_compacto(busca *b)
 {
     printf("\nEndereco (busca): %d",b);
+    if(b == NULL)
+        return;
+
     printf("\nno: %d",b->n);
     mostra_rotas(b->r);
     printf("\nb proximo: %d",b->b);
+}
+
+void mostra_busca_lista_compacto(busca *b)
+{
+    busca *bc;
+    int i;
+    i = 0;
+    for(bc = b; bc != NULL; bc = bc->b)
+    {
+        printf("\n\tBusca %d: ",i);
+        mostra_busca_no_compacto(bc);
+        i++;
+    }
+}
+
+void mostra_busca_no_numero(busca *b)
+{
+    if(b == NULL)
+        return;
+
+    mostra_no_numero(b->n);
+    mostra_rotas(b->r);
+}
+
+void mostra_busca_lista_numero(busca *b)
+{
+    busca *bc;
+    int i;
+    i = 0;
+    for(bc = b; bc != NULL; bc = bc->b)
+    {
+        printf("\n\n\tBusca %d: ",i);
+        mostra_busca_no_numero(bc);
+        i++;
+    }
 }
 
 void mostra_quantidades()
@@ -2057,8 +2131,6 @@ void inicia_structs_globais()
     for(i=0; i<66; i++)
         for(j=0; j<3; j++)
             A[i][j] = NULL;
-
-    fmr = fopen("MensagemAcumulativa.txt","w");
 }
 
 void finaliza_structs_globais()
@@ -2088,7 +2160,8 @@ void finaliza_structs_globais()
 
     libera_rota_lista(rb);
 
-    fclose(fmr);
+    if(fmr != NULL)
+        fclose(fmr);
 }
 
 
@@ -2358,6 +2431,13 @@ no* produto_no_conjugado_no(no *n1, no *n2)
     im = (n1->at.f.re)*(n2->at.f.im) - (n1->at.f.im)*(n2->at.f.re);
     n = cria_no_fim(re,im);
     return n;
+}
+
+no* modulo_no(no *n)
+{
+    no *nm;
+    nm = produto_no_conjugado_no(n,n);
+    return nm;
 }
 
 void produto_no_real(no *n, double re)
@@ -4720,7 +4800,7 @@ float modulo_vetor(QDD *Q)
     {
         n0 = l->n;
 
-        n1 = produto_no_conjugado_no(n0,n0);
+        n1 = modulo_no(n0);
         transfere_conexao(n1,n0);
         libera_no(n0);
 
@@ -5153,7 +5233,7 @@ QDD** mede_conservativo(QDD *Q, Short nqbit, float p[2])
     QF[0] = produto_matriz_vetor(QM[0],Q);
     QF[1] = produto_matriz_vetor(QM[1],Q);
 
-    float paux[2];
+    float paux[2]; //paux armazena as amplitudes e p as probabilidades
 
     paux[0] = modulo_vetor(QF[0]);
     p[0] = paux[0]*paux[0];
@@ -5165,19 +5245,11 @@ QDD** mede_conservativo(QDD *Q, Short nqbit, float p[2])
     if(p[1] > eps)
         produto_QDD_real(QF[1],1/paux[1]);
 
-
     libera_QDD(QM[0]);
     libera_QDD(QM[1]);
     libera_QDD_array(QM,2);
 
     return QF;
-}
-
-QDD** mede_conservativo_alternativo(QDD *Q, Short nqbit, float p[2])
-{
-    QDD **QM;
-    QM = NULL;
-    return QM;
 }
 
 QDD* mede_destrutivo(QDD *Q, Short nqbit, Short *resultado)
@@ -5186,19 +5258,25 @@ QDD* mede_destrutivo(QDD *Q, Short nqbit, Short *resultado)
     float p[2];
     QM = mede_conservativo(Q,nqbit,p);
 
+    int aleatorio;
+    aleatorio = rand();
+    srand(aleatorio);
+
     float P;
-    srand(time(NULL));
-    P = rand();
+    P = aleatorio;
     P /= RAND_MAX;
+    printf("\nP: %f",P);
     if(P < p[0])
     {
         Q = QM[0];
         libera_QDD(QM[1]);
+        *resultado = 0;
     }
     else
     {
         Q = QM[1];
         libera_QDD(QM[0]);
+        *resultado = 1;
     }
     libera_QDD_array(QM,2);
     return Q;
@@ -5227,6 +5305,23 @@ void mede_todos(QDD *Q)
 
         printf("\ni: %2hu\tp0: %f\tp1: %f\tt: %.3f",i,p[0],p[1],tempo);
     }
+}
+
+QDD* mede_tudo(QDD *Q)
+{
+    QDD *Qr;
+    Qr = copia_QDD(Q);
+
+    QDD *Qaux;
+    Short i, N, p;
+    N = Q->nqbit;
+    for(i=0; i<N; i++)
+    {
+        Qaux = mede_destrutivo(Qr,i,&p);
+        libera_QDD(Qr);
+        Qr = Qaux;
+    }
+    return Qr;
 }
 
 
@@ -5419,12 +5514,16 @@ rota* busca_rotas(no *n, Short N)
 
     r = b->r;
     libera_busca_no(b);
-    ordena_rotas(&r);
+
+    //ordena_rotas(&r);
     return r;
 }
 
-rota* busca_mais_provavel(QDD *Q)
+busca* busca_mais_provavel(QDD *Q)
 {
+    busca *b;
+    b = cria_busca();
+
     no *n, *naux, *nmax;
     lista *l;
     double p;
@@ -5433,21 +5532,66 @@ rota* busca_mais_provavel(QDD *Q)
     for(l = Q->l; l!= NULL; l = l->l)
     {
         n = l->n;
-        naux = produto_no_conjugado_no(n,n);
+        naux = modulo_no(n);
 
         if(naux->at.f.re > p)
         {
+            if(b->n != NULL)
+                free(b->n);
+            b->n = naux;
+
             nmax = n;
             p = naux->at.f.re;
         }
-        libera_no(naux);
+        else
+            libera_no(naux);
     }
     if(nmax == NULL)
         ERRO("BUSCA MAIS PROVAVEL| NAO ACHOU AMPLITUDE COM MAIOR MODULO");
 
-    rota *r;
-    r = busca_rotas(nmax,Q->nqbit);
-    return r;
+    b->r = busca_rotas(nmax,Q->nqbit);
+    return b;
+}
+
+busca* busca_probabilidade_maior(QDD *Q, double p) // Retorna nulo caso não ache nada
+{
+    no *n0, *n1;
+    lista *l;
+    Q = copia_QDD(Q);
+    for(l = Q->l; l != NULL; l = l->l)
+    {
+        n0 = l->n;
+
+        n1 = modulo_no(n0);
+        transfere_conexao(n1,n0);
+        libera_no(n0);
+
+        l->n = n1;
+    }
+    reduz_QDD(Q,1,4);
+
+    busca *b, *bc;
+    b = cria_busca();
+    bc = b;
+    for(l = Q->l; l != NULL; l  = l->l)
+    {
+        n0 = l->n;
+        if(n0->at.f.re > p)
+        {
+            bc->b = cria_busca();
+            bc = bc->b;
+
+            bc->n = copia_no(n0);
+            bc->r = busca_rotas(n0,Q->nqbit);
+
+        }
+    }
+
+    bc = b->b;
+    libera_busca_no(b);
+    b = bc;
+
+    return b;
 }
 
 
@@ -5904,33 +6048,37 @@ int main()
     setlocale(LC_ALL, "Portuguese");
     /***********************************/
 
-    Short N;
-    N = 8;
+    /*Short N;
+    N = 12;
 
     QDD *Qb;
-    rota *r;
+    busca *b;
     Qb = W(N);
-    r = busca_mais_provavel(Qb);
-    mostra_rotas(r);
-    libera_rota_lista(r);
+    b = busca_mais_provavel(Qb);
+    mostra_busca_no_numero(b);
+    libera_busca_lista(b);
 
     printf("\n\n");
     QDD *Q;
     Q = QFT(Qb);
-    r = busca_mais_provavel(Q);
-    mostra_rotas(r);
+    salva_QDD(Q,"QftW");b = busca_mais_provavel(Qb);
+    mostra_busca_no_numero(b);
+    libera_busca_lista(b);
     libera_QDD(Qb);
-    libera_rota_lista(r);
 
-    no *n;
-    lista *l;
-    for(l = Q->l; l != NULL; l = l->l)
-    {
-        mostra_no_numero(l->n);
-        n = produto_no_conjugado_no(l->n,l->n);
-        printf("\t\t%f",n->at.f.re);
-        libera_no(n);
-    }
+    printf("\n\n");
+    b = busca_probabilidade_maior(Q,0.01);
+    mostra_busca_lista_numero(b);*/
+
+    QDD *Q;
+    Q = le_QDD("QftW");
+
+    QDD *Qr;
+    Qr = mede_tudo(Q);
+
+    busca *b;
+    b = busca_mais_provavel(Qr);
+    mostra_busca_no_numero(b);
 
     /***********************************/
     finaliza_structs_globais();
