@@ -28,7 +28,7 @@ unsigned long long cQ = 0, cI = 0, cM = 0, cF = 0, cL = 0, cA = 0, cC = 0, cS = 
 unsigned long long lQ = 0, lI = 0, lM = 0, lF = 0, lL = 0, lA = 0, lC = 0, lS = 0, lB = 0, lR = 0; // contagem liberado
 unsigned long long mem0, iQ0, iI0, iM0, iF0, iL0, iR0; // Contagem inicial
 unsigned short tQ, tN, tL, tA, tC, tS, tB, tR; // tamanho structs
-unsigned short print, Nqbit;
+unsigned short print, Nqbit, ale = 0;
 float eps;
 
 
@@ -1061,7 +1061,7 @@ void mostra_rotas(rota *r)
     Long i;
     for(i=0; r != NULL; i++)
     {
-        printf("\n\tRota %3llu: %s",i,r->num);
+        printf("\n\t%d\tRota %3llu: %s",r,i,r->num);
         r = r->r;
     }
 }
@@ -1364,6 +1364,19 @@ void fmostra_no(FILE *fp, no *n)
     fprintf(fp,"\n");
 }
 
+void fmostra_no_numero(FILE *fp, no *n)
+{
+    if(n == NULL)
+        return;
+    if(n->tipo != Fim)
+        ERRO("MOSTRA NUMERO NO| NO TEM QUE SER TIPO FIM");
+
+    fprintf(fp,"\n%e",n->at.f.re);
+    if(n->at.f.im >  eps)
+    if(n->at.f.im < -eps)
+        fprintf(fp,"\t%e",n->at.f.im > eps);
+}
+
 void fmostra_lista_com_no(FILE *fp, lista *l)
 {
     lista *lc;
@@ -1563,6 +1576,38 @@ void fmostra_suporte_lista_com_conta(FILE *fp, suporte *s)
         fprintf(fp,"\n\n\n\nLigacao suporte %d: ",ligacao);
         fmostra_suporte_no_com_conta(fp,sc);
         ligacao++;
+    }
+}
+
+void fmostra_rotas(FILE *fp, rota *r)
+{
+    Long i;
+    for(i=0; r != NULL; i++)
+    {
+        fprintf(fp,"\n\tRota %3llu: %s",i,r->num);
+        r = r->r;
+    }
+}
+
+void fmostra_busca_no_numero(FILE *fp, busca *b)
+{
+    if(b == NULL)
+        return;
+
+    fmostra_no_numero(fp,b->n);
+    fmostra_rotas(fp,b->r);
+}
+
+void fmostra_busca_lista_numero(FILE *fp, busca *b)
+{
+    busca *bc;
+    int i;
+    i = 0;
+    for(bc = b; bc != NULL; bc = bc->b)
+    {
+        fprintf(fp,"\n\n\tBusca %d: ",i);
+        fmostra_busca_no_numero(fp,bc);
+        i++;
     }
 }
 
@@ -2283,6 +2328,93 @@ lista* acha_fim_lista(lista *l)
     return lc;
 }
 
+void ordena_lista_recursivo(lista *l, Long n)
+{
+    if(n == 1)
+        return;
+
+    Long n1, n2;
+    n1 = n/2;
+    n2 = n - n1;
+
+    lista *l1, *l2;
+    l1 = cria_lista();
+    l2 = cria_lista();
+
+    lista *lc;
+    Long i;
+    lc = l;
+    for(i=0; i<n1; i++)
+        lc = lc->l;
+    l2->l = lc->l;
+    lc->l = NULL;
+    l1->l = l->l;
+
+    ordena_lista_recursivo(l1,n1);
+    ordena_lista_recursivo(l2,n2);
+
+    lista *laux;
+    lc = l;
+    while(l1->l != NULL && l2->l != NULL)
+    {
+        if(l1->l->n->at.f.re < l2->l->n->at.f.re)
+        {
+            laux = l1->l;
+            l1->l = laux->l;
+        }
+        else
+        {
+            laux = l2->l;
+            l2->l = laux->l;
+        }
+
+        laux->l = NULL;
+        lc->l = laux;
+        lc = laux;
+    }
+
+    if(l1->l != NULL)
+        lc->l = l1->l;
+    if(l2->l != NULL);
+        lc->l = l2->l;
+
+    libera_lista_no(l1);
+    libera_lista_no(l2);
+}
+
+void ordena_lista(lista **L, Short ordem)
+{
+    lista *l;
+    l = cria_lista();
+    l->l = *L;
+
+    lista *lc;
+    Long n;
+    n = 0;
+    for(lc = l->l; lc != NULL; lc = lc->l)
+        n++;
+
+    ordena_lista_recursivo(l,n);
+
+    lista *laux;
+    lc = NULL;
+    if(ordem)
+    {
+        while(l->l != NULL)
+        {
+            laux = l->l;
+            l->l = laux->l;
+
+            laux->l = lc;
+            lc = laux;
+        }
+        l->l = lc;
+    }
+
+    *L = l->l;
+    libera_lista_no(l);
+}
+
 
 
 /**  Conta itens  */
@@ -2433,7 +2565,7 @@ no* produto_no_conjugado_no(no *n1, no *n2)
     return n;
 }
 
-no* modulo_no(no *n)
+no* modulo_2_no(no *n)
 {
     no *nm;
     nm = produto_no_conjugado_no(n,n);
@@ -4800,7 +4932,7 @@ float modulo_vetor(QDD *Q)
     {
         n0 = l->n;
 
-        n1 = modulo_no(n0);
+        n1 = modulo_2_no(n0);
         transfere_conexao(n1,n0);
         libera_no(n0);
 
@@ -5191,8 +5323,10 @@ QDD* QFT(QDD *Q)
     Short j;
     for(j=N; j>0; j--)
     {
+        printf("\n\nj: %d",j);
         for(i=0; i<j; i++)
         {
+            printf("\n\ti: %d",i);
             Q1 = aplica(Qr[i],N,N-j);
             Q2 = produto_matriz_vetor(Q1,Qa);
             libera_QDD(Q1);
@@ -5259,13 +5393,18 @@ QDD* mede_destrutivo(QDD *Q, Short nqbit, Short *resultado)
     QM = mede_conservativo(Q,nqbit,p);
 
     int aleatorio;
+    if(ale == 0)
+    {
+        ale = 1;
+        srand(1e5*time(NULL));
+    }
     aleatorio = rand();
     srand(aleatorio);
 
     float P;
     P = aleatorio;
     P /= RAND_MAX;
-    printf("\nP: %f",P);
+    //printf("\nP: %f",P);
     if(P < p[0])
     {
         Q = QM[0];
@@ -5351,52 +5490,62 @@ rota* concatena_rotas(rota *r1, rota *r2)
     return r;
 }
 
-void ordena_rotas_recursivo(rota *r, Short N)
+void ordena_rotas_recursivo(rota *r, Short i)
 {
+    if(r->r == NULL)
+        return;
     if(r->r->r == NULL)
         return;
 
-    rota *r0, *r1, *ra;
+    rota *r0, *r1;
     r0 = cria_rota_vazia();
     r1 = cria_rota_vazia();
 
+    rota *r0c, *r1c;
+    r0c = r0;
+    r1c = r1;
+
+    rota *rc;
     while(r->r != NULL)
     {
-        ra = r->r;
-        r->r = ra->r;
+        rc = r->r;
+        r->r = rc->r;
 
-        switch(ra->num[N])
+        switch(rc->num[i])
         {
             case '0':
-                ra->r = r0->r;
-                r0->r = ra;
+                rc->r = r0c->r;
+                r0c->r = rc;
                 break;
 
             case '1':
-                ra->r = r1->r;
-                r1->r = ra;
+                rc->r = r1c->r;
+                r1c->r = rc;
                 break;
         }
     }
 
-    ordena_rotas_recursivo(r0,N+1);
-    ordena_rotas_recursivo(r1,N+1);
+    ordena_rotas_recursivo(r0,i+1);
+    ordena_rotas_recursivo(r1,i+1);
 
-    r->r = r0->r;
-    for(r0 = r; r0->r != NULL; r0 = r0->r);
-    r0->r = r1->r;
+    r->r  = r0->r;
+    for(rc = r; rc->r != NULL; rc = rc->r);
+    rc->r = r1->r;
+
     libera_rota_no(r0);
     libera_rota_no(r1);
 }
 
-void ordena_rotas(rota **r)
+void ordena_rotas(rota **Ro)
 {
-    rota *ra;
-    ra = cria_rota_vazia();
-    ra->r = *r;
-    ordena_rotas_recursivo(ra,0);
-    *r = ra->r;
-    libera_rota_no(ra);
+    rota *r;
+    r = cria_rota_vazia();
+    r->r = *Ro;
+
+    ordena_rotas_recursivo(r,0);
+
+    *Ro = r->r;
+    libera_rota_no(r);
 }
 
 rota* busca_rotas(no *n, Short N)
@@ -5532,7 +5681,7 @@ busca* busca_mais_provavel(QDD *Q)
     for(l = Q->l; l!= NULL; l = l->l)
     {
         n = l->n;
-        naux = modulo_no(n);
+        naux = modulo_2_no(n);
 
         if(naux->at.f.re > p)
         {
@@ -5562,7 +5711,7 @@ busca* busca_probabilidade_maior(QDD *Q, double p) // Retorna nulo caso não ache
     {
         n0 = l->n;
 
-        n1 = modulo_no(n0);
+        n1 = modulo_2_no(n0);
         transfere_conexao(n1,n0);
         libera_no(n0);
 
@@ -5592,6 +5741,42 @@ busca* busca_probabilidade_maior(QDD *Q, double p) // Retorna nulo caso não ache
     b = bc;
 
     return b;
+}
+
+busca* busca_n_mais_provaveis(QDD *Q, Long n)
+{
+    no *n0, *n1;
+    lista *l;
+    Q = copia_QDD(Q);
+    for(l = Q->l; l != NULL; l = l->l)
+    {
+        n0 = l->n;
+
+        n1 = modulo_2_no(n0);
+        transfere_conexao(n1,n0);
+        libera_no(n0);
+
+        l->n = n1;
+    }
+    reduz_QDD(Q,1,4);
+}
+
+float probabilidade_total(busca *b)
+{
+    busca *bc;
+    rota *r;
+    float p, p_i;
+    int i;
+    p = 0;
+    for(bc = b; bc != NULL; bc = bc->b)
+    {
+        p_i = bc->n->at.f.re;
+        i=0;
+        for(r = bc->r; r != NULL; r = r->r)
+            i++;
+        p += p_i*i;
+    }
+    return p;
 }
 
 
@@ -6048,37 +6233,27 @@ int main()
     setlocale(LC_ALL, "Portuguese");
     /***********************************/
 
-    /*Short N;
-    N = 12;
-
-    QDD *Qb;
-    busca *b;
-    Qb = W(N);
-    b = busca_mais_provavel(Qb);
-    mostra_busca_no_numero(b);
-    libera_busca_lista(b);
-
-    printf("\n\n");
     QDD *Q;
-    Q = QFT(Qb);
-    salva_QDD(Q,"QftW");b = busca_mais_provavel(Qb);
-    mostra_busca_no_numero(b);
-    libera_busca_lista(b);
-    libera_QDD(Qb);
-
-    printf("\n\n");
-    b = busca_probabilidade_maior(Q,0.01);
-    mostra_busca_lista_numero(b);*/
-
-    QDD *Q;
-    Q = le_QDD("QftW");
-
-    QDD *Qr;
-    Qr = mede_tudo(Q);
+    Q = le_QDD("QftTeste");
+    printf("Leu");
 
     busca *b;
-    b = busca_mais_provavel(Qr);
-    mostra_busca_no_numero(b);
+    b = busca_probabilidade_maior(Q,2e-3);
+
+    busca *bc;
+    rota *r, *rc;
+    r = b->r;
+    for(bc = b->b; bc != NULL; bc = bc->b)
+    {
+        for(rc = bc->r; rc->r != NULL; rc = rc->r);
+        rc->r = r;
+        r = bc->r;
+    }
+
+    mostra_rotas(r);
+    ordena_rotas(&r);
+    printf("\n");
+    mostra_rotas(r);
 
     /***********************************/
     finaliza_structs_globais();
