@@ -23,11 +23,11 @@
 
 FILE *fm, *fmr = NULL;;
 unsigned long long mem = 0, memMax = 0, memF = 0;
-unsigned long long iQ = 0, iI = 0, iM = 0, iF = 0, iL = 0, iA = 0, iC = 0, iS = 0, iB = 0, iR = 0; // contagem total
-unsigned long long cQ = 0, cI = 0, cM = 0, cF = 0, cL = 0, cA = 0, cC = 0, cS = 0, cB = 0, cR = 0; // contagem criados
-unsigned long long lQ = 0, lI = 0, lM = 0, lF = 0, lL = 0, lA = 0, lC = 0, lS = 0, lB = 0, lR = 0; // contagem liberado
+unsigned long long iQ = 0, iI = 0, iM = 0, iF = 0, iL = 0, iA = 0, iC = 0, iS = 0, iB = 0, iR = 0, iD = 0; // contagem total
+unsigned long long cQ = 0, cI = 0, cM = 0, cF = 0, cL = 0, cA = 0, cC = 0, cS = 0, cB = 0, cR = 0, cD = 0; // contagem criados
+unsigned long long lQ = 0, lI = 0, lM = 0, lF = 0, lL = 0, lA = 0, lC = 0, lS = 0, lB = 0, lR = 0, lD = 0; // contagem liberado
 unsigned long long mem0, iQ0, iI0, iM0, iF0, iL0, iR0; // Contagem inicial
-unsigned short tQ, tN, tL, tA, tC, tS, tB, tR; // tamanho structs
+unsigned short tQ, tN, tL, tA, tC, tS, tB, tR, tD; // tamanho structs
 unsigned short print, Nqbit, ale = 0;
 float eps;
 
@@ -106,6 +106,13 @@ struct rota
     struct rota *r;
 };
 
+struct destrutivo
+{
+    struct QDD **Q;
+    float p[2];
+    struct destrutivo *el, *th;
+};
+
 
 
 /** Typedefs e definitions  **/
@@ -114,11 +121,12 @@ typedef struct QDD   QDD;
 typedef struct no    no;
 typedef struct lista lista;
 
-typedef struct apply   apply;
-typedef struct conta   conta;
-typedef struct suporte suporte;
-typedef struct busca   busca;
-typedef struct rota    rota;
+typedef struct apply      apply;
+typedef struct conta      conta;
+typedef struct suporte    suporte;
+typedef struct busca      busca;
+typedef struct rota       rota;
+typedef struct destrutivo destrutivo;
 
 typedef unsigned short     Short;
 typedef unsigned long long Long;
@@ -451,7 +459,7 @@ rota* cria_rota_vazia()
     rota *r;
     r = malloc(tR);
     if(r == NULL)
-        ERRO("CRIA ROTA");
+        ERRO("CRIA ROTA VAZIA");
     aumenta_memoria(tR);
     iR++;
     cR++;
@@ -468,6 +476,25 @@ rota* cria_rota_bifurcacao()
     r = cria_rota("0");
     r->r = cria_rota("1");
     return r;
+}
+
+destrutivo* cria_destrutivo()
+{
+    destrutivo *d;
+    d = malloc(tD);
+    if(d == NULL)
+        ERRO("CRIA DESTRUTIVO");
+    aumenta_memoria(tD);
+    iD++;
+    cD++;
+
+    d->Q = NULL;
+    d->p[0] = 0;
+    d->p[1] = 0;
+    d->el = NULL;
+    d->th = NULL;
+
+    return d;
 }
 
 
@@ -672,6 +699,16 @@ void libera_busca_lista(busca *b)
         libera_busca_no(b);
         b = bc;
     }
+}
+
+void libera_destrutivo_no(destrutivo *d)
+{
+    diminui_memoria(tD);
+    if(iD == 0)
+        ERRO("LIBERA NOTA");
+    iD--;
+    lD++;
+    free(d);
 }
 
 
@@ -1061,7 +1098,7 @@ void mostra_rotas(rota *r)
     Long i;
     for(i=0; r != NULL; i++)
     {
-        printf("\n\t%d\tRota %3llu: %s",r,i,r->num);
+        printf("\n\tRota %3llu: %s",i,r->num);
         r = r->r;
     }
 }
@@ -1292,6 +1329,39 @@ void mostra_configuracao()
     printf("\nConfiguracao: ");
     printf("\nNqbit: %hu",Nqbit);
     printf("\neps: %.3e",eps);
+}
+
+void mostra_destrutivo_no(destrutivo *d)
+{
+    printf("\nEndereco (destrutivo): %d",d);
+    if(d == NULL)
+        return;
+    printf("\n");
+    if(d->Q != NULL)
+        printf("\nQ0: %d\t\t\tQ1: %d",d->Q[0],d->Q[1]);
+    printf("\np0: %e\tp1: %e",d->p[0],d->p[1]);
+    printf("\n");
+    if(d->el != NULL)
+        printf("\nd->el: %d",d->el);
+    if(d->th != NULL)
+        printf("\nd->th: %d",d->th);
+}
+
+void mostra_destrutivo_arvore(destrutivo *d)
+{
+    mostra_destrutivo_no(d);
+    printf("\n");
+
+    if(d->el != NULL)
+    {
+        mostra_destrutivo_arvore(d->el);
+        printf("\n");
+    }
+    if(d->th != NULL)
+    {
+        mostra_destrutivo_arvore(d->th);
+        printf("\n");
+    }
 }
 
 
@@ -1934,6 +2004,27 @@ void libera_QDD(QDD *Q)
     libera_QDD_no(Q);
 }
 
+void libera_destrutivo_arvore(destrutivo *d)
+{
+    if(d == NULL)
+        return;
+
+    libera_destrutivo_arvore(d->el);
+    libera_destrutivo_arvore(d->th);
+
+    if(d->Q != NULL)
+    {
+        if(d->Q[0] != NULL)
+            libera_QDD(d->Q[0]);
+        if(d->Q[1] != NULL)
+            libera_QDD(d->Q[1]);
+
+        libera_QDD_array(d->Q,2);
+    }
+
+    libera_destrutivo_no(d);
+}
+
 
 
 /**  auxiliar QDDs usuais  **/
@@ -2132,6 +2223,7 @@ void inicia_structs_globais()
     tS = sizeof(suporte);
     tB = sizeof(busca);
     tR = sizeof(rota);
+    tD = sizeof(destrutivo);
 
     Qred  = cria_QDD(1);
     Qred->n = cria_no_inicio();
@@ -5356,115 +5448,6 @@ QDD* QFT(QDD *Q)
 
 
 
-/**   Medidas   **/
-
-QDD** mede_conservativo(QDD *Q, Short nqbit, float p[2])
-{
-    QDD **QM, **QF;
-    QM = M01(Q->nqbit,nqbit);
-    QF = cria_QDD_array(2);
-
-    QF[0] = produto_matriz_vetor(QM[0],Q);
-    QF[1] = produto_matriz_vetor(QM[1],Q);
-
-    float paux[2]; //paux armazena as amplitudes e p as probabilidades
-
-    paux[0] = modulo_vetor(QF[0]);
-    p[0] = paux[0]*paux[0];
-    p[1] = 1-p[0];
-    paux[1] = sqrt(p[1]);
-
-    if(p[0] > eps)
-        produto_QDD_real(QF[0],1/paux[0]);
-    if(p[1] > eps)
-        produto_QDD_real(QF[1],1/paux[1]);
-
-    libera_QDD(QM[0]);
-    libera_QDD(QM[1]);
-    libera_QDD_array(QM,2);
-
-    return QF;
-}
-
-QDD* mede_destrutivo(QDD *Q, Short nqbit, Short *resultado)
-{
-    QDD **QM;
-    float p[2];
-    QM = mede_conservativo(Q,nqbit,p);
-
-    int aleatorio;
-    if(ale == 0)
-    {
-        ale = 1;
-        srand(1e5*time(NULL));
-    }
-    aleatorio = rand();
-    srand(aleatorio);
-
-    float P;
-    P = aleatorio;
-    P /= RAND_MAX;
-    //printf("\nP: %f",P);
-    if(P < p[0])
-    {
-        Q = QM[0];
-        libera_QDD(QM[1]);
-        *resultado = 0;
-    }
-    else
-    {
-        Q = QM[1];
-        libera_QDD(QM[0]);
-        *resultado = 1;
-    }
-    libera_QDD_array(QM,2);
-    return Q;
-}
-
-void mede_todos(QDD *Q)
-{
-    time_t antes, depois;
-    float delta, tempo;
-
-    QDD **QM;
-    Short i;
-    float p[2];
-    printf("\n");
-    for(i=0;i<Q->nqbit;i++)
-    {
-        antes = clock();
-        QM = mede_conservativo(Q,i,p);
-        libera_QDD(QM[0]);
-        libera_QDD(QM[1]);
-        libera_QDD_array(QM,2);
-        depois = clock();
-
-        delta = depois - antes;
-        tempo = delta/CLOCKS_PER_SEC;
-
-        printf("\ni: %2hu\tp0: %f\tp1: %f\tt: %.3f",i,p[0],p[1],tempo);
-    }
-}
-
-QDD* mede_tudo(QDD *Q)
-{
-    QDD *Qr;
-    Qr = copia_QDD(Q);
-
-    QDD *Qaux;
-    Short i, N, p;
-    N = Q->nqbit;
-    for(i=0; i<N; i++)
-    {
-        Qaux = mede_destrutivo(Qr,i,&p);
-        libera_QDD(Qr);
-        Qr = Qaux;
-    }
-    return Qr;
-}
-
-
-
 /**   Busca   **/
 
 rota* concatena_rotas(rota *r1, rota *r2)
@@ -5743,7 +5726,7 @@ busca* busca_probabilidade_maior(QDD *Q, double p) // Retorna nulo caso não ache
     return b;
 }
 
-busca* busca_n_mais_provaveis(QDD *Q, Long n)
+void busca_n_mais_provaveis(QDD *Q, Long n)
 {
     no *n0, *n1;
     lista *l;
@@ -5777,6 +5760,227 @@ float probabilidade_total(busca *b)
         p += p_i*i;
     }
     return p;
+}
+
+
+
+/**   Medidas   **/
+
+float gera_aleatorio()
+{
+    int aleatorio, n;
+    if(ale == 0)
+    {
+        ale = 1;
+        srand(1e5*time(NULL));
+    }
+    n = rand();
+    srand(n);
+
+    int i;
+    aleatorio = 0;
+    for(i=0; i<n; i++)
+    {
+        aleatorio = rand();
+        srand(aleatorio);
+    }
+
+    float P;
+    P = aleatorio;
+    P /= RAND_MAX;
+    return P;
+}
+
+QDD** mede_conservativo(QDD *Q, Short nqbit, float p[2])
+{
+    QDD **QM, **QF;
+    QM = M01(Q->nqbit,nqbit);
+    QF = cria_QDD_array(2);
+
+    QF[0] = produto_matriz_vetor(QM[0],Q);
+    produto_QDD_real(QF[0],-1);
+    QF[1] = soma_QDD(Q,QF[0]);
+    produto_QDD_real(QF[0],-1);
+
+    float paux[2]; //paux armazena as amplitudes e p as probabilidades
+
+    paux[0] = modulo_vetor(QF[0]);
+    p[0] = paux[0]*paux[0];
+    p[1] = 1-p[0];
+    paux[1] = sqrt(p[1]);
+
+    if(p[0] > eps)
+        produto_QDD_real(QF[0],1/paux[0]);
+    if(p[1] > eps)
+        produto_QDD_real(QF[1],1/paux[1]);
+
+    libera_QDD(QM[0]);
+    libera_QDD(QM[1]);
+    libera_QDD_array(QM,2);
+
+    return QF;
+}
+
+QDD* mede_destrutivo(QDD *Q, Short nqbit, Short *resultado)
+{
+    QDD **QM;
+    float p[2];
+    QM = mede_conservativo(Q,nqbit,p);
+
+    float P;
+    P = gera_aleatorio();
+    if(P < p[0])
+    {
+        Q = QM[0];
+        libera_QDD(QM[1]);
+        *resultado = 0;
+    }
+    else
+    {
+        Q = QM[1];
+        libera_QDD(QM[0]);
+        *resultado = 1;
+    }
+    libera_QDD_array(QM,2);
+    return Q;
+}
+
+void mede_individual(QDD *Q)
+{
+    time_t antes, depois;
+    float delta, tempo;
+
+    QDD **QM;
+    Short i;
+    float p[2];
+    printf("\n");
+    for(i=0;i<Q->nqbit;i++)
+    {
+        antes = clock();
+        QM = mede_conservativo(Q,i,p);
+        libera_QDD(QM[0]);
+        libera_QDD(QM[1]);
+        libera_QDD_array(QM,2);
+        depois = clock();
+
+        delta = depois - antes;
+        tempo = delta/CLOCKS_PER_SEC;
+
+        printf("\ni: %2hu\tp0: %f\tp1: %f\tt: %.3f",i,p[0],p[1],tempo);
+    }
+}
+
+QDD* mede_tudo_unico(QDD *Q)
+{
+    QDD *Qr;
+    Qr = copia_QDD(Q);
+
+    QDD *Qaux;
+    Short i, N, p;
+    N = Q->nqbit;
+    for(i=0; i<N; i++)
+    {
+        Qaux = mede_destrutivo(Qr,i,&p);
+        libera_QDD(Qr);
+        Qr = Qaux;
+    }
+    return Qr;
+}
+
+rota* mede_tudo_varios(QDD *Q, Long n)
+{
+    destrutivo *d;
+    d = cria_destrutivo();
+
+    rota *r, *rc;
+    r = cria_rota_vazia();
+    rc = r;
+
+    QDD *Qa;
+    Qa = copia_QDD(Q);
+
+    busca *b;
+    destrutivo *dc;
+    Long i;
+    Short j, N, cria;
+    float p;
+    N = Q->nqbit;
+    for(i=0; i<n; i++)
+    {
+        printf("\ni: %6d j:",i);
+        dc = d;
+        for(j=0; j<N; j++)
+        {
+            printf(" %d",j);
+
+            cria = 0;
+            if(j != N-1)
+            if(dc->el == NULL)
+            if(dc->th == NULL)
+                cria = 1;
+            if(j == N-1)
+            if(dc->Q == NULL)
+                cria = 1;
+
+            if(cria)
+            {
+                if(Qa == NULL)
+                    ERRO("MEDE TUDO VARIOS| QA E NULO");
+
+                dc->Q = mede_conservativo(Qa,j,dc->p);
+                libera_QDD(Qa);
+                Qa = NULL;
+            }
+
+            p = gera_aleatorio();
+            if(p < dc->p[0])
+            {
+                if(j < N-1)
+                {
+                    if(dc->el == NULL)
+                    {
+                        Qa = dc->Q[0];
+                        dc->Q[0] = NULL;
+
+                        dc->el = cria_destrutivo();
+                    }
+                    dc = dc->el;
+                }
+                else
+                    Qa = dc->Q[0];
+            }
+            else
+            {
+                if(j < N-1)
+                {
+                    if(dc->th == NULL)
+                    {
+                        Qa = dc->Q[1];
+                        dc->Q[1] = NULL;
+
+                        dc->th = cria_destrutivo();
+                    }
+                    dc = dc->th;
+                }
+                else
+                    Qa = dc->Q[1];
+            }
+        }
+
+        b = busca_mais_provavel(Qa);
+        rc->r = b->r;
+        rc = rc->r;
+        libera_busca_no(b);
+    }
+
+    rc = r->r;
+    libera_rota_no(r);
+    r = rc;
+
+    //mostra_destrutivo_arvore(d);
+    libera_destrutivo_arvore(d);
+
+    return r;
 }
 
 
@@ -5880,6 +6084,19 @@ void cria_QFT(Short N)
     libera_QDD(Qs1);
     libera_QDD(Qs2);
     libera_QDD(Qft);
+}
+
+void cria_QftW(Short N, char *arquivo)
+{
+    QDD *Qb;
+    Qb = W(N);
+
+    QDD *Q;
+    Q = QFT(Qb);
+    salva_QDD(Q,arquivo);
+
+    libera_QDD(Qb);
+    libera_QDD(Q);
 }
 
 
@@ -6234,26 +6451,21 @@ int main()
     /***********************************/
 
     QDD *Q;
-    Q = le_QDD("QftTeste");
-    printf("Leu");
+    Q = le_QDD("QftW15");
+    printf("Leu\n");
 
-    busca *b;
-    b = busca_probabilidade_maior(Q,2e-3);
-
-    busca *bc;
-    rota *r, *rc;
-    r = b->r;
-    for(bc = b->b; bc != NULL; bc = bc->b)
-    {
-        for(rc = bc->r; rc->r != NULL; rc = rc->r);
-        rc->r = r;
-        r = bc->r;
-    }
+    rota *r;
+    r = mede_tudo_varios(Q,100000);
 
     mostra_rotas(r);
     ordena_rotas(&r);
-    printf("\n");
     mostra_rotas(r);
+
+    libera_QDD(Q);
+    libera_rota_lista(r);
+
+    printf("\n\n");
+    mostra_quantidades();
 
     /***********************************/
     finaliza_structs_globais();
