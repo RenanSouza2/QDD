@@ -150,6 +150,7 @@ void finaliza_relatorio_memoria()
     {
         fprintf(fm,"\n\nMemMax: %d",memMax);
         fprintf(fm,"\nMemFinal: %d",mem);
+        fprintf(fm,"\nMemFora:  %d",memF);
         fclose(fm);
     }
 }
@@ -198,7 +199,7 @@ void aumenta_memoria(Long m)
 {
     mem += m;
     if(print)
-    fprintf(fm,"\nMemUP: %d\t\t\t %u",mem,m);
+        fprintf(fm,"\nMemUP: %d\t\t\t %d",mem,m);
     if(memMax<mem)
     {
         memMax = mem;
@@ -221,6 +222,8 @@ void aumenta_memoria_fora(Long m)
 {
     memF += m;
     aumenta_memoria(m);
+    if(print)
+        fprintf(fm,"\tMemForaUp");
 }
 
 void diminui_memoria_fora(Long m)
@@ -230,6 +233,8 @@ void diminui_memoria_fora(Long m)
 
     memF -= m;
     diminui_memoria(m);
+    if(print)
+        fprintf(fm,"\tMemForaDOWN");
 }
 
 
@@ -1370,16 +1375,16 @@ void mostra_destrutivo_arvore(destrutivo *d)
 
 void fmostra_lista(FILE *fp, lista *l)
 {
-    no *n;
+    if(l == NULL)
+        return;
+
     lista *lc;
-    Long ligacao = 0;
-    lc = l;
+    Long itens;
+    itens = 0;
     for(lc = l; lc != NULL; lc = lc->l)
     {
-        n = lc->n;
-        fprintf(fp,"\n\tLigacao %3d:",ligacao);
-        fprintf(fp," %d",n);
-        ligacao++;
+        fprintf(fp,"\n\tLigacao %llu: %d",itens,lc->n);
+        itens++;
     }
 }
 
@@ -1445,6 +1450,16 @@ void fmostra_no_numero(FILE *fp, no *n)
     if(n->at.f.im >  eps)
     if(n->at.f.im < -eps)
         fprintf(fp,"\t%e",n->at.f.im > eps);
+}
+
+void fmostra_lista_numero(FILE *fp, lista *l)
+{
+    if(l == NULL)
+        return;
+
+    lista *lc;
+    for(lc = l; lc != NULL; lc = lc->l)
+        fmostra_no_numero(fp,lc->n);
 }
 
 void fmostra_lista_com_no(FILE *fp, lista *l)
@@ -1561,6 +1576,19 @@ void fmostra_apply_compacto_lista(FILE *fp, apply *a)
     }
 }
 
+void fmostra_apply_compacto_matriz(FILE *fp, apply ***A, Short linhas, Short colunas)
+{
+    Short i, j;
+    for(i=0; i<linhas; i++)
+    {
+        for(j=0; j<colunas; j++)
+        {
+            fprintf(fp,"\n\n\t\t\tA[%hu][%hu]",i,j);
+            fmostra_apply_compacto_lista(fp,A[i][j]);
+        }
+    }
+}
+
 void fmostra_apply_lista_sozinho(apply *a, char *arquivo)
 {
     FILE *fp;
@@ -1574,14 +1602,14 @@ void fmostra_apply_lista_sozinho(apply *a, char *arquivo)
 
 void fmostra_conta_no(FILE *fp, conta *c)
 {
-    fprintf(fp,"\nEndereco (conta): %d\n",c);
+    printf("\nEndereco (conta): %d\n",c);
     if(c == NULL)
         return;
 
-    fprintf(fp,"nivel: %d",c->nivel);
-    fprintf(fp,"\n\nno: ");
-    fmostra_no(fp,c->n);
-    fprintf(fp,"\nc proximo: %d",c->c);
+    printf("nivel: %d",c->nivel);
+    printf("\n\nno: ");
+    mostra_no(c->n);
+    printf("\nc proximo: %d",c->c);
 }
 
 void fmostra_conta_lista(FILE *fp, conta *c)
@@ -1590,39 +1618,39 @@ void fmostra_conta_lista(FILE *fp, conta *c)
     Short ligacao = 0;
     for(cc = c; cc != NULL; cc = cc->c)
     {
-        fprintf(fp,"\n\n\n\nLigacao conta %d: ",ligacao);
-        fmostra_conta_no(fp,cc);
+        printf("\n\n\n\nLigacao conta %d: ",ligacao);
+        mostra_conta_no(cc);
         ligacao++;
     }
 }
 
 void fmostra_suporte_no(FILE *fp, suporte *s)
 {
-    fprintf(fp,"\nEndereco (suporte): %d\n",s);
+    printf("\nEndereco (suporte): %d\n",s);
     if(s == NULL)
         return;
 
-    fprintf(fp,"nivel: %d",s->nivel);
-    fprintf(fp,"\n\ncc: %d",s->c[C]);
-    fprintf(fp,"\ncv: %d",s->c[V]);
-    fprintf(fp,"\ncr: %d",s->c[R]);
-    fprintf(fp,"\n\ns proximo: %d",s->s);
+    printf("nivel: %d",s->nivel);
+    printf("\n\ncc: %d",s->c[C]);
+    printf("\ncv: %d",s->c[V]);
+    printf("\ncr: %d",s->c[R]);
+    printf("\n\ns proximo: %d",s->s);
 }
 
 void fmostra_suporte_no_com_conta(FILE *fp, suporte *s)
 {
-    fprintf(fp,"\nEndereco (suporte): %d",s);
+    printf("\nEndereco (suporte): %d",s);
     if(s == NULL)
         return;
 
-    fprintf(fp,"\nnivel: %d",s->nivel);
-    fprintf(fp,"\n\ncc: %d",s->c[C]);
-    fmostra_conta_lista(fp,s->c[C]);
-    fprintf(fp,"\ncv: %d",s->c[V]);
-    fmostra_conta_lista(fp,s->c[V]);
-    fprintf(fp,"\ncr: %d",s->c[R]);
-    fmostra_conta_lista(fp,s->c[R]);
-    fprintf(fp,"\n\ns: %d",s->s);
+    printf("\nnivel: %d",s->nivel);
+    printf("\n\ncc: %d",s->c[C]);
+    mostra_conta_lista(s->c[C]);
+    printf("\ncv: %d",s->c[V]);
+    mostra_conta_lista(s->c[V]);
+    printf("\ncr: %d",s->c[R]);
+    mostra_conta_lista(s->c[R]);
+    printf("\n\ns: %d",s->s);
 }
 
 void fmostra_suporte_lista(FILE *fp, suporte *s)
@@ -1631,8 +1659,8 @@ void fmostra_suporte_lista(FILE *fp, suporte *s)
     Short ligacao = 0;
     for(sc = s; sc != NULL; sc = sc->s)
     {
-        fprintf(fp,"\n\n\n\nLigacao suporte %d: ",ligacao);
-        fmostra_suporte_no(fp,sc);
+        printf("\n\n\n\nLigacao suporte %d: ",ligacao);
+        mostra_suporte_no(sc);
         ligacao++;
     }
 }
@@ -1643,8 +1671,8 @@ void fmostra_suporte_lista_com_conta(FILE *fp, suporte *s)
     Short ligacao = 0;
     for(sc = s; sc != NULL; sc = sc->s)
     {
-        fprintf(fp,"\n\n\n\nLigacao suporte %d: ",ligacao);
-        fmostra_suporte_no_com_conta(fp,sc);
+        printf("\n\n\n\nLigacao suporte %d: ",ligacao);
+        mostra_suporte_no_com_conta(sc);
         ligacao++;
     }
 }
@@ -1654,8 +1682,57 @@ void fmostra_rotas(FILE *fp, rota *r)
     Long i;
     for(i=0; r != NULL; i++)
     {
-        fprintf(fp,"\n\tRota %3llu: %s",i,r->num);
+        printf("\n\tRota %3llu: %s",i,r->num);
         r = r->r;
+    }
+}
+
+void fmostra_busca_no(FILE *fp, busca *b)
+{
+    printf("\nEndereco (busca): %d",b);
+    if(b == NULL)
+        return;
+
+    printf("\nno: ");
+    mostra_no(b->n);
+    mostra_rotas(b->r);
+    printf("\nb proximo: %d",b->b);
+}
+
+void fmostra_busca_lista(FILE *fp, busca *b)
+{
+    busca *bc;
+    int i;
+    i = 0;
+    for(bc = b; bc != NULL; bc = bc->b)
+    {
+        printf("\n\tBusca %d: ",i);
+        mostra_busca_no(bc);
+        i++;
+    }
+}
+
+void fmostra_busca_no_compacto(FILE *fp, busca *b)
+{
+    printf("\nEndereco (busca): %d",b);
+    if(b == NULL)
+        return;
+
+    printf("\nno: %d",b->n);
+    mostra_rotas(b->r);
+    printf("\nb proximo: %d",b->b);
+}
+
+void fmostra_busca_lista_compacto(FILE *fp, busca *b)
+{
+    busca *bc;
+    int i;
+    i = 0;
+    for(bc = b; bc != NULL; bc = bc->b)
+    {
+        printf("\n\tBusca %d: ",i);
+        mostra_busca_no_compacto(bc);
+        i++;
     }
 }
 
@@ -1664,8 +1741,8 @@ void fmostra_busca_no_numero(FILE *fp, busca *b)
     if(b == NULL)
         return;
 
-    fmostra_no_numero(fp,b->n);
-    fmostra_rotas(fp,b->r);
+    mostra_no_numero(b->n);
+    mostra_rotas(b->r);
 }
 
 void fmostra_busca_lista_numero(FILE *fp, busca *b)
@@ -1675,8 +1752,8 @@ void fmostra_busca_lista_numero(FILE *fp, busca *b)
     i = 0;
     for(bc = b; bc != NULL; bc = bc->b)
     {
-        fprintf(fp,"\n\n\tBusca %d: ",i);
-        fmostra_busca_no_numero(fp,bc);
+        printf("\n\n\tBusca %d: ",i);
+        mostra_busca_no_numero(bc);
         i++;
     }
 }
@@ -1687,75 +1764,188 @@ void fmostra_quantidades(FILE *fp)
     if(mem != 0)
     {
         vazio = 0;
-        fprintf(fp,"\nMem: %llu",mem);
+        printf("\nMem:  %llu",mem);
     }
     if(memF != 0)
     {
         vazio = 0;
-        fprintf(fp,"\nMem: %llu",memF);
+        printf("\nMemF: %llu",memF);
     }
     if(iQ != 0)
     {
         vazio = 0;
-        fprintf(fp,"\nQDD: %llu",iQ);
+        printf("\nQDD:  %llu",iQ);
     }
     if(iI != 0)
     {
         vazio = 0;
-        fprintf(fp,"\ni:   %llu",iI);
+        printf("\ni:    %llu",iI);
     }
     if(iM != 0)
     {
         vazio = 0;
-        fprintf(fp,"\nm:   %llu",iM);
+        printf("\nm:    %llu",iM);
     }
     if(iF != 0)
     {
         vazio = 0;
-        fprintf(fp,"\nf:   %llu",iF);
+        printf("\nf:    %llu",iF);
     }
     if(iL != 0)
     {
         vazio = 0;
-        fprintf(fp,"\nl:   %llu",iL);
+        printf("\nl:    %llu",iL);
     }
     if(iA != 0)
     {
         vazio = 0;
-        fprintf(fp,"\na:   %llu",iA);
+        printf("\na:    %llu",iA);
     }
     if(iC != 0)
     {
         vazio = 0;
-        fprintf(fp,"\nc:   %llu",iC);
+        printf("\nc:    %llu",iC);
     }
     if(iS != 0)
     {
         vazio = 0;
-        fprintf(fp,"\ns:   %llu",iS);
+        printf("\ns:    %llu",iS);
+    }
+    if(iB != 0)
+    {
+        vazio = 0;
+        printf("\nb:    %llu",iB);
+    }
+    if(iR != 0)
+    {
+        vazio = 0;
+        printf("\nr:    %llu",iR);
     }
     if(vazio)
-        fprintf(fp,"\nTUDO ZERADO");
-    fprintf(fp,"\n");
+        printf("\nTUDO ZERADO");
+    printf("\n");
+}
+
+void fmostra_quantidades_zero(FILE *fp)
+{
+    printf("\nMem0: %llu",mem0);
+    printf("\nQ0:   %llu",iQ0);
+    printf("\nI0:   %llu",iI0);
+    printf("\nM0:   %llu",iM0);
+    printf("\nF0:   %llu",iF0);
+    printf("\nL0:   %llu",iL0);
+    printf("\nR0:   %llu",iR0);
+}
+
+void fmostra_contagem(FILE *fp)
+{
+    Short vazio = 1;
+    if(cQ != 0)
+    {
+        vazio = 0;
+        printf("\ncQ: %llu\tlQ: %llu",cQ,lQ);
+    }
+    if(cI!= 0)
+    {
+        vazio = 0;
+        printf("\ncI: %llu\tlI: %llu",cI,lI);
+    }
+    if(cM != 0)
+    {
+        vazio = 0;
+        printf("\ncM: %llu\tlM: %llu",cM,lM);
+    }
+    if(cF != 0)
+    {
+        vazio = 0;
+        printf("\ncF: %llu\tlF: %llu",cF,lF);
+    }
+    if(cL != 0)
+    {
+        vazio = 0;
+        printf("\ncL: %llu\tlL: %llu",cL,lL);
+    }
+    if(cA != 0)
+    {
+        vazio = 0;
+        printf("\ncA: %llu\tlA: %llu",cA,lA);
+    }
+    if(cC != 0)
+    {
+        vazio = 0;
+        printf("\ncC: %llu\tlC: %llu",cC,lC);
+    }
+    if(cS != 0)
+    {
+        vazio = 0;
+        printf("\ncS: %llu\tlS: %llu",cS,lS);
+    }
+    if(cB != 0)
+    {
+        vazio = 0;
+        printf("\ncB: %llu\tlS: %llu",cB,lB);
+    }
+    if(cR != 0)
+    {
+        vazio = 0;
+        printf("\ncLS: %llu\tlS: %llu",cR,lR);
+    }
+    if(vazio)
+        printf("\nNAO CRIOU NADA");
 }
 
 void fmostra_tamanhos(FILE *fp)
 {
-    fprintf(fp,"\nTAMANHOS");
-    fprintf(fp,"\nQDD: %d",tQ);
-    fprintf(fp,"\nn:   %d",tN);
-    fprintf(fp,"\nl:   %d",tL);
-    fprintf(fp,"\na:   %d",tA);
-    fprintf(fp,"\nc:   %d",tC);
-    fprintf(fp,"\ns:   %d",tS);
-    fprintf(fp,"\n");
+    printf("\n\nTAMANHOS\n");
+    printf("\nQDD: %d",tQ);
+    printf("\nn:   %d",tN);
+    printf("\nl:   %d",tL);
+    printf("\na:   %d",tA);
+    printf("\nc:   %d",tC);
+    printf("\ns:   %d",tS);
+    printf("\nb:   %d",tB);
+    printf("\nr:   %d",tR);
+    printf("\n");
 }
 
 void fmostra_configuracao(FILE *fp)
 {
-    fprintf(fp,"\nConfiguracao: ");
-    fprintf(fp,"\nNqbit: %hu",Nqbit);
-    fprintf(fp,"\neps: %.3e",eps);
+    printf("\nConfiguracao: ");
+    printf("\nNqbit: %hu",Nqbit);
+    printf("\neps: %.3e",eps);
+}
+
+void fmostra_destrutivo_no(FILE *fp, destrutivo *d)
+{
+    printf("\nEndereco (destrutivo): %d",d);
+    if(d == NULL)
+        return;
+    printf("\n");
+    if(d->Q != NULL)
+        printf("\nQ0: %d\t\t\tQ1: %d",d->Q[0],d->Q[1]);
+    printf("\np0: %e\tp1: %e",d->p[0],d->p[1]);
+    printf("\n");
+    if(d->el != NULL)
+        printf("\nd->el: %d",d->el);
+    if(d->th != NULL)
+        printf("\nd->th: %d",d->th);
+}
+
+void fmostra_destrutivo_arvore(FILE *fp, destrutivo *d)
+{
+    mostra_destrutivo_no(d);
+    printf("\n");
+
+    if(d->el != NULL)
+    {
+        mostra_destrutivo_arvore(d->el);
+        printf("\n");
+    }
+    if(d->th != NULL)
+    {
+        mostra_destrutivo_arvore(d->th);
+        printf("\n");
+    }
 }
 
 
@@ -1918,6 +2108,80 @@ void  transfere_conexao(no *n1, no *n2)
         lado = desconecta_UM(n,n2);
         conecta_UM(n,n1,lado);
     }
+}
+
+
+
+/** Construtores de estruturas complexas  **/
+
+QDD* cria_QDD_vetor(no **nf, Short N)
+{
+    no ***nm;
+    nm = malloc((N+1)*sizeof(no**));
+    if(nm == NULL)
+        ERRO("LE VETOR| ALLOCA NM");
+    aumenta_memoria_fora((N+1)*sizeof(no**));
+
+    Long i, j, exp_2;
+    exp_2 = 1;
+    for(i=0; i<N; i++)
+    {
+        nm[i] = malloc(exp_2*sizeof(no*));
+        if(nm[i] == NULL)
+            ERRO("LE VETOR| ALLOCA NM[]");
+        aumenta_memoria_fora(exp_2*sizeof(no*));
+
+        for(j=0; j<exp_2; j++)
+            nm[i][j] = cria_no_meio(V,i);
+
+        exp_2 *= 2;
+    }
+    nm[N] = nf;
+
+    no *n, *n1, *n2;
+    exp_2 = 1;
+    for(i=0; i<N; i++)
+    {
+        for(j=0; j<exp_2; j++)
+        {
+            n  = nm[i][j];
+            n1 = nm[i+1][2*j];
+            n2 = nm[i+1][2*j+1];
+
+            conecta_DOIS(n,n1,n2);
+        }
+        exp_2 *= 2;
+    }
+
+
+    QDD *Q;
+    Q = cria_QDD(N);
+    Q->n = cria_no_inicio();
+    conecta_UM(Q->n,nm[0][0],Inicio);
+
+    lista *l, *lc;
+    l = cria_lista();
+    lc = l;
+    for(i=0; i<exp_2; i++)
+    {
+        lc->l = cria_lista();
+        lc = lc->l;
+        lc->n = nf[i];
+    }
+    Q->l = l->l;
+    libera_lista_no(l);
+
+    exp_2 = 1;
+    for(i=0; i<N; i++)
+    {
+        diminui_memoria_fora(exp_2*sizeof(no*));
+        free(nm[i]);
+        exp_2 *= 2;
+    }
+    diminui_memoria_fora((N+1)*sizeof(no**));
+    free(nm);
+
+    return Q;
 }
 
 
@@ -2659,9 +2923,20 @@ no* produto_no_conjugado_no(no *n1, no *n2)
 
 no* modulo_2_no(no *n)
 {
-    no *nm;
-    nm = produto_no_conjugado_no(n,n);
-    return nm;
+    n = produto_no_conjugado_no(n,n);
+    return n;
+}
+
+float modulo_no(no *n)
+{
+    float m;
+    m = (n->at.f.re)*(n->at.f.re) + (n->at.f.im)*(n->at.f.im);
+
+    if(m < 0)
+        ERRO("PUTA MERDA");
+
+    m = sqrt(m);
+    return m;
 }
 
 void produto_no_real(no *n, double re)
@@ -2820,22 +3095,8 @@ QDD* le_matriz(char *nome)
     return Q;
 }
 
-void completa_QDD_vetor(no *n, no **nf, int i, int exp)
-{
-    if(exp == 1)
-    {
-        conecta_DOIS(n,nf[i],nf[i+1]);
-    }
-    else
-    {
-        completa_QDD_vetor(n->at.m.el,nf,i,exp/2);
-        completa_QDD_vetor(n->at.m.th,nf,i+exp,exp/2);
-    }
-}
-
 QDD* le_vetor(char *nome)
 {
-    Long i, j;
 
     FILE *fp;
     fp = fopen(nome,"r");
@@ -2844,16 +3105,17 @@ QDD* le_vetor(char *nome)
 
     Short N;
     fscanf(fp,"%hu\n",&N);
-    Long exp;
-    exp = (Long)pow(2,N);
+    Long exp1;
+    exp1 = (Long)pow(2,N);
 
     no **nf;
+    Long i;
     float re, im;
-    nf = malloc(exp*sizeof(no*));
+    nf = malloc(exp1*sizeof(no*));
     if(nf == NULL)
-        ERRO("LE VETOR NF");
-    aumenta_memoria_fora(exp*sizeof(no*));
-    for(i=0; i<exp; i++)
+        ERRO("LE VETOR| ALLOCA NF");
+    aumenta_memoria_fora(exp1*sizeof(no*));
+    for(i=0; i<exp1; i++)
     {
         fscanf(fp,"%f",&re);
         fscanf(fp,"%f",&im);
@@ -2861,67 +3123,11 @@ QDD* le_vetor(char *nome)
     }
     fclose(fp);
 
-    no ***nm;
-    nm = malloc(N*sizeof(no**));
-    if(nm == NULL)
-        ERRO("LE MATRIZ NM");
-    aumenta_memoria_fora(N*sizeof(no**));
-
-    Long exp2 = 1;
-    for(i=0; i<N; i++)
-    {
-        nm[i] = malloc(exp2*sizeof(no*));
-        if(nm[i] == NULL)
-            ERRO("LE VETOR NM[]");
-        aumenta_memoria_fora(exp2*sizeof(no*));
-
-        for(j=0; j<exp2; j++)
-        {
-            nm[i][j] = cria_no_meio(V,i);
-
-            if(i>0)
-            {
-                if(j%2 == 0)
-                    conecta_UM(nm[i-1][j/2],nm[i][j],Else);
-                else
-                    conecta_UM(nm[i-1][j/2],nm[i][j],Then);
-            }
-        }
-        exp2 *= 2;
-    }
-
-    completa_QDD_vetor(nm[0][0],nf,0,exp/2);
-
     QDD *Q;
-    Q = cria_QDD(N);
-    Q->n = cria_no_inicio();
-    conecta_UM(Q->n,nm[0][0],Inicio);
+    Q = cria_QDD_vetor(nf,N);
 
-    lista *l, *lc;
-    l = cria_lista();
-    lc = l;
-    for(i=0; i<exp; i++)
-    {
-        lc->l = cria_lista();
-        lc = lc->l;
-        lc->n = nf[i];
-    }
-    Q->l = l->l;
-
-    libera_lista_no(l);
-
-    diminui_memoria_fora(exp*sizeof(no*));
+    diminui_memoria_fora(exp1*sizeof(no*));
     free(nf);
-
-    exp2 = 1;
-    for(i=0; i<N; i++)
-    {
-        diminui_memoria_fora(exp2*sizeof(no*));
-        free(nm[i]);
-        exp2 *= 2;
-    }
-    diminui_memoria_fora(N*sizeof(no**));
-    free(nm);
 
     return Q;
 }
@@ -4839,6 +5045,9 @@ void produto_QDD_no(QDD *Q, no *n1)
 
 void produto_QDD_real(QDD *Q, float re)
 {
+    if(Q == NULL)
+        ERRO("PRODUTO QDD REAL| Q E NULL");
+
     lista *l;
     for(l = Q->l; l != NULL; l = l->l)
         produto_no_real(l->n,re);
@@ -5480,11 +5689,13 @@ void ordena_rotas_recursivo(rota *r, Short i)
     if(r->r->r == NULL)
         return;
 
-    rota *r0, *r1;
+    rota *r0, *r1, *rf;
+    rf = cria_rota_vazia();
     r0 = cria_rota_vazia();
     r1 = cria_rota_vazia();
 
-    rota *r0c, *r1c;
+    rota *r0c, *r1c, *rcf;
+    rcf = rf;
     r0c = r0;
     r1c = r1;
 
@@ -5496,6 +5707,11 @@ void ordena_rotas_recursivo(rota *r, Short i)
 
         switch(rc->num[i])
         {
+            case '\0':
+                rc->r = rcf->r;
+                rcf->r = rc;
+                break;
+
             case '0':
                 rc->r = r0c->r;
                 r0c->r = rc;
@@ -5511,10 +5727,13 @@ void ordena_rotas_recursivo(rota *r, Short i)
     ordena_rotas_recursivo(r0,i+1);
     ordena_rotas_recursivo(r1,i+1);
 
-    r->r  = r0->r;
+    r->r = rf->r;
+    for(rc = r; rc->r != NULL; rc = rc->r);
+    rc->r  = r0->r;
     for(rc = r; rc->r != NULL; rc = rc->r);
     rc->r = r1->r;
 
+    libera_rota_no(rf);
     libera_rota_no(r0);
     libera_rota_no(r1);
 }
@@ -5762,6 +5981,33 @@ float probabilidade_total(busca *b)
     return p;
 }
 
+no* acessa_amplitude(QDD *Q, Long num)
+{
+    Short N;
+    N = Q->nqbit;
+
+    no *n;
+    Short i;
+    Long exp_2;
+    exp_2 = pow(2,N-1);
+    n = Q->n->at.i.n;
+    for(i=0; i<N; i++)
+    {
+        if(i == n->at.m.nivel)
+        {
+            if(num < exp_2)
+                n = n->at.m.el;
+            else
+                n = n->at.m.th;
+        }
+
+        if(num > exp_2)
+            num -= exp_2;
+        exp_2 /= 2;
+    }
+    return n;
+}
+
 
 
 /**   Medidas   **/
@@ -5901,17 +6147,27 @@ rota* mede_tudo_varios(QDD *Q, Long n)
 
     busca *b;
     destrutivo *dc;
-    Long i;
+    Long i, tam;
     Short j, N, cria;
     float p;
     N = Q->nqbit;
+    if(n > 99)
+        tam = n/1000;
+    else
+        tam = 1;
     for(i=0; i<n; i++)
     {
-        printf("\ni: %6d j:",i);
+        if(i < 50)
+            printf("\ni: %6d j:",i);
+        else
+        if(i%tam == 0)
+            printf("\ni: %d/%d",i/tam,n/tam);
+
         dc = d;
         for(j=0; j<N; j++)
         {
-            printf(" %d",j);
+            if(i < 50)
+                printf(" %d",j);
 
             cria = 0;
             if(j != N-1)
@@ -5977,7 +6233,6 @@ rota* mede_tudo_varios(QDD *Q, Long n)
     libera_rota_no(r);
     r = rc;
 
-    //mostra_destrutivo_arvore(d);
     libera_destrutivo_arvore(d);
 
     return r;
@@ -5985,118 +6240,24 @@ rota* mede_tudo_varios(QDD *Q, Long n)
 
 
 
-/**  Cria arquivos QDD  **/
-
-void cria_HcN(Short N, Short salva)
+void paisagem(QDD *Q, Short espacamento, char *arquivo)
 {
-    QDD *Q1, *Q2, *Q3;
-    Q1 = H();
+    Long max, esp;
+    max = pow(2,Q->nqbit);
+    esp = pow(2,espacamento);
 
-    char nome[30];
-    Short i;
-    for(i=1; i<N; i++)
+    FILE *fp;
+    fp = fopen(arquivo,"w");
+    fprintf(fp,"sep=|\n");
+
+    no *n;
+    Long i;
+    for(i=0; i<max; i += esp)
     {
-        printf("\n\ni: %2hu",i+1);
-        Q2 = produto_tensorial(Q1,QI);
-        libera_QDD(Q1);
-        Q1 = Q2;
-
-        Q2 = aplica(QH,i+1,i);
-        Q3 = controla(Q2,i-1,0);
-        libera_QDD(Q2);
-        Q2 = Q3;
-
-        Q3 = produto_matriz_matriz(Q2,Q1);
-        libera_QDD(Q1);
-        libera_QDD(Q2);
-        Q1 = Q3;
-
-        sprintf(nome,"Hc%hu",i+1);
-        if(salva)
-            salva_QDD(Q1,nome);
+        n = acessa_amplitude(Q,i);
+        fprintf(fp,"%d|%f|%f\n",i,n->at.f.re,n->at.f.im);
     }
-
-    libera_QDD(Q1);
-}
-
-void cria_QFT(Short N)
-{
-    QDD *Qr, *Qs1, *Qs2, *Qft;
-
-    Qr  = H();
-    Qs1 = I();
-    Qs2 = I();
-    Qft = H();
-
-    QDD *Q1, *Q2;
-    Short i;
-    float theta;
-    char nome[30];
-    theta = pi;
-    for(i=1; i<N; i++)
-    {
-        printf("\ni: %2hu",i+1);
-        configuracao(i+1);
-
-        Q1 = produto_tensorial(Qr,QI);
-        libera_QDD(Qr);
-        Qr = Q1;
-
-        theta /= 2;
-        Q1 = Rz(theta);
-        Q2 = aplica(Q1,i+1,0);
-        libera_QDD(Q1);
-        Q1=  controla(Q2,i,1);
-        libera_QDD(Q2);
-
-        Q2 = produto_matriz_matriz(Q1,Qr);
-        libera_QDD(Qr);
-        libera_QDD(Q1);
-        Qr = Q2;
-
-        Q1 = produto_tensorial(QI,Qft);
-        libera_QDD(Qft);
-        Qft = Q1;
-
-        Q1 = produto_matriz_matriz(Qft,Qr);
-        libera_QDD(Qft);
-        Qft = Q1;
-
-        Q1 = aplica(Qs2,i+1,1);
-        libera_QDD(Qs2);
-        Qs2 = Qs1;
-        Qs1 = Q1;
-
-        Q1 = Switch(i+1);
-
-        Q2 = produto_matriz_matriz(Qs1,Q1);
-        libera_QDD(Qs1);
-        libera_QDD(Q1);
-        Qs1 = Q2;
-
-        Q1 = produto_matriz_matriz(Qs1,Qft);
-        sprintf(nome,"QFT%hu",i+1);
-        salva_QDD(Q1,nome);
-        libera_QDD(Q1);
-    }
-
-    libera_QDD(Qr);
-    libera_QDD(Qs1);
-    libera_QDD(Qs2);
-    libera_QDD(Qft);
-}
-
-void cria_QftW(Short N, char *arquivo)
-{
-    QDD *Qb;
-    Qb = W(N);
-
-    QDD *Q;
-    Q = QFT(Qb);
-    salva_QDD(Q,arquivo);
-
-    libera_QDD(Qb);
-    libera_QDD(Q);
+    fclose(fp);
 }
 
 
@@ -6440,6 +6601,41 @@ Short teste_memoria()
 
 }
 
+void teste_aleatorio_fourrier(Short N)
+{
+    Long max;
+    max = pow(2,N);
+
+    float *p;
+    Long i;
+    p = malloc(max*sizeof(float));
+    for(i=0; i<max; i++)
+        p[i] = gera_aleatorio();
+
+    no **n;
+    n = cria_no_array(max);
+    for(i=0; i<max; i++)
+        n[i] = cria_no_fim(p[i],0);
+    free(p);
+
+    QDD *Q;
+    Q = cria_QDD_vetor(n,N);
+    libera_no_array(n,max);
+
+    float m;
+    m = modulo_vetor(Q);
+    produto_QDD_real(Q,1/m);
+
+    QDD *Qft;
+    Qft = QFT(Q);
+    libera_QDD(Q);
+
+    salva_QDD(Qft,"Ale10");
+    libera_QDD(Qft);
+
+    mostra_quantidades();
+}
+
 
 
 int main()
@@ -6450,22 +6646,40 @@ int main()
     setlocale(LC_ALL, "Portuguese");
     /***********************************/
 
-    QDD *Q;
+    /*QDD *Q;
     Q = le_QDD("QftW15");
     printf("Leu\n");
 
     rota *r;
     r = mede_tudo_varios(Q,100000);
+    printf("\nMediu");
 
-    mostra_rotas(r);
+    FILE *fa, *fp;
+    fa = fopen("RotasNaoOrdenadas.txt","w");
+    fp = fopen("RotasOrdenadas.txt","w");
+
+    fmostra_rotas(fa,r);
+    printf("\nSalvou 1");
     ordena_rotas(&r);
-    mostra_rotas(r);
+    printf("\nOrdenou");
+    fmostra_rotas(fp,r);
+    printf("\nSalvou 2");
+
+    fclose(fa);
+    fclose(fp);
 
     libera_QDD(Q);
     libera_rota_lista(r);
 
     printf("\n\n");
-    mostra_quantidades();
+    mostra_quantidades();*/
+
+    teste_aleatorio_fourrier(11);
+
+    QDD *Q;
+    Q = le_QDD("Ale10");
+
+    paisagem(Q,0,"Teste.csv");
 
     /***********************************/
     finaliza_structs_globais();
