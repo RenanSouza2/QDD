@@ -1602,14 +1602,14 @@ void fmostra_apply_lista_sozinho(apply *a, char *arquivo)
 
 void fmostra_conta_no(FILE *fp, conta *c)
 {
-    printf("\nEndereco (conta): %d\n",c);
+    fprintf(fp,"\nEndereco (conta): %d\n",c);
     if(c == NULL)
         return;
 
-    printf("nivel: %d",c->nivel);
-    printf("\n\nno: ");
-    mostra_no(c->n);
-    printf("\nc proximo: %d",c->c);
+    fprintf(fp,"nivel: %d",c->nivel);
+    fprintf(fp,"\n\nno: ");
+    fmostra_no(fp,c->n);
+    fprintf(fp,"\nc proximo: %d",c->c);
 }
 
 void fmostra_conta_lista(FILE *fp, conta *c)
@@ -1618,39 +1618,39 @@ void fmostra_conta_lista(FILE *fp, conta *c)
     Short ligacao = 0;
     for(cc = c; cc != NULL; cc = cc->c)
     {
-        printf("\n\n\n\nLigacao conta %d: ",ligacao);
-        mostra_conta_no(cc);
+        fprintf(fp,"\n\n\n\nLigacao conta %d: ",ligacao);
+        fmostra_conta_no(fp,cc);
         ligacao++;
     }
 }
 
 void fmostra_suporte_no(FILE *fp, suporte *s)
 {
-    printf("\nEndereco (suporte): %d\n",s);
+    fprintf(fp,"\nEndereco (suporte): %d\n",s);
     if(s == NULL)
         return;
 
-    printf("nivel: %d",s->nivel);
-    printf("\n\ncc: %d",s->c[C]);
-    printf("\ncv: %d",s->c[V]);
-    printf("\ncr: %d",s->c[R]);
-    printf("\n\ns proximo: %d",s->s);
+    fprintf(fp,"nivel: %d",s->nivel);
+    fprintf(fp,"\n\ncc: %d",s->c[C]);
+    fprintf(fp,"\ncv: %d",s->c[V]);
+    fprintf(fp,"\ncr: %d",s->c[R]);
+    fprintf(fp,"\n\ns proximo: %d",s->s);
 }
 
 void fmostra_suporte_no_com_conta(FILE *fp, suporte *s)
 {
-    printf("\nEndereco (suporte): %d",s);
+    fprintf(fp,"\nEndereco (suporte): %d",s);
     if(s == NULL)
         return;
 
-    printf("\nnivel: %d",s->nivel);
-    printf("\n\ncc: %d",s->c[C]);
-    mostra_conta_lista(s->c[C]);
-    printf("\ncv: %d",s->c[V]);
-    mostra_conta_lista(s->c[V]);
-    printf("\ncr: %d",s->c[R]);
-    mostra_conta_lista(s->c[R]);
-    printf("\n\ns: %d",s->s);
+    fprintf(fp,"\nnivel: %d",s->nivel);
+    fprintf(fp,"\n\ncc: %d",s->c[C]);
+    fmostra_conta_lista(fp,s->c[C]);
+    fprintf(fp,"\ncv: %d",s->c[V]);
+    fmostra_conta_lista(fp,s->c[V]);
+    fprintf(fp,"\ncr: %d",s->c[R]);
+    fmostra_conta_lista(fp,s->c[R]);
+    fprintf(fp,"\n\ns: %d",s->s);
 }
 
 void fmostra_suporte_lista(FILE *fp, suporte *s)
@@ -1659,8 +1659,8 @@ void fmostra_suporte_lista(FILE *fp, suporte *s)
     Short ligacao = 0;
     for(sc = s; sc != NULL; sc = sc->s)
     {
-        printf("\n\n\n\nLigacao suporte %d: ",ligacao);
-        mostra_suporte_no(sc);
+        fprintf(fp,"\n\n\n\nLigacao suporte %d: ",ligacao);
+        fmostra_suporte_no(fp,sc);
         ligacao++;
     }
 }
@@ -1671,8 +1671,8 @@ void fmostra_suporte_lista_com_conta(FILE *fp, suporte *s)
     Short ligacao = 0;
     for(sc = s; sc != NULL; sc = sc->s)
     {
-        printf("\n\n\n\nLigacao suporte %d: ",ligacao);
-        mostra_suporte_no_com_conta(sc);
+        fprintf(fp,"\n\n\n\nLigacao suporte %d: ",ligacao);
+        fmostra_suporte_no_com_conta(fp,sc);
         ligacao++;
     }
 }
@@ -1682,21 +1682,21 @@ void fmostra_rotas(FILE *fp, rota *r)
     Long i;
     for(i=0; r != NULL; i++)
     {
-        printf("\n\tRota %3llu: %s",i,r->num);
+        fprintf(fp,"\n\tRota %3llu: %s",i,r->num);
         r = r->r;
     }
 }
 
 void fmostra_busca_no(FILE *fp, busca *b)
 {
-    printf("\nEndereco (busca): %d",b);
+    fprintf(fp,"\nEndereco (busca): %d",b);
     if(b == NULL)
         return;
 
-    printf("\nno: ");
-    mostra_no(b->n);
-    mostra_rotas(b->r);
-    printf("\nb proximo: %d",b->b);
+    fprintf(fp,"\nno: ");
+    fmostra_no(fp,b->n);
+    fmostra_rotas(fp,b->r);
+    fprintf(fp,"\nb proximo: %d",b->b);
 }
 
 void fmostra_busca_lista(FILE *fp, busca *b)
@@ -1706,21 +1706,21 @@ void fmostra_busca_lista(FILE *fp, busca *b)
     i = 0;
     for(bc = b; bc != NULL; bc = bc->b)
     {
-        printf("\n\tBusca %d: ",i);
-        mostra_busca_no(bc);
+        fprintf(fp,"\n\tBusca %d: ",i);
+        fmostra_busca_no(fp,bc);
         i++;
     }
 }
 
 void fmostra_busca_no_compacto(FILE *fp, busca *b)
 {
-    printf("\nEndereco (busca): %d",b);
+    fprintf(fp,"\nEndereco (busca): %d",b);
     if(b == NULL)
         return;
 
-    printf("\nno: %d",b->n);
-    mostra_rotas(b->r);
-    printf("\nb proximo: %d",b->b);
+    fprintf(fp,"\nno: %d",b->n);
+    fmostra_rotas(fp,b->r);
+    fprintf(fp,"\nb proximo: %d",b->b);
 }
 
 void fmostra_busca_lista_compacto(FILE *fp, busca *b)
@@ -1730,8 +1730,8 @@ void fmostra_busca_lista_compacto(FILE *fp, busca *b)
     i = 0;
     for(bc = b; bc != NULL; bc = bc->b)
     {
-        printf("\n\tBusca %d: ",i);
-        mostra_busca_no_compacto(bc);
+        fprintf(fp,"\n\tBusca %d: ",i);
+        fmostra_busca_no_compacto(fp,bc);
         i++;
     }
 }
@@ -1741,8 +1741,8 @@ void fmostra_busca_no_numero(FILE *fp, busca *b)
     if(b == NULL)
         return;
 
-    mostra_no_numero(b->n);
-    mostra_rotas(b->r);
+    fmostra_no_numero(fp,b->n);
+    fmostra_rotas(fp,b->r);
 }
 
 void fmostra_busca_lista_numero(FILE *fp, busca *b)
@@ -1752,8 +1752,8 @@ void fmostra_busca_lista_numero(FILE *fp, busca *b)
     i = 0;
     for(bc = b; bc != NULL; bc = bc->b)
     {
-        printf("\n\n\tBusca %d: ",i);
-        mostra_busca_no_numero(bc);
+        fprintf(fp,"\n\n\tBusca %d: ",i);
+        fmostra_busca_no_numero(fp,bc);
         i++;
     }
 }
@@ -1764,77 +1764,77 @@ void fmostra_quantidades(FILE *fp)
     if(mem != 0)
     {
         vazio = 0;
-        printf("\nMem:  %llu",mem);
+        fprintf(fp,"\nMem:  %llu",mem);
     }
     if(memF != 0)
     {
         vazio = 0;
-        printf("\nMemF: %llu",memF);
+        fprintf(fp,"\nMemF: %llu",memF);
     }
     if(iQ != 0)
     {
         vazio = 0;
-        printf("\nQDD:  %llu",iQ);
+        fprintf(fp,"\nQDD:  %llu",iQ);
     }
     if(iI != 0)
     {
         vazio = 0;
-        printf("\ni:    %llu",iI);
+        fprintf(fp,"\ni:    %llu",iI);
     }
     if(iM != 0)
     {
         vazio = 0;
-        printf("\nm:    %llu",iM);
+        fprintf(fp,"\nm:    %llu",iM);
     }
     if(iF != 0)
     {
         vazio = 0;
-        printf("\nf:    %llu",iF);
+        fprintf(fp,"\nf:    %llu",iF);
     }
     if(iL != 0)
     {
         vazio = 0;
-        printf("\nl:    %llu",iL);
+        fprintf(fp,"\nl:    %llu",iL);
     }
     if(iA != 0)
     {
         vazio = 0;
-        printf("\na:    %llu",iA);
+        fprintf(fp,"\na:    %llu",iA);
     }
     if(iC != 0)
     {
         vazio = 0;
-        printf("\nc:    %llu",iC);
+        fprintf(fp,"\nc:    %llu",iC);
     }
     if(iS != 0)
     {
         vazio = 0;
-        printf("\ns:    %llu",iS);
+        fprintf(fp,"\ns:    %llu",iS);
     }
     if(iB != 0)
     {
         vazio = 0;
-        printf("\nb:    %llu",iB);
+        fprintf(fp,"\nb:    %llu",iB);
     }
     if(iR != 0)
     {
         vazio = 0;
-        printf("\nr:    %llu",iR);
+        fprintf(fp,"\nr:    %llu",iR);
     }
     if(vazio)
-        printf("\nTUDO ZERADO");
-    printf("\n");
+        fprintf(fp,"\nTUDO ZERADO");
+    fprintf(fp,"\n");
 }
 
 void fmostra_quantidades_zero(FILE *fp)
 {
-    printf("\nMem0: %llu",mem0);
-    printf("\nQ0:   %llu",iQ0);
-    printf("\nI0:   %llu",iI0);
-    printf("\nM0:   %llu",iM0);
-    printf("\nF0:   %llu",iF0);
-    printf("\nL0:   %llu",iL0);
-    printf("\nR0:   %llu",iR0);
+    fprintf(fp,"\nMem0: %llu",mem0);
+    fprintf(fp,"\nQ0:   %llu",iQ0);
+    fprintf(fp,"\nI0:   %llu",iI0);
+    fprintf(fp,"\nM0:   %llu",iM0);
+    fprintf(fp,"\nF0:   %llu",iF0);
+    fprintf(fp,"\nL0:   %llu",iL0);
+    fprintf(fp,"\nR0:   %llu",iR0);
 }
 
 void fmostra_contagem(FILE *fp)
@@ -1843,108 +1843,108 @@ void fmostra_contagem(FILE *fp)
     if(cQ != 0)
     {
         vazio = 0;
-        printf("\ncQ: %llu\tlQ: %llu",cQ,lQ);
+        fprintf(fp,"\ncQ: %llu\tlQ: %llu",cQ,lQ);
     }
     if(cI!= 0)
     {
         vazio = 0;
-        printf("\ncI: %llu\tlI: %llu",cI,lI);
+        fprintf(fp,"\ncI: %llu\tlI: %llu",cI,lI);
     }
     if(cM != 0)
     {
         vazio = 0;
-        printf("\ncM: %llu\tlM: %llu",cM,lM);
+        fprintf(fp,"\ncM: %llu\tlM: %llu",cM,lM);
     }
     if(cF != 0)
     {
         vazio = 0;
-        printf("\ncF: %llu\tlF: %llu",cF,lF);
+        fprintf(fp,"\ncF: %llu\tlF: %llu",cF,lF);
     }
     if(cL != 0)
     {
         vazio = 0;
-        printf("\ncL: %llu\tlL: %llu",cL,lL);
+        fprintf(fp,"\ncL: %llu\tlL: %llu",cL,lL);
     }
     if(cA != 0)
     {
         vazio = 0;
-        printf("\ncA: %llu\tlA: %llu",cA,lA);
+        fprintf(fp,"\ncA: %llu\tlA: %llu",cA,lA);
     }
     if(cC != 0)
     {
         vazio = 0;
-        printf("\ncC: %llu\tlC: %llu",cC,lC);
+        fprintf(fp,"\ncC: %llu\tlC: %llu",cC,lC);
     }
     if(cS != 0)
     {
         vazio = 0;
-        printf("\ncS: %llu\tlS: %llu",cS,lS);
+        fprintf(fp,"\ncS: %llu\tlS: %llu",cS,lS);
     }
     if(cB != 0)
     {
         vazio = 0;
-        printf("\ncB: %llu\tlS: %llu",cB,lB);
+        fprintf(fp,"\ncB: %llu\tlS: %llu",cB,lB);
     }
     if(cR != 0)
     {
         vazio = 0;
-        printf("\ncLS: %llu\tlS: %llu",cR,lR);
+        fprintf(fp,"\ncLS: %llu\tlS: %llu",cR,lR);
     }
     if(vazio)
-        printf("\nNAO CRIOU NADA");
+        fprintf(fp,"\nNAO CRIOU NADA");
 }
 
 void fmostra_tamanhos(FILE *fp)
 {
-    printf("\n\nTAMANHOS\n");
-    printf("\nQDD: %d",tQ);
-    printf("\nn:   %d",tN);
-    printf("\nl:   %d",tL);
-    printf("\na:   %d",tA);
-    printf("\nc:   %d",tC);
-    printf("\ns:   %d",tS);
-    printf("\nb:   %d",tB);
-    printf("\nr:   %d",tR);
-    printf("\n");
+    fprintf(fp,"\n\nTAMANHOS\n");
+    fprintf(fp,"\nQDD: %d",tQ);
+    fprintf(fp,"\nn:   %d",tN);
+    fprintf(fp,"\nl:   %d",tL);
+    fprintf(fp,"\na:   %d",tA);
+    fprintf(fp,"\nc:   %d",tC);
+    fprintf(fp,"\ns:   %d",tS);
+    fprintf(fp,"\nb:   %d",tB);
+    fprintf(fp,"\nr:   %d",tR);
+    fprintf(fp,"\n");
 }
 
 void fmostra_configuracao(FILE *fp)
 {
-    printf("\nConfiguracao: ");
-    printf("\nNqbit: %hu",Nqbit);
-    printf("\neps: %.3e",eps);
+    fprintf(fp,"\nConfiguracao: ");
+    fprintf(fp,"\nNqbit: %hu",Nqbit);
+    fprintf(fp,"\neps: %.3e",eps);
 }
 
 void fmostra_destrutivo_no(FILE *fp, destrutivo *d)
 {
-    printf("\nEndereco (destrutivo): %d",d);
+    fprintf(fp,"\nEndereco (destrutivo): %d",d);
     if(d == NULL)
         return;
-    printf("\n");
+    fprintf(fp,"\n");
     if(d->Q != NULL)
-        printf("\nQ0: %d\t\t\tQ1: %d",d->Q[0],d->Q[1]);
-    printf("\np0: %e\tp1: %e",d->p[0],d->p[1]);
-    printf("\n");
+        fprintf(fp,"\nQ0: %d\t\t\tQ1: %d",d->Q[0],d->Q[1]);
+    fprintf(fp,"\np0: %e\tp1: %e",d->p[0],d->p[1]);
+    fprintf(fp,"\n");
     if(d->el != NULL)
-        printf("\nd->el: %d",d->el);
+        fprintf(fp,"\nd->el: %d",d->el);
     if(d->th != NULL)
-        printf("\nd->th: %d",d->th);
+        fprintf(fp,"\nd->th: %d",d->th);
 }
 
 void fmostra_destrutivo_arvore(FILE *fp, destrutivo *d)
 {
-    mostra_destrutivo_no(d);
-    printf("\n");
+    fmostra_destrutivo_no(fp,d);
+    fprintf(fp,"\n");
 
     if(d->el != NULL)
     {
-        mostra_destrutivo_arvore(d->el);
-        printf("\n");
+        fmostra_destrutivo_arvore(fp,d->el);
+        fprintf(fp,"\n");
     }
     if(d->th != NULL)
     {
-        mostra_destrutivo_arvore(d->th);
-        printf("\n");
+        fmostra_destrutivo_arvore(fp,d->th);
+        fprintf(fp,"\n");
     }
 }
 
@@ -6014,22 +6014,13 @@ no* acessa_amplitude(QDD *Q, Long num)
 
 float gera_aleatorio()
 {
-    int aleatorio, n;
+    int aleatorio;
     if(ale == 0)
     {
         ale = 1;
         srand(1e5*time(NULL));
     }
-    n = rand();
-    srand(n);
-
-    int i;
-    aleatorio = 0;
-    for(i=0; i<n; i++)
-    {
-        aleatorio = rand();
-        srand(aleatorio);
-    }
+    aleatorio = rand();
 
     float P;
     P = aleatorio;
@@ -6147,26 +6138,40 @@ rota* mede_tudo_varios(QDD *Q, Long n)
 
     busca *b;
     destrutivo *dc;
-    Long i, tam;
+    Long i, tam, mostra;
     Short j, N, cria;
     float p;
+
     N = Q->nqbit;
     if(n > 99)
-        tam = n/1000;
+        tam = n/100;
     else
         tam = 1;
+
+    printf("\n\nn: %d",n);
+    printf("\ttam: %d",tam);
+    printf("\tn/tam: %d\n",n/tam);
+
+    mostra = 100;
+
     for(i=0; i<n; i++)
     {
-        if(i < 50)
+        if(i == mostra)
+            printf("\n\n");
+
+        if(i < mostra)
             printf("\ni: %6d j:",i);
         else
         if(i%tam == 0)
-            printf("\ni: %d/%d",i/tam,n/tam);
+        {
+            printf("\ni: %3d/",i/tam);
+            printf("%d",n/tam);
+        }
 
         dc = d;
         for(j=0; j<N; j++)
         {
-            if(i < 50)
+            if(i < mostra)
                 printf(" %d",j);
 
             cria = 0;
@@ -6226,6 +6231,8 @@ rota* mede_tudo_varios(QDD *Q, Long n)
         b = busca_mais_provavel(Qa);
         rc->r = b->r;
         rc = rc->r;
+
+        libera_no(b->n);
         libera_busca_no(b);
     }
 
@@ -6244,7 +6251,7 @@ void paisagem(QDD *Q, Short espacamento, char *arquivo)
 {
     Long max, esp;
     max = pow(2,Q->nqbit);
-    esp = pow(2,espacamento);
+    esp = espacamento;
 
     FILE *fp;
     fp = fopen(arquivo,"w");
@@ -6646,40 +6653,26 @@ int main()
     setlocale(LC_ALL, "Portuguese");
     /***********************************/
 
-    /*QDD *Q;
+    QDD *Q;
     Q = le_QDD("QftW15");
-    printf("Leu\n");
+    printf("Leu");
 
     rota *r;
-    r = mede_tudo_varios(Q,100000);
-    printf("\nMediu");
+    r = mede_tudo_varios(Q,10000000);
 
-    FILE *fa, *fp;
-    fa = fopen("RotasNaoOrdenadas.txt","w");
-    fp = fopen("RotasOrdenadas.txt","w");
-
-    fmostra_rotas(fa,r);
-    printf("\nSalvou 1");
     ordena_rotas(&r);
-    printf("\nOrdenou");
-    fmostra_rotas(fp,r);
-    printf("\nSalvou 2");
+    printf("\nOrdenou\n");
 
-    fclose(fa);
+    FILE *fp;
+    fp = fopen("Resultados.txt","w");
+    fmostra_rotas(fp,r);
     fclose(fp);
 
     libera_QDD(Q);
     libera_rota_lista(r);
 
     printf("\n\n");
-    mostra_quantidades();*/
-
-    teste_aleatorio_fourrier(11);
-
-    QDD *Q;
-    Q = le_QDD("Ale10");
-
-    paisagem(Q,0,"Teste.csv");
+    mostra_quantidades();
 
     /***********************************/
     finaliza_structs_globais();
