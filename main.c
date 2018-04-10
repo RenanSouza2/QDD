@@ -5622,6 +5622,7 @@ QDD* QFT(QDD *Q)
     }
 
     Short j;
+    char men[30];
     for(j=N; j>0; j--)
     {
         printf("\n\nj: %d",j);
@@ -5633,6 +5634,10 @@ QDD* QFT(QDD *Q)
             libera_QDD(Q1);
             libera_QDD(Qa);
             Qa = Q2;
+
+            salva_QDD(Qa,"QftW18");
+            sprintf(men,"i: %d j: %d",i,j);
+            MENSAGEM(men);
         }
     }
 
@@ -5650,6 +5655,72 @@ QDD* QFT(QDD *Q)
         libera_QDD(Q2);
         libera_QDD(Qa);
         Qa = Q1;
+    }
+
+    return Qa;
+}
+
+QDD* QFT_inv(QDD *Q)
+{
+    QDD *Qa;
+    Qa = copia_QDD(Q);
+
+    Short N;
+    N = Q->nqbit;
+
+    for(i=1; i<N; i++)
+        libera_QDD(Qr[i]);
+    libera_QDD_array(Qr,N);
+
+    short i;
+    for(i=N; i>1; i-=2)
+    {
+        Q1 = Switch(i);
+        Q2 = aplica(Q1,N,(N-i)/2);
+        libera_QDD(Q1);
+
+        Q1 = produto_matriz_vetor(Q2,Qa);
+        libera_QDD(Q2);
+        libera_QDD(Qa);
+        Qa = Q1;
+    }
+
+    QDD **Qr;
+    Qr = cria_QDD_array(N);
+    Qr[0] = QH;
+
+    QDD *Q1, *Q2;
+    float theta;
+    theta = -pi;
+    for(i=2; i<=N; i++)
+    {
+        theta /= 2;
+        Q1 = Rz(theta);
+        Q2 = aplica(Q1,i,0);
+        libera_QDD(Q1);
+        Q1 = controla(Q2,i-1,1);
+        libera_QDD(Q2);
+        Qr[i-1] = Q1;
+    }
+
+    Short j;
+    char men[30];
+    for(j=1; j<=N; j++)
+    {
+        printf("\n\nj: %d",j);
+        for(i=j; i>=0; i--)
+        {
+            printf("\n\ti: %d",i);
+            Q1 = aplica(Qr[i],N,N-j);
+            Q2 = produto_matriz_vetor(Q1,Qa);
+            libera_QDD(Q1);
+            libera_QDD(Qa);
+            Qa = Q2;
+
+            salva_QDD(Qa,"QftW18");
+            sprintf(men,"i: %d j: %d",i,j);
+            MENSAGEM(men);
+        }
     }
 
     return Qa;
@@ -6653,26 +6724,84 @@ int main()
     setlocale(LC_ALL, "Portuguese");
     /***********************************/
 
+    /*Short N;
+    N = 18;
+
     QDD *Q;
-    Q = le_QDD("QftW15");
-    printf("Leu");
+    Q = W(N);
+
+    QDD *Qs;
+    Qs = QFT(Q);
+    libera_QDD(Q);
+    Q = Qs;
+
+    salva_QDD(Q,"QftW18");
+
+    mede_tudo_varios(Q,100000);*/
+
+    QDD *Q;
+    Q = BASE(5,0);
+
+
+    QDD *Q1, *Q2;
+    Q1 = aplica(QH,5,1);
+    Q2 = produto_matriz_vetor(Q1,Q);
+    libera_QDD(Q);
+    libera_QDD(Q1);
+    Q = Q2;
+
+    QDD *QCnot;
+    Q1 = aplica(QX,2,0);
+    QCnot = controla(Q1,1,1);
+    libera_QDD(Q1);
+
+    QDD *Q3;
+    Q1 = produto_tensorial(QCnot,QH);
+    Q2 = aplica(Q1,5,0);
+    Q3 = produto_matriz_vetor(Q2,Q);
+    libera_QDD(Q);
+    libera_QDD(Q2);
+    Q = Q3;
+
+    Q2 = produto_tensorial(QH,Q1);
+    libera_QDD(Q1);
+    Q1 = aplica(Q2,5,0);
+    libera_QDD(Q2);
+    Q2 = produto_matriz_vetor(Q1,Q);
+    libera_QDD(Q);
+    libera_QDD(Q1);
+    Q = Q2;
+
+    Q1 = produto_tensorial(QH,QCnot);
+    libera_QDD(QCnot);
+    Q2 = aplica(Q1,5,1);
+    libera_QDD(Q1);
+    Q1 = produto_matriz_vetor(Q2,Q);
+    libera_QDD(Q);
+    libera_QDD(Q2);
+    Q = Q1;
+
+    Q1 = produto_tensorial(QH,QH);
+    Q2 = aplica(Q1,5,2);
+    libera_QDD(Q1);
+    Q1 = produto_matriz_vetor(Q2,Q);
+    libera_QDD(Q);
+    libera_QDD(Q2);
+    Q = Q1;
+
+    Q1 = aplica(QX,2,1);
+    QCnot = controla(Q1,0,1);
+    libera_QDD(Q1);
+    Q1 = aplica(QCnot,5,3);
+    libera_QDD(QCnot);
+    Q2 = produto_matriz_vetor(Q1,Q);
+    libera_QDD(Q);
+    libera_QDD(Q1);
+    Q = Q2;
 
     rota *r;
-    r = mede_tudo_varios(Q,10000000);
-
-    ordena_rotas(&r);
-    printf("\nOrdenou\n");
-
-    FILE *fp;
-    fp = fopen("Resultados.txt","w");
-    fmostra_rotas(fp,r);
-    fclose(fp);
-
-    libera_QDD(Q);
-    libera_rota_lista(r);
-
-    printf("\n\n");
-    mostra_quantidades();
+    r = mede_tudo_varios(Q,8196);
+    mostra_rotas(r);
 
     /***********************************/
     finaliza_structs_globais();
