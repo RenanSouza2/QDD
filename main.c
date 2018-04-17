@@ -697,6 +697,8 @@ void libera_busca_lista(busca *b)
     busca *bc;
     while(b != NULL)
     {
+        if(b->n != NULL)
+            libera_no(b->n);
         if(b->r != NULL)
             libera_rota_lista(b->r);
 
@@ -5645,8 +5647,11 @@ QDD* QFT(QDD *Q)
         libera_QDD(Qr[i]);
     libera_QDD_array(Qr,N);
 
+    printf("\n\n");
     for(i=N; i>1; i-=2)
     {
+        printf("\ni: %d",i);
+
         Q1 = Switch(i);
         Q2 = aplica(Q1,N,(N-i)/2);
         libera_QDD(Q1);
@@ -5655,6 +5660,10 @@ QDD* QFT(QDD *Q)
         libera_QDD(Q2);
         libera_QDD(Qa);
         Qa = Q1;
+
+        salva_QDD(Qa,"QftW18");
+        sprintf(men,"i: %d S",i,j);
+        MENSAGEM(men);
     }
 
     return Qa;
@@ -5668,10 +5677,7 @@ QDD* QFT_inv(QDD *Q)
     Short N;
     N = Q->nqbit;
 
-    for(i=1; i<N; i++)
-        libera_QDD(Qr[i]);
-    libera_QDD_array(Qr,N);
-
+    QDD *Q1, *Q2;
     short i;
     for(i=N; i>1; i-=2)
     {
@@ -5689,7 +5695,6 @@ QDD* QFT_inv(QDD *Q)
     Qr = cria_QDD_array(N);
     Qr[0] = QH;
 
-    QDD *Q1, *Q2;
     float theta;
     theta = -pi;
     for(i=2; i<=N; i++)
@@ -5723,12 +5728,16 @@ QDD* QFT_inv(QDD *Q)
         }
     }
 
+    for(i=1; i<N; i++)
+        libera_QDD(Qr[i]);
+    libera_QDD_array(Qr,N);
+
     return Qa;
 }
 
 
 
-/**   Busca   **/
+/** Auxiliar busca  **/
 
 rota* concatena_rotas(rota *r1, rota *r2)
 {
@@ -5820,6 +5829,44 @@ void ordena_rotas(rota **Ro)
     *Ro = r->r;
     libera_rota_no(r);
 }
+
+void ordena_busca(busca **B)
+{
+    busca *b;
+    b = cria_busca();
+    b->b = *B;
+
+    no *n1, *n2;
+    busca *bo, *bc, *baux;
+    bo = cria_busca();
+    while(b->b != NULL)
+    {
+        baux = b->b;
+        b->b = baux->b;
+        n1 = baux->n;
+
+        for(bc = bo; bc->b != NULL; bc = bc->b)
+        {
+            n2 = bc->b->n;
+            if(n1->at.f.re < n2->at.f.re)
+                break;
+        }
+
+        baux->b = bc->b;
+        bc->b = baux;
+    }
+
+    bc = bo->b;
+    libera_busca_no(b);
+    libera_busca_no(bo);
+    bo = bc;
+
+    *B = bo;
+}
+
+
+
+/**   Busca   **/
 
 rota* busca_rotas(no *n, Short N)
 {
@@ -5968,8 +6015,9 @@ busca* busca_mais_provavel(QDD *Q)
         else
             libera_no(naux);
     }
+
     if(nmax == NULL)
-        ERRO("BUSCA MAIS PROVAVEL| NAO ACHOU AMPLITUDE COM MAIOR MODULO");
+        ERRO("BUSCA MAIS PROVAVEL| NAO ACHOU MAIOR AMPLITUDE");
 
     b->r = busca_rotas(nmax,Q->nqbit);
     return b;
@@ -6012,6 +6060,8 @@ busca* busca_probabilidade_maior(QDD *Q, double p) // Retorna nulo caso não ache
     bc = b->b;
     libera_busca_no(b);
     b = bc;
+
+    libera_QDD(Q);
 
     return b;
 }
@@ -6314,28 +6364,6 @@ rota* mede_tudo_varios(QDD *Q, Long n)
     libera_destrutivo_arvore(d);
 
     return r;
-}
-
-
-
-void paisagem(QDD *Q, Short espacamento, char *arquivo)
-{
-    Long max, esp;
-    max = pow(2,Q->nqbit);
-    esp = espacamento;
-
-    FILE *fp;
-    fp = fopen(arquivo,"w");
-    fprintf(fp,"sep=|\n");
-
-    no *n;
-    Long i;
-    for(i=0; i<max; i += esp)
-    {
-        n = acessa_amplitude(Q,i);
-        fprintf(fp,"%d|%f|%f\n",i,n->at.f.re,n->at.f.im);
-    }
-    fclose(fp);
 }
 
 
@@ -6725,21 +6753,26 @@ int main()
     /***********************************/
 
     /*Short N;
-    N = 18;
+    char nome[30];
+    for(N = 18; N<18; N++)
+    {
+        QDD *Q;
+        Q = W(N);
 
-    QDD *Q;
-    Q = W(N);
+        QDD *Qs;
+        Qs = QFT(Q);
+        libera_QDD(Q);
+        Q = Qs;
 
-    QDD *Qs;
-    Qs = QFT(Q);
-    libera_QDD(Q);
-    Q = Qs;
+        sprintf(nome,"QftW%d",N);
+        salva_QDD(Q,nome);
+    }
 
-    salva_QDD(Q,"QftW18");
+    mostra_quantidades();*/
 
-    mede_tudo_varios(Q,100000);*/
+    /***/
 
-    QDD *Q;
+    /*QDD *Q;
     Q = BASE(5,0);
 
 
@@ -6801,10 +6834,72 @@ int main()
 
     rota *r;
     r = mede_tudo_varios(Q,8196);
-    mostra_rotas(r);
+    ordena_rotas(&r);
+    //mostra_rotas(r);
+
+    libera_QDD(Q);
+    libera_rota_lista(r);
+
+    mostra_quantidades();*/
+
+    /***/
+
+    /*QDD *Qb;
+    Qb = BASE(1,0);
+
+    QDD *Q;
+    Q = produto_matriz_vetor(QH,Qb);
+
+    QDD *QHc, *Q1;
+    Q1 = aplica(QH,2,1);
+    QHc = controla(Q1,0,1);
+    libera_QDD(Q1);
+
+    QDD *Q2;
+    for(int i=1; i<64; i++)
+    {
+        printf("\n i: %d",i);
+
+        Q1 = produto_tensorial(Q,Qb);
+        libera_QDD(Q);
+        Q = Q1;
+
+        Q1 = aplica(QHc,i+1,i-1);
+        Q2 = produto_matriz_vetor(Q1,Q);
+        libera_QDD(Q);
+        libera_QDD(Q1);
+        Q = Q2;
+    }
+
+    mede_individual(Q);
+
+    busca *b;
+    b = busca_probabilidade_maior(Q,1e-2);
+    mostra_busca_lista(b);*/
+
+    /***/
+
+    QDD *Q;
+    Q = le_QDD("QftW15");
+    printf("Leu");
+
+    busca *b;
+    b = busca_probabilidade_maior(Q,5e-5);
+    ordena_busca(&b);
+
+    FILE *fp;
+    fp = fopen("BUSCA.txt","w");
+    fmostra_busca_lista_numero(fp,b);
+    fclose(fp);
+
+    libera_busca_lista(b);
+    libera_QDD(Q);
+
+    mostra_quantidades();
 
     /***********************************/
     finaliza_structs_globais();
     finaliza_relatorio_memoria();
     return 0;
 }
+
