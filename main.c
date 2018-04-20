@@ -3134,7 +3134,7 @@ QDD* le_vetor(char *nome)
     return Q;
 }
 
-void salva_QDD(QDD *Q, char *nome)
+void salva_QDD(FILE *fp, QDD *Q)
 {
     lista *l;
     Long itens;
@@ -3163,11 +3163,7 @@ void salva_QDD(QDD *Q, char *nome)
     }
     libera_lista_lista(l);
 
-    FILE *fp;
-    char nomeT[30];
-    sprintf(nomeT,"%s.QDD",nome);
-    fp = fopen(nomeT,"w");
-    fprintf(fp,"%llu %hu",itens,Q->nqbit);
+    fprintf(fp,"\n%llu %hu",itens,Q->nqbit);
 
     no *n, *n1, *n2;
     Long j, el, th;
@@ -3213,23 +3209,27 @@ void salva_QDD(QDD *Q, char *nome)
         }
     }
 
-    fclose(fp);
     diminui_memoria_fora(itens*sizeof(no*));
     free(N);
 }
 
-QDD* le_QDD(char *nome)
+void salva_QDD_sozinho(QDD *Q, char *nome)
 {
     FILE *fp;
     char nomeT[30];
     sprintf(nomeT,"%s.QDD",nome);
-    fp = fopen(nomeT,"r");
-    if(fp == NULL)
-        ERRO("LE QDD| NAO CONSEGUIU ABIR ARQUIVO");
+    fp = fopen(nomeT,"w");
 
+    salva_QDD(fp,Q);
+
+    fclose(fp);
+}
+
+QDD* le_QDD(FILE *fp)
+{
     Long itens;
     Short nqbit;
-    fscanf(fp,"%I64u",&itens);
+    fscanf(fp,"\n%I64u",&itens);
     fscanf(fp,"%hu",&nqbit);
 
     apply **A;
@@ -3291,7 +3291,6 @@ QDD* le_QDD(char *nome)
 
         a->n = n;
     }
-    fclose(fp);
 
     a = A[0];
     diminui_memoria_fora(itens*sizeof(apply*));
@@ -3332,6 +3331,22 @@ QDD* le_QDD(char *nome)
     Q = cria_QDD(nqbit);
     Q->n = n;
     Q->l = l;
+    return Q;
+}
+
+QDD* le_QDD_sozinho(char *nome)
+{
+    FILE *fp;
+    char nomeT[30];
+    sprintf(nomeT,"%s.QDD",nome);
+    fp = fopen(nomeT,"r");
+    if(fp == NULL)
+        ERRO("LE QDD| NAO CONSEGUIU ABIR ARQUIVO");
+
+    QDD *Q;
+    Q = le_QDD(fp);
+    fclose(fp);
+
     return Q;
 }
 
@@ -5624,7 +5639,6 @@ QDD* QFT(QDD *Q)
     }
 
     Short j;
-    char men[30];
     for(j=N; j>0; j--)
     {
         printf("\n\nj: %d",j);
@@ -5636,10 +5650,6 @@ QDD* QFT(QDD *Q)
             libera_QDD(Q1);
             libera_QDD(Qa);
             Qa = Q2;
-
-            salva_QDD(Qa,"QftW18");
-            sprintf(men,"i: %d j: %d",i,j);
-            MENSAGEM(men);
         }
     }
 
@@ -5660,10 +5670,6 @@ QDD* QFT(QDD *Q)
         libera_QDD(Q2);
         libera_QDD(Qa);
         Qa = Q1;
-
-        salva_QDD(Qa,"QftW18");
-        sprintf(men,"i: %d S",i,j);
-        MENSAGEM(men);
     }
 
     return Qa;
@@ -5709,7 +5715,6 @@ QDD* QFT_inv(QDD *Q)
     }
 
     Short j;
-    char men[30];
     for(j=1; j<=N; j++)
     {
         printf("\n\nj: %d",j);
@@ -5721,10 +5726,6 @@ QDD* QFT_inv(QDD *Q)
             libera_QDD(Q1);
             libera_QDD(Qa);
             Qa = Q2;
-
-            salva_QDD(Qa,"QftW18");
-            sprintf(men,"i: %d j: %d",i,j);
-            MENSAGEM(men);
         }
     }
 
@@ -6066,24 +6067,6 @@ busca* busca_probabilidade_maior(QDD *Q, double p) // Retorna nulo caso não ache
     return b;
 }
 
-void busca_n_mais_provaveis(QDD *Q, Long n)
-{
-    no *n0, *n1;
-    lista *l;
-    Q = copia_QDD(Q);
-    for(l = Q->l; l != NULL; l = l->l)
-    {
-        n0 = l->n;
-
-        n1 = modulo_2_no(n0);
-        transfere_conexao(n1,n0);
-        libera_no(n0);
-
-        l->n = n1;
-    }
-    reduz_QDD(Q,1,4);
-}
-
 float probabilidade_total(busca *b)
 {
     busca *bc;
@@ -6127,6 +6110,127 @@ no* acessa_amplitude(QDD *Q, Long num)
         exp_2 /= 2;
     }
     return n;
+}
+
+void salva_destrutivo_recursivo(FILE *fp, destrutivo *d)
+{
+    fprintf(fp,"\n0",d);
+    fprintf(fp,"\n%e %e",d->p[0],d->p[1]);
+
+    if(d->Q[0] != NULL)
+    {
+        fprintf(fp,"\nQ");
+        salva_QDD(fp,d->Q[0]);
+    }
+    else
+    {
+        if(d->el == NULL)
+            ERRO("SALVA DESTRUTIVO RECURSIVO| D NAO TEM NEM Q NEM EL");
+
+        salva_destrutivo_recursivo(fp,d->el);
+    }
+
+    if(d->Q[1] != NULL)
+    {
+        fprintf(fp,"\n1");
+        salva_QDD(fp,d->Q[1]);
+    }
+    else
+    {
+        if(d->th == NULL)
+            ERRO("SALVA DESTRUTIVO RECURSIVO| D NAO TEM NEM Q NEM TH");
+
+        salva_destrutivo_recursivo(fp,d->th);
+    }
+}
+
+void salva_destrutivo(destrutivo *d, char *salva)
+{
+    FILE *fp;
+    char nome[30];
+    sprintf(nome,"%s.des",salva);
+    fp = fopen(nome,"w");
+
+    salva_destrutivo_recursivo(fp,d);
+
+    fclose(fp);
+}
+
+destrutivo* le_destrutivo_recursivo(FILE *fp)
+{
+    float p[2];
+    fscanf(fp,"\n%e",&p[0]);
+    printf("\n%e",p[0]);
+    fscanf(fp," %e",&p[1]);
+    printf(" %e",p[1]);
+
+    QDD **Q;
+    Q = cria_QDD_array(2);
+
+    destrutivo *el;
+    char s;
+    el = NULL;
+    fprintf(fp,"\n%hu",&s);
+    printf("\n%d",s);
+    switch(s)
+    {
+        case 1:
+            Q[0] = le_QDD(fp);
+            break;
+
+        case 0:
+            el = le_destrutivo_recursivo(fp);
+            break;
+
+        default:
+            ERRO("LE DESTRUTIVO RECURSIVO| CARACTERE DE DE SELECAO NAO E Q OU D");
+            break;
+    }
+
+    destrutivo *th;
+    th = NULL;
+    fprintf(fp,"\n%c",&s);
+    switch(s)
+    {
+        case 'Q':
+            Q[1] = le_QDD(fp);
+            break;
+
+        case 'D':
+            th = le_destrutivo_recursivo(fp);
+            break;
+
+        default:
+            ERRO("LE DESTRUTIVO RECURSIVO| CARACTERE DE DELECAO NAO E Q OU D");
+            break;
+    }
+
+
+    destrutivo *d;
+    d = cria_destrutivo();
+    d->p[0] = p[0];
+    d->p[1] = p[1];
+    d->Q = Q;
+    d->el = el;
+    d->th = th;
+    return d;
+}
+
+destrutivo* le_destrutivo(char *nome)
+{
+    FILE *fp;
+    char nomeT[30];
+    sprintf(nomeT,"%s.des",nome);
+    fp = fopen(nomeT,"r");
+    if(fp == NULL)
+        ERRO("LE DESTRUTIVO| NAO CONSEGUIU ABRIR ARQUIVO");
+    fscanf(fp,"\n0");
+
+    destrutivo *d;
+    d = le_destrutivo_recursivo(fp);
+    fclose(fp);
+
+    return d;
 }
 
 
@@ -6245,7 +6349,7 @@ QDD* mede_tudo_unico(QDD *Q)
     return Qr;
 }
 
-rota* mede_tudo_varios(QDD *Q, Long n)
+rota* mede_tudo_varios(QDD *Q, Long n, char *salva)
 {
     destrutivo *d;
     d = cria_destrutivo();
@@ -6361,6 +6465,8 @@ rota* mede_tudo_varios(QDD *Q, Long n)
     libera_rota_no(r);
     r = rc;
 
+    if(salva != NULL)
+        salva_destrutivo(d,salva);
     libera_destrutivo_arvore(d);
 
     return r;
@@ -6736,7 +6842,7 @@ void teste_aleatorio_fourrier(Short N)
     Qft = QFT(Q);
     libera_QDD(Q);
 
-    salva_QDD(Qft,"Ale10");
+    salva_QDD_sozinho(Qft,"Ale10");
     libera_QDD(Qft);
 
     mostra_quantidades();
@@ -6752,150 +6858,11 @@ int main()
     setlocale(LC_ALL, "Portuguese");
     /***********************************/
 
-    /*Short N;
-    char nome[30];
-    for(N = 18; N<18; N++)
-    {
-        QDD *Q;
-        Q = W(N);
-
-        QDD *Qs;
-        Qs = QFT(Q);
-        libera_QDD(Q);
-        Q = Qs;
-
-        sprintf(nome,"QftW%d",N);
-        salva_QDD(Q,nome);
-    }
-
-    mostra_quantidades();*/
-
-    /***/
-
-    /*QDD *Q;
-    Q = BASE(5,0);
-
-
-    QDD *Q1, *Q2;
-    Q1 = aplica(QH,5,1);
-    Q2 = produto_matriz_vetor(Q1,Q);
-    libera_QDD(Q);
-    libera_QDD(Q1);
-    Q = Q2;
-
-    QDD *QCnot;
-    Q1 = aplica(QX,2,0);
-    QCnot = controla(Q1,1,1);
-    libera_QDD(Q1);
-
-    QDD *Q3;
-    Q1 = produto_tensorial(QCnot,QH);
-    Q2 = aplica(Q1,5,0);
-    Q3 = produto_matriz_vetor(Q2,Q);
-    libera_QDD(Q);
-    libera_QDD(Q2);
-    Q = Q3;
-
-    Q2 = produto_tensorial(QH,Q1);
-    libera_QDD(Q1);
-    Q1 = aplica(Q2,5,0);
-    libera_QDD(Q2);
-    Q2 = produto_matriz_vetor(Q1,Q);
-    libera_QDD(Q);
-    libera_QDD(Q1);
-    Q = Q2;
-
-    Q1 = produto_tensorial(QH,QCnot);
-    libera_QDD(QCnot);
-    Q2 = aplica(Q1,5,1);
-    libera_QDD(Q1);
-    Q1 = produto_matriz_vetor(Q2,Q);
-    libera_QDD(Q);
-    libera_QDD(Q2);
-    Q = Q1;
-
-    Q1 = produto_tensorial(QH,QH);
-    Q2 = aplica(Q1,5,2);
-    libera_QDD(Q1);
-    Q1 = produto_matriz_vetor(Q2,Q);
-    libera_QDD(Q);
-    libera_QDD(Q2);
-    Q = Q1;
-
-    Q1 = aplica(QX,2,1);
-    QCnot = controla(Q1,0,1);
-    libera_QDD(Q1);
-    Q1 = aplica(QCnot,5,3);
-    libera_QDD(QCnot);
-    Q2 = produto_matriz_vetor(Q1,Q);
-    libera_QDD(Q);
-    libera_QDD(Q1);
-    Q = Q2;
+    QDD *Q;
+    Q = le_QDD_sozinho("QftW16");
 
     rota *r;
-    r = mede_tudo_varios(Q,8196);
-    ordena_rotas(&r);
-    //mostra_rotas(r);
-
-    libera_QDD(Q);
-    libera_rota_lista(r);
-
-    mostra_quantidades();*/
-
-    /***/
-
-    /*QDD *Qb;
-    Qb = BASE(1,0);
-
-    QDD *Q;
-    Q = produto_matriz_vetor(QH,Qb);
-
-    QDD *QHc, *Q1;
-    Q1 = aplica(QH,2,1);
-    QHc = controla(Q1,0,1);
-    libera_QDD(Q1);
-
-    QDD *Q2;
-    for(int i=1; i<64; i++)
-    {
-        printf("\n i: %d",i);
-
-        Q1 = produto_tensorial(Q,Qb);
-        libera_QDD(Q);
-        Q = Q1;
-
-        Q1 = aplica(QHc,i+1,i-1);
-        Q2 = produto_matriz_vetor(Q1,Q);
-        libera_QDD(Q);
-        libera_QDD(Q1);
-        Q = Q2;
-    }
-
-    mede_individual(Q);
-
-    busca *b;
-    b = busca_probabilidade_maior(Q,1e-2);
-    mostra_busca_lista(b);*/
-
-    /***/
-
-    QDD *Q;
-    Q = le_QDD("QftW15");
-    printf("Leu");
-
-    busca *b;
-    b = busca_probabilidade_maior(Q,5e-5);
-    ordena_busca(&b);
-
-    FILE *fp;
-    fp = fopen("BUSCA.txt","w");
-    fmostra_busca_lista_numero(fp,b);
-    fclose(fp);
-
-    libera_busca_lista(b);
-    libera_QDD(Q);
-
-    mostra_quantidades();
+    r = mede_tudo_varios(Q,1e4,"Des16");
 
     /***********************************/
     finaliza_structs_globais();
