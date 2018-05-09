@@ -3247,17 +3247,17 @@ QDD* le_QDD(FILE *fp)
 {
     Long itens;
     Short nqbit;
-    fscanf(fp,"\n%I64u",&itens);
-    fscanf(fp,"%hu",&nqbit);
+    fscanf(fp,"\n%llu",&itens);
+    fscanf(fp," %hu",&nqbit);
 
-    apply **A;
+    apply **Al;
     Long i;
-    A = malloc(itens*sizeof(apply*));
-    if(A == NULL)
+    Al = malloc(itens*sizeof(apply*));
+    if(Al == NULL)
         ERRO("LE QDD| ALLOCA A");
     aumenta_memoria_fora(itens*sizeof(apply*));
     for(i=0; i<itens; i++)
-        A[i] = cria_apply();
+        Al[i] = cria_apply();
 
     no *n;
     apply *a;
@@ -3267,14 +3267,12 @@ QDD* le_QDD(FILE *fp)
     char tipo;
     for(i=0; i<itens; i++)
     {
-        a = A[i];
+        a = Al[i];
         if(i < itens-1)
-        {
-            a->a = A[i+1];
-        }
+            a->a = Al[i+1];
 
-        fscanf(fp,"\n%I64u",&el);
-        fscanf(fp," %I64u",&th);
+        fscanf(fp,"\n%llu",&el);
+        fscanf(fp," %llu",&th);
 
         fscanf(fp," %c",&tipo);
 
@@ -3282,7 +3280,7 @@ QDD* le_QDD(FILE *fp)
         switch(tipo)
         {
             case 'I':
-                a->a1 = A[el];
+                a->a1 = Al[el];
 
                 n = cria_no_inicio();
                 break;
@@ -3291,8 +3289,8 @@ QDD* le_QDD(FILE *fp)
                 fscanf(fp," %hu",&classe);
                 fscanf(fp," %hu",&nivel);
 
-                a->a1 = A[el];
-                a->a2 = A[th];
+                a->a1 = Al[el];
+                a->a2 = Al[th];
 
                 n = cria_no_meio(classe,nivel);
                 break;
@@ -3310,9 +3308,9 @@ QDD* le_QDD(FILE *fp)
         a->n = n;
     }
 
-    a = A[0];
+    a = Al[0];
     diminui_memoria_fora(itens*sizeof(apply*));
-    free(A);
+    free(Al);
 
     apply *ac, *a1, *a2;
     no *n1, *n2;
@@ -6372,16 +6370,21 @@ QDD** mede_conservativo(QDD *Q, Short nqbit, float p[2])
     QM = M01(Q->nqbit,nqbit);
     QF = cria_QDD_array(2);
 
-    QDD *Qaux;
-
     QF[0] = produto_matriz_vetor(QM[0],Q);
     QF[1] = produto_matriz_vetor(QM[1],Q);
 
+    QDD *Qaux, *Q0;
     Short s;
     Qaux = soma_QDD(QF[0],QF[1]);
     s = compara_QDD(Q,Qaux,1);
     if(s == 0)
+    {
+        Q0 = subtracao_QDD(Q,Qaux);
+        printf("\nMERDA");
+        mostra_QDD(Q0);
+        salva_QDD_sozinho(Q,"MERDA");
         ERRO("MEDE CONSERVATIVO| ACONTECEU MERDA");
+    }
 
     float paux[2]; //paux armazena as amplitudes e p as probabilidades
 
@@ -7021,9 +7024,28 @@ int main()
 
     QDD *Q;
     Q = le_QDD_sozinho("QftW18");
+    printf("Leu");
 
-    rota *r;
-    r = mede_tudo_varios(Q,1e4,"Des18");
+    QDD **Qm, *Q0, *Q1;
+    Qm = M01(18,0);
+    Q0 = produto_matriz_vetor(Qm[0],Q);
+    salva_QDD_sozinho(Q0,"MERDA0");
+    printf("\nProduto 1");
+    Q1 = produto_matriz_vetor(Qm[1],Q);
+    salva_QDD_sozinho(Q1,"MERDA1");
+    printf("\nProduto 2");
+    libera_QDD(Qm[0]);
+    libera_QDD(Qm[1]);
+    libera_QDD_array(Qm,2);
+
+    QDD *Qs;
+    Qs = soma_QDD(Q0,Q1);
+    printf("\nSomou");
+
+    QDD *Qf;
+    Qf = subtracao_QDD(Q,Qs);
+    mostra_quantidades();
+    mostra_lista_numero(Qf->l);
 
     /***********************************/
     finaliza_structs_globais();
