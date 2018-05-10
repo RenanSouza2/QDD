@@ -95,8 +95,9 @@ struct suporte
 
 struct busca
 {
-    struct no *n;
-    struct rota *r;
+    struct no    *n;
+    float         p;
+    struct rota  *r;
     struct busca *b;
 };
 
@@ -108,10 +109,10 @@ struct rota
 
 struct destrutivo
 {
-    struct QDD **Q;
-    float p[2];
-    struct rota *rel, *rth;
-    struct destrutivo *el, *th;
+    float              p[2];
+    struct QDD       **Q;
+    struct rota       *r[2];
+    struct destrutivo *d[2];
 };
 
 
@@ -437,9 +438,10 @@ busca* cria_busca()
     iB++;
     cB++;
 
-    b->n   = NULL;
+    b->n = NULL;
+    b->p = 0;
     b->r = NULL;
-    b->b   = NULL;
+    b->b = NULL;
 
     return b;
 }
@@ -496,15 +498,12 @@ destrutivo* cria_destrutivo()
 
     d->Q = NULL;
 
-    d->p[0] = 0;
-    d->p[1] = 0;
-
-    d->rel = NULL;
-    d->rth = NULL;
-
-    d->el = NULL;
-    d->th = NULL;
-
+    for(int i=0; i<2; i++)
+    {
+        d->p[i] = 0;
+        d->r[i] = 0;
+        d->d[i] = 0;
+    }
     return d;
 }
 
@@ -1122,68 +1121,43 @@ void mostra_busca_no(busca *b)
     if(b == NULL)
         return;
 
-    printf("\nno: ");
+    printf("\nNo: ");
     mostra_no(b->n);
+
+    printf("\nRotas: ");
     mostra_rotas(b->r);
-    printf("\nb proximo: %d",b->b);
 }
 
 void mostra_busca_lista(busca *b)
 {
     busca *bc;
-    int i;
-    i = 0;
-    for(bc = b; bc != NULL; bc = bc->b)
+    Long itens;
+    for(bc = b, itens = 0; bc != NULL; bc = bc->b, itens++)
     {
-        printf("\n\tBusca %d: ",i);
+        printf("\n\nBusca: %d",itens);
         mostra_busca_no(bc);
-        i++;
     }
 }
 
-void mostra_busca_no_compacto(busca *b)
+void mostra_busca_p_no(busca *b)
 {
     printf("\nEndereco (busca): %d",b);
     if(b == NULL)
         return;
 
-    printf("\nno: %d",b->n);
-    mostra_rotas(b->r);
-    printf("\nb proximo: %d",b->b);
-}
-
-void mostra_busca_lista_compacto(busca *b)
-{
-    busca *bc;
-    int i;
-    i = 0;
-    for(bc = b; bc != NULL; bc = bc->b)
-    {
-        printf("\n\tBusca %d: ",i);
-        mostra_busca_no_compacto(bc);
-        i++;
-    }
-}
-
-void mostra_busca_no_numero(busca *b)
-{
-    if(b == NULL)
-        return;
-
-    mostra_no_numero(b->n);
+    printf("\nP: %f",b->p);
+    printf("\nRotas: ");
     mostra_rotas(b->r);
 }
 
-void mostra_busca_lista_numero(busca *b)
+void mostra_busca_p_lista(busca *b)
 {
     busca *bc;
-    int i;
-    i = 0;
-    for(bc = b; bc != NULL; bc = bc->b)
+    Long itens;
+    for(bc = b, itens = 0; bc != NULL; bc = bc->b, itens++)
     {
-        printf("\n\n\tBusca %d: ",i);
-        mostra_busca_no_numero(bc);
-        i++;
+        printf("\n\nBusca: %d",itens);
+        mostra_busca_p_no(bc);
     }
 }
 
@@ -1349,15 +1323,22 @@ void mostra_destrutivo_no(destrutivo *d)
     printf("\nEndereco (destrutivo): %d",d);
     if(d == NULL)
         return;
+
     printf("\n");
-    if(d->Q != NULL)
-        printf("\nQ0: %d\t\t\tQ1: %d",d->Q[0],d->Q[1]);
-    printf("\np0: %e\tp1: %e",d->p[0],d->p[1]);
-    printf("\n");
-    if(d->el != NULL)
-        printf("\nd->el: %d",d->el);
-    if(d->th != NULL)
-        printf("\nd->th: %d",d->th);
+    printf("\nP[0]: %e\tP[1]: %e",d->p[0],d->p[1]);
+
+    for(int i=0; i<2; i++)
+    {
+        if(d->Q    != NULL)
+        if(d->Q[i] != NULL)
+            printf("\nQ[%d]: %d",i,d->Q[i]);
+
+        if(d->r[i] != NULL)
+            printf("\nr[%d]: %s",i,d->r[i]);
+
+        if(d->d[i] != NULL)
+            printf("\nd[%d]: %s",i,d->d[i]);
+    }
 }
 
 void mostra_destrutivo_arvore(destrutivo *d)
@@ -1365,15 +1346,13 @@ void mostra_destrutivo_arvore(destrutivo *d)
     mostra_destrutivo_no(d);
     printf("\n");
 
-    if(d->el != NULL)
+    for(int i=0; i<2; i++)
     {
-        mostra_destrutivo_arvore(d->el);
-        printf("\n");
-    }
-    if(d->th != NULL)
-    {
-        mostra_destrutivo_arvore(d->th);
-        printf("\n");
+        if(d->d[i] != NULL)
+        {
+            mostra_destrutivo_arvore(d->d[i]);
+            printf("\n");
+        }
     }
 }
 
@@ -1701,68 +1680,43 @@ void fmostra_busca_no(FILE *fp, busca *b)
     if(b == NULL)
         return;
 
-    fprintf(fp,"\nno: ");
+    fprintf(fp,"\nNo: ");
     fmostra_no(fp,b->n);
+
+    fprintf(fp,"\nRotas: ");
     fmostra_rotas(fp,b->r);
-    fprintf(fp,"\nb proximo: %d",b->b);
 }
 
 void fmostra_busca_lista(FILE *fp, busca *b)
 {
     busca *bc;
-    int i;
-    i = 0;
-    for(bc = b; bc != NULL; bc = bc->b)
+    Long itens;
+    for(bc = b, itens = 0; bc != NULL; bc = bc->b, itens++)
     {
-        fprintf(fp,"\n\tBusca %d: ",i);
+        fprintf(fp,"\n\nBusca: %d",itens);
         fmostra_busca_no(fp,bc);
-        i++;
     }
 }
 
-void fmostra_busca_no_compacto(FILE *fp, busca *b)
+void fmostra_busca_p_no(FILE *fp, busca *b)
 {
     fprintf(fp,"\nEndereco (busca): %d",b);
     if(b == NULL)
         return;
 
-    fprintf(fp,"\nno: %d",b->n);
-    fmostra_rotas(fp,b->r);
-    fprintf(fp,"\nb proximo: %d",b->b);
-}
-
-void fmostra_busca_lista_compacto(FILE *fp, busca *b)
-{
-    busca *bc;
-    int i;
-    i = 0;
-    for(bc = b; bc != NULL; bc = bc->b)
-    {
-        fprintf(fp,"\n\tBusca %d: ",i);
-        fmostra_busca_no_compacto(fp,bc);
-        i++;
-    }
-}
-
-void fmostra_busca_no_numero(FILE *fp, busca *b)
-{
-    if(b == NULL)
-        return;
-
-    fmostra_no_numero(fp,b->n);
+    fprintf(fp,"\nP: %f",b->p);
+    fprintf(fp,"\nRotas: ");
     fmostra_rotas(fp,b->r);
 }
 
-void fmostra_busca_lista_numero(FILE *fp, busca *b)
+void fmostra_busca_p_lista(FILE *fp, busca *b)
 {
     busca *bc;
-    int i;
-    i = 0;
-    for(bc = b; bc != NULL; bc = bc->b)
+    Long itens;
+    for(bc = b, itens = 0; bc != NULL; bc = bc->b, itens++)
     {
-        fprintf(fp,"\n\n\tBusca %d: ",i);
-        fmostra_busca_no_numero(fp,bc);
-        i++;
+        fprintf(fp,"\n\nBusca: %d",itens);
+        fmostra_busca_p_no(fp,bc);
     }
 }
 
@@ -1928,15 +1882,22 @@ void fmostra_destrutivo_no(FILE *fp, destrutivo *d)
     fprintf(fp,"\nEndereco (destrutivo): %d",d);
     if(d == NULL)
         return;
+
     fprintf(fp,"\n");
-    if(d->Q != NULL)
-        fprintf(fp,"\nQ0: %d\t\t\tQ1: %d",d->Q[0],d->Q[1]);
-    fprintf(fp,"\np0: %e\tp1: %e",d->p[0],d->p[1]);
-    fprintf(fp,"\n");
-    if(d->el != NULL)
-        fprintf(fp,"\nd->el: %d",d->el);
-    if(d->th != NULL)
-        fprintf(fp,"\nd->th: %d",d->th);
+    fprintf(fp,"\nP[0]: %e\tP[1]: %e",d->p[0],d->p[1]);
+
+    for(int i=0; i<2; i++)
+    {
+        if(d->Q    != NULL)
+        if(d->Q[i] != NULL)
+            fprintf(fp,"\nQ[%d]: %d",i,d->Q[i]);
+
+        if(d->r[i] != NULL)
+            fprintf(fp,"\nr[%d]: %s",i,d->r[i]);
+
+        if(d->d[i] != NULL)
+            fprintf(fp,"\nd[%d]: %s",i,d->d[i]);
+    }
 }
 
 void fmostra_destrutivo_arvore(FILE *fp, destrutivo *d)
@@ -1944,15 +1905,13 @@ void fmostra_destrutivo_arvore(FILE *fp, destrutivo *d)
     fmostra_destrutivo_no(fp,d);
     fprintf(fp,"\n");
 
-    if(d->el != NULL)
+    for(int i=0; i<2; i++)
     {
-        fmostra_destrutivo_arvore(fp,d->el);
-        fprintf(fp,"\n");
-    }
-    if(d->th != NULL)
-    {
-        fmostra_destrutivo_arvore(fp,d->th);
-        fprintf(fp,"\n");
+        if(d->d[i] != NULL)
+        {
+            fmostra_destrutivo_arvore(fp,d->d[i]);
+            fprintf(fp,"\n");
+        }
     }
 }
 
@@ -2281,8 +2240,8 @@ void libera_destrutivo_arvore(destrutivo *d)
     if(d == NULL)
         return;
 
-    libera_destrutivo_arvore(d->el);
-    libera_destrutivo_arvore(d->th);
+    libera_destrutivo_arvore(d->d[0]);
+    libera_destrutivo_arvore(d->d[1]);
 
     if(d->Q != NULL)
     {
@@ -2293,6 +2252,11 @@ void libera_destrutivo_arvore(destrutivo *d)
 
         libera_QDD_array(d->Q,2);
     }
+
+    if(d->r[0] != NULL)
+        libera_rota_no(d->r[0]);
+    if(d->r[1] != NULL)
+        libera_rota_no(d->r[1]);
 
     libera_destrutivo_no(d);
 }
@@ -2631,6 +2595,29 @@ Short compara_no_fim_zero(no *n, Short ex)
     return res;
 }
 
+Short compara_no(no *n1, no *n2)
+{
+    if(n1->tipo != n2->tipo)
+        return 0;
+
+    switch(n1->tipo)
+    {
+        case Inicio:
+            return 1;
+            break;
+
+        case Meio:
+            return compara_no_meio_parcial(n1,n2);
+            break;
+
+        case Fim:
+            return compara_no_fim(n1,n2,1);
+            break;
+    }
+    ERRO("COMPARA NO| SWITCH NAO ATIVOU");
+    return 0;
+}
+
 Short compara_apply(apply *a1, apply *a2)
 {
     if(a1 != NULL)
@@ -2935,7 +2922,6 @@ no* modulo_2_no(no *n)
     return n;
 }
 
-
 float modulo_no(no *n)
 {
     float m;
@@ -2965,6 +2951,7 @@ no* divisao_no_no(no *n1, no *n2)
     return n;
 
 }
+
 void produto_arvore_real(no *n, double re)
 {
     lista *l, *lc;
@@ -3868,7 +3855,7 @@ apply* encaixa_apply(apply *a, Short N)
     }
 
     if(ac->a != NULL)
-        ERRO("ENCAIXA APPLY| CONIDCAO IMPOSSIVEL");
+        ERRO("ENCAIXA APPLY| CONDICAO IMPOSSIVEL");
 
     ac->a = a;
     return a;
@@ -5294,6 +5281,67 @@ float modulo_vetor(QDD *Q)
 
 
 
+/**  Compara QDD  **/
+
+Short compara_QDD_zero(QDD *Q, Short ex)
+{
+    if(Q == NULL)
+        ERRO("COMPARA QDD|Q E NULL");
+
+    lista *l;
+    l = Q->l;
+    if(l->l != NULL)
+        return 0;
+
+    Short s;
+    s = compara_no_fim_zero(l->n,ex);
+    return s;
+}
+
+Short compara_QDD(QDD *Q1, QDD *Q2, Short ex)
+{
+    Short N;
+    if(Q1->nqbit != Q2->nqbit)
+        return 0;
+    N = Q1->nqbit;
+
+    apply *a;
+    a = cria_apply();
+    a->n1 = Q1->n;
+    a->n2 = Q2->n;
+    encaixa_apply(a,N);
+
+    no *n1, *n2;
+    short i, j, res;
+    res = 1;
+    for(i=0; i<N; i++)
+    {
+        for(j=0; j<3; j++)
+        {
+            for(a = A[i][j]; A != NULL; a = a->a)
+            {
+                n1 = a->n1;
+                n2 = a->n2;
+
+                if(compara_no(n1,n2) == 0)
+                {
+                    res = 0;
+                    break;
+                }
+
+            }
+            if(res == 0)
+                break;
+        }
+        if(res == 0)
+            break;
+    }
+    limpa_apply_matriz(N);
+    return res;
+}
+
+
+
 /**  Auxiliar QDD  **/
 
 QDD* aplica(QDD *Q, Short N, Short n)
@@ -5369,74 +5417,6 @@ QDD** M01(Short N, Short n)
     Q[0] = Q1;
     Q[1] = Q2;
     return Q;
-}
-
-Short compara_QDD_zero(QDD *Q, Short ex)
-{
-    if(Q == NULL)
-        ERRO("COMPARA QDD|Q E NULL");
-
-    lista *l;
-    l = Q->l;
-    if(l->l != NULL)
-        return 0;
-
-    Short s;
-    s = compara_no_fim_zero(l->n,ex);
-    return s;
-}
-
-Short compara_QDD(QDD *Q1, QDD *Q2, Short ex)
-{
-    no *n1, *n2;
-    n1 = Q1->n->at.i.n;
-    n2 = Q2->n->at.i.n;
-
-    while(n1->tipo != Fim)
-    {
-        if(compara_no_meio_parcial(n1,n2) == 0)
-            return 0;
-
-        n1 = n1->at.m.el;
-        n2 = n2->at.m.el;
-    }
-
-    if(n2->tipo != Fim)
-        return 0;
-
-    float m1, m2;
-    m1 = modulo_no(n1);
-    m2 = modulo_no(n2);
-    m1 -= m2;
-    if(m1 < 0)
-        m1 *= -1;
-
-    float ep;
-    ep = pow(eps,ex);
-    if(m1 > ep)
-        return 0;
-
-    no *n;
-    n = divisao_no_no(n1,n2);
-
-    no *nc, *naux;
-    lista *l;
-    for(l = Q2->l; l != NULL; l = l->l)
-    {
-        nc = l->n;
-        naux = produto_no_no(nc,n);
-        transfere_conexao(naux,nc);
-        l->n = naux;
-        libera_no(nc);
-    }
-
-    QDD *Q;
-    Short s;
-    Q = subtracao_QDD(Q1,Q2);
-    s = compara_QDD_zero(Q,ex);
-    libera_QDD(Q);
-
-    return s;
 }
 
 
@@ -5856,108 +5836,6 @@ rota* concatena_rotas(rota *r1, rota *r2)
     return r;
 }
 
-void ordena_rotas_recursivo(rota *r, Short i)
-{
-    if(r->r == NULL)
-        return;
-    if(r->r->r == NULL)
-        return;
-
-    rota *r0, *r1, *rf;
-    rf = cria_rota_vazia();
-    r0 = cria_rota_vazia();
-    r1 = cria_rota_vazia();
-
-    rota *r0c, *r1c, *rcf;
-    rcf = rf;
-    r0c = r0;
-    r1c = r1;
-
-    rota *rc;
-    while(r->r != NULL)
-    {
-        rc = r->r;
-        r->r = rc->r;
-
-        switch(rc->num[i])
-        {
-            case '\0':
-                rc->r = rcf->r;
-                rcf->r = rc;
-                break;
-
-            case '0':
-                rc->r = r0c->r;
-                r0c->r = rc;
-                break;
-
-            case '1':
-                rc->r = r1c->r;
-                r1c->r = rc;
-                break;
-        }
-    }
-
-    ordena_rotas_recursivo(r0,i+1);
-    ordena_rotas_recursivo(r1,i+1);
-
-    r->r = rf->r;
-    for(rc = r; rc->r != NULL; rc = rc->r);
-    rc->r  = r0->r;
-    for(rc = r; rc->r != NULL; rc = rc->r);
-    rc->r = r1->r;
-
-    libera_rota_no(rf);
-    libera_rota_no(r0);
-    libera_rota_no(r1);
-}
-
-void ordena_rotas(rota **Ro)
-{
-    rota *r;
-    r = cria_rota_vazia();
-    r->r = *Ro;
-
-    ordena_rotas_recursivo(r,0);
-
-    *Ro = r->r;
-    libera_rota_no(r);
-}
-
-void ordena_busca(busca **B)
-{
-    busca *b;
-    b = cria_busca();
-    b->b = *B;
-
-    no *n1, *n2;
-    busca *bo, *bc, *baux;
-    bo = cria_busca();
-    while(b->b != NULL)
-    {
-        baux = b->b;
-        b->b = baux->b;
-        n1 = baux->n;
-
-        for(bc = bo; bc->b != NULL; bc = bc->b)
-        {
-            n2 = bc->b->n;
-            if(n1->at.f.re < n2->at.f.re)
-                break;
-        }
-
-        baux->b = bc->b;
-        bc->b = baux;
-    }
-
-    bc = bo->b;
-    libera_busca_no(b);
-    libera_busca_no(bo);
-    bo = bc;
-
-    *B = bo;
-}
-
 float probabilidade_total(busca *b)
 {
     busca *bc;
@@ -5994,11 +5872,13 @@ rota* busca_rotas(no *n, Short N)
     Short Na, Nc, i;
     while(b != NULL)
     {
+        n = b->n;
         if(n == NULL)
             ERRO("BUSCA ROTAS| BUSCA COM NO VAZIO");
-        n = b->n;
+
         if(n->tipo == Inicio)
             break;
+
         if(n->l == NULL)
             ERRO("BUSCA NOTAS| NO SEM ANTERIORES");
 
@@ -6019,12 +5899,12 @@ rota* busca_rotas(no *n, Short N)
             nc = lc->n;
 
             Nc = 0;
-            r = NULL;
+            r  = NULL;
             switch(nc->tipo)
             {
                 case Inicio:
                     Nc = Na;
-                    r = cria_rota_vazia();
+                    r  = cria_rota_vazia();
                     break;
 
                 case Meio:
@@ -6049,6 +5929,7 @@ rota* busca_rotas(no *n, Short N)
             for(bc = b; bc != NULL; bc = bc->b)
                 if(bc->n == nc)
                     break;
+
             if(bc == NULL)
             {
                 bn = cria_busca();
@@ -6096,46 +5977,37 @@ rota* busca_rotas(no *n, Short N)
     r = b->r;
     libera_busca_no(b);
 
-    //ordena_rotas(&r);
     return r;
 }
 
-busca* busca_mais_provavel(QDD *Q, destrutivo *d)
+busca* busca_mais_provavel(QDD *Q)
 {
     busca *b;
-    b = cria_busca();
+    b    = cria_busca();
+    b->n = Q->l->n;
 
-    no *n, *naux, *nmax;
+    no *n, *naux;
     lista *l;
     double p;
     p = 0;
-    nmax = NULL;
     for(l = Q->l; l!= NULL; l = l->l)
     {
-        n = l->n;
+        n    = l->n;
         naux = modulo_2_no(n);
 
         if(naux->at.f.re > p)
         {
-            if(b->n != NULL)
-                free(b->n);
-            b->n = naux;
+            b->n = n;
+            b->p = naux->at.f.re;
 
-            nmax = n;
             p = naux->at.f.re;
         }
-        else
-            libera_no(naux);
+
+        libera_no(naux);
     }
 
-    if(nmax == NULL)
-    {
-        mostra_destrutivo_no(d);
-        mostra_QDD(Q);
-        ERRO("BUSCA MAIS PROVAVEL| NAO ACHOU MAIOR AMPLITUDE");
-    }
+    b->r = busca_rotas(b->n,Q->nqbit);
 
-    b->r = busca_rotas(nmax,Q->nqbit);
     return b;
 }
 
@@ -6167,7 +6039,7 @@ busca* busca_probabilidade_maior(QDD *Q, double p) // Retorna nulo caso não ache
             bc->b = cria_busca();
             bc = bc->b;
 
-            bc->n = copia_no(n0);
+            bc->p = n0->at.f.re;
             bc->r = busca_rotas(n0,Q->nqbit);
 
         }
@@ -6209,144 +6081,9 @@ no* acessa_amplitude(QDD *Q, Long num)
     return n;
 }
 
-/**  **/
-
-void salva_destrutivo_recursivo(FILE *fp, destrutivo *d)
-{
-    fprintf(fp,"\nD",d);
-    fprintf(fp,"\n%e %e",d->p[0],d->p[1]);
-
-    if(d->Q[0] != NULL)
-    {
-        fprintf(fp,"\nQ");
-        salva_QDD(fp,d->Q[0]);
-    }
-    else if(d->el != NULL)
-    {
-        salva_destrutivo_recursivo(fp,d->el);
-    }
-    else if(d->rel != NULL)
-    {
-        fprintf(fp,"\nR");
-        fprintf(fp,"\n%s",d->rel->num);
-    }
-    else
-    {
-        fprintf(fp,"\nN");
-    }
-
-    if(d->Q[1] != NULL)
-    {
-        fprintf(fp,"\nQ");
-        salva_QDD(fp,d->Q[1]);
-    }
-    else if(d->th != NULL)
-    {
-        salva_destrutivo_recursivo(fp,d->th);
-    }
-    else if(d->rth != NULL)
-    {
-        fprintf(fp,"\nR");
-        fprintf(fp,"\n%s",d->rth->num);
-    }
-    else
-    {
-        fprintf(fp,"\nN");
-    }
-}
-
-void salva_destrutivo(destrutivo *d, char *salva)
-{
-    FILE *fp;
-    char nome[30];
-    sprintf(nome,"%s.des",salva);
-    fp = fopen(nome,"w");
-
-    salva_destrutivo_recursivo(fp,d);
-
-    fclose(fp);
-}
-
-destrutivo* le_destrutivo_recursivo(FILE *fp)
-{
-    float p[2];
-    fscanf(fp,"\n%e",&p[0]);
-    printf("\n%e",p[0]);
-    fscanf(fp," %e",&p[1]);
-    printf(" %e",p[1]);
-
-    QDD **Q;
-    Q = cria_QDD_array(2);
-
-    destrutivo *el;
-    char s;
-    el = NULL;
-    fprintf(fp,"\n%hu",&s);
-    printf("\n%d",s);
-    switch(s)
-    {
-        case 1:
-            Q[0] = le_QDD(fp);
-            break;
-
-        case 0:
-            el = le_destrutivo_recursivo(fp);
-            break;
-
-        default:
-            ERRO("LE DESTRUTIVO RECURSIVO| CARACTERE DE DE SELECAO NAO E Q OU D");
-            break;
-    }
-
-    destrutivo *th;
-    th = NULL;
-    fprintf(fp,"\n%c",&s);
-    switch(s)
-    {
-        case 'Q':
-            Q[1] = le_QDD(fp);
-            break;
-
-        case 'D':
-            th = le_destrutivo_recursivo(fp);
-            break;
-
-        default:
-            ERRO("LE DESTRUTIVO RECURSIVO| CARACTERE DE DELECAO NAO E Q OU D");
-            break;
-    }
 
 
-    destrutivo *d;
-    d = cria_destrutivo();
-    d->p[0] = p[0];
-    d->p[1] = p[1];
-    d->Q = Q;
-    d->el = el;
-    d->th = th;
-    return d;
-}
-
-destrutivo* le_destrutivo(char *nome)
-{
-    FILE *fp;
-    char nomeT[30];
-    sprintf(nomeT,"%s.des",nome);
-    fp = fopen(nomeT,"r");
-    if(fp == NULL)
-        ERRO("LE DESTRUTIVO| NAO CONSEGUIU ABRIR ARQUIVO");
-    fscanf(fp,"\n0");
-
-    destrutivo *d;
-    d = le_destrutivo_recursivo(fp);
-    fclose(fp);
-
-    return d;
-}
-
-
-
-/**   Medidas   **/
+/**  Auxiliar Medidas  **/
 
 float gera_aleatorio()
 {
@@ -6364,6 +6101,10 @@ float gera_aleatorio()
     return P;
 }
 
+
+
+/**   Medidas   **/
+
 QDD** mede_conservativo(QDD *Q, Short nqbit, float p[2])
 {
     QDD **QM, **QF;
@@ -6371,31 +6112,14 @@ QDD** mede_conservativo(QDD *Q, Short nqbit, float p[2])
     QF = cria_QDD_array(2);
 
     QF[0] = produto_matriz_vetor(QM[0],Q);
-    QF[1] = produto_matriz_vetor(QM[1],Q);
-
-    QDD *Qaux, *Q0;
-    Short s;
-    Qaux = soma_QDD(QF[0],QF[1]);
-    s = compara_QDD(Q,Qaux,1);
-    if(s == 0)
-    {
-        Q0 = subtracao_QDD(Q,Qaux);
-        printf("\nMERDA");
-        mostra_QDD(Q0);
-        salva_QDD_sozinho(Q,"MERDA");
-        ERRO("MEDE CONSERVATIVO| ACONTECEU MERDA");
-    }
+    QF[1] = subtracao_QDD(Q,QF[0]);
 
     float paux[2]; //paux armazena as amplitudes e p as probabilidades
 
     paux[0] = modulo_vetor(QF[0]);
-    //p[0] = paux[0]*paux[0];
-    //p[1] = 1-p[0];
-    //paux[1] = sqrt(p[1]);
-    paux[1] = modulo_vetor(QF[1]);
-
-    p[0] = paux[0] * paux[0];
-    p[1] = paux[1] * paux[1];
+    p[0] = paux[0]*paux[0];
+    p[1] = 1-p[0];
+    paux[1] = sqrt(p[1]);
 
     float P;
     P = p[0] + p[1];
@@ -6403,11 +6127,8 @@ QDD** mede_conservativo(QDD *Q, Short nqbit, float p[2])
     if(P < 0)
         P *= -1;
 
-    if(P > 0.1)
-    {
-        printf("\n\nP: %e",P);
+    if(P > 0.05)
         ERRO("MEDE CONSERVATIVO| PROBABILIDADE NAO SOMA 1");
-    }
 
     if(p[0] > eps)
         produto_QDD_real(QF[0],1/paux[0]);
@@ -6487,155 +6208,110 @@ QDD* mede_tudo_unico(QDD *Q)
     return Qr;
 }
 
-rota* mede_tudo_varios(QDD *Q, Long n, char *salva)
+rota* mede_tudo_varios(QDD *Q, Long n)
 {
+    Short N;
+    N = Q->nqbit;
+
     destrutivo *d;
     d = cria_destrutivo();
+    d->Q = mede_conservativo(Q,0,d->p);
 
     rota *r, *rc;
-    r = cria_rota_vazia();
+    r  = cria_rota_vazia();
     rc = r;
 
-    QDD *Qa;
-    Qa = copia_QDD(Q);
-
-
-    Short N;
-    Long tam, mostra;
-    N = Q->nqbit;
-    if(n > 99)
-        tam = n/100;
-    else
+    Long mostra, amostragem, tam;
+    mostra     = 100;
+    amostragem = 100;
+    tam = n/amostragem;
+    if(tam == 0)
         tam = 1;
+    printf("\nMostra: %d\ttam: %d\tn: %d", mostra,tam,n);
 
-    printf("\n\nn: %d",n);
-    printf("\ttam: %d",tam);
-    printf("\tn/tam: %d\n",n/tam);
-
-    mostra = 100;
-
+    destrutivo *dc, *daux;
     busca *b;
-    destrutivo *dc;
-    Short j, cria;
-    Long i;
+    Short P;
+    Long i, j;
     float p;
     for(i=0; i<n; i++)
     {
-        if(i == mostra)
-            printf("\n\n");
-
         if(i < mostra)
-            printf("\ni: %6d j:",i);
-        else
+            printf("\ni: %4d\tj:",i);
+        if(i == mostra)
+            printf("\n");
+        if(i >= mostra)
         if(i%tam == 0)
-        {
-            printf("\ni: %3d/",i/tam);
-            printf("%d",n/tam);
-        }
+            printf("\ni: %d/%d",i/tam,amostragem);
 
         dc = d;
-        for(j=0; j<N; j++)
+        for(j=1; j<=N; j++)
         {
+
             if(i < mostra)
                 printf(" %d",j);
 
-            cria = 0;
-            if(j != N-1)
-            if(dc->el == NULL)
-            if(dc->th == NULL)
-                cria = 1;
-            if(j == N-1)
-            if(dc->Q == NULL)
-                cria = 1;
-
-            if(cria)
-            {
-                if(Qa == NULL)
-                    ERRO("MEDE TUDO VARIOS| QA E NULO");
-
-                dc->Q = mede_conservativo(Qa,j,dc->p);
-                libera_QDD(Qa);
-                Qa = NULL;
-
-                if(j == N-1)
-                {
-                    busca *b;
-                    if(dc->p[0] > eps)
-                    {
-                        b = busca_mais_provavel(dc->Q[0],NULL);
-                        dc->rel = b->r;
-
-                        libera_no(b->n);
-                        libera_busca_no(b);
-                        libera_QDD(dc->Q[0]);
-                    }
-
-                    if(dc->p[0] > eps)
-                    {
-                        b = busca_mais_provavel(dc->Q[1],NULL);
-                        dc->rth = b->r;
-
-                        libera_no(b->n);
-                        libera_busca_no(b);
-                        libera_QDD(dc->Q[1]);
-                    }
-                }
-            }
-
             p = gera_aleatorio();
             if(p < dc->p[0])
-            {
-                if(j < N-1)
-                {
-                    if(dc->el == NULL)
-                    {
-                        Qa = dc->Q[0];
-                        dc->Q[0] = NULL;
+                P = 0;
+            else
+                P = 1;
 
-                        dc->el = cria_destrutivo();
-                    }
-                    dc = dc->el;
+            if(j < N)
+            {
+                // Não acabou
+
+                if(dc->d[P] == NULL)
+                {
+                    // Nao saiu esse resultado
+
+                    Q = dc->Q[P];
+                    dc->Q[P] = NULL;
+
+                    daux = cria_destrutivo();
+                    daux->Q = mede_conservativo(Q,j,daux->p);
+                    libera_QDD(Q);
+
+                    dc->d[P] = daux;
+                    dc = daux;
                 }
                 else
-                    Qa = dc->Q[0];
+                {
+                    // Ja saiu esse resultado
+
+                    dc = dc->d[P];
+                }
             }
             else
             {
-                if(j < N-1)
-                {
-                    if(dc->th == NULL)
-                    {
-                        Qa = dc->Q[1];
-                        dc->Q[1] = NULL;
+                // Acabou
 
-                        dc->th = cria_destrutivo();
-                    }
-                    dc = dc->th;
+                if(dc->r[P] == NULL)
+                {
+                    Q = dc->Q[P];
+                    dc->Q[P] = NULL;
+
+                    b = busca_mais_provavel(Q);
+                    dc->r[P] = b->r;
+
+                    libera_QDD(Q);
+                    libera_busca_no(b);
                 }
-                else
-                    Qa = dc->Q[1];
+
+                rc->r = copia_rota(dc->r[P]);
+                rc = rc->r;
             }
         }
-
-        b = busca_mais_provavel(Qa,NULL);
-        rc->r = b->r;
-        rc = rc->r;
-
-        libera_no(b->n);
-        libera_busca_no(b);
     }
 
     rc = r->r;
     libera_rota_no(r);
     r = rc;
 
-    if(salva != NULL)
-        salva_destrutivo(d,salva);
     libera_destrutivo_arvore(d);
 
     return r;
 }
-
 
 
 /**  Testes  **/
@@ -7023,29 +6699,17 @@ int main()
     /***********************************/
 
     QDD *Q;
-    Q = le_QDD_sozinho("QftW18");
-    printf("Leu");
+    Q = le_QDD_sozinho("QftW16");
+    printf("Leu\n");
 
-    QDD **Qm, *Q0, *Q1;
-    Qm = M01(18,0);
-    Q0 = produto_matriz_vetor(Qm[0],Q);
-    salva_QDD_sozinho(Q0,"MERDA0");
-    printf("\nProduto 1");
-    Q1 = produto_matriz_vetor(Qm[1],Q);
-    salva_QDD_sozinho(Q1,"MERDA1");
-    printf("\nProduto 2");
-    libera_QDD(Qm[0]);
-    libera_QDD(Qm[1]);
-    libera_QDD_array(Qm,2);
+    rota *r;
+    r = mede_tudo_varios(Q,1000);
+    mostra_rotas(r);
 
-    QDD *Qs;
-    Qs = soma_QDD(Q0,Q1);
-    printf("\nSomou");
+    libera_QDD(Q);
+    libera_rota_lista(r);
 
-    QDD *Qf;
-    Qf = subtracao_QDD(Q,Qs);
     mostra_quantidades();
-    mostra_lista_numero(Qf->l);
 
     /***********************************/
     finaliza_structs_globais();
