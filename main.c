@@ -103,7 +103,7 @@ struct busca
 
 struct rota
 {
-    char num[64];
+    char num[65];
     struct rota *r;
 };
 
@@ -6101,6 +6101,104 @@ float gera_aleatorio()
     return P;
 }
 
+void salva_destrutivo_recursivo(FILE *fp, destrutivo *d)
+{
+    fprintf(fp,"\n%e %e",d->p[0],d->p[1]);
+    for(int i=0; i<2; i++)
+    {
+        if(d->Q[i] != NULL)
+        {
+            fprintf(fp,"\nQ");
+            salva_QDD(fp,d->Q[i]);
+        }
+
+        if(d->r[i] != NULL)
+        {
+            fprintf(fp,"\nR");
+            fprintf(fp,"\n%s",d->r[i]->num);
+        }
+
+        if(d->d[i] != NULL)
+        {
+            fprintf(fp,"\nD");
+            salva_destrutivo_recursivo(fp,d->d[i]);
+        }
+    }
+}
+
+void salva_destrutivo(destrutivo *d, char *nome)
+{
+    FILE *fp;
+    char Nome[30];
+    sprintf(Nome,"%s.des",nome);
+    fp = fopen(Nome,"w");
+
+    fprintf(fp,"D");
+    salva_destrutivo_recursivo(fp,d);
+    fclose(fp);
+}
+
+destrutivo* le_destrutivo_recursivo(FILE *fp)
+{
+    destrutivo *d;
+    d = cria_destrutivo();
+
+    float p[2];
+    fscanf(fp,"\n%e",&p[0]);
+    fscanf(fp," %e",&p[1]);
+    d->p[0] = p[0];
+    d->p[1] = p[1];
+
+    rota *r;
+    Short i;
+    char c, num[65];
+    for(int o=0; o<100; o++)
+    {
+        fscanf(fp,"\n%c",&c);
+        printf("\nA%cA",c);
+    }
+
+    for(i=0; i<2; i++)
+    {
+        switch(c)
+        {
+            case 'Q':
+                le_QDD(fp);
+                break;
+
+            case 'R':
+                fscanf(fp,"\n%s",num);
+                r = cria_rota(num);
+                d->r[i] = r;
+                break;
+
+            case 'D':
+                d->d[i] = le_destrutivo_recursivo(fp);
+                break;
+
+            default:
+                ERRO("LE DESTRUTIVO RECURSIVO| NAO LEU NADA");
+                break;
+        }
+    }
+    return d;
+}
+
+destrutivo* le_destrutivo(char *nome)
+{
+    FILE *fp;
+    char Nome[30];
+    sprintf(Nome,"%s.des",nome);
+    fp = fopen(Nome,"w");
+    fscanf(fp,"D");
+
+    destrutivo *d;
+    d = le_destrutivo_recursivo(fp);
+    fclose(fp);
+
+    return d;
+}
+
 
 
 /**   Medidas   **/
@@ -6286,16 +6384,19 @@ rota* mede_tudo_varios(QDD *Q, Long n)
             {
                 // Acabou
 
-                if(dc->r[P] == NULL)
+                if(dc->r[0] == NULL)
                 {
-                    Q = dc->Q[P];
-                    dc->Q[P] = NULL;
+                    for(int k=0; k<2; k++)
+                    {
+                        Q = dc->Q[k];
+                        dc->Q[k] = NULL;
 
-                    b = busca_mais_provavel(Q);
-                    dc->r[P] = b->r;
+                        b = busca_mais_provavel(Q);
+                        dc->r[k] = b->r;
 
-                    libera_QDD(Q);
-                    libera_busca_no(b);
+                        libera_QDD(Q);
+                        libera_busca_no(b);
+                    }
                 }
 
                 rc->r = copia_rota(dc->r[P]);
@@ -6308,6 +6409,7 @@ rota* mede_tudo_varios(QDD *Q, Long n)
     libera_rota_no(r);
     r = rc;
 
+    salva_destrutivo(d,"EITA");
     libera_destrutivo_arvore(d);
 
     return r;
@@ -6698,18 +6800,23 @@ int main()
     setlocale(LC_ALL, "Portuguese");
     /***********************************/
 
-    QDD *Q;
-    Q = le_QDD_sozinho("QftW16");
+    /*QDD *Q;
+    Q = le_QDD_sozinho("QftW3");
     printf("Leu\n");
 
     rota *r;
     r = mede_tudo_varios(Q,1000);
-    mostra_rotas(r);
 
     libera_QDD(Q);
     libera_rota_lista(r);
 
-    mostra_quantidades();
+    mostra_quantidades();*/
+
+    /***/
+
+    destrutivo *d;
+    d = le_destrutivo("EITA");
+    mostra_destrutivo_arvore(d);
 
     /***********************************/
     finaliza_structs_globais();
