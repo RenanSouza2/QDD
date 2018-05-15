@@ -1108,11 +1108,8 @@ void mostra_suporte_lista_com_conta(suporte *s)
 void mostra_rotas(rota *r)
 {
     Long i;
-    for(i=0; r != NULL; i++)
-    {
+    for(i=0; r != NULL; i++, r = r->r)
         printf("\n\tRota %3llu: %s",i,r->num);
-        r = r->r;
-    }
 }
 
 void mostra_busca_no(busca *b)
@@ -6152,14 +6149,9 @@ destrutivo* le_destrutivo_recursivo(FILE *fp)
     rota *r;
     Short i;
     char c, num[65];
-    for(int o=0; o<100; o++)
-    {
-        fscanf(fp,"\n%c",&c);
-        printf("\nA%cA",c);
-    }
-
     for(i=0; i<2; i++)
     {
+        fscanf(fp,"\n%c",&c);
         switch(c)
         {
             case 'Q':
@@ -6189,7 +6181,7 @@ destrutivo* le_destrutivo(char *nome)
     FILE *fp;
     char Nome[30];
     sprintf(Nome,"%s.des",nome);
-    fp = fopen(Nome,"w");
+    fp = fopen(Nome,"r");
     fscanf(fp,"D");
 
     destrutivo *d;
@@ -6306,15 +6298,8 @@ QDD* mede_tudo_unico(QDD *Q)
     return Qr;
 }
 
-rota* mede_tudo_varios(QDD *Q, Long n)
+rota* mede_tudo_varios(destrutivo *d, Long n, Short N)
 {
-    Short N;
-    N = Q->nqbit;
-
-    destrutivo *d;
-    d = cria_destrutivo();
-    d->Q = mede_conservativo(Q,0,d->p);
-
     rota *r, *rc;
     r  = cria_rota_vazia();
     rc = r;
@@ -6327,6 +6312,7 @@ rota* mede_tudo_varios(QDD *Q, Long n)
         tam = 1;
     printf("\nMostra: %d\ttam: %d\tn: %d", mostra,tam,n);
 
+    QDD *Q;
     destrutivo *dc, *daux;
     busca *b;
     Short P;
@@ -6409,11 +6395,40 @@ rota* mede_tudo_varios(QDD *Q, Long n)
     libera_rota_no(r);
     r = rc;
 
-    salva_destrutivo(d,"EITA");
+    return r;
+}
+
+rota* mede_tudo_varios_inicio(QDD *Q, Long n, char *nome)
+{
+    destrutivo *d;
+    d = cria_destrutivo();
+    d->Q = mede_conservativo(Q,0,d->p);
+
+    rota *r;
+    r = mede_tudo_varios(d,n,Q->nqbit);
+
+    if(nome != NULL)
+        salva_destrutivo(d,nome);
     libera_destrutivo_arvore(d);
 
     return r;
 }
+
+// n é a quantidad ede medias N é a quantidade de Nqbits
+rota* mede_tudo_varios_recupercao(char *nome, Long n, Short N)
+{
+    destrutivo *d;
+    d = le_destrutivo(nome);
+
+    rota *r;
+    r = mede_tudo_varios(d,n,N);
+
+    salva_destrutivo(d,nome);
+    libera_destrutivo_arvore(d);
+
+    return r;
+}
+
 
 
 /**  Testes  **/
@@ -6801,22 +6816,15 @@ int main()
     /***********************************/
 
     /*QDD *Q;
-    Q = le_QDD_sozinho("QftW3");
-    printf("Leu\n");
+    Q = le_QDD_sozinho("QftW18");
+    printf("Leu");
 
     rota *r;
-    r = mede_tudo_varios(Q,1000);
-
-    libera_QDD(Q);
-    libera_rota_lista(r);
-
-    mostra_quantidades();*/
-
-    /***/
+    r = mede_tudo_varios(Q,10000);
+    mostra_rotas(r);*/
 
     destrutivo *d;
     d = le_destrutivo("EITA");
-    mostra_destrutivo_arvore(d);
 
     /***********************************/
     finaliza_structs_globais();
