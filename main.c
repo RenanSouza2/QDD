@@ -1161,6 +1161,7 @@ void mostra_busca_p_lista(busca *b)
 void mostra_quantidades()
 {
     Short vazio = 1;
+    printf("\n");
     if(mem != 0)
     {
         vazio = 0;
@@ -1228,6 +1229,7 @@ void mostra_quantidades()
 
 void mostra_quantidades_zero()
 {
+    printf("\n");
     printf("\nMem0: %llu",mem0);
     printf("\nQ0:   %llu",iQ0);
     printf("\nI0:   %llu",iI0);
@@ -1719,6 +1721,7 @@ void fmostra_busca_p_lista(FILE *fp, busca *b)
 
 void fmostra_quantidades(FILE *fp)
 {
+    fprintf(fp,"\n");
     Short vazio = 1;
     if(mem != 0)
     {
@@ -1787,6 +1790,7 @@ void fmostra_quantidades(FILE *fp)
 
 void fmostra_quantidades_zero(FILE *fp)
 {
+    fprintf(fp,"\n");
     fprintf(fp,"\nMem0: %llu",mem0);
     fprintf(fp,"\nQ0:   %llu",iQ0);
     fprintf(fp,"\nI0:   %llu",iI0);
@@ -3142,12 +3146,6 @@ void salva_QDD(FILE *fp, QDD *Q)
     Long itens;
     l = enlista_QDD(Q);
     itens = conta_itens_lista(l);
-    if(itens == ULLONG_MAX)
-    {
-        printf("\nQDD Muito grande para ser salva");
-        libera_lista_lista(l);
-        return;
-    }
 
     no **N;
     N = malloc(itens*sizeof(no*));
@@ -5711,10 +5709,10 @@ QDD* QFT(QDD *Q)
     Short j;
     for(j=N; j>0; j--)
     {
-        printf("\n\nj: %d",j);
+        printf("\n\nj: %2d",j);
         for(i=0; i<j; i++)
         {
-            printf("\n\ti: %d",i);
+            printf("\n\ti: %2d",i);
             Q1 = aplica(Qr[i],N,N-j);
             Q2 = produto_matriz_vetor(Q1,Qa);
             libera_QDD(Q1);
@@ -5730,7 +5728,7 @@ QDD* QFT(QDD *Q)
     printf("\n\n");
     for(i=N; i>1; i-=2)
     {
-        printf("\ni: %d",i);
+        printf("\ni: %2d",i);
 
         Q1 = Switch(i);
         Q2 = aplica(Q1,N,(N-i)/2);
@@ -6100,11 +6098,14 @@ float gera_aleatorio()
 
 void salva_destrutivo_recursivo(FILE *fp, destrutivo *d)
 {
-    fprintf(fp,"\n%e %e",d->p[0],d->p[1]);
+    fprintf(fp,"\n%e",d->p[0]);
     for(int i=0; i<2; i++)
     {
+        if(d->Q    != NULL)
         if(d->Q[i] != NULL)
         {
+
+
             fprintf(fp,"\nQ");
             salva_QDD(fp,d->Q[i]);
         }
@@ -6142,11 +6143,10 @@ destrutivo* le_destrutivo_recursivo(FILE *fp)
 
     float p[2];
     fscanf(fp,"\n%e",&p[0]);
-    fscanf(fp," %e",&p[1]);
+    p[1] = 1 - p[0];
     d->p[0] = p[0];
     d->p[1] = p[1];
 
-    rota *r;
     Short i;
     char c, num[65];
     for(i=0; i<2; i++)
@@ -6155,13 +6155,15 @@ destrutivo* le_destrutivo_recursivo(FILE *fp)
         switch(c)
         {
             case 'Q':
-                le_QDD(fp);
+                if(d->Q == NULL)
+                    d->Q = cria_QDD_array(2);
+
+                d->Q[i] = le_QDD(fp);
                 break;
 
             case 'R':
                 fscanf(fp,"\n%s",num);
-                r = cria_rota(num);
-                d->r[i] = r;
+                d->r[i] = cria_rota(num);
                 break;
 
             case 'D':
@@ -6281,24 +6283,7 @@ void mede_individual(QDD *Q)
     }
 }
 
-QDD* mede_tudo_unico(QDD *Q)
-{
-    QDD *Qr;
-    Qr = copia_QDD(Q);
-
-    QDD *Qaux;
-    Short i, N, p;
-    N = Q->nqbit;
-    for(i=0; i<N; i++)
-    {
-        Qaux = mede_destrutivo(Qr,i,&p);
-        libera_QDD(Qr);
-        Qr = Qaux;
-    }
-    return Qr;
-}
-
-rota* mede_tudo_varios(destrutivo *d, Long n, Short N)
+rota* mede_amostra(destrutivo *d, Long n, Short N)
 {
     rota *r, *rc;
     r  = cria_rota_vazia();
@@ -6398,14 +6383,14 @@ rota* mede_tudo_varios(destrutivo *d, Long n, Short N)
     return r;
 }
 
-rota* mede_tudo_varios_inicio(QDD *Q, Long n, char *nome)
+rota* mede_amostra_inicio(QDD *Q, Long n, char *nome)
 {
     destrutivo *d;
     d = cria_destrutivo();
     d->Q = mede_conservativo(Q,0,d->p);
 
     rota *r;
-    r = mede_tudo_varios(d,n,Q->nqbit);
+    r = mede_amostra(d,n,Q->nqbit);
 
     if(nome != NULL)
         salva_destrutivo(d,nome);
@@ -6414,15 +6399,18 @@ rota* mede_tudo_varios_inicio(QDD *Q, Long n, char *nome)
     return r;
 }
 
-// n é a quantidad ede medias N é a quantidade de Nqbits
-rota* mede_tudo_varios_recupercao(char *nome, Long n, Short N)
+// n é a quantidade de medidas N é a quantidade de Nqbits
+rota* mede_amostra_recupercao(char *nome, Long n, Short N)
 {
+    mostra_quantidades();
     destrutivo *d;
     d = le_destrutivo(nome);
 
+    mostra_quantidades();
     rota *r;
-    r = mede_tudo_varios(d,n,N);
+    r = mede_amostra(d,n,N);
 
+    mostra_quantidades();
     salva_destrutivo(d,nome);
     libera_destrutivo_arvore(d);
 
@@ -6807,6 +6795,30 @@ void teste_aleatorio_fourrier(Short N)
 
 
 
+/**  Codigos main  **/
+
+void programa_rodar_1()
+{
+    QDD *Qb, *Q;
+    Short i;
+    char nome[30];
+    for(i=18; i<=20; i++)
+    {
+        configuracao(i);
+
+        Qb = W(i);
+        Q = QFT(Qb);
+
+        sprintf(nome,"QftW%d",i);
+        salva_QDD_sozinho(Q,nome);
+
+        libera_QDD(Qb);
+        libera_QDD(Q);
+    }
+}
+
+
+
 int main()
 {
     inicia_relatorio_memoria(0);
@@ -6815,16 +6827,7 @@ int main()
     setlocale(LC_ALL, "Portuguese");
     /***********************************/
 
-    /*QDD *Q;
-    Q = le_QDD_sozinho("QftW18");
-    printf("Leu");
 
-    rota *r;
-    r = mede_tudo_varios(Q,10000);
-    mostra_rotas(r);*/
-
-    destrutivo *d;
-    d = le_destrutivo("EITA");
 
     /***********************************/
     finaliza_structs_globais();
