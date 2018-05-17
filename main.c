@@ -5849,6 +5849,67 @@ float probabilidade_total(busca *b)
     return p;
 }
 
+void ordena_rota_recursivo(rota *r, Short n)
+{
+    if(r->r == NULL)
+        return;
+
+    rota *r_, *r0, *r1;
+    r_ = cria_rota_vazia();
+    r0 = cria_rota_vazia();
+    r1 = cria_rota_vazia();
+
+    rota *rc;
+    while(r->r != NULL)
+    {
+        rc = r->r;
+        r->r = rc->r;
+
+        switch(rc->num[n])
+        {
+            case '\0':
+                rc->r = r_->r;
+                r_->r = rc;
+                break;
+
+            case '0':
+                rc->r = r0->r;
+                r0->r = rc;
+                break;
+
+            case '1':
+                rc->r = r1->r;
+                r1->r = rc;
+                break;
+        }
+    }
+
+    ordena_rota_recursivo(r0,n+1);
+    ordena_rota_recursivo(r1,n+1);
+
+    r->r = r_->r;
+    for(rc = r; rc->r != NULL; rc = rc->r);
+    rc->r = r0->r;
+    for(rc = r; rc->r != NULL; rc = rc->r);
+    rc->r = r1->r;
+
+    libera_rota_no(r_);
+    libera_rota_no(r0);
+    libera_rota_no(r1);
+}
+
+void ordena_rota(rota **R0)
+{
+    rota *r;
+    r = cria_rota_vazia();
+    r->r = *R0;
+
+    ordena_rota_recursivo(r,0);
+
+    *R0 = r->r;
+    libera_rota_no(r);
+}
+
 
 
 /**   Busca   **/
@@ -6002,6 +6063,7 @@ busca* busca_mais_provavel(QDD *Q)
     }
 
     b->r = busca_rotas(b->n,Q->nqbit);
+    ordena_rota(&(b->r));
 
     return b;
 }
@@ -6295,7 +6357,7 @@ rota* mede_amostra(destrutivo *d, Long n, Short N)
     tam = n/amostragem;
     if(tam == 0)
         tam = 1;
-    printf("\nMostra: %d\ttam: %d\tn: %d", mostra,tam,n);
+    printf("\nMostra: %llu\ttam: %llu\tn: %llu", mostra,tam,n);
 
     QDD *Q;
     destrutivo *dc, *daux;
@@ -6306,12 +6368,12 @@ rota* mede_amostra(destrutivo *d, Long n, Short N)
     for(i=0; i<n; i++)
     {
         if(i < mostra)
-            printf("\ni: %4d\tj:",i);
+            printf("\ni: %4llu\tj:",i+1);
         if(i == mostra)
             printf("\n");
         if(i >= mostra)
         if(i%tam == 0)
-            printf("\ni: %d/%d",i/tam,amostragem);
+            printf("\ni: %3llu/%llu",i/tam,amostragem);
 
         dc = d;
         for(j=1; j<=N; j++)
@@ -6379,6 +6441,7 @@ rota* mede_amostra(destrutivo *d, Long n, Short N)
     rc = r->r;
     libera_rota_no(r);
     r = rc;
+    ordena_rota(&r);
 
     return r;
 }
@@ -6797,12 +6860,12 @@ void teste_aleatorio_fourrier(Short N)
 
 /**  Codigos main  **/
 
-void programa_rodar_1()
+void programa_rodar_1(Short in, Short f)
 {
     QDD *Qb, *Q;
     Short i;
     char nome[30];
-    for(i=18; i<=20; i++)
+    for(i=in; i<=f; i++)
     {
         configuracao(i);
 
@@ -6817,6 +6880,38 @@ void programa_rodar_1()
     }
 }
 
+void programa_rodar_2(Short N, Long n)
+{
+    char nome[30];
+    sprintf(nome,"QftW%d",N);
+
+    QDD *Q;
+    Q = le_QDD_sozinho(nome);
+    printf("Leu");
+    printf("\n");
+
+    rota *r;
+    sprintf(nome,"QftW%dMed",N);
+    r = mede_amostra_inicio(Q,n,nome);
+
+    libera_QDD(Q);
+    mostra_rotas(r);
+    libera_rota_lista(r);
+
+    mostra_quantidades();
+}
+
+void programa_rodar_3()
+{
+    rota *r;
+    r = mede_amostra_recupercao("QftW17Med",300000,17);
+    ordena_rota(&r);
+    libera_rota_lista(r);
+    mostra_quantidades();
+
+    mostra_tamanhos();
+}
+
 
 
 int main()
@@ -6827,7 +6922,7 @@ int main()
     setlocale(LC_ALL, "Portuguese");
     /***********************************/
 
-
+    programa_rodar_2(17,5000);
 
     /***********************************/
     finaliza_structs_globais();
