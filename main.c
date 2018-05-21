@@ -6944,7 +6944,7 @@ int main()
     setlocale(LC_ALL, "Portuguese");
     /***********************************/
 
-    programa_rodar_2(17,5000);
+    programa_rodar_1(1,20);
 
     /***********************************/
     finaliza_structs_globais();
