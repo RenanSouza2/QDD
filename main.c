@@ -3352,8 +3352,13 @@ QDD* le_QDD_sozinho(char *nome)
 
 /**  Reduz  **/
 
-void reduz_lista_fim(lista *l, Short ex)
+lista* reduz_lista_fim(lista *l, Short ex)
 {
+    lista *lf, *lfc;
+    Short mudou;
+    lf  = cria_lista();
+    lfc = lf;
+
     no *n1, *n2;
     lista *lc1, *lc2, *laux;
     lc1 = l;
@@ -3362,6 +3367,7 @@ void reduz_lista_fim(lista *l, Short ex)
         n1 = lc1->n;
         if(n1->tipo != Fim)
             ERRO("REDUZ LISTA FIM| NO DA LISTA NAO E FIM 1");
+        mudou = 0;
 
         lc2 = lc1;
         while(lc2->l != NULL)
@@ -3379,23 +3385,39 @@ void reduz_lista_fim(lista *l, Short ex)
                 transfere_conexao(n1,n2);
                 libera_no(n2);
                 libera_lista_no(laux);
+
+                mudou = 1;
             }
             else
             {
                 lc2 = lc2->l;
+            }
+
+            if(mudou)
+            {
+                lfc->l = cria_lista();
+                lfc = lfc->l;
+                lfc->n = n1;
             }
         }
         lc1 = lc1->l;
         if(lc1 == NULL)
             break;
     }
+
+    lfc = lf->l;
+    libera_lista_no(lf);
+    lf = lfc;
+
+    return lf;
 }
 
 void reduz_QDD(QDD *Q, Short ex, Short classe)
 {
-    reduz_lista_fim(Q->l,ex);
     lista *l;
-    l = copia_lista_sem_cabeca(Q->l);
+    l = reduz_lista_fim(Q->l,ex);
+    if(l == NULL)
+        return;
 
     lista *ll, *llc;
     ll = NULL;
