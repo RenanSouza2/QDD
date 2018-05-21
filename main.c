@@ -2236,6 +2236,8 @@ void libera_QDD(QDD *Q)
     libera_QDD_no(Q);
 }
 
+int liba = 0, libb = 0;
+
 void libera_destrutivo_arvore(destrutivo *d)
 {
     if(d == NULL)
@@ -2255,9 +2257,15 @@ void libera_destrutivo_arvore(destrutivo *d)
     }
 
     if(d->r[0] != NULL)
+    {
+        liba++;
         libera_rota_no(d->r[0]);
+    }
     if(d->r[1] != NULL)
+    {
+        libb++;
         libera_rota_no(d->r[1]);
+    }
 
     libera_destrutivo_no(d);
 }
@@ -3393,13 +3401,16 @@ lista* reduz_lista_fim(lista *l, Short ex)
                 lc2 = lc2->l;
             }
 
-            if(mudou)
-            {
-                lfc->l = cria_lista();
-                lfc = lfc->l;
-                lfc->n = n1;
-            }
+
         }
+
+        if(mudou)
+        {
+            lfc->l = cria_lista();
+            lfc = lfc->l;
+            lfc->n = n1;
+        }
+
         lc1 = lc1->l;
         if(lc1 == NULL)
             break;
@@ -6330,13 +6341,17 @@ QDD* mede_destrutivo(QDD *Q, Short nqbit, Short *resultado)
     {
         Q = QM[0];
         libera_QDD(QM[1]);
-        *resultado = 0;
+
+        if(resultado != NULL)
+            *resultado = 0;
     }
     else
     {
         Q = QM[1];
         libera_QDD(QM[0]);
-        *resultado = 1;
+
+        if(resultado != NULL)
+            *resultado = 1;
     }
     libera_QDD_array(QM,2);
     return Q;
@@ -6917,7 +6932,7 @@ void programa_rodar_2(Short N, Long n)
     r = mede_amostra_inicio(Q,n,nome);
 
     libera_QDD(Q);
-    mostra_rotas(r);
+    //mostra_rotas(r);
     libera_rota_lista(r);
 
     mostra_quantidades();
@@ -6944,7 +6959,7 @@ int main()
     setlocale(LC_ALL, "Portuguese");
     /***********************************/
 
-    programa_rodar_1(1,20);
+    programa_rodar_1(14,20);
 
     /***********************************/
     finaliza_structs_globais();
