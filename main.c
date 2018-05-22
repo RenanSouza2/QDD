@@ -1497,7 +1497,9 @@ void fmostra_QDD(FILE *fp, QDD *Q)
 void fmostra_QDD_sozinho(QDD *Q, char *arquivo)
 {
     FILE *fp;
-    fp = fopen(arquivo,"w");
+    char nome[30];
+    sprintf(nome,"%s.txt",arquivo);
+    fp = fopen(nome,"w");
     if(fp == NULL)
         ERRO("FMOSTRA QDD SOZINHO| NAO ABRIU ARQUIVO");
 
@@ -2231,6 +2233,9 @@ void libera_arvore(no *n)
 
 void libera_QDD(QDD *Q)
 {
+    if(Q == NULL)
+        ERRO("LIBERA QDD| QDD E NULL");
+
     libera_arvore(Q->n);
     libera_lista_lista(Q->l);
     libera_QDD_no(Q);
@@ -6091,7 +6096,6 @@ busca* busca_mais_provavel(QDD *Q)
 
             p = naux->at.f.re;
         }
-
         libera_no(naux);
     }
 
@@ -6184,6 +6188,10 @@ float gera_aleatorio()
         srand(1e5*time(NULL));
     }
     aleatorio = rand();
+    if(aleatorio == 0)
+        aleatorio = 1;
+    if(aleatorio == RAND_MAX)
+        aleatorio = RAND_MAX - 1;
 
     float P;
     P = aleatorio;
@@ -6193,29 +6201,33 @@ float gera_aleatorio()
 
 void salva_destrutivo_recursivo(FILE *fp, destrutivo *d)
 {
+    Short i;
     fprintf(fp,"\n%e",d->p[0]);
-    for(int i=0; i<2; i++)
+    for(i=0; i<2; i++)
     {
         if(d->Q    != NULL)
         if(d->Q[i] != NULL)
         {
-
-
             fprintf(fp,"\nQ");
             salva_QDD(fp,d->Q[i]);
+            continue;
         }
 
         if(d->r[i] != NULL)
         {
             fprintf(fp,"\nR");
             fprintf(fp,"\n%s",d->r[i]->num);
+            continue;
         }
 
         if(d->d[i] != NULL)
         {
             fprintf(fp,"\nD");
             salva_destrutivo_recursivo(fp,d->d[i]);
+            continue;
         }
+
+        fprintf(fp,"\nN");
     }
 }
 
@@ -6263,6 +6275,9 @@ destrutivo* le_destrutivo_recursivo(FILE *fp)
 
             case 'D':
                 d->d[i] = le_destrutivo_recursivo(fp);
+                break;
+
+            case 'N':
                 break;
 
             default:
@@ -6399,9 +6414,10 @@ rota* mede_amostra(destrutivo *d, Long n, Short N)
     QDD *Q;
     destrutivo *dc, *daux;
     busca *b;
-    Short P;
+    Short P, k, novo;
     Long i, j;
-    float p;
+    float p, epsp;
+    epsp = 0.9/RAND_MAX;
     for(i=0; i<n; i++)
     {
         if(i < mostra)
@@ -6413,6 +6429,7 @@ rota* mede_amostra(destrutivo *d, Long n, Short N)
             printf("\ni: %3llu/%llu",i/tam,amostragem);
 
         dc = d;
+        novo = 0;
         for(j=1; j<=N; j++)
         {
 
@@ -6429,6 +6446,16 @@ rota* mede_amostra(destrutivo *d, Long n, Short N)
             {
                 // Não acabou
 
+                if(novo)
+                {
+                    for(k=0; k<2; k++)
+                    if(dc->p[k] < epsp)
+                    {
+                        libera_QDD(dc->Q[k]);
+                        dc->Q[k] = NULL;
+                    }
+                }
+
                 if(dc->d[P] == NULL)
                 {
                     // Nao saiu esse resultado
@@ -6442,6 +6469,8 @@ rota* mede_amostra(destrutivo *d, Long n, Short N)
 
                     dc->d[P] = daux;
                     dc = daux;
+
+                    novo = 1;
                 }
                 else
                 {
@@ -6454,10 +6483,17 @@ rota* mede_amostra(destrutivo *d, Long n, Short N)
             {
                 // Acabou
 
-                if(dc->r[0] == NULL)
+                if(novo)
                 {
-                    for(int k=0; k<2; k++)
+                    for(k=0; k<2; k++)
                     {
+                        if(dc->p[k] < epsp)
+                        {
+                            libera_QDD(dc->Q[k]);
+                            dc->Q[k] = NULL;
+                            continue;
+                        }
+
                         Q = dc->Q[k];
                         dc->Q[k] = NULL;
 
@@ -6858,39 +6894,16 @@ Short teste_memoria()
 
 }
 
-void teste_aleatorio_fourrier(Short N)
+void teste_aleatorio()
 {
-    Long max;
-    max = pow(2,N);
+    FILE *fp;
+    fp = fopen("Resultado.csv","w");
+    fprintf(fp,"sep=|");
 
-    float *p;
-    Long i;
-    p = malloc(max*sizeof(float));
-    for(i=0; i<max; i++)
-        p[i] = gera_aleatorio();
+    for(int i=0; i<1000; i++)
+        fprintf(fp,"\n%f",gera_aleatorio());
 
-    no **n;
-    n = cria_no_array(max);
-    for(i=0; i<max; i++)
-        n[i] = cria_no_fim(p[i],0);
-    free(p);
-
-    QDD *Q;
-    Q = cria_QDD_vetor(n,N);
-    libera_no_array(n,max);
-
-    float m;
-    m = modulo_vetor(Q);
-    produto_QDD_real(Q,1/m);
-
-    QDD *Qft;
-    Qft = QFT(Q);
-    libera_QDD(Q);
-
-    salva_QDD_sozinho(Qft,"Ale10");
-    libera_QDD(Qft);
-
-    mostra_quantidades();
+    fclose(fp);
 }
 
 
@@ -6919,6 +6932,8 @@ void programa_rodar_1(Short in, Short f)
 
 void programa_rodar_2(Short N, Long n)
 {
+    configuracao(N);
+
     char nome[30];
     sprintf(nome,"QftW%d",N);
 
@@ -6938,15 +6953,58 @@ void programa_rodar_2(Short N, Long n)
     mostra_quantidades();
 }
 
-void programa_rodar_3()
+void programa_rodar_3(Short N, Long n)
 {
+    configuracao(N);
+
+    char nome[30];
+    sprintf(nome,"QftW%dmed",N);
+
     rota *r;
-    r = mede_amostra_recupercao("QftW17Med",300000,17);
+    r = mede_amostra_recupercao(nome,n,N);
     ordena_rota(&r);
+    mostra_rotas(r);
     libera_rota_lista(r);
     mostra_quantidades();
+}
 
-    mostra_tamanhos();
+void programa_rodar_4(Short N)
+{
+    configuracao(N);
+
+    QDD *Qb, *QHc;
+    Qb  = aplica(QH,2,1);
+    QHc = controla(Qb,0,1);
+    libera_QDD(Qb);
+    Qb = BASE(1,0);
+
+    QDD *Q;
+    Q = produto_matriz_vetor(QH,Qb);
+
+    QDD *Q1, *Q2;
+    Short i;
+    for(i=2; i<=N; i++)
+    {
+        Q1 = produto_tensorial(Q,Qb);
+        libera_QDD(Q);
+        Q = Q1;
+
+        Q1 = aplica(QHc,i,i-2);
+        Q2 = produto_matriz_vetor(Q1,Q);
+        libera_QDD(Q);
+        libera_QDD(Q1);
+        Q = Q2;
+    }
+
+    libera_QDD(Qb);
+    libera_QDD(QHc);
+
+    char nome[30];
+    sprintf(nome,"Hc%d",N);
+    salva_QDD_sozinho(Q,nome);
+
+    libera_QDD(Q);
+    mostra_quantidades();
 }
 
 
@@ -6959,7 +7017,7 @@ int main()
     setlocale(LC_ALL, "Portuguese");
     /***********************************/
 
-    programa_rodar_1(14,20);
+    programa_rodar_1(17,20);
 
     /***********************************/
     finaliza_structs_globais();
