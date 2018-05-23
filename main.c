@@ -6404,12 +6404,12 @@ rota* mede_amostra(destrutivo *d, Long n, Short N)
     rc = r;
 
     Long mostra, amostragem, tam;
-    mostra     = 100;
-    amostragem = 100;
-    tam = n/amostragem;
+    mostra = 100;
+    tam = 100000;
+    amostragem = n/tam;
     if(tam == 0)
         tam = 1;
-    printf("\nMostra: %llu\ttam: %llu\tn: %llu", mostra,tam,n);
+    printf("\nMostra: %llu\ttam: %llu\tn: %llu\t amostragem: %llu", mostra,tam,n,amostragem);
 
     QDD *Q;
     destrutivo *dc, *daux;
@@ -6418,13 +6418,13 @@ rota* mede_amostra(destrutivo *d, Long n, Short N)
     Long i, j;
     float p, epsp;
     epsp = 0.9/RAND_MAX;
-    for(i=0; i<n; i++)
+    for(i=1; i<=n; i++)
     {
-        if(i < mostra)
-            printf("\ni: %4llu\tj:",i+1);
-        if(i == mostra)
+        if(i <= mostra)
+            printf("\ni: %4llu\tj:",i);
+        if(i-1 == mostra)
             printf("\n");
-        if(i >= mostra)
+        if(i > mostra)
         if(i%tam == 0)
             printf("\ni: %3llu/%llu",i/tam,amostragem);
 
@@ -6446,16 +6446,6 @@ rota* mede_amostra(destrutivo *d, Long n, Short N)
             {
                 // Não acabou
 
-                if(novo)
-                {
-                    for(k=0; k<2; k++)
-                    if(dc->p[k] < epsp)
-                    {
-                        libera_QDD(dc->Q[k]);
-                        dc->Q[k] = NULL;
-                    }
-                }
-
                 if(dc->d[P] == NULL)
                 {
                     // Nao saiu esse resultado
@@ -6466,18 +6456,21 @@ rota* mede_amostra(destrutivo *d, Long n, Short N)
                     daux = cria_destrutivo();
                     daux->Q = mede_conservativo(Q,j,daux->p);
                     libera_QDD(Q);
+                    for(k=0; k<2; k++)
+                    {
+                        if(daux->p[k] < epsp)
+                        {
+                            libera_QDD(daux->Q[k]);
+                            daux->Q[k] = NULL;
+                        }
+                    }
 
                     dc->d[P] = daux;
-                    dc = daux;
 
                     novo = 1;
                 }
-                else
-                {
-                    // Ja saiu esse resultado
 
-                    dc = dc->d[P];
-                }
+                dc = dc->d[P];
             }
             else
             {
@@ -6488,11 +6481,7 @@ rota* mede_amostra(destrutivo *d, Long n, Short N)
                     for(k=0; k<2; k++)
                     {
                         if(dc->p[k] < epsp)
-                        {
-                            libera_QDD(dc->Q[k]);
-                            dc->Q[k] = NULL;
                             continue;
-                        }
 
                         Q = dc->Q[k];
                         dc->Q[k] = NULL;
@@ -6515,6 +6504,7 @@ rota* mede_amostra(destrutivo *d, Long n, Short N)
     libera_rota_no(r);
     r = rc;
     ordena_rota(&r);
+    printf("\nOrdenou rotas");
 
     return r;
 }
@@ -6529,8 +6519,12 @@ rota* mede_amostra_inicio(QDD *Q, Long n, char *nome)
     r = mede_amostra(d,n,Q->nqbit);
 
     if(nome != NULL)
+    {
         salva_destrutivo(d,nome);
+        printf("\nSalvou");
+    }
     libera_destrutivo_arvore(d);
+    printf("\nLiberou");
 
     return r;
 }
@@ -6548,7 +6542,9 @@ rota* mede_amostra_recupercao(char *nome, Long n, Short N)
 
     mostra_quantidades();
     salva_destrutivo(d,nome);
+    printf("\nSalvou");
     libera_destrutivo_arvore(d);
+    printf("\nLiberou");
 
     return r;
 }
@@ -6962,8 +6958,7 @@ void programa_rodar_3(Short N, Long n)
 
     rota *r;
     r = mede_amostra_recupercao(nome,n,N);
-    ordena_rota(&r);
-    mostra_rotas(r);
+    //mostra_rotas(r);
     libera_rota_lista(r);
     mostra_quantidades();
 }
@@ -7017,7 +7012,7 @@ int main()
     setlocale(LC_ALL, "Portuguese");
     /***********************************/
 
-    programa_rodar_1(17,20);
+    programa_rodar_2(17,26e6);
 
     /***********************************/
     finaliza_structs_globais();
