@@ -2632,21 +2632,6 @@ Short compara_no(no *n1, no *n2)
     return 0;
 }
 
-Short comapra_no_meio_ordena(no *n1, no *n2)
-{
-    if(n1->at.m.nivel > n2->at.m.nivel)
-        return 1;
-    if(n1->at.m.nivel < n2->at.m.nivel)
-        return 2;
-
-    if(n1->at.m.classe > n2->at.m.classe)
-        return 1;
-    if(n1->at.m.classe < n2->at.m.classe)
-        return 2;
-
-    return 1;
-}
-
 Short compara_apply(apply *a1, apply *a2)
 {
     if(a1 != NULL)
@@ -2737,17 +2722,15 @@ void ordena_lista_recursivo(lista *l, Long n)
     lc = l;
     while(l1->l != NULL && l2->l != NULL)
     {
-        switch(comapra_no_meio_ordena(l1->l->n,l2->l->n))
+        if(l1->l->n->at.f.re < l2->l->n->at.f.re)
         {
-        case 1:
             laux = l1->l;
             l1->l = laux->l;
-            break;
-
-        case 2:
+        }
+        else
+        {
             laux = l2->l;
             l2->l = laux->l;
-            break;
         }
 
         laux->l = NULL;
@@ -2764,7 +2747,7 @@ void ordena_lista_recursivo(lista *l, Long n)
     libera_lista_no(l2);
 }
 
-void ordena_lista(lista **L)
+void ordena_lista(lista **L, Short ordem)
 {
     lista *l;
     l = cria_lista();
@@ -2777,6 +2760,21 @@ void ordena_lista(lista **L)
         n++;
 
     ordena_lista_recursivo(l,n);
+
+    lista *laux;
+    lc = NULL;
+    if(ordem)
+    {
+        while(l->l != NULL)
+        {
+            laux = l->l;
+            l->l = laux->l;
+
+            laux->l = lc;
+            lc = laux;
+        }
+        l->l = lc;
+    }
 
     *L = l->l;
     libera_lista_no(l);
@@ -3430,26 +3428,12 @@ lista* reduz_lista_fim(lista *l, Short ex)
     return lf;
 }
 
-
-void reduz_QDD(QDD *Q, Short ex, Short classe, lista *l0)
+void reduz_QDD(QDD *Q, Short ex, Short classe)
 {
-    lista *l, *lc;
+    lista *l;
     l = reduz_lista_fim(Q->l,ex);
     if(l == NULL)
-    {
-        if(l0 == NULL)
-            return;
-
-        l = l0;
-    }
-    else
-    {
-        if(l0 != NULL)
-        {
-            for(lc = l; lc->l != NULL; lc = lc->l);
-            lc->l = l0;
-        }
-    }
+        return;
 
     lista *ll, *llc;
     ll = NULL;
@@ -3634,7 +3618,7 @@ void reduz_QDD(QDD *Q, Short ex, Short classe, lista *l0)
     }
 }
 
-void reduz_arvore(no **n, Short ex, lista *l0)
+void reduz_arvore(no **n, Short ex)
 {
     no *ni, *n0;
     n0 = *n;
@@ -3645,7 +3629,7 @@ void reduz_arvore(no **n, Short ex, lista *l0)
 
             Qred->n = n0;
             Qred->l = acha_lista_fim_arvore(n0);
-            reduz_QDD(Qred,ex,4, l0);
+            reduz_QDD(Qred,ex,4);
 
             Qred->n = ni;
             libera_lista_lista(Qred->l);
@@ -3656,7 +3640,7 @@ void reduz_arvore(no **n, Short ex, lista *l0)
 
             conecta_UM(Qred->n,n0,Inicio);
             Qred->l = acha_lista_fim_arvore(n0);
-            reduz_QDD(Qred,ex,4,l0);
+            reduz_QDD(Qred,ex,4);
 
             n0 = Qred->n->at.i.n;
             desconecta_DOIS(Qred->n);
@@ -3981,10 +3965,6 @@ no* apply_base(no *n1, no *n2, Short(*regra_apply)(apply*), Short N)
 
     encaixa_apply(a,N);
 
-    apply *ar, *arc, *araux;
-    ar  = cria_apply();
-    arc = ar;
-
     apply *ac;
     Short i, j, regra;
     for(i=0; i<N+2; i++)
@@ -3999,24 +3979,10 @@ no* apply_base(no *n1, no *n2, Short(*regra_apply)(apply*), Short N)
                 switch(ac->n->tipo)
                 {
                     case Meio:
-                        araux = ac->a2;
                         ac->a2 = encaixa_apply(ac->a2,N);
-                        if(araux != ac->a2)
-                        {
-                            arc->a = cria_apply();
-                            arc = arc->a;
-                            arc->a1 = ac->a2;
-                        }
 
                     case Inicio:
-                        araux = ac->a1;
                         ac->a1 = encaixa_apply(ac->a1,N);
-                        if(araux != ac->a2)
-                        {
-                            arc->a = cria_apply();
-                            arc = arc->a;
-                            arc->a1 = ac->a1;
-                        }
                         break;
                 }
             }
@@ -4026,34 +3992,7 @@ no* apply_base(no *n1, no *n2, Short(*regra_apply)(apply*), Short N)
     no *n;
     n = monta_arvore(N);
 
-    no *n0;
-    lista *l, *lc;
-    arc = ar->a;
-    libera_apply_no(ar);
-    ar = arc;
-    l  = cria_lista();
-    lc = l;
-    while(ar != NULL)
-    {
-        n0 = ar->a1->n;
-        if(n0->tipo == Meio)
-        {
-            lc->l = cria_lista();
-            lc = lc->l;
-            lc->n = n0;
-        }
-
-        arc = ar->a;
-        libera_apply_no(ar);
-        ar = arc;
-    }
     limpa_apply_matriz(N);
-
-    lc = l;
-    l  = lc->l;
-    libera_lista_no(lc);
-    ordena_lista(&l);
-    reduz_arvore(&n,2,l);
 
     return n;
 }
@@ -5024,7 +4963,7 @@ void contrai_conta(conta *c,Short N)
         na = cc->n;
 
         nd = apply_soma(na->at.m.el,na->at.m.th,N);
-        reduz_arvore(&nd,2,NULL);
+        reduz_arvore(&nd,2);
 
         transfere_conexao(nd,na);
         libera_arvore(na);
@@ -5127,12 +5066,12 @@ QDD* produto_QDD_QDD(QDD *Q1, QDD *Q2, no* (*apply_operacao)(no *n1, no *n2, Sho
     Q = cria_QDD(Q1->nqbit);
     Q->n = n;
     Q->l = l;
-    reduz_QDD(Q,2,classe,NULL);
+    reduz_QDD(Q,2,classe);
 
     contrai_QDD(Q,classe);
     libera_lista_lista(Q->l);
     Q->l = acha_lista_fim_QDD(Q);
-    reduz_QDD(Q,1,4, NULL);
+    reduz_QDD(Q,1,4);
 
     return Q;
 }
@@ -5250,7 +5189,7 @@ QDD* produto_tensorial(QDD *Q1, QDD *Q2)
     }
     libera_QDD_array(Q2B,itens);
 
-    reduz_QDD(Q,1,4,NULL);
+    reduz_QDD(Q,1,4);
     return Q;
 }
 
@@ -5291,7 +5230,7 @@ QDD* soma_QDD(QDD *Q1, QDD *Q2)
     Q = cria_QDD(Q1->nqbit);
     Q->n = apply_soma(Q1->n,Q2->n,Q->nqbit);
     Q->l = acha_lista_fim_QDD(Q);
-    reduz_QDD(Q,1,4,NULL);
+    reduz_QDD(Q,1,4);
 
     return Q;
 }
@@ -5362,7 +5301,7 @@ float modulo_vetor(QDD *Q)
 
         l->n = n1;
     }
-    reduz_QDD(Q1,2,V,NULL);
+    reduz_QDD(Q1,2,V);
 
     float m;
     contrai_QDD(Q1,V);
@@ -6181,7 +6120,7 @@ busca* busca_probabilidade_maior(QDD *Q, double p) // Retorna nulo caso não ache
 
         l->n = n1;
     }
-    reduz_QDD(Q,1,4,NULL);
+    reduz_QDD(Q,1,4);
 
     busca *b, *bc;
     b = cria_busca();
@@ -6647,7 +6586,7 @@ double teste_velocidade_unico(char *nome, QDD* (*le)(char*), FILE *fp, FILE *fr,
     clk = (double)CLOCKS_PER_SEC;
 
     antes = clock();
-    reduz_QDD(Q1,1,4,NULL);
+    reduz_QDD(Q1,1,4);
     depois = clock();
 
     delta = depois - antes;
@@ -6704,7 +6643,7 @@ double teste_velocidade_unico(char *nome, QDD* (*le)(char*), FILE *fp, FILE *fr,
 
         antes = clock();
         for(i=0; i<quantidade; i++)
-            reduz_QDD(Q[i],1,4,NULL);
+            reduz_QDD(Q[i],1,4);
         depois = clock();
 
         delta = depois-antes;
@@ -7073,11 +7012,10 @@ int main()
     setlocale(LC_ALL, "Portuguese");
     /***********************************/
 
-    programa_rodar_1(5,5);
+    programa_rodar_2(17,26e6);
 
     /***********************************/
     finaliza_structs_globais();
     finaliza_relatorio_memoria();
     return 0;
 }
-
