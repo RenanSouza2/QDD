@@ -2699,91 +2699,82 @@ lista* acha_fim_lista(lista *l)
     return lc;
 }
 
-void ordena_lista_recursivo(lista *l, Long n)
+void ordena_lista(lista *l)
 {
-    if(n == 1)
-        return;
+    lista *L[65][3];
+    Short i, j;
+    for(i=0; i<65; i++)
+        for(j=0; j<3; j++)
+            L[i][j] = NULL;
 
-    Long n1, n2;
-    n1 = n/2;
-    n2 = n - n1;
-
-    lista *l1, *l2;
-    l1 = cria_lista();
-    l2 = cria_lista();
-
-    lista *lc;
-    Long i;
-    lc = l;
-    for(i=0; i<n1; i++)
-        lc = lc->l;
-    l2->l = lc->l;
-    lc->l = NULL;
-    l1->l = l->l;
-
-    ordena_lista_recursivo(l1,n1);
-    ordena_lista_recursivo(l2,n2);
-
-    lista *laux;
-    lc = l;
-    while(l1->l != NULL && l2->l != NULL)
+    no *n;
+    lista *lc, *laux;
+    while(l->l != NULL)
     {
-        if(l1->l->n->at.f.re < l2->l->n->at.f.re)
+        lc = l->l;
+        l->l = lc->l;
+        lc->l = NULL;
+
+        n = lc->n;
+        if(n == NULL)
+            ERRO("ORDENA LISTA| N E NULL");
+
+        switch(n->tipo)
         {
-            laux = l1->l;
-            l1->l = laux->l;
+            case Meio:
+                i = n->at.m.nivel;
+                j = n->at.m.classe;
+                break;
+
+            case Fim:
+                i = 64;
+                j = 0;
+                break;
+        }
+
+        for(laux = L[i][j]; laux != NULL; laux = laux->l)
+            if(laux->n == n)
+                break;
+        if(laux == NULL)
+        {
+            lc->l = L[i][j];
+            L[i][j] = lc;
         }
         else
         {
-            laux = l2->l;
-            l2->l = laux->l;
+            libera_lista_no(lc);
         }
-
-        laux->l = NULL;
-        lc->l = laux;
-        lc = laux;
     }
 
-    if(l1->l != NULL)
-        lc->l = l1->l;
-    if(l2->l != NULL);
-        lc->l = l2->l;
-
-    libera_lista_no(l1);
-    libera_lista_no(l2);
-}
-
-void ordena_lista(lista **L, Short ordem)
-{
-    lista *l;
-    l = cria_lista();
-    l->l = *L;
-
-    lista *lc;
-    Long n;
-    n = 0;
-    for(lc = l->l; lc != NULL; lc = lc->l)
-        n++;
-
-    ordena_lista_recursivo(l,n);
-
-    lista *laux;
-    lc = NULL;
-    if(ordem)
+    lc = l;
+    i = 65;
+    do
     {
-        while(l->l != NULL)
+        i--;
+        //printf("\nI: %d",i);
+
+        j = 3;
+        do
         {
-            laux = l->l;
-            l->l = laux->l;
+            j--;
+            //printf("\n\tJ: %d",j);
+            //printf("\tL[%d][%d]: %d",i,j,L[i][j]);
 
-            laux->l = lc;
-            lc = laux;
+            if(L[i][j] != NULL)
+            {
+                printf("\nENTROU");
+                lc->l = L[i][j];
+                while(lc->l != NULL)
+                {
+                    //printf("\nB\tlc: %d",lc);
+                    lc = lc->l;
+                }
+            }
+            //printf("\nA");
         }
-        l->l = lc;
+        while(j>0);
     }
-
-    *L = l->l;
-    libera_lista_no(l);
+    while(i>0);
 }
 
 
@@ -3379,40 +3370,32 @@ lista* reduz_lista_fim(lista *l, Short ex)
     lfc = lf;
 
     no *n1, *n2;
-    lista *lc1, *lc2, *laux;
+    lista *lc1, *lc2;
     lc1 = l;
-    while(lc1->l != NULL)
+    for(lc1 = l; lc1->l != NULL; lc1 = lc1->l)
     {
         n1 = lc1->n;
         if(n1->tipo != Fim)
             ERRO("REDUZ LISTA FIM| NO DA LISTA NAO E FIM 1");
+
+        if(n1->l == NULL)
+            continue;
+
         mudou = 0;
-
-        lc2 = lc1;
-        while(lc2->l != NULL)
+        for(lc2 = lc2; lc2 != NULL; lc2 = lc2->l)
         {
-            laux = lc2->l;
-            n2 = laux->n;
-
+            n2 = lc2->n;
             if(n2->tipo != Fim)
                 ERRO("REDUZ LISTA FIM| NO DA LISTA NAO E FIM 2");
 
+            if(n2->l == NULL)
+                continue;
+
             if(compara_no_fim(n1,n2,ex))
             {
-                lc2->l = laux->l;
-
                 transfere_conexao(n1,n2);
-                libera_no(n2);
-                libera_lista_no(laux);
-
                 mudou = 1;
             }
-            else
-            {
-                lc2 = lc2->l;
-            }
-
-
         }
 
         if(mudou)
@@ -3421,10 +3404,6 @@ lista* reduz_lista_fim(lista *l, Short ex)
             lfc = lfc->l;
             lfc->n = n1;
         }
-
-        lc1 = lc1->l;
-        if(lc1 == NULL)
-            break;
     }
 
     lfc = lf->l;
@@ -3434,18 +3413,46 @@ lista* reduz_lista_fim(lista *l, Short ex)
     return lf;
 }
 
-void reduz_QDD(QDD *Q, Short ex, Short classe)
+Long reduz_QDD(QDD *Q, Short ex, Short classe, lista *l0)
 {
-    lista *l;
+    lista *l, *lc, *laux;
     l = reduz_lista_fim(Q->l,ex);
     if(l == NULL)
-        return;
+    {
+        if(l0 == NULL)
+            return 0;
+
+        l = l0;
+    }
+    else
+    {
+        if(l0 != NULL)
+        {
+            lc = l0;
+            while(lc != NULL)
+            {
+                if(lc->n->tipo != Fim)
+                    break;
+
+                if(lc->n->l == NULL)
+                {
+                    laux = lc->l;
+                    lc->l = laux->l;
+                    libera_lista_no(laux);
+                }
+                else
+                {
+                    lc = lc->l;
+                }
+            }
+        }
+    }
 
     lista *ll, *llc;
     ll = NULL;
 
     no *nc, *n1, *n2;
-    lista *lnc1, *lnc2, *lnc3, *lnc4, *lp, *laux, *le;
+    lista *lnc1, *lnc2, *lnc3, *lnc4, *lp, *le;
     Short mudou, inicio;
     inicio = 0;
     while(l != NULL)
@@ -3469,10 +3476,6 @@ void reduz_QDD(QDD *Q, Short ex, Short classe)
                 lnc4 = NULL;
                 while(n1->at.m.el == n1->at.m.th)
                 {
-                    for(le = l; le != NULL; le = le->l)
-                        if(le->n == n1)
-                            ERRO("REDUZ QDD| ELIMINANDO NO QUE ESTA NA LISTA DE CHECAGEM");
-
                     desconecta_DOIS(n1);
                     transfere_conexao(nc,n1);
 
@@ -3498,10 +3501,6 @@ void reduz_QDD(QDD *Q, Short ex, Short classe)
                     n1 = lnc1->n;
                     if(n1->at.m.el == n1->at.m.th)
                     {
-                        for(le = l; le != NULL; le = le->l)
-                            if(le->n == n1)
-                                ERRO("REDUZ QDD| ELIMINANDO NO QUE ESTA NA LISTA DE CHECAGEM");
-
                         mudou = 1;
                         desconecta_DOIS(n1);
                         transfere_conexao(nc,n1);
@@ -3615,19 +3614,26 @@ void reduz_QDD(QDD *Q, Short ex, Short classe)
     }
     libera_lista_no(l);
 
+    Long total;
+    total = 0;
     while(ll != NULL)
     {
         llc = ll->l;
         libera_no(ll->n);
         libera_lista_no(ll);
         ll = llc;
+
+        total++;
     }
+    return total;
 }
 
-void reduz_arvore(no **n, Short ex)
+Long reduz_arvore(no **n, Short ex, lista *l0)
 {
     no *ni, *n0;
+    Long total;
     n0 = *n;
+    total = 0;
     switch(n0->tipo)
     {
         case Inicio:
@@ -3635,7 +3641,7 @@ void reduz_arvore(no **n, Short ex)
 
             Qred->n = n0;
             Qred->l = acha_lista_fim_arvore(n0);
-            reduz_QDD(Qred,ex,4);
+            total = reduz_QDD(Qred,ex,4,l0);
 
             Qred->n = ni;
             libera_lista_lista(Qred->l);
@@ -3646,7 +3652,7 @@ void reduz_arvore(no **n, Short ex)
 
             conecta_UM(Qred->n,n0,Inicio);
             Qred->l = acha_lista_fim_arvore(n0);
-            reduz_QDD(Qred,ex,4);
+            total = reduz_QDD(Qred,ex,4,l0);
 
             n0 = Qred->n->at.i.n;
             desconecta_DOIS(Qred->n);
@@ -3655,6 +3661,7 @@ void reduz_arvore(no **n, Short ex)
             libera_lista_lista(Qred->l);
             break;
     }
+    return total;
 }
 
 void reduz_arvore_regra_1(no **n)
@@ -3981,6 +3988,10 @@ no* apply_base(no *n1, no *n2, Short(*regra_apply)(apply*), Short N)
     inicia_apply_matriz(A,N);
     encaixa_apply(a,A,N);
 
+    apply *ar, *arc, *araux;
+    ar  = cria_apply();
+    arc = ar;
+
     apply *ac;
     Short i, j, regra;
     for(i=0; i<N+2; i++)
@@ -3995,10 +4006,38 @@ no* apply_base(no *n1, no *n2, Short(*regra_apply)(apply*), Short N)
                 switch(ac->n->tipo)
                 {
                     case Meio:
+                        araux  = ac->a2;
                         ac->a2 = encaixa_apply(ac->a2,A,N);
+                        if(araux != ac->a2)
+                        {
+                            if(arc->a2 == NULL)
+                            {
+                                arc->a2 = ac->a2;
+                            }
+                            else
+                            {
+                                arc->a = cria_apply();
+                                arc = arc->a;
+                                arc->a1 = ac->a2;
+                            }
+                        }
 
                     case Inicio:
+                        araux  = ac->a1;
                         ac->a1 = encaixa_apply(ac->a1,A,N);
+                        if(araux != ac->a1)
+                        {
+                            if(arc->a2 == NULL)
+                            {
+                                arc->a2 = ac->a1;
+                            }
+                            else
+                            {
+                                arc->a = cria_apply();
+                                arc = arc->a;
+                                arc->a1 = ac->a1;
+                            }
+                        }
                         break;
                 }
             }
@@ -4007,6 +4046,39 @@ no* apply_base(no *n1, no *n2, Short(*regra_apply)(apply*), Short N)
 
     no *n;
     n = monta_arvore(A,N);
+
+    lista *l, *lc;
+    l   = cria_lista();
+    lc  = l;
+    arc = ar;
+    ar  = arc->a;
+    libera_apply_no(arc);
+    while(ar != NULL)
+    {
+        if(ar->a1->n->tipo == Meio)
+        {
+            lc->l = cria_lista();
+            lc    = lc->l;
+            lc->n = ar->a1->n;
+        }
+        if(ar->a2 != NULL)
+        if(ar->a2->n->tipo == Meio)
+        {
+            lc->l = cria_lista();
+            lc    = lc->l;
+            lc->n = ar->a2->n;
+        }
+
+        arc = ar;
+        ar  = arc->a;
+        libera_apply_no(arc);
+    }
+
+    ordena_lista(l);
+    lc = l;
+    l  = lc->l;
+    libera_lista_no(lc);
+    reduz_arvore(&n,2,l);
 
     limpa_apply_matriz(A,N);
 
@@ -4983,7 +5055,7 @@ void contrai_conta(conta *c,Short N)
         na = cc->n;
 
         nd = apply_soma(na->at.m.el,na->at.m.th,N);
-        reduz_arvore(&nd,2);
+        reduz_arvore(&nd,2,NULL);
 
         transfere_conexao(nd,na);
         libera_arvore(na);
@@ -5086,12 +5158,12 @@ QDD* produto_QDD_QDD(QDD *Q1, QDD *Q2, no* (*apply_operacao)(no *n1, no *n2, Sho
     Q = cria_QDD(Q1->nqbit);
     Q->n = n;
     Q->l = l;
-    reduz_QDD(Q,2,classe);
+    reduz_QDD(Q,2,classe,NULL);
 
     contrai_QDD(Q,classe);
     libera_lista_lista(Q->l);
     Q->l = acha_lista_fim_QDD(Q);
-    reduz_QDD(Q,1,4);
+    reduz_QDD(Q,1,4,NULL);
 
     return Q;
 }
@@ -5209,7 +5281,7 @@ QDD* produto_tensorial(QDD *Q1, QDD *Q2)
     }
     libera_QDD_array(Q2B,itens);
 
-    reduz_QDD(Q,1,4);
+    reduz_QDD(Q,1,4,NULL);
     return Q;
 }
 
@@ -5250,7 +5322,7 @@ QDD* soma_QDD(QDD *Q1, QDD *Q2)
     Q = cria_QDD(Q1->nqbit);
     Q->n = apply_soma(Q1->n,Q2->n,Q->nqbit);
     Q->l = acha_lista_fim_QDD(Q);
-    reduz_QDD(Q,1,4);
+    reduz_QDD(Q,1,4,NULL);
 
     return Q;
 }
@@ -5321,7 +5393,7 @@ float modulo_vetor(QDD *Q)
 
         l->n = n1;
     }
-    reduz_QDD(Q1,2,V);
+    reduz_QDD(Q1,2,V,NULL);
 
     float m;
     contrai_QDD(Q1,V);
@@ -6175,7 +6247,7 @@ busca* busca_probabilidade_maior(QDD *Q, double p) // Retorna nulo caso não ache
 
         l->n = n1;
     }
-    reduz_QDD(Q,1,4);
+    reduz_QDD(Q,1,4,NULL);
 
     busca *b, *bc;
     b = cria_busca();
@@ -6641,7 +6713,7 @@ double teste_velocidade_unico(char *nome, QDD* (*le)(char*), FILE *fp, FILE *fr,
     clk = (double)CLOCKS_PER_SEC;
 
     antes = clock();
-    reduz_QDD(Q1,1,4);
+    reduz_QDD(Q1,1,4,NULL);
     depois = clock();
 
     delta = depois - antes;
@@ -6698,7 +6770,7 @@ double teste_velocidade_unico(char *nome, QDD* (*le)(char*), FILE *fp, FILE *fr,
 
         antes = clock();
         for(i=0; i<quantidade; i++)
-            reduz_QDD(Q[i],1,4);
+            reduz_QDD(Q[i],1,4,NULL);
         depois = clock();
 
         delta = depois-antes;
