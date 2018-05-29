@@ -1675,6 +1675,18 @@ void fmostra_rotas(FILE *fp, rota *r)
     }
 }
 
+void fmostra_rotas_sozinho(rota *r, char *arquivo)
+{
+    FILE *fp;
+    char nome[30];
+    sprintf(nome,"%s.txt",arquivo);
+    fp = fopen(nome,"w");
+
+    fmostra_rotas(fp,r);
+
+    fclose(fp);
+}
+
 void fmostra_busca_no(FILE *fp, busca *b)
 {
     fprintf(fp,"\nEndereco (busca): %d",b);
@@ -2460,7 +2472,6 @@ QDD* Z()
 QDD *QH, *QI, *QX, *QS, *QY, *Q00, *Q01, *Q10, *Q11;
 QDD *Qred;
 no *nzero;
-apply *A[66][3];
 rota *rb;
 
 void inicia_structs_globais()
@@ -2513,11 +2524,6 @@ void inicia_structs_globais()
     cM = 0;
     cF = 0;
     cL = 0;
-
-    Short i, j;
-    for(i=0; i<66; i++)
-        for(j=0; j<3; j++)
-            A[i][j] = NULL;
 }
 
 void finaliza_structs_globais()
@@ -3865,7 +3871,7 @@ void monta_apply(apply *a, Short regra)
     a->a2 = a2;
 }
 
-apply* encaixa_apply(apply *a, Short N)
+apply* encaixa_apply(apply *a, apply *A[][3], Short N)
 {
     Short indice1, indice2;
     acha_indice(a,&indice1,&indice2,N);
@@ -3894,7 +3900,7 @@ apply* encaixa_apply(apply *a, Short N)
     return a;
 }
 
-no* monta_arvore(Short N)
+no* monta_arvore(apply *A[][3], Short N)
 {
     no *n0, *n, *nc;
     apply *a, *ac;
@@ -3943,7 +3949,15 @@ no* monta_arvore(Short N)
     return n0;
 }
 
-void limpa_apply_matriz(Short N)
+void inicia_apply_matriz(apply *A[][3], Short N)
+{
+    Short i, j;
+    for(i=0; i<N+2; i++)
+        for(j=0; j<3; j++)
+            A[i][j] = NULL;
+}
+
+void limpa_apply_matriz(apply *A[][3], Short N)
 {
     Short i, j;
     for(i=0; i<N+2; i++)
@@ -3963,7 +3977,9 @@ no* apply_base(no *n1, no *n2, Short(*regra_apply)(apply*), Short N)
     a->n1 = n1;
     a->n2 = n2;
 
-    encaixa_apply(a,N);
+    apply *A[N+2][3];
+    inicia_apply_matriz(A,N);
+    encaixa_apply(a,A,N);
 
     apply *ac;
     Short i, j, regra;
@@ -3979,10 +3995,10 @@ no* apply_base(no *n1, no *n2, Short(*regra_apply)(apply*), Short N)
                 switch(ac->n->tipo)
                 {
                     case Meio:
-                        ac->a2 = encaixa_apply(ac->a2,N);
+                        ac->a2 = encaixa_apply(ac->a2,A,N);
 
                     case Inicio:
-                        ac->a1 = encaixa_apply(ac->a1,N);
+                        ac->a1 = encaixa_apply(ac->a1,A,N);
                         break;
                 }
             }
@@ -3990,9 +4006,9 @@ no* apply_base(no *n1, no *n2, Short(*regra_apply)(apply*), Short N)
     }
 
     no *n;
-    n = monta_arvore(N);
+    n = monta_arvore(A,N);
 
-    limpa_apply_matriz(N);
+    limpa_apply_matriz(A,N);
 
     return n;
 }
@@ -4697,12 +4713,12 @@ no* apply_produto_vetor_vetor(no *n1, no *n2, Short N)
 
 /** copia estruturas complexas **/
 
-void monta_apply_matriz(no *n, Short N)
+void monta_apply_matriz(no *n, apply *A[][3], Short N)
 {
     apply *a;
     a = cria_apply();
     a->n1 = n;
-    encaixa_apply(a,N);
+    encaixa_apply(a,A,N);
 
     apply *ac;
     Short i, j;
@@ -4718,17 +4734,17 @@ void monta_apply_matriz(no *n, Short N)
                     case Inicio:
                         ac = cria_apply();
                         ac->n1 = n->at.i.n;
-                        a->a1 = encaixa_apply(ac,N);
+                        a->a1 = encaixa_apply(ac,A,N);
                         break;
 
                     case Meio:
                         ac = cria_apply();
                         ac->n1 = n->at.m.th;
-                        a->a2 = encaixa_apply(ac,N);
+                        a->a2 = encaixa_apply(ac,A,N);
 
                         ac = cria_apply();
                         ac->n1 = n->at.m.el;
-                        a->a1 = encaixa_apply(ac,N);
+                        a->a1 = encaixa_apply(ac,A,N);
                         break;
                 }
             }
@@ -4736,7 +4752,7 @@ void monta_apply_matriz(no *n, Short N)
     }
 }
 
-no* monta_copia(Short N)
+no* monta_copia(apply *A[][3], Short N)
 {
     apply *a;
     Short i, j;
@@ -4746,15 +4762,17 @@ no* monta_copia(Short N)
                 a->n = copia_no(a->n1);
 
     no *n;
-    n = monta_arvore(N);
+    n = monta_arvore(A,N);
     return n;
 }
 
 no* copia_arvore(no *n, Short N)
 {
-    monta_apply_matriz(n,N);
-    n = monta_copia(N);
-    limpa_apply_matriz(N);
+    apply *A[N+2][3];
+    inicia_apply_matriz(A,N);
+    monta_apply_matriz(n,A,N);
+    n = monta_copia(A,N);
+    limpa_apply_matriz(A,N);
     return n;
 }
 
@@ -4775,15 +4793,17 @@ QDD* copia_QDD(QDD *Q1)
 
 no** copia_arvore_varios(no *n0, Short N, Long quantidade)
 {
-    monta_apply_matriz(n0,N);
+    apply *A[N+2][3];
+    inicia_apply_matriz(A,N);
+    monta_apply_matriz(n0,A,N);
 
     no **n;
     Long i;
     n = cria_no_array(quantidade);
     for(i=0; i<quantidade; i++)
-        n[i] = monta_copia(N);
+        n[i] = monta_copia(A,N);
 
-    limpa_apply_matriz(N);
+    limpa_apply_matriz(A,N);
 
     return n;
 }
@@ -5342,22 +5362,57 @@ Short compara_QDD(QDD *Q1, QDD *Q2, Short ex)
     a = cria_apply();
     a->n1 = Q1->n;
     a->n2 = Q2->n;
-    encaixa_apply(a,N);
+
+    apply *A[N+2][3];
+    inicia_apply_matriz(A,N);
+    encaixa_apply(a,A,N);
 
     no *n1, *n2;
+    apply *a2;
     short i, j, res;
     res = 1;
     for(i=0; i<N; i++)
     {
         for(j=0; j<3; j++)
         {
-            for(a = A[i][j]; A != NULL; a = a->a)
+            while(A[i][j] != NULL)
             {
+                a = A[i][j]->a;
+                A[i][j] = a->a;
+                a->a = NULL;
+
                 n1 = a->n1;
                 n2 = a->n2;
 
-                if(compara_no(n1,n2) == 0)
+                if(compara_no(n1,n2))
                 {
+                    switch(n1->tipo)
+                    {
+                        case Inicio:
+                            a->n1 = n1->at.i.n;
+                            a->n2 = n2->at.i.n;
+                            encaixa_apply(a,A,N);
+                            break;
+
+                        case Meio:
+                            a->n1 = n1->at.m.el;
+                            a->n2 = n2->at.m.el;
+                            encaixa_apply(a,A,N);
+
+                            a2 = cria_apply();
+                            a2->n1=  n1->at.m.th;
+                            a2->n2 = n2->at.m.th;
+                            encaixa_apply(a2,A,N);
+                            break;
+
+                        case Fim:
+                            libera_apply_no(a);
+                            break;
+                    }
+                }
+                else
+                {
+                    libera_apply_no(a);
                     res = 0;
                     break;
                 }
@@ -5369,7 +5424,7 @@ Short compara_QDD(QDD *Q1, QDD *Q2, Short ex)
         if(res == 0)
             break;
     }
-    limpa_apply_matriz(N);
+    limpa_apply_matriz(A,N);
     return res;
 }
 
@@ -6433,7 +6488,7 @@ rota* mede_amostra(destrutivo *d, Long n, Short N)
         for(j=1; j<=N; j++)
         {
 
-            if(i < mostra)
+            if(i <= mostra)
                 printf(" %d",j);
 
             p = gera_aleatorio();
@@ -6941,11 +6996,11 @@ void programa_rodar_2(Short N, Long n)
     rota *r;
     sprintf(nome,"QftW%dMed",N);
     r = mede_amostra_inicio(Q,n,nome);
+    sprintf(nome,"QftW%dRotas",N);
+    fmostra_rotas_sozinho(r,nome);
 
     libera_QDD(Q);
-    //mostra_rotas(r);
     libera_rota_lista(r);
-
     mostra_quantidades();
 }
 
@@ -7012,7 +7067,7 @@ int main()
     setlocale(LC_ALL, "Portuguese");
     /***********************************/
 
-    programa_rodar_2(17,26e6);
+    programa_rodar_2(10,256e5);
 
     /***********************************/
     finaliza_structs_globais();
