@@ -2751,26 +2751,19 @@ void ordena_lista(lista *l)
     do
     {
         i--;
-        //printf("\nI: %d",i);
 
         j = 3;
         do
         {
             j--;
-            //printf("\n\tJ: %d",j);
-            //printf("\tL[%d][%d]: %d",i,j,L[i][j]);
 
             if(L[i][j] != NULL)
             {
                 printf("\nENTROU");
                 lc->l = L[i][j];
                 while(lc->l != NULL)
-                {
-                    //printf("\nB\tlc: %d",lc);
                     lc = lc->l;
-                }
             }
-            //printf("\nA");
         }
         while(j>0);
     }
@@ -3445,14 +3438,33 @@ Long reduz_QDD(QDD *Q, Short ex, Short classe, lista *l0)
                     lc = lc->l;
                 }
             }
+
+            lc = l;
+            while(lc->l != NULL)
+            {
+                if(lc->l->n->l == NULL)
+                {
+                    libera_no(lc->l->n);
+
+                    laux  = lc->l;
+                    lc->l = laux->l;
+                    libera_lista_no(laux);
+                }
+                else
+                {
+                    lc = lc->l;
+                }
+            }
         }
+
+
     }
 
     lista *ll, *llc;
     ll = NULL;
 
     no *nc, *n1, *n2;
-    lista *lnc1, *lnc2, *lnc3, *lnc4, *lp, *le;
+    lista *lnc1, *lnc2, *lnc3, *lnc4, *lp;
     Short mudou, inicio;
     inicio = 0;
     while(l != NULL)
@@ -6024,29 +6036,41 @@ void ordena_rota_recursivo(rota *r, Short n)
     r0 = cria_rota_vazia();
     r1 = cria_rota_vazia();
 
-    rota *rc;
+    rota *rc, *rcf, *rp;
+    char c_num;
     while(r->r != NULL)
     {
         rc = r->r;
-        r->r = rc->r;
 
-        switch(rc->num[n])
+        c_num = rc->num[n];
+        for(rcf = rc; rcf->r != NULL; rcf = rcf->r)
+            if(rcf->r->num[n] != c_num)
+                break;
+
+        r->r   = rcf->r;
+        rcf->r = NULL;
+
+        rp = NULL;
+        switch(c_num)
         {
             case '\0':
-                rc->r = r_->r;
-                r_->r = rc;
+                rp = r_;
                 break;
 
             case '0':
-                rc->r = r0->r;
-                r0->r = rc;
+                rp = r0;
                 break;
 
             case '1':
-                rc->r = r1->r;
-                r1->r = rc;
+                rp = r1;
+                break;
+
+            default:
+                ERRO("ORDENA ROTA RECURSIVO| CARACTERE INVALIDO EM ROTA");
                 break;
         }
+        rcf->r = rp->r;
+        rp->r  = rc;
     }
 
     ordena_rota_recursivo(r0,n+1);
