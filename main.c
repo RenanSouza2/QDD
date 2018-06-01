@@ -2701,6 +2701,9 @@ lista* acha_fim_lista(lista *l)
 
 void ordena_lista(lista *l)
 {
+    if(l->l == NULL)
+        return;
+
     lista *L[65][3];
     Short i, j;
     for(i=0; i<65; i++)
@@ -2759,7 +2762,6 @@ void ordena_lista(lista *l)
 
             if(L[i][j] != NULL)
             {
-                printf("\nENTROU");
                 lc->l = L[i][j];
                 while(lc->l != NULL)
                     lc = lc->l;
@@ -3375,7 +3377,7 @@ lista* reduz_lista_fim(lista *l, Short ex)
             continue;
 
         mudou = 0;
-        for(lc2 = lc2; lc2 != NULL; lc2 = lc2->l)
+        for(lc2 = lc1->l; lc2 != NULL; lc2 = lc2->l)
         {
             n2 = lc2->n;
             if(n2->tipo != Fim)
@@ -3414,39 +3416,27 @@ Long reduz_QDD(QDD *Q, Short ex, Short classe, lista *l0)
     {
         if(l0 == NULL)
             return 0;
-
         l = l0;
     }
     else
     {
         if(l0 != NULL)
         {
-            lc = l0;
-            while(lc != NULL)
+            while(l0->n->l == 0)
             {
-                if(lc->n->tipo != Fim)
+                lc = l0;
+                l0 = lc->l;
+                libera_lista_no(lc);
+            }
+            lc = l0;
+            while(l0->l != NULL)
+            {
+                laux = lc->l;
+                if(laux->n->tipo != Fim)
                     break;
 
-                if(lc->n->l == NULL)
+                if(laux->n->l == NULL)
                 {
-                    laux = lc->l;
-                    lc->l = laux->l;
-                    libera_lista_no(laux);
-                }
-                else
-                {
-                    lc = lc->l;
-                }
-            }
-
-            lc = l;
-            while(lc->l != NULL)
-            {
-                if(lc->l->n->l == NULL)
-                {
-                    libera_no(lc->l->n);
-
-                    laux  = lc->l;
                     lc->l = laux->l;
                     libera_lista_no(laux);
                 }
@@ -3457,7 +3447,25 @@ Long reduz_QDD(QDD *Q, Short ex, Short classe, lista *l0)
             }
         }
 
+        lc = Q->l;
+        while(lc->l != NULL)
+        {
+            laux = lc->l;
+            if(laux->n->l == NULL)
+            {
+                libera_no(laux->n);
 
+                lc->l = laux->l;
+                libera_lista_no(laux);
+            }
+            else
+            {
+                lc = lc->l;
+            }
+        }
+
+        for(lc = l; lc->l != NULL; lc = lc->l);
+        lc->l = l0;
     }
 
     lista *ll, *llc;
@@ -5098,7 +5106,7 @@ void contrai_QDD(QDD *Q, Short classe)
 
     lista *lc;
     conta *c, *cc;
-    c = cria_conta(nqbit);
+    c  = cria_conta(nqbit);
     cc = c;
     for(lc = Q->l; lc != NULL; lc = lc->l)
     {
@@ -5121,18 +5129,24 @@ void contrai_QDD(QDD *Q, Short classe)
 
     conta *ci;
     suporte *saux;
+    Short classeT, sai;
+    sai = 0;
     while(s != NULL)
     {
-        ci = tratamento(s,C,classe,Q->nqbit);
-        if(ci != NULL)
-            break;
+        classeT = 3;
+        do
+        {
+            classeT--;
 
-        ci = tratamento(s,V,classe,Q->nqbit);
-        if(ci != NULL)
-            break;
-
-        ci = tratamento(s,R,classe,Q->nqbit);
-        if(ci != NULL)
+            ci = tratamento(s,classeT,classe,Q->nqbit);
+            if(ci != NULL)
+            {
+                sai = 1;
+                break;
+            }
+        }
+        while(classeT>0);
+        if(sai)
             break;
 
         saux = s->s;
@@ -5212,6 +5226,9 @@ void produto_QDD_real(QDD *Q, float re)
 
 QDD* produto_tensorial(QDD *Q1, QDD *Q2)
 {
+    Long IQt0, IQtf;
+    IQt0 = iQ;
+
     Short nqbit1, nqbit2;
     nqbit1 = Q1->nqbit;
     nqbit2 = Q2->nqbit;
@@ -5223,6 +5240,7 @@ QDD* produto_tensorial(QDD *Q1, QDD *Q2)
     QDD *Q2a;
     lista *l1, *l2;
     Q2a = copia_QDD(Q2);
+
     Q2a->nqbit = Q->nqbit;
     l1 = enlista_QDD(Q2a);
     for(l2 = l1; l2 != NULL; l2 = l2->l)
@@ -5277,12 +5295,12 @@ QDD* produto_tensorial(QDD *Q1, QDD *Q2)
             n2 = n->at.i.n;
             desconecta_UM(n,n2);
             transfere_conexao(n2,n1);
+            libera_no(n);
             libera_no(n1);
 
             l2->l = Q->l;
             Q->l = Q2b->l;
 
-            libera_no(n);
             libera_QDD_no(Q2b);
 
             l2 = l1->l;
@@ -5294,6 +5312,11 @@ QDD* produto_tensorial(QDD *Q1, QDD *Q2)
     libera_QDD_array(Q2B,itens);
 
     reduz_QDD(Q,1,4,NULL);
+
+    IQtf = iQ;
+    if(IQtf - IQt0 != 1)
+        ERRO("PRODUTO TENSORIAL| VAZAMENTO DE MEMORIA");
+
     return Q;
 }
 
@@ -5574,7 +5597,7 @@ QDD** M01(Short N, Short n)
 
     if(N - n > 1)
     {
-        QIn = potencia_tensorial(QI,N - n-1);
+        QIn   = potencia_tensorial(QI,N - n-1);
         Q1aux = produto_tensorial(Q1,QIn);
         Q2aux = produto_tensorial(Q2,QIn);
 
@@ -6463,10 +6486,8 @@ QDD** mede_conservativo(QDD *Q, Short nqbit, float p[2])
     QDD **QM, **QF;
     QM = M01(Q->nqbit,nqbit);
     QF = cria_QDD_array(2);
-
     QF[0] = produto_matriz_vetor(QM[0],Q);
     QF[1] = subtracao_QDD(Q,QF[0]);
-
     float paux[2]; //paux armazena as amplitudes e p as probabilidades
 
     paux[0] = modulo_vetor(QF[0]);
@@ -6583,7 +6604,6 @@ rota* mede_amostra(destrutivo *d, Long n, Short N)
         novo = 0;
         for(j=1; j<=N; j++)
         {
-
             if(i <= mostra)
                 printf(" %d",j);
 
@@ -7163,7 +7183,7 @@ int main()
     setlocale(LC_ALL, "Portuguese");
     /***********************************/
 
-    programa_rodar_2(10,256e5);
+    programa_rodar_2(10,1e4);
 
     /***********************************/
     finaliza_structs_globais();
