@@ -23,11 +23,11 @@
 
 FILE *fm, *fmr = NULL;;
 unsigned long long mem = 0, memMax = 0, memF = 0;
-unsigned long long iQ = 0, iI = 0, iM = 0, iF = 0, iL = 0, iA = 0, iC = 0, iS = 0, iB = 0, iR = 0, iD = 0; // contagem total
-unsigned long long cQ = 0, cI = 0, cM = 0, cF = 0, cL = 0, cA = 0, cC = 0, cS = 0, cB = 0, cR = 0, cD = 0; // contagem criados
-unsigned long long lQ = 0, lI = 0, lM = 0, lF = 0, lL = 0, lA = 0, lC = 0, lS = 0, lB = 0, lR = 0, lD = 0; // contagem liberado
+unsigned long long iQ = 0, iI = 0, iM = 0, iF = 0, iL = 0, iA = 0, iC = 0, iB = 0, iR = 0, iD = 0; // contagem total
+unsigned long long cQ = 0, cI = 0, cM = 0, cF = 0, cL = 0, cA = 0, cC = 0, cB = 0, cR = 0, cD = 0; // contagem criados
+unsigned long long lQ = 0, lI = 0, lM = 0, lF = 0, lL = 0, lA = 0, lC = 0, lB = 0, lR = 0, lD = 0; // contagem liberado
 unsigned long long mem0, iQ0, iI0, iM0, iF0, iL0, iR0; // Contagem inicial
-unsigned short tQ, tN, tL, tA, tC, tS, tB, tR, tD; // tamanho structs
+unsigned short tQ, tN, tL, tA, tC, tB, tR, tD; // tamanho structs
 unsigned short print, Nqbit, ale = 0;
 float eps;
 
@@ -83,14 +83,6 @@ struct conta
     struct no *n;
     unsigned short nivel;
     struct conta *c;
-};
-
-struct suporte
-{
-
-    struct conta *c[3];
-    unsigned short nivel;
-    struct suporte *s;
 };
 
 struct busca
@@ -408,26 +400,6 @@ conta* cria_conta(Short nivel)
     return c;
 }
 
-suporte* cria_suporte(Short nivel)
-{
-    suporte *s;
-    s = malloc(tS);
-    if(s == NULL)
-        ERRO("CRIA SUPORTE");
-    aumenta_memoria(tS);
-    iS++;
-    cS++;
-
-    s->c[C] = NULL;
-    s->c[R] = NULL;
-    s->c[V] = NULL;
-
-    s->nivel = nivel;
-    s->s = NULL;
-
-    return s;
-}
-
 busca* cria_busca()
 {
     busca *b;
@@ -642,27 +614,6 @@ void libera_conta_lista(conta *c)
         cc = c->c;
         libera_conta_no(c);
         c = cc;
-    }
-}
-
-void libera_suporte_no(suporte *s)
-{
-    diminui_memoria(tS);
-    if(iS == 0)
-        ERRO("LIBERA SUPORTE");
-    iS--;
-    lS++;
-    free(s);
-}
-
-void libera_suporte_lista(suporte *s)
-{
-    suporte *sc;
-    while(s != NULL)
-    {
-        sc = s->s;
-        libera_suporte_no(s);
-        s = sc;
     }
 }
 
@@ -1052,59 +1003,6 @@ void mostra_conta_lista(conta *c)
     }
 }
 
-void mostra_suporte_no(suporte *s)
-{
-    printf("\nEndereco (suporte): %d\n",s);
-    if(s == NULL)
-        return;
-
-    printf("nivel: %d",s->nivel);
-    printf("\n\ncc: %d",s->c[C]);
-    printf("\ncv: %d",s->c[V]);
-    printf("\ncr: %d",s->c[R]);
-    printf("\n\ns proximo: %d",s->s);
-}
-
-void mostra_suporte_no_com_conta(suporte *s)
-{
-    printf("\nEndereco (suporte): %d",s);
-    if(s == NULL)
-        return;
-
-    printf("\nnivel: %d",s->nivel);
-    printf("\n\ncc: %d",s->c[C]);
-    mostra_conta_lista(s->c[C]);
-    printf("\ncv: %d",s->c[V]);
-    mostra_conta_lista(s->c[V]);
-    printf("\ncr: %d",s->c[R]);
-    mostra_conta_lista(s->c[R]);
-    printf("\n\ns: %d",s->s);
-}
-
-void mostra_suporte_lista(suporte *s)
-{
-    suporte *sc;
-    Short ligacao = 0;
-    for(sc = s; sc != NULL; sc = sc->s)
-    {
-        printf("\n\n\n\nLigacao suporte %d: ",ligacao);
-        mostra_suporte_no(sc);
-        ligacao++;
-    }
-}
-
-void mostra_suporte_lista_com_conta(suporte *s)
-{
-    suporte *sc;
-    Short ligacao = 0;
-    for(sc = s; sc != NULL; sc = sc->s)
-    {
-        printf("\n\n\n\nLigacao suporte %d: ",ligacao);
-        mostra_suporte_no_com_conta(sc);
-        ligacao++;
-    }
-}
-
 void mostra_rotas(rota *r)
 {
     Long i;
@@ -1207,11 +1105,6 @@ void mostra_quantidades()
         vazio = 0;
         printf("\nc:    %llu",iC);
     }
-    if(iS != 0)
-    {
-        vazio = 0;
-        printf("\ns:    %llu",iS);
-    }
     if(iB != 0)
     {
         vazio = 0;
@@ -1277,11 +1170,6 @@ void mostra_contagem()
         vazio = 0;
         printf("\ncC: %llu\tlC: %llu",cC,lC);
     }
-    if(cS != 0)
-    {
-        vazio = 0;
-        printf("\ncS: %llu\tlS: %llu",cS,lS);
-    }
     if(cB != 0)
     {
         vazio = 0;
@@ -1304,7 +1192,6 @@ void mostra_tamanhos()
     printf("\nl:   %d",tL);
     printf("\na:   %d",tA);
     printf("\nc:   %d",tC);
-    printf("\ns:   %d",tS);
     printf("\nb:   %d",tB);
     printf("\nr:   %d",tR);
     printf("\n");
@@ -1612,59 +1499,6 @@ void fmostra_conta_lista(FILE *fp, conta *c)
     }
 }
 
-void fmostra_suporte_no(FILE *fp, suporte *s)
-{
-    fprintf(fp,"\nEndereco (suporte): %d\n",s);
-    if(s == NULL)
-        return;
-
-    fprintf(fp,"nivel: %d",s->nivel);
-    fprintf(fp,"\n\ncc: %d",s->c[C]);
-    fprintf(fp,"\ncv: %d",s->c[V]);
-    fprintf(fp,"\ncr: %d",s->c[R]);
-    fprintf(fp,"\n\ns proximo: %d",s->s);
-}
-
-void fmostra_suporte_no_com_conta(FILE *fp, suporte *s)
-{
-    fprintf(fp,"\nEndereco (suporte): %d",s);
-    if(s == NULL)
-        return;
-
-    fprintf(fp,"\nnivel: %d",s->nivel);
-    fprintf(fp,"\n\ncc: %d",s->c[C]);
-    fmostra_conta_lista(fp,s->c[C]);
-    fprintf(fp,"\ncv: %d",s->c[V]);
-    fmostra_conta_lista(fp,s->c[V]);
-    fprintf(fp,"\ncr: %d",s->c[R]);
-    fmostra_conta_lista(fp,s->c[R]);
-    fprintf(fp,"\n\ns: %d",s->s);
-}
-
-void fmostra_suporte_lista(FILE *fp, suporte *s)
-{
-    suporte *sc;
-    Short ligacao = 0;
-    for(sc = s; sc != NULL; sc = sc->s)
-    {
-        fprintf(fp,"\n\n\n\nLigacao suporte %d: ",ligacao);
-        fmostra_suporte_no(fp,sc);
-        ligacao++;
-    }
-}
-
-void fmostra_suporte_lista_com_conta(FILE *fp, suporte *s)
-{
-    suporte *sc;
-    Short ligacao = 0;
-    for(sc = s; sc != NULL; sc = sc->s)
-    {
-        fprintf(fp,"\n\n\n\nLigacao suporte %d: ",ligacao);
-        fmostra_suporte_no_com_conta(fp,sc);
-        ligacao++;
-    }
-}
-
 void fmostra_rotas(FILE *fp, rota *r)
 {
     Long i;
@@ -1782,11 +1616,6 @@ void fmostra_quantidades(FILE *fp)
         vazio = 0;
         fprintf(fp,"\nc:    %llu",iC);
     }
-    if(iS != 0)
-    {
-        vazio = 0;
-        fprintf(fp,"\ns:    %llu",iS);
-    }
     if(iB != 0)
     {
         vazio = 0;
@@ -1852,11 +1681,6 @@ void fmostra_contagem(FILE *fp)
         vazio = 0;
         fprintf(fp,"\ncC: %llu\tlC: %llu",cC,lC);
     }
-    if(cS != 0)
-    {
-        vazio = 0;
-        fprintf(fp,"\ncS: %llu\tlS: %llu",cS,lS);
-    }
     if(cB != 0)
     {
         vazio = 0;
@@ -1879,7 +1703,6 @@ void fmostra_tamanhos(FILE *fp)
     fprintf(fp,"\nl:   %d",tL);
     fprintf(fp,"\na:   %d",tA);
     fprintf(fp,"\nc:   %d",tC);
-    fprintf(fp,"\ns:   %d",tS);
     fprintf(fp,"\nb:   %d",tB);
     fprintf(fp,"\nr:   %d",tR);
     fprintf(fp,"\n");
@@ -2481,7 +2304,6 @@ void inicia_structs_globais()
     tL = sizeof(lista);
     tA = sizeof(apply);
     tC = sizeof(conta);
-    tS = sizeof(suporte);
     tB = sizeof(busca);
     tR = sizeof(rota);
     tD = sizeof(destrutivo);
@@ -4926,16 +4748,15 @@ QDD** copia_QDD_varios(QDD *Q0, Long quantidade)
 
 /**  produto QDD QDD base  **/
 
-conta* espalha(suporte *s, Short classe, Short N)
+conta* espalha(conta *Cm[][3], Short i, Short j, Short N)
 {
     no *n, *na, *naux, *nlixo;
     lista *lc, *lp, *lr, *lrc;
     conta *c, *cc, *cp, *cpc, *caux;
-    suporte *sc, *saux;
-    Short lado, delta, i;
-    while(s->c[classe] != NULL)
+    Short lado, delta, nivel, classe;
+    while(Cm[i][j] != NULL)
     {
-        c = s->c[classe];
+        c = Cm[i][j];
         n = c->n;
 
         cp = cria_conta(0);
@@ -4950,104 +4771,85 @@ conta* espalha(suporte *s, Short classe, Short N)
             if(na->tipo == Inicio)
             {
                 libera_conta_no(cp);
-                libera_suporte_no(s);
                 return c;
             }
 
-            for(sc = s; sc->s != NULL; sc = sc->s)
-                if(sc->s->nivel < na->at.m.nivel)
+            nivel  = na->at.m.nivel;
+            classe = na->at.m.classe;
+            for(cc = Cm[nivel][classe]; cc != NULL; cc = cc->c)
+                if(cc->n == na)
                     break;
 
-            if(sc->nivel == na->at.m.nivel)
+            if(cc == NULL)
             {
-                /* Tem suporte */
-                for(cc = sc->c[na->at.m.classe]; cc != NULL; cc = cc->c)
-                    if(cc->n == na)
-                        break;
+                /* Nao tem conta */
+                caux = cria_conta(c->nivel);
+                caux->n = na;
 
-                if(cc == NULL)
+                caux->c = Cm[nivel][classe];
+                Cm[nivel][classe] = caux;
+            }
+            else
+            {
+                /* Tem conta */
+                if(cc->nivel > c->nivel)
                 {
-                    /* Nao tem conta */
-                    caux = cria_conta(c->nivel);
-                    caux->n = na;
+                    /* Alterar original */
+                    if(n == na->at.m.el)
+                        nlixo = na->at.m.th;
+                    else
+                        nlixo = na->at.m.el;
 
-                    caux->c = sc->c[na->at.m.classe];
-                    sc->c[na->at.m.classe] = caux;
-                }
-                else
-                {
-                    /* Tem conta */
-                    if(cc->nivel > c->nivel)
+                    lado = desconecta_UM(na,nlixo);
+                    naux = copia_arvore(nlixo,N);
+
+                    delta = cc->nivel - c->nivel;
+                    lr = acha_lista_fim_arvore(naux);
+                    for(i = 0; i < delta; i++)
                     {
-                        /* Alterar original */
-                        if(n == na->at.m.el)
-                            nlixo = na->at.m.th;
-                        else
-                            nlixo = na->at.m.el;
+                        for(lrc = lr; lrc != NULL; lrc = lrc->l)
+                            produto_no_real(lrc->n,2);
+                    }
+                    libera_lista_lista(lr);
 
-                        lado = desconecta_UM(na,nlixo);
-                        naux = copia_arvore(nlixo,N);
+                    conecta_UM(na,naux,lado);
+                    libera_arvore(nlixo);
 
-                        delta = cc->nivel - c->nivel;
+                    cc->nivel = c->nivel;
+                }
+                if(cc->nivel < c->nivel)
+                {
+                    /* alterar atual */
+                    delta = c->nivel - cc->nivel;
+
+                    for(cpc = cp; cpc->c != NULL; cpc = cpc->c)
+                        if(cpc->c->nivel > delta)
+                            break;
+
+                    if(cpc->nivel == delta)
+                    {
+                        naux = cpc->n;
+                    }
+                    else
+                    {
+                        naux = copia_arvore(cpc->n,N);
                         lr = acha_lista_fim_arvore(naux);
-                        for(i = 0; i < delta; i++)
+                        for(i = cpc->nivel; i < delta; i++)
                         {
                             for(lrc = lr; lrc != NULL; lrc = lrc->l)
                                 produto_no_real(lrc->n,2);
                         }
                         libera_lista_lista(lr);
 
-                        conecta_UM(na,naux,lado);
-                        libera_arvore(nlixo);
+                        caux = cria_conta(delta);
+                        caux->n = naux;
 
-                        cc->nivel = c->nivel;
+                        caux->c = cpc->c;
+                        cpc->c = caux;
                     }
-                    if(cc->nivel < c->nivel)
-                    {
-                        /* alterar atual */
-                        delta = c->nivel - cc->nivel;
-
-                        for(cpc = cp; cpc->c != NULL; cpc = cpc->c)
-                            if(cpc->c->nivel > delta)
-                                break;
-
-                        if(cpc->nivel == delta)
-                        {
-                            naux = cpc->n;
-                        }
-                        else
-                        {
-                            naux = copia_arvore(cpc->n,N);
-                            lr = acha_lista_fim_arvore(naux);
-                            for(i = cpc->nivel; i < delta; i++)
-                            {
-                                for(lrc = lr; lrc != NULL; lrc = lrc->l)
-                                    produto_no_real(lrc->n,2);
-                            }
-                            libera_lista_lista(lr);
-
-                            caux = cria_conta(delta);
-                            caux->n = naux;
-
-                            caux->c = cpc->c;
-                            cpc->c = caux;
-                        }
-                        lado = desconecta_UM(na,n);
-                        conecta_UM(na,naux,lado);
-                    }
+                    lado = desconecta_UM(na,n);
+                    conecta_UM(na,naux,lado);
                 }
-            }
-            else
-            {
-                /* Não tem suporte */
-                caux = cria_conta(c->nivel);
-                caux->n = na;
-
-                saux = cria_suporte(na->at.m.nivel);
-                saux->c[na->at.m.classe] = caux;
-
-                saux->s = sc->s;
-                sc->s = saux;
             }
 
             lc = lp;
@@ -5060,7 +4862,7 @@ conta* espalha(suporte *s, Short classe, Short N)
         libera_conta_no(c);
         c = cc;
 
-        s->c[classe] = c;
+        Cm[i][j] = c;
     }
     return NULL;
 }
@@ -5085,16 +4887,16 @@ void contrai_conta(conta *c,Short N)
     }
 }
 
-conta* tratamento(suporte *s, Short classe, Short classeRef, Short N)
+conta* tratamento(conta *Cm[][3], Short i, Short j, Short classeRef, Short N)
 {
-    if(s->c[classe] == NULL)
+    if(Cm[i][j] == NULL)
         return NULL;
 
-    if(classe == classeRef)
-        contrai_conta(s->c[classe],N);
+    if(j == classeRef)
+        contrai_conta(Cm[i][j],N);
 
     conta *ci;
-    ci = espalha(s,classe,N);
+    ci = espalha(Cm,i,j,N);
 
     return ci;
 }
@@ -5120,39 +4922,41 @@ void contrai_QDD(QDD *Q, Short classe)
     libera_lista_lista(Q->l);
     Q->l = NULL;
 
-    suporte *s;
-    s = cria_suporte(nqbit);
+    conta *Cm[nqbit+2][3];
+    Short i, j;
+    for(i=0; i<nqbit+2; i++)
+        for(j=0; j<3; j++)
+            Cm[i][j] = NULL;
     if(classe == R)
-        s->c[C] = c;
+        Cm[nqbit+1][C] = c;
     else
-        s->c[R] = c;
+        Cm[nqbit+1][R] = c;
 
     conta *ci;
-    suporte *saux;
-    Short classeT, sai;
+    Short sai;
     sai = 0;
-    while(s != NULL)
+    i = nqbit+2;
+    do
     {
-        classeT = 3;
+        i--;
+
+        j = 3;
         do
         {
-            classeT--;
+            j--;
 
-            ci = tratamento(s,classeT,classe,Q->nqbit);
+            ci = tratamento(Cm,i,j,classe,Q->nqbit);
             if(ci != NULL)
             {
                 sai = 1;
                 break;
             }
         }
-        while(classeT>0);
+        while(j>0);
         if(sai)
             break;
-
-        saux = s->s;
-        libera_suporte_no(s);
-        s = saux;
     }
+    while(i>0);
     if(ci == NULL)
         ERRO("CONTRACAO QDD| NAO DETECTOU INICIO");
 
@@ -7050,7 +6854,7 @@ void teste_completo(Short amostras, Short arquivo)
 Short teste_memoria()
 {
     Long memt;
-    memt = memF + iQ*tQ + (iI+iM+iF)*tN + iL*tL + iA*tA + iC*tC + iS*tS;
+    memt = memF + iQ*tQ + (iI+iM+iF)*tN + iL*tL + iA*tA + iC*tC;
     if(memt == mem)
     {
         printf("\nRegistro de memoria correto");
@@ -7183,7 +6987,7 @@ int main()
     setlocale(LC_ALL, "Portuguese");
     /***********************************/
 
-    programa_rodar_2(10,1e4);
+    programa_rodar_2(8,256e5);
 
     /***********************************/
     finaliza_structs_globais();
