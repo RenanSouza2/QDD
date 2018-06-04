@@ -1,3 +1,4 @@
+su#include<stdio.h>
 #include<stdio.h>
 #include<stdlib.h>
 #include<math.h>
@@ -117,7 +118,6 @@ typedef struct lista lista;
 
 typedef struct apply      apply;
 typedef struct conta      conta;
-typedef struct suporte    suporte;
 typedef struct busca      busca;
 typedef struct rota       rota;
 typedef struct destrutivo destrutivo;
@@ -2076,8 +2076,6 @@ void libera_QDD(QDD *Q)
     libera_QDD_no(Q);
 }
 
-int liba = 0, libb = 0;
-
 void libera_destrutivo_arvore(destrutivo *d)
 {
     if(d == NULL)
@@ -2097,15 +2095,9 @@ void libera_destrutivo_arvore(destrutivo *d)
     }
 
     if(d->r[0] != NULL)
-    {
-        liba++;
         libera_rota_no(d->r[0]);
-    }
     if(d->r[1] != NULL)
-    {
-        libb++;
         libera_rota_no(d->r[1]);
-    }
 
     libera_destrutivo_no(d);
 }
@@ -6987,10 +6979,12 @@ int main()
     setlocale(LC_ALL, "Portuguese");
     /***********************************/
 
-    programa_rodar_2(8,256e5);
+    //programa_rodar_2(8,256e5);
+
 
     /***********************************/
     finaliza_structs_globais();
     finaliza_relatorio_memoria();
     return 0;
 }
+
