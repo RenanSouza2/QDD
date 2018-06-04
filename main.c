@@ -1,4 +1,4 @@
-su#include<stdio.h>
+#include<stdio.h>
 #include<stdio.h>
 #include<stdlib.h>
 #include<math.h>
@@ -6279,13 +6279,13 @@ destrutivo* le_destrutivo(char *nome)
 
 QDD** mede_conservativo(QDD *Q, Short nqbit, float p[2])
 {
-    QDD **QM, **QF;
+    /*QDD **QM, **QF;
     QM = M01(Q->nqbit,nqbit);
     QF = cria_QDD_array(2);
     QF[0] = produto_matriz_vetor(QM[0],Q);
     QF[1] = subtracao_QDD(Q,QF[0]);
-    float paux[2]; //paux armazena as amplitudes e p as probabilidades
 
+    float paux[2]; //paux armazena as amplitudes e p as probabilidades
     paux[0] = modulo_vetor(QF[0]);
     p[0] = paux[0]*paux[0];
     p[1] = 1-p[0];
@@ -6309,7 +6309,166 @@ QDD** mede_conservativo(QDD *Q, Short nqbit, float p[2])
     libera_QDD(QM[1]);
     libera_QDD_array(QM,2);
 
-    return QF;
+    return QF;*/
+
+    no *n, *n1;
+    Short N, i;
+    N = Q->nqbit;
+    apply *A[N+2][3], *a;
+    limpa_apply_matriz(A,N);
+    for(i=nqbit+2; i<=N; i++)
+    {
+        for(a = A[i][V]; a != NULL; a = a->a)
+        {
+            a->n1 = (no*)1;
+            a->n2 = (no*)1;
+        }
+    }
+
+    apply *a0;
+    a0 = cria_apply();
+    a0->n1 = cria_no_fim(0,0);
+    a0->n2 = cria_no_fim(0,0);
+
+    apply *ac, *a1, *a2;
+    Short nqbit1, entra, nivel;
+    nqbit1 = nqbit + 1;
+
+    //Completa apply
+    //Inicio
+    a = A[0][0];
+    a->n1 = cria_no_inicio();
+    a->n2 = cria_no_inicio();
+
+    n = a->n->at.i.n;
+    entra = 1;
+    if(n->tipo == Meio)
+    if(n->at.m.nivel < nqbit)
+        entra = 0;
+    if(entra)
+    {
+        ac = cria_apply();
+        ac->n1 = cria_no_meio(V,nqbit);
+        ac->n2 = cria_no_meio(V,nqbit);
+        ac->a1 = a->a1;
+        ac->a  = A[nqbit1][R];
+        A[nqbit1][R] = ac;
+
+        a1 = ac->a1;
+        a1->n1 = NULL;
+        a1->n2 = NULL;
+    }
+
+    //Antes  nqbit
+    for(i=1;i<nqbit1;i++)
+    {
+        for(a = A[i][V]; a != NULL; a = a->a)
+        {
+            n = a->n;
+            a->n1 = cria_no_meio(V,i);
+            a->n2 = cria_no_meio(V,i);
+
+            n1 = n->at.m.el;
+            entra = 1;
+            if(n1->tipo == Meio)
+            if(n1->at.m.nivel < nqbit)
+                entra = 0;
+            if(entra)
+            {
+                nivel = n1->at.m.nivel;
+                ac = cria_apply();
+                ac->n1 = cria_no_meio(V,nivel);
+                ac->n2 = cria_no_meio(V,nivel);
+                ac->a1 = a->a1;
+                ac->a2 = a0;
+                ac->a  = A[nqbit1][R];
+                A[nqbit1][R] = ac;
+
+                a1 = ac->a1;
+                a1->n1 = NULL;
+                a1->n2 = NULL;
+
+                a2 = ac->a2;
+                a2->n1 = NULL;
+                a2->n2 = NULL;
+            }
+
+            n1 = n->at.m.th;
+            entra = 1;
+            if(n1->tipo == Meio)
+            if(n1->at.m.nivel < nqbit)
+                entra = 0;
+            if(entra)
+            {
+                nivel = n1->at.m.nivel;
+                ac = cria_apply();
+                ac->n1 = cria_no_meio(V,nivel);
+                ac->n2 = cria_no_meio(V,nivel);
+                ac->a1 = a0;
+                ac->a2 = a->a2;
+                ac->a  = A[nqbit1][R];
+                A[nqbit1][R] = ac;
+
+                a1 = ac->a1;
+                a1->n1 = NULL;
+                a1->n2 = NULL;
+
+                a2 = ac->a2;
+                a2->n1 = NULL;
+                a2->n2 = NULL;
+            }
+        }
+    }
+
+    //       nqbit
+    for(a = A[nqbit1][V]; a != NULL; a = a->a)
+    {
+        a->n1 = cria_no_meio(V,nqbit);
+        a->n2 = cria_no_meio(V,nqbit);
+
+        a1 = a->a1;
+        a2 = a->a2;
+        a1->n1 = NULL;
+        a2->n2 = NULL;
+    }
+
+    //depois nqbit
+    for(i=nqbit1+1; i<=N; i++)
+    {
+        for(a = A[i][V]; a != NULL; a = a->a)
+        {
+            if(a->n1 == NULL)
+            {
+                a->n1 = cria_no_meio(V,i);
+                a1 = a->a1;
+                a2 = a->a2;
+                a1->n1 = NULL;
+                a2->n1 = NULL;
+            }
+
+            if(a->n2 == NULL)
+            {
+                a->n2 = cria_no_meio(V,i);
+                a1 = a->a1;
+                a2 = a->a2;
+                a1->n1 = NULL;
+                a2->n1 = NULL;
+            }
+        }
+    }
+
+    //fim?
+
+    //Monta arvores
+    //Inicio
+
+    //Antes  nqbit
+
+    //       nqbit
+
+    //depois nqbit
+
+    //fim?
 }
 
 QDD* mede_destrutivo(QDD *Q, Short nqbit, Short *resultado)
@@ -6979,8 +7138,20 @@ int main()
     setlocale(LC_ALL, "Portuguese");
     /***********************************/
 
-    //programa_rodar_2(8,256e5);
-
+    lista *l;
+    Long tam, i;
+    tam = 10000000;
+    i = 0;
+    do
+    {
+        l = malloc(sizeof(lista));
+        i++;
+        if(i%tam == 0)
+            printf("\n%d",i/tam);
+    }
+    while(l != NULL);
+    printf("\n%llu",i);
+    getchar();
 
     /***********************************/
     finaliza_structs_globais();
