@@ -7138,20 +7138,7 @@ int main()
     setlocale(LC_ALL, "Portuguese");
     /***********************************/
 
-    lista *l;
-    Long tam, i;
-    tam = 10000000;
-    i = 0;
-    do
-    {
-        l = malloc(sizeof(lista));
-        i++;
-        if(i%tam == 0)
-            printf("\n%d",i/tam);
-    }
-    while(l != NULL);
-    printf("\n%llu",i);
-    getchar();
+    teste_completo(15,1);
 
     /***********************************/
     finaliza_structs_globais();
